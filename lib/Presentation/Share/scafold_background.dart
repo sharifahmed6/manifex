@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:manifex/App/AppColors.dart';
 import 'package:manifex/App/assets_path.dart';
 
 class scaffold_background extends StatelessWidget {
@@ -27,7 +28,8 @@ class scaffold_background extends StatelessWidget {
             Container(
               width: double.infinity,
               height: double.infinity,
-              decoration: BoxDecoration(color: Colors.black.withOpacity(0.3)),
+              // decoration: BoxDecoration(color: Colors.black.withOpacity(0.3)),
+              decoration: BoxDecoration(color: AppColors.scaffold_background.withOpacity(0.5)),
             ),
             SizedBox.expand(child: SafeArea(child: child)),
           ],

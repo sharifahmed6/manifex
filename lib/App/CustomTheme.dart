@@ -18,6 +18,9 @@ final ThemeData customTheme = ThemeData(
     ),
   ),
   inputDecorationTheme: InputDecorationTheme(
+    filled: true,
+    fillColor: Colors.white.withOpacity(0.05),
+    hintStyle: TextStyle(color: Colors.white.withOpacity(0.5)),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
       borderSide: BorderSide(
