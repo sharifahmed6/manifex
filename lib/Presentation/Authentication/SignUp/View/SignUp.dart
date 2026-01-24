@@ -286,18 +286,18 @@ class signup extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("New here? "),
+                    Text("Already a member?  "),
                     GestureDetector(
-                      onTap: () => Get.toNamed(routes.signup_screen),
+                      onTap: () => Get.toNamed(routes.login_screen),
                       child: Text(
-                        "Create your account",
+                        "Log in",
                         style: TextStyle(
                           color: AppColors.sky,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-                    Text(" to get started"),
+                    Text(" to your account"),
                   ],
                 ),
               ],
