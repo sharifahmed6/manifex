@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:manifex/Presentation/Share/scafold_background.dart';
-
 import '../../../../../App/assets_path.dart';
 import '../../../../Share/button_gradient.dart';
 import '../../../../Share/manifex_logo.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../Controller/Controller.dart';
 
 class resent_password extends StatelessWidget {
