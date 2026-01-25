@@ -13,4 +13,5 @@ class AppColors {
   static Color red = Color(0xFFFF5959);
   static Color purple = Color(0xFFB920ED);
   static Color brown = Color(0xFFE07C2F);
+  static Color white = Color(0xFFFFFFFF);
 }

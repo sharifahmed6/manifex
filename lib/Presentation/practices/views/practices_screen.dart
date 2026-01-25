@@ -1,0 +1,136 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:manifex/App/AppColors.dart';
+import 'package:manifex/Presentation/Share/button_gradient.dart';
+import 'package:manifex/Presentation/Share/scafold_background.dart';
+import 'package:manifex/Presentation/app_bar/views/custom_app_bar.dart';
+
+import '../../Share/text_title_small.dart';
+import '../widget/transperent_gradient_border.dart';
+
+class PracticesScreen extends StatelessWidget {
+  const PracticesScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return scaffold_background(
+      child: Padding(
+        padding: EdgeInsets.all(16.w),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomAppBar(),
+              SizedBox(height: 16.h),
+              CustomText(
+                text: 'Practices',
+                fontSize: 24,
+                fontWeight: FontWeight.w500,
+              ),
+              SizedBox(height: 16.h),
+              _practicesCard(
+                imagePath: 'assets/images/book.png',
+                title: 'Interactive Reading',
+                subTitle:
+                    'Poneme recognition an word games with visual cues designed for dyslexic learners',
+              ),
+              SizedBox(height: 16.h,),
+              _practicesCard(
+                imagePath: 'assets/icons/smart_writing_icon.png',
+                title: 'Smart Writing',
+                subTitle:
+                    'Write. Learn. Improve. AI checks your grammar, structure, and style instantly.',
+              ),
+              SizedBox(height: 16.h,),
+              _practicesCard(
+                imagePath: 'assets/icons/native_speaking_icon.png',
+                title: 'Native Speaking',
+                subTitle:
+                'Advanced Al pronunciation coaching with real-time feedback and accent training',
+              ),
+              SizedBox(height: 16.h,),
+              _practicesCard(
+                imagePath: 'assets/icons/reward_icon.png',
+                title: 'Reward System',
+                subTitle:
+                'oneme recognition an word games with visual cues designed for dyslexic learners',
+              ),
+              SizedBox(height: 16.h,),
+              _practicesCard(
+                imagePath: 'assets/icons/presentation_icon.png',
+                title: 'Presentation Practice',
+                subTitle:
+                'Practice English made for adults. Improve speaking, listening, and vocabulary with easy, real-life lessons you can use every day.',
+              ),
+              SizedBox(height: 16.h,),
+              _practicesCard(
+                imagePath: 'assets/icons/person.png',
+                title: 'English for Adult Practice',
+                subTitle:
+                'Improve your English with real-life practice made especially for adults. Build confidence in speaking, listening, and vocabulary.',
+              ),
+              SizedBox(height: 16.h,),
+              _practicesCard(
+                imagePath: 'assets/icons/person.png',
+                title: 'Handwriting Practice',
+                subTitle:
+                'Learn to write letters the fun way',
+              ),
+              SizedBox(height: 8.h,),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _practicesCard({String? imagePath, String? title, String? subTitle}) {
+    return TransparentGradientBorder(
+      strokeWidth: 0.5,
+      radius: 16.r,
+      child: Container(
+        padding: EdgeInsets.all(16.w),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16.r),
+          gradient: LinearGradient(
+            colors: [
+              Color(0xff111217).withAlpha(50),
+              Color(0xffCFDBFF).withAlpha(30),
+            ],
+            begin: Alignment.bottomRight,
+            end: Alignment.topLeft,
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: EdgeInsets.all(16.w),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12.r),
+                color: AppColors.white.withAlpha((2.56 * 17).toInt()),
+              ),
+              child: Image.asset(imagePath ?? '', width: 32.w, height: 32.h),
+            ),
+            CustomText(
+              text: title ?? '',
+              fontSize: 24,
+              fontWeight: FontWeight.w500,
+              textAlign: TextAlign.start,
+            ),
+            SizedBox(height: 16.h),
+            CustomText(
+              text: subTitle ?? '',
+              fontSize: 16,
+              color: AppColors.white.withAlpha((2.56 * 90).toInt()),
+              textAlign: TextAlign.start,
+            ),
+            SizedBox(height: 16.h),
+            ButtonGradient(text: 'Start Reading'),
+          ],
+        ),
+      ),
+    );
+  }
+}
