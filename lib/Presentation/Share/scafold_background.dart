@@ -41,10 +41,12 @@ class scaffold_background extends StatelessWidget {
 
             // Main content layer
             SizedBox.expand(
-              child: Scaffold(
-                backgroundColor: Colors.transparent,
-                appBar: appBar, // ✅ if null → no AppBar shown
-                body: SafeArea(child: child),
+              child: SafeArea(
+                child: Scaffold(
+                  backgroundColor: Colors.transparent,
+                  appBar: appBar, // ✅ if null → no AppBar shown
+                  body: child,
+                ),
               ),
             ),
           ],
