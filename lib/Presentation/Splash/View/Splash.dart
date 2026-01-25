@@ -34,7 +34,7 @@ class splash extends StatelessWidget {
                 final r = controller.radius.value;
                 return AnimatedContainer(
                   duration: const Duration(milliseconds: 2000),
-                  curve: Curves.bounceOut,
+                  curve: Curves.easeOut,
                   width: r * 2,
                   height: r * 2,
                   child: CircleAvatar(

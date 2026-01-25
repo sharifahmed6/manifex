@@ -115,7 +115,7 @@ class login extends StatelessWidget {
                     Text("Remember me".tr),
                     const Spacer(),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () => controller.route_forget_password(),
                       child: Text(
                         "Forgot password?".tr,
                         style: TextStyle(
