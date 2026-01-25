@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:manifex/Presentation/bottom_navbar/views/bottom_navbar_view.dart';
 import 'package:manifex/Presentation/practices/views/practices_screen.dart';
 import 'package:manifex/Presentation/progress/views/progress_screen.dart';
+import '../Presentation/Authentication/Forget_password/find_account/View/find_account.dart';
 import '../Presentation/Authentication/Login/View/login.dart';
 import '../Presentation/Authentication/SignUp/View/SignUp.dart';
 import '../Presentation/On_boarding/View/on_boarding.dart';
@@ -16,6 +17,7 @@ class routes {
   static const String bottom_navbar = '/bottom_navbar';
   static const String practices_screen = '/practices_screen';
   static const String progress_screen = '/progress_screen';
+  static const String find_account_screen = '/find_account';
 
 
 
@@ -27,6 +29,7 @@ class routes {
     GetPage( name: bottom_navbar, binding: InitialBinding(), page: () => BottomNavbarView()),
     GetPage( name: practices_screen, binding: InitialBinding(), page: () => PracticesScreen()),
     GetPage( name: progress_screen, binding: InitialBinding(), page: () => ProgressScreen()),
+    GetPage( name: find_account_screen, binding: InitialBinding(), page: () => find_account()),
 
   ];
 }

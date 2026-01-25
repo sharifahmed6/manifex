@@ -39,6 +39,8 @@ dependencies:
   cached_network_image: ^3.4.1
   flutter_svg: ^2.2.3
   google_fonts: ^8.0.0
+  pinput: ^6.0.1
+  slide_countdown: ^2.0.2
 
 dev_dependencies:
   flutter_test:

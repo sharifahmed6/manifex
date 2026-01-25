@@ -1,5 +1,8 @@
 import 'package:get/get.dart';
 import 'package:manifex/Presentation/practices/controller/practices_controller.dart';
+import '../Presentation/Authentication/Forget_password/Change_password/Controller/Controller.dart';
+import '../Presentation/Authentication/Forget_password/OTP_verification/Controller/Controller.dart';
+import '../Presentation/Authentication/Forget_password/find_account/Controller/Controller.dart';
 import '../Presentation/Authentication/Login/Controller/Controller.dart';
 import '../Presentation/Authentication/SignUp/Controller/Controller.dart';
 import '../Presentation/On_boarding/Controller/Controller.dart';
@@ -17,6 +20,11 @@ class InitialBinding extends Bindings {
     Get.lazyPut<BottomNavbarController>(() => BottomNavbarController(), fenix: true);
     Get.lazyPut<PracticesController>(() => PracticesController(), fenix: true);
     Get.lazyPut<ProgressController>(() => ProgressController(), fenix: true);
+    Get.lazyPut<find_account_controller>(() => find_account_controller(), fenix: true);
+    Get.lazyPut<OTP_verification_controller>(() => OTP_verification_controller(), fenix: true);
+    Get.lazyPut<reset_password_controller>(() => reset_password_controller(), fenix: true);
+
+
 
   }
 }

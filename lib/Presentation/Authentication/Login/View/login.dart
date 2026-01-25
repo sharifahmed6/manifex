@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import '../../../../App/assets_path.dart';
 import '../../../Share/button_gradient.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../../Share/manifex_logo.dart';
 import '../Controller/Controller.dart';
 
@@ -115,7 +114,7 @@ class login extends StatelessWidget {
                     Text("Remember me".tr),
                     const Spacer(),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () => controller.route_forget_password(),
                       child: Text(
                         "Forgot password?".tr,
                         style: TextStyle(

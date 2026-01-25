@@ -4,8 +4,14 @@ import 'package:manifex/App/AppColors.dart';
 import 'package:manifex/App/assets_path.dart';
 
 class scaffold_background extends StatelessWidget {
-  Widget child;
-  scaffold_background({super.key, required this.child});
+  final PreferredSizeWidget? appBar;
+  final Widget child;
+
+  const scaffold_background({
+    super.key,
+    required this.child,
+    this.appBar,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +34,19 @@ class scaffold_background extends StatelessWidget {
             Container(
               width: double.infinity,
               height: double.infinity,
-              // decoration: BoxDecoration(color: Colors.black.withOpacity(0.3)),
-              decoration: BoxDecoration(color: AppColors.scaffold_background.withOpacity(0.5)),
+              decoration: BoxDecoration(
+                color: AppColors.scaffold_background.withOpacity(0.5),
+              ),
             ),
-            SizedBox.expand(child: SafeArea(child: child)),
+
+            // Main content layer
+            SizedBox.expand(
+              child: Scaffold(
+                backgroundColor: Colors.transparent,
+                appBar: appBar, // ✅ if null → no AppBar shown
+                body: SafeArea(child: child),
+              ),
+            ),
           ],
         ),
       ),
