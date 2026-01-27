@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:manifex/Presentation/Share/scafold_background.dart';
 import '../../../../../App/assets_path.dart';
+import '../../../../../Core/responsive.dart';
 import '../../../../Share/button_gradient.dart';
 import '../../../../Share/manifex_logo.dart';
 import 'package:get/get.dart';
@@ -33,7 +34,7 @@ class resent_password extends StatelessWidget {
                   .tr,
               textAlign: TextAlign.center,
               style: TextStyle(
-                  fontSize: 22.sp,
+                  fontSize: ScreenResponsive.responsiveFont(context,22),
                   fontWeight: FontWeight.bold
               ),
             ),
@@ -42,7 +43,7 @@ class resent_password extends StatelessWidget {
                   .tr,
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 16.sp,
+                fontSize: ScreenResponsive.responsiveFont(context,16),
               ),
             ),
             SizedBox(height: 20.h),
@@ -51,7 +52,7 @@ class resent_password extends StatelessWidget {
               child: Text(
                 "New Password".tr,
                 style: TextStyle(
-                  fontSize: 14.sp,
+                  fontSize: ScreenResponsive.responsiveFont(context,14),
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -83,7 +84,7 @@ class resent_password extends StatelessWidget {
               child: Text(
                 "Confirm Password".tr,
                 style: TextStyle(
-                  fontSize: 14.sp,
+                  fontSize: ScreenResponsive.responsiveFont(context,14),
                   fontWeight: FontWeight.bold,
                 ),
               ),

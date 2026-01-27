@@ -4,6 +4,7 @@ import 'package:manifex/Presentation/Share/scafold_background.dart';
 import '../../../../App/AppColors.dart';
 import '../../../../App/assets_path.dart';
 import '../../../../App/routes.dart';
+import '../../../../Core/responsive.dart';
 import '../../../Share/button_gradient.dart';
 import '../../../Share/manifex_logo.dart';
 import '../Controller/Controller.dart';
@@ -35,7 +36,9 @@ class signup extends StatelessWidget {
                   "Welcome to MANIFEX! Let’s start your language learning journey today"
                       .tr,
                   textAlign: TextAlign.center,
-                  style: TextStyle(),
+                  style: TextStyle(
+                      fontSize: ScreenResponsive.responsiveFont(context,12)
+                  ),
                 ),
                 CircleAvatar(
                   radius: 80,
@@ -55,7 +58,7 @@ class signup extends StatelessWidget {
                             child: Text(
                               "First Name".tr,
                               style: TextStyle(
-                                fontSize: 14.sp,
+                                fontSize: ScreenResponsive.responsiveFont(context,14),
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -80,7 +83,7 @@ class signup extends StatelessWidget {
                             child: Text(
                               "Last Name".tr,
                               style: TextStyle(
-                                fontSize: 14.sp,
+                                fontSize: ScreenResponsive.responsiveFont(context,14),
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -105,7 +108,7 @@ class signup extends StatelessWidget {
                   child: Text(
                     "Select your age group".tr,
                     style: TextStyle(
-                      fontSize: 14.sp,
+                      fontSize: ScreenResponsive.responsiveFont(context,14),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -142,7 +145,7 @@ class signup extends StatelessWidget {
                   child: Text(
                     "Select hobbies and Interests".tr,
                     style: TextStyle(
-                      fontSize: 14.sp,
+                      fontSize: ScreenResponsive.responsiveFont(context,14),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -179,7 +182,7 @@ class signup extends StatelessWidget {
                   child: Text(
                     "Email".tr,
                     style: TextStyle(
-                      fontSize: 14.sp,
+                      fontSize: ScreenResponsive.responsiveFont(context,14),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -200,7 +203,7 @@ class signup extends StatelessWidget {
                   child: Text(
                     "Password".tr,
                     style: TextStyle(
-                      fontSize: 14.sp,
+                      fontSize: ScreenResponsive.responsiveFont(context,14),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -239,7 +242,7 @@ class signup extends StatelessWidget {
                   child: Text(
                     "Confirm Password".tr,
                     style: TextStyle(
-                      fontSize: 14.sp,
+                      fontSize: ScreenResponsive.responsiveFont(context,14),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -286,7 +289,7 @@ class signup extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Already a member?  "),
+                    Text("Already a member?  ", style: TextStyle(fontSize: ScreenResponsive.responsiveFont(context, 14)),),
                     GestureDetector(
                       onTap: () => Get.toNamed(routes.login_screen),
                       child: Text(
@@ -294,10 +297,12 @@ class signup extends StatelessWidget {
                         style: TextStyle(
                           color: AppColors.sky,
                           fontWeight: FontWeight.bold,
+                          fontSize: ScreenResponsive.responsiveFont(context,14),
+
                         ),
                       ),
                     ),
-                    Text(" to your account"),
+                    Text(" to your account", style: TextStyle( fontSize: ScreenResponsive.responsiveFont(context,14),),),
                   ],
                 ),
               ],

@@ -4,6 +4,7 @@ import 'package:manifex/App/routes.dart';
 import 'package:manifex/Presentation/Share/scafold_background.dart';
 import 'package:get/get.dart';
 import '../../../../App/assets_path.dart';
+import '../../../../Core/responsive.dart';
 import '../../../Share/button_gradient.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../Share/manifex_logo.dart';
@@ -32,7 +33,7 @@ class login extends StatelessWidget {
                   "Welcome to MANIFEX! Let’s start your language learning journey today"
                       .tr,
                   textAlign: TextAlign.center,
-                  style: TextStyle(),
+                  style: TextStyle(fontSize: ScreenResponsive.responsiveFont(context,12)),
                 ),
                 CircleAvatar(
                   radius: 100,
@@ -45,7 +46,7 @@ class login extends StatelessWidget {
                   child: Text(
                     "Email".tr,
                     style: TextStyle(
-                      fontSize: 14.sp,
+                      fontSize: ScreenResponsive.responsiveFont(context,16),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -66,7 +67,7 @@ class login extends StatelessWidget {
                   child: Text(
                     "Password".tr,
                     style: TextStyle(
-                      fontSize: 14.sp,
+                      fontSize: ScreenResponsive.responsiveFont(context,16),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -111,13 +112,14 @@ class login extends StatelessWidget {
                         },
                       ),
                     ),
-                    Text("Remember me".tr),
+                    Text("Remember me".tr, style: TextStyle(fontSize: ScreenResponsive.responsiveFont(context,16)),),
                     const Spacer(),
                     TextButton(
                       onPressed: () => controller.route_forget_password(),
                       child: Text(
                         "Forgot password?".tr,
                         style: TextStyle(
+                          fontSize: ScreenResponsive.responsiveFont(context , 16),
                           color: AppColors.sky,
                           fontWeight: FontWeight.bold,
                         ),
@@ -134,23 +136,50 @@ class login extends StatelessWidget {
                   },
                   text: "Login".tr,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("New here? "),
-                    GestureDetector(
-                      onTap: () => Get.toNamed(routes.signup_screen),
-                      child: Text(
-                        "Create your account",
-                        style: TextStyle(
-                          color: AppColors.sky,
-                          fontWeight: FontWeight.bold,
-                        ),
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: "New here? ",
+                            style: TextStyle(
+                              fontSize: ScreenResponsive.responsiveFont(context, 16),
+                              color: Colors.white,
+                            ),
+                          ),
+                          WidgetSpan(
+                            alignment: PlaceholderAlignment.baseline,
+                            baseline: TextBaseline.alphabetic,
+                            child: GestureDetector(
+                              onTap: () => Get.toNamed(routes.signup_screen),
+                              child: Text(
+                                "Create your account",
+                                style: TextStyle(
+                                  color: AppColors.sky,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: ScreenResponsive.responsiveFont(context, 16),
+                                ),
+                              ),
+                            ),
+                          ),
+                          TextSpan(
+                            text: " to get started.",
+                            style: TextStyle(
+                              fontSize: ScreenResponsive.responsiveFont(context, 16),
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
                       ),
+                      textAlign: TextAlign.center,
+                      softWrap: true,
                     ),
-                    Text(" to get started"),
-                  ],
-                ),
+                  ),
+                )
+
+
               ],
             ),
           ),

@@ -1,12 +1,12 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:manifex/App/AppColors.dart';
-import 'package:manifex/Presentation/home/view/home_screen.dart';
 import 'package:manifex/Presentation/practices/views/practices_screen.dart';
+import '../../Features/Subcription/View/Subcription.dart';
+import '../../Features/home/view/home_screen.dart';
 import '../../progress/views/progress_screen.dart';
 import '../controllers/bottom_navbar_controller.dart';
 
@@ -16,7 +16,7 @@ class BottomNavbarView extends GetView<BottomNavbarController> {
     HomeScreen(),
     PracticesScreen(),
     ProgressScreen(),
-    const Text('Practice Screen'),
+    subscription(),
     const Text('Practice Screen'),
   ];
 
