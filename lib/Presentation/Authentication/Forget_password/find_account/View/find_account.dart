@@ -3,6 +3,7 @@ import 'package:manifex/Presentation/Share/button_gradient.dart';
 import 'package:manifex/Presentation/Share/scafold_background.dart';
 import 'package:get/get.dart';
 import '../../../../../App/assets_path.dart';
+import '../../../../../Core/responsive.dart';
 import '../../../../Share/manifex_logo.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../Controller/Controller.dart';
@@ -29,8 +30,8 @@ class find_account extends StatelessWidget {
                   .tr,
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 22.sp,
-                fontWeight: FontWeight.bold
+                  fontSize: ScreenResponsive.responsiveFont(context,22),
+                  fontWeight: FontWeight.bold
               ),
             ),
             Text(
@@ -38,7 +39,7 @@ class find_account extends StatelessWidget {
                   .tr,
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 16.sp,
+                fontSize: ScreenResponsive.responsiveFont(context,16),
               ),
             ),
             const SizedBox(height: 10),
@@ -47,7 +48,7 @@ class find_account extends StatelessWidget {
               child: Text(
                 "Email Address".tr,
                 style: TextStyle(
-                  fontSize: 14.sp,
+                  fontSize: ScreenResponsive.responsiveFont(context,14),
                   fontWeight: FontWeight.bold,
                 ),
               ),
