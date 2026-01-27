@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:manifex/Core/snakbar.dart';
 import '../../../../../App/AppColors.dart';
 import '../../../../../App/assets_path.dart';
+import '../../../../../Core/responsive.dart';
 import '../../../../Share/button_gradient.dart';
 import '../../../../Share/manifex_logo.dart';
 import '../../../../Share/scafold_background.dart';
@@ -33,7 +34,7 @@ class OtpVerification extends StatelessWidget {
                 .tr,
             textAlign: TextAlign.center,
             style: TextStyle(
-                fontSize: 22.sp,
+                fontSize: ScreenResponsive.responsiveFont(context,22),
                 fontWeight: FontWeight.bold
             ),
           ),
@@ -42,7 +43,7 @@ class OtpVerification extends StatelessWidget {
                 .tr,
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 16.sp,
+              fontSize: ScreenResponsive.responsiveFont(context,16),
             ),
           ),
           SizedBox(height: 20.h),
@@ -57,7 +58,7 @@ class OtpVerification extends StatelessWidget {
               textStyle: Theme.of(context).textTheme.displaySmall
                   ?.copyWith(
                 color: Colors.white,
-                fontSize: 17.sp,
+                fontSize: ScreenResponsive.responsiveFont(context,17),
                 fontWeight: FontWeight.w400,
               ),
               decoration: BoxDecoration(
@@ -74,7 +75,7 @@ class OtpVerification extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             spacing: 7,
             children: [
-              Text("Didn't get a code?".tr, style: TextStyle(fontSize: 14.sp, color: Colors.white),),
+              Text("Didn't get a code?".tr, style: TextStyle(fontSize: ScreenResponsive.responsiveFont(context,16), color: Colors.white),),
               Obx(
                     () => controller.isResendCode.value
                     ? GestureDetector(
@@ -97,7 +98,7 @@ class OtpVerification extends StatelessWidget {
                     child: Text(
                       "Resend",
                       style: TextStyle(
-                        fontSize: 16.sp,
+                        fontSize: ScreenResponsive.responsiveFont(context,16),
                         fontWeight: FontWeight.bold,
                         color: Colors.white, // required for ShaderMask
                       ),
@@ -109,7 +110,7 @@ class OtpVerification extends StatelessWidget {
                     color: Colors.transparent,
                   ),
                   style: TextStyle(
-                      fontSize: 15.sp,
+                      fontSize: ScreenResponsive.responsiveFont(context,16),
                       color: Colors.white
                   ),
                   duration: Duration(seconds: 90),

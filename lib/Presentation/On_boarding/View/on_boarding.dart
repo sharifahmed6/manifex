@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:manifex/App/routes.dart';
+import 'package:manifex/Core/responsive.dart';
 import 'package:manifex/Presentation/Share/button_gradient.dart';
 import 'package:manifex/Presentation/Share/scafold_background.dart';
 import 'package:get/get.dart';
@@ -55,7 +56,9 @@ class _build_onBoarding4 extends StatelessWidget {
                 "Welcome to MANIFEX! Let’s start your language learning journey today"
                     .tr,
                 textAlign: TextAlign.center,
-                style: TextStyle(),
+                style: TextStyle(
+                  fontSize: ScreenResponsive.responsiveFont(context,12),
+                ),
               ),
               CircleAvatar(
                 radius: 110,
@@ -65,7 +68,7 @@ class _build_onBoarding4 extends StatelessWidget {
               const SizedBox(height: 5),
               Align(
                   alignment: Alignment.centerLeft,
-                  child: Text("Please select your language".tr, style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),)),
+                  child: Text("Please select your language".tr, style: TextStyle(fontSize: ScreenResponsive.responsiveFont(context,14), fontWeight: FontWeight.bold),)),
               Row(
                 children: [
                   ClipOval(
@@ -86,13 +89,14 @@ class _build_onBoarding4 extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 10),
-                  Text("English", style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.w500),),
+                  Text("English", style: TextStyle(fontSize: ScreenResponsive.responsiveFont(context,15), fontWeight: FontWeight.w500),),
                   const SizedBox(width: 5),
                   Text("(United Kingdom)"),
                   Spacer(),
                   Icon(Icons.check, color: Colors.white, size: 20,)
                 ],
               ),
+              const SizedBox(height: 5),
               Row(
                 children: [
                   ClipOval(
@@ -113,7 +117,7 @@ class _build_onBoarding4 extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 10),
-                  Text("Polish", style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.w500),),
+                  Text("Polish", style: TextStyle(fontSize: ScreenResponsive.responsiveFont(context,15), fontWeight: FontWeight.w500),),
                   const SizedBox(width: 5),
                   Text("(Poland)")
 
@@ -151,12 +155,14 @@ class _build_onBoarding3 extends StatelessWidget {
             children: [
               Image.asset(assets_path.logo, width: 62, height: 62),
               logo_manifex(),
-              Text("Track your growth".tr, style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w600),),
+              Text("Track your growth".tr, style: TextStyle(fontSize: ScreenResponsive.responsiveFont(context,24), fontWeight: FontWeight.w600),),
               Text(
                 "See how your mindset evolves over time with clear insights."
                     .tr,
                 textAlign: TextAlign.center,
-                style: TextStyle(),
+                style: TextStyle(
+                  fontSize: ScreenResponsive.responsiveFont(context,12),
+                ),
               ),
             ],
           ),
@@ -190,12 +196,14 @@ class _build_onBoarding2 extends StatelessWidget {
             children: [
               Image.asset(assets_path.logo, width: 62, height: 62),
               logo_manifex(),
-              Text("Train your mindset".tr, style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w600),),
+              Text("Train your mindset".tr, style: TextStyle(fontSize: ScreenResponsive.responsiveFont(context,24), fontWeight: FontWeight.w600),),
               Text(
                 "Strengthen focus, discipline, and self-belief with consistency."
                     .tr,
                 textAlign: TextAlign.center,
-                style: TextStyle(),
+                style: TextStyle(
+                  fontSize: ScreenResponsive.responsiveFont(context,12),
+                ),
               ),
             ],
           ),
@@ -229,12 +237,14 @@ class _build_onBoarding1 extends StatelessWidget {
             children: [
               Image.asset(assets_path.logo, width: 62, height: 62),
               logo_manifex(),
-              Text("Set your intention".tr, style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w600),),
+              Text("Set your intention".tr, style: TextStyle(fontSize: ScreenResponsive.responsiveFont(context,24), fontWeight: FontWeight.w600),),
               Text(
                 "Define what truly matters to you every single day."
                     .tr,
                 textAlign: TextAlign.center,
-                style: TextStyle(),
+                style: TextStyle(
+                  fontSize: ScreenResponsive.responsiveFont(context,12),
+                ),
               ),
             ],
           ),
