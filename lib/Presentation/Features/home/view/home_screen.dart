@@ -5,12 +5,10 @@ import 'package:manifex/Core/responsive.dart';
 import 'package:manifex/Presentation/Share/GradientMask.dart';
 import 'package:manifex/Presentation/Share/button_gradient.dart';
 import 'package:manifex/Presentation/Share/scafold_background.dart';
-import 'package:manifex/Presentation/Share/text_title_small.dart';
-import '../../../App/AppColors.dart';
-import '../../app_bar/views/custom_app_bar.dart';
+import '../../../../App/AppColors.dart';
+import '../../../app_bar/views/custom_app_bar.dart';
+import '../../../practices/widget/transperent_gradient_border.dart';
 import 'package:get/get.dart';
-
-import '../../practices/widget/transperent_gradient_border.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -344,6 +342,7 @@ class HomeScreen extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              SizedBox(height: ScreenResponsive.h(context, 10)),
 
               _practicesCard(
                 imagePath: 'assets/images/book.png',
