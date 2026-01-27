@@ -14,14 +14,16 @@ class PracticesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return scaffold_background(
+      appBar: PreferredSize(
+          preferredSize: Size.fromHeight(kToolbarHeight),
+          child:  CustomAppBar(),
+      ),
       child: Padding(
         padding: EdgeInsets.all(16.w),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomAppBar(),
-              SizedBox(height: 16.h),
               CustomText(
                 text: 'Practices',
                 fontSize: 24,
