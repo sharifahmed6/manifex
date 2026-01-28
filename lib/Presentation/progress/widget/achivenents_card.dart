@@ -8,15 +8,19 @@ import 'package:manifex/Presentation/progress/controllers/progress_controller.da
 import '../../practices/widget/transperent_gradient_border.dart';
 import 'achievment_gradient_border.dart';
 
-class Achivenents extends StatelessWidget {
-    Achivenents({super.key});
+class AchivenentsCard extends StatelessWidget {
+    AchivenentsCard({super.key, this.imagePath, this.title, this.lock = false, this.subTitle});
 final controller = Get.find<ProgressController>();
+final String? imagePath;
+final String? title;
+final String? subTitle;
+final bool lock;
    @override
    Widget build(BuildContext context) {
-     return Obx(()=> AchievmentGradientBorder(
+     return  AchievmentGradientBorder(
        strokeWidth: 0.5,
        radius: 16.r,
-       lock: controller.lock.value,
+       lock: lock,
        child: Container(
          padding: EdgeInsets.all(16.w),
          decoration: BoxDecoration(
@@ -33,8 +37,8 @@ final controller = Get.find<ProgressController>();
                    padding: EdgeInsets.all(16.w),
                    decoration: BoxDecoration(
                      shape: BoxShape.circle,
-                     color: controller.lock.value? null: Color(0xffFFFFFF).withAlpha((2.56 * 50).toInt()),
-                     gradient: controller.lock.value ? LinearGradient(
+                     color: lock ? null: Color(0xffFFFFFF).withAlpha((2.56 * 50).toInt()),
+                     gradient: lock ? LinearGradient(
                          colors:[
                            Color(0xffFFBC6F),
                            Color(0xffF176B7),
@@ -42,14 +46,14 @@ final controller = Get.find<ProgressController>();
                          ]
                      ): null,
                    ),
-                   child: Image.asset('assets/icons/daily_streak.png',width: 20.w,height: 20.w,color: controller.lock.value ? Color(0xffFFFFFF): Color(0xff232339),),
+                   child: Image.asset(imagePath ?? '',width: 20.w,height: 20.w,color: lock ? Color(0xffFFFFFF): Color(0xff232339),),
                  ),
                  Container(
                    padding: EdgeInsets.all(8.w),
                    decoration: BoxDecoration(
                      shape: BoxShape.circle,
-                     color: controller.lock.value? null: Color(0xffFFFFFF).withAlpha((2.56 * 50).toInt()),
-                     gradient: controller.lock.value ? LinearGradient(
+                     color: lock ? null: Color(0xffFFFFFF).withAlpha((2.56 * 50).toInt()),
+                     gradient: lock ? LinearGradient(
                          colors:[
                            Color(0xffFFBC6F),
                            Color(0xffF176B7),
@@ -62,14 +66,14 @@ final controller = Get.find<ProgressController>();
                ],
              ),
              SizedBox(height: 8.h,),
-             CustomText(text: 'Word Wizard',fontSize: 24,fontWeight: FontWeight.w600,),
-             CustomText(text: 'Learned 100 new words with perfect recall.',fontSize: 16,fontWeight: FontWeight.w500,color: Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),),
+             CustomText(text: title ?? '',fontSize: 24,fontWeight: FontWeight.w600,),
+             CustomText(text: subTitle ?? '',fontSize: 16,fontWeight: FontWeight.w500,color: Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),),
              SizedBox(height: 16.h,),
              Container(
                padding: EdgeInsets.symmetric(horizontal: 18.w,vertical: 6.h),
                decoration: BoxDecoration(
-                 color: controller.lock.value ? null : Color(0xffFFFFFF).withAlpha((2.56 * 50).toInt()),
-                 gradient:controller.lock.value? LinearGradient(
+                 color: lock ? null : Color(0xffFFFFFF).withAlpha((2.56 * 50).toInt()),
+                 gradient: lock ? LinearGradient(
                      colors: [
                        Color(0xff11D067),
                        Color(0xff01803A)
@@ -77,11 +81,11 @@ final controller = Get.find<ProgressController>();
                  ): null,
                  borderRadius: BorderRadius.circular(8.r)
                ),
-               child: controller.lock.value ? CustomText(text: 'Unlocked',fontSize: 16,fontWeight: FontWeight.w600,) : CustomText(text: 'Keep Practicing to Unlock',color: Color(0xff05051E),fontSize: 16,fontWeight: FontWeight.w600),
+               child: lock ? CustomText(text: 'Unlocked',fontSize: 16,fontWeight: FontWeight.w600,) : CustomText(text: 'Keep Practicing to Unlock',color: Color(0xff05051E),fontSize: 16,fontWeight: FontWeight.w600),
              )
            ],
          ),
        ),
-     ));
+     );
    }
  }
