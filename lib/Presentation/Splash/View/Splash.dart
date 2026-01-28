@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:manifex/App/assets_path.dart';
+import '../../../Core/responsive.dart';
 import '../../Share/manifex_logo.dart';
 import '../../Share/scafold_background.dart';
 import 'package:get/get.dart';
@@ -18,16 +19,19 @@ class splash extends StatelessWidget {
           padding: const EdgeInsets.all(15.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(width: double.infinity, height: 0.1.sh,),
+              SizedBox(width: double.infinity),
               Image.asset(assets_path.logo, width: 62, height: 62),
               logo_manifex(),
               Text(
                 "Welcome to MANIFEX! Let’s start your language learning journey today"
                     .tr,
                 textAlign: TextAlign.center,
-                style: TextStyle(),
+                style: TextStyle(
+                  fontSize: ScreenResponsive.responsiveFont(context,12),
+                ),
+
               ),
               SizedBox(height: 20),
               Obx(() {
