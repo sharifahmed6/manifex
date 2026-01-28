@@ -10,7 +10,6 @@ import '../widget/transperent_gradient_border.dart';
 
 class PracticesScreen extends StatelessWidget {
   const PracticesScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return scaffold_background(
@@ -19,7 +18,7 @@ class PracticesScreen extends StatelessWidget {
           child:  CustomAppBar(),
       ),
       child: Padding(
-        padding: EdgeInsets.all(16.w),
+        padding: EdgeInsets.only(top: 5,left: 16,right: 16,bottom: 0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -108,12 +107,12 @@ class PracticesScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              padding: EdgeInsets.all(16.w),
+              padding: EdgeInsets.symmetric(horizontal: 14, vertical: 14),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12.r),
                 color: AppColors.white.withAlpha((2.56 * 17).toInt()),
               ),
-              child: Image.asset(imagePath ?? '', width: 32.w, height: 32.h),
+              child: _responsiveIcon(imagePath),
             ),
             CustomText(
               text: title ?? '',
@@ -135,4 +134,22 @@ class PracticesScreen extends StatelessWidget {
       ),
     );
   }
+  Widget _responsiveIcon(String? imagePath) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final shortest = MediaQuery.of(context).size.shortestSide;
+
+        // icon size logic (perfect for landscape)
+        final iconSize = (shortest * 0.06).clamp(24.0, 36.0);
+
+        return Image.asset(
+          imagePath ?? '',
+          width: iconSize,
+          height: iconSize,
+          fit: BoxFit.contain,
+        );
+      },
+    );
+  }
+
 }

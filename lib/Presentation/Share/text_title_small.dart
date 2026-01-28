@@ -11,6 +11,8 @@ class CustomText extends StatelessWidget {
     this.fontWeight,
     this.textAlign,
     this.fontSize,
+    this.maxLines,
+    this.overflow,
   });
 
   final String text;
@@ -18,16 +20,22 @@ class CustomText extends StatelessWidget {
   final Color? color;
   final FontWeight? fontWeight;
   final TextAlign? textAlign;
+  final int? maxLines;
+  final TextOverflow? overflow;
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
       textAlign: textAlign,
+      maxLines: maxLines,
+      overflow: overflow,
       style: GoogleFonts.inter(
         fontSize: (fontSize ?? 14).sp,
         fontWeight: fontWeight ?? FontWeight.w400,
-        color: Get.isDarkMode ? Colors.white : color ?? Color(0xffFFFFFF),
+        color: Get.isDarkMode
+            ? (color ?? Colors.white)
+            : (color ?? const Color(0xffFFFFFF)),
       ),
     );
   }

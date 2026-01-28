@@ -41,6 +41,9 @@ dependencies:
   google_fonts: ^8.0.0
   pinput: ^6.0.1
   slide_countdown: ^2.0.2
+  shared_preferences: ^2.5.4
+  video_player: ^2.10.1
+  chewie: ^1.13.0
 
 
 
