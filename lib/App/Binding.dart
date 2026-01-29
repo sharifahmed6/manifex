@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:manifex/Presentation/language/controller/language_controller.dart';
-import 'package:manifex/Presentation/practices/controller/practices_controller.dart';
 import 'package:manifex/Presentation/privacy_policy/controller/privacy_policy_controller.dart';
 import 'package:manifex/Presentation/profile_edit/controller/profile_edit_controller.dart';
 import 'package:manifex/Presentation/terms_condition/controller/terms_conditon_controller.dart';
@@ -13,6 +12,11 @@ import '../Presentation/Authentication/SignUp/Controller/Controller.dart';
 import '../Presentation/On_boarding/Controller/Controller.dart';
 import '../Presentation/Splash/Controller/Controller.dart';
 import '../Presentation/about_us/controller/about_us_controller.dart';
+import '../Presentation/all_course/interactive_reading/controller/interactive_reading_controller.dart';
+import '../Presentation/all_course/native_speaking/controller/native_speaking_skill_controller.dart';
+import '../Presentation/all_course/practices/controller/practices_controller.dart';
+import '../Presentation/all_course/practices/controller/toggle_tab_controller.dart';
+import '../Presentation/all_course/smart_writing/controller/smart_writing_controller.dart';
 import '../Presentation/bottom_navbar/controllers/bottom_navbar_controller.dart';
 import '../Presentation/profile/controller/profile_controller.dart';
 import '../Presentation/progress/controllers/progress_controller.dart';
@@ -37,6 +41,10 @@ class InitialBinding extends Bindings {
     Get.lazyPut<TermsConditonController>(() => TermsConditonController(), fenix: true);
     Get.lazyPut<PrivacyPolicyController>(() => PrivacyPolicyController(), fenix: true);
     Get.lazyPut<UnlockRewardsController>(() => UnlockRewardsController(), fenix: true);
+    Get.lazyPut<InteractiveReadingController>(() => InteractiveReadingController(), fenix: true);
+    Get.lazyPut<ToggleTabController>(() => ToggleTabController(), fenix: true);
+    Get.lazyPut<SmartWritingController>(() => SmartWritingController(), fenix: true);
+    Get.lazyPut<NativeSpeakingSkillController>(() => NativeSpeakingSkillController(), fenix: true);
 
 
 
