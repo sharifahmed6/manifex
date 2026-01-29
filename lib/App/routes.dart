@@ -12,6 +12,7 @@ import 'package:manifex/Presentation/unlock_rewards/views/unlock_rewards_screen.
 import '../Presentation/Authentication/Forget_password/find_account/View/find_account.dart';
 import '../Presentation/Authentication/Login/View/login.dart';
 import '../Presentation/Authentication/SignUp/View/SignUp.dart';
+import '../Presentation/Features/Sub_practices/Presentation/View/Presentation.dart';
 import '../Presentation/On_boarding/View/on_boarding.dart';
 import '../Presentation/Splash/View/Splash.dart';
 import 'Binding.dart';
@@ -32,6 +33,7 @@ class routes {
   static const String terms_conditon_screen = '/terms_conditon_screen';
   static const String privacy_policy_screen = '/privacy_policy_screen';
   static const String unlock_rewards_screen = '/unlock_rewards_screen';
+  static const String presentation_screen = '/presentation';
 
 
 
@@ -50,6 +52,7 @@ class routes {
     GetPage( name: terms_conditon_screen, binding: InitialBinding(), page: () => TermsConditionScreen()),
     GetPage( name: privacy_policy_screen, binding: InitialBinding(), page: () => PrivacyPolicyScreen()),
     GetPage( name: unlock_rewards_screen, binding: InitialBinding(), page: () => UnlockRewardsScreen()),
+    GetPage( name: presentation_screen, binding: InitialBinding(), page: () => presentation()),
 
   ];
 }

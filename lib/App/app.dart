@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
         theme: customTheme,
         initialBinding: InitialBinding(),
         getPages: routes.pages,
-        initialRoute: routes.splash_screen,
+        initialRoute: routes.bottom_navbar,
       ),
     );
   }

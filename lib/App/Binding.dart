@@ -10,6 +10,7 @@ import '../Presentation/Authentication/Forget_password/OTP_verification/Controll
 import '../Presentation/Authentication/Forget_password/find_account/Controller/Controller.dart';
 import '../Presentation/Authentication/Login/Controller/Controller.dart';
 import '../Presentation/Authentication/SignUp/Controller/Controller.dart';
+import '../Presentation/Features/Sub_practices/Presentation/Controller/Controller.dart';
 import '../Presentation/On_boarding/Controller/Controller.dart';
 import '../Presentation/Splash/Controller/Controller.dart';
 import '../Presentation/about_us/controller/about_us_controller.dart';
@@ -37,6 +38,7 @@ class InitialBinding extends Bindings {
     Get.lazyPut<TermsConditonController>(() => TermsConditonController(), fenix: true);
     Get.lazyPut<PrivacyPolicyController>(() => PrivacyPolicyController(), fenix: true);
     Get.lazyPut<UnlockRewardsController>(() => UnlockRewardsController(), fenix: true);
+    Get.lazyPut<presentation_controller>(() => presentation_controller(), fenix: true);
 
 
 

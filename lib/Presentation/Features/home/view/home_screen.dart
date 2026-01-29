@@ -36,6 +36,7 @@ class HomeScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   spacing: 5,
                   children: [
+                    SizedBox(width: double.infinity,),
                     Wrap(
                       alignment: WrapAlignment.start,
                       crossAxisAlignment: WrapCrossAlignment.center,
@@ -309,6 +310,7 @@ class HomeScreen extends StatelessWidget {
                   child: Column(
                     spacing: 5,
                     children: [
+                      SizedBox(width: double.infinity,),
                       Text(
                         "Phoneme Flashcards".tr,
                         style: TextStyle(

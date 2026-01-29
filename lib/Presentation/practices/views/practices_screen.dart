@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:manifex/App/AppColors.dart';
+import 'package:manifex/App/routes.dart';
 import 'package:manifex/Presentation/Share/button_gradient.dart';
 import 'package:manifex/Presentation/Share/scafold_background.dart';
 import 'package:manifex/Presentation/app_bar/views/custom_app_bar.dart';
 
 import '../../Share/text_title_small.dart';
 import '../widget/transperent_gradient_border.dart';
-
+import 'package:get/get.dart';
 class PracticesScreen extends StatelessWidget {
   const PracticesScreen({super.key});
   @override
@@ -58,6 +59,7 @@ class PracticesScreen extends StatelessWidget {
               ),
               SizedBox(height: 16.h,),
               _practicesCard(
+                onPress: () => Get.toNamed(routes.presentation_screen),
                 imagePath: 'assets/icons/presentation_icon.png',
                 title: 'Presentation Practice',
                 subTitle:
@@ -85,7 +87,12 @@ class PracticesScreen extends StatelessWidget {
     );
   }
 
-  Widget _practicesCard({String? imagePath, String? title, String? subTitle}) {
+  Widget _practicesCard({
+    String? imagePath,
+    String? title,
+    String? subTitle,
+    VoidCallback? onPress,
+  }) {
     return TransparentGradientBorder(
       strokeWidth: 0.5,
       radius: 16.r,
@@ -114,26 +121,36 @@ class PracticesScreen extends StatelessWidget {
               ),
               child: _responsiveIcon(imagePath),
             ),
+
             CustomText(
               text: title ?? '',
               fontSize: 24,
               fontWeight: FontWeight.w500,
               textAlign: TextAlign.start,
             ),
+
             SizedBox(height: 16.h),
+
             CustomText(
               text: subTitle ?? '',
               fontSize: 16,
               color: AppColors.white.withAlpha((2.56 * 90).toInt()),
               textAlign: TextAlign.start,
             ),
+
             SizedBox(height: 16.h),
-            ButtonGradient(text: 'Start Reading'),
+
+            // ✅ Optional button action
+            ButtonGradient(
+              onTap: onPress,   // can be null safely
+              text: 'Start Reading',
+            ),
           ],
         ),
       ),
     );
   }
+
   Widget _responsiveIcon(String? imagePath) {
     return LayoutBuilder(
       builder: (context, constraints) {
