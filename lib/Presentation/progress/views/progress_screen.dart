@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:manifex/Presentation/Share/scafold_background.dart';
 import 'package:manifex/Presentation/Share/text_title_small.dart';
+import 'package:manifex/Presentation/Share/welcome_card.dart';
 import 'package:manifex/Presentation/app_bar/views/custom_app_bar.dart';
 import 'package:manifex/Presentation/progress/controllers/progress_controller.dart';
 import '../widget/gradient_border_avater.dart';
@@ -47,7 +48,10 @@ class ProgressScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 5.h),
-              _welcomeCard(context),
+              WelcomeCard(
+                name: 'Sharif',
+                describe: 'I can see how much effort you’ve put in! Together, we’ll keep improving your reading, writing, and speaking skills.',
+              ),
               SizedBox(height: 10.h),
               DailyAverageProgress(),
               _gradientTitle(),
@@ -127,87 +131,6 @@ class ProgressScreen extends StatelessWidget {
     );
   }
 
-  Widget _gradientName(double fontSize) {
-    const gradient = LinearGradient(
-      colors: [Color(0xFFFFBC6F), Color(0xFFF176B7), Color(0xFF3797CD)],
-      begin: Alignment.centerLeft,
-      end: Alignment.centerRight,
-    );
-
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final shader = gradient.createShader(
-          Rect.fromLTWH(0, 0, constraints.maxWidth, 0),
-        );
-
-        return Text.rich(
-          TextSpan(
-            children: [
-              TextSpan(
-                text: "Hi Afsar! ",
-                style: GoogleFonts.inter(
-                  fontSize: fontSize,
-                  fontWeight: FontWeight.w700,
-                  foreground: Paint()..shader = shader,
-                ),
-              ),
-              TextSpan(
-                text: "Welcome Back!",
-                style: GoogleFonts.inter(
-                  fontSize: fontSize,
-                  fontWeight: FontWeight.w500,
-                  color: const Color(0xffFFFFFF),
-                ),
-              ),
-            ],
-          ),
-          softWrap: true,
-        );
-      },
-    );
-  }
-
-  Widget _welcomeCard(BuildContext context) {
-    final isLandscape =
-        MediaQuery.of(context).orientation == Orientation.landscape;
-
-    const cardAspectRatio = 343 / 144;
-
-    final titleSize = isLandscape ? 18.sp : 24.sp;
-    final bodySize = isLandscape ? 12.sp : 16.sp;
-    final topPad = isLandscape ? 100.h : 40.h;
-    final bottomPad = isLandscape ? 10.h : 24.h;
-
-    return AspectRatio(
-      aspectRatio: cardAspectRatio,
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          SvgPicture.asset('assets/images/welcome_shape.svg', fit: BoxFit.fill),
-          Positioned.fill(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(24.w, topPad, 24.w, bottomPad),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _gradientName(titleSize),
-                  SizedBox(height: 6.h),
-                  CustomText(
-                    text:
-                        'I can see how much effort you’ve put in! Together, we’ll keep improving your reading, writing, and speaking skills.',
-                    fontSize: bodySize,
-                    color: Colors.white,
-                    textAlign: TextAlign.start,
-                    maxLines: isLandscape ? 2 : 3,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
 }
+

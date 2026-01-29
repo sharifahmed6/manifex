@@ -132,6 +132,7 @@ class login extends StatelessWidget {
                   onTap: () {
                     if (_formKey.currentState!.validate()) {
                       print("validated");
+                      Get.toNamed(routes.bottom_navbar);
                     }
                   },
                   text: "Login".tr,
