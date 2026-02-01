@@ -13,6 +13,8 @@ import '../Presentation/On_boarding/Controller/Controller.dart';
 import '../Presentation/Splash/Controller/Controller.dart';
 import '../Presentation/about_us/controller/about_us_controller.dart';
 import '../Presentation/all_course/interactive_reading/controller/interactive_reading_controller.dart';
+import '../Presentation/all_course/interactive_reading/controller/sight_word_controller.dart';
+import '../Presentation/all_course/interactive_reading/controller/task_one_controller.dart';
 import '../Presentation/all_course/native_speaking/controller/native_speaking_skill_controller.dart';
 import '../Presentation/all_course/practices/controller/practices_controller.dart';
 import '../Presentation/all_course/practices/controller/toggle_tab_controller.dart';
@@ -45,6 +47,8 @@ class InitialBinding extends Bindings {
     Get.lazyPut<ToggleTabController>(() => ToggleTabController(), fenix: true);
     Get.lazyPut<SmartWritingController>(() => SmartWritingController(), fenix: true);
     Get.lazyPut<NativeSpeakingSkillController>(() => NativeSpeakingSkillController(), fenix: true);
+    Get.lazyPut<TaskOneController>(() => TaskOneController(), fenix: true);
+    Get.lazyPut<SightWordController>(() => SightWordController(), fenix: true);
 
 
 

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:manifex/App/routes.dart';
 import 'package:manifex/Presentation/Share/text_title_small.dart';
+import 'package:manifex/Presentation/all_course/interactive_reading/views/task_one.dart';
 import '../../../Share/gradient_title.dart';
 import '../../../Share/single_skill_card.dart';
 import '../../practices/widget/skill_welcome_card.dart';
@@ -32,6 +35,7 @@ class SkillScreen extends StatelessWidget {
             subTitle: 'Click the cards to hear the sound',
             buttonText: 'Task 1',
             onTap: (){
+              Get.toNamed(routes.interactive_reading_task1);
               print('Phoneme Flash cards');
             },
             isComplete: true,
@@ -43,6 +47,7 @@ class SkillScreen extends StatelessWidget {
             subTitle: 'Click on all the sight words you see. Some words may appear more than once.',
             buttonText: 'Task 2',
             onTap: (){
+              Get.toNamed(routes.sight_word_scrren);
               print('Sight Word Practice');
             },
             isComplete: true,

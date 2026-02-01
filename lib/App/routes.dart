@@ -1,7 +1,8 @@
 import 'package:get/get.dart';
 import 'package:manifex/Presentation/about_us/views/about_us_screen.dart';
 import 'package:manifex/Presentation/all_course/interactive_reading/views/interactive_reading_screen.dart';
-import 'package:manifex/Presentation/all_course/native_speaking/views/native_speaking_screen.dart';
+import 'package:manifex/Presentation/all_course/interactive_reading/views/sight_word_screen.dart';
+import 'package:manifex/Presentation/all_course/interactive_reading/views/task_one.dart';
 import 'package:manifex/Presentation/all_course/smart_writing/views/smart_writing_screen.dart';
 import 'package:manifex/Presentation/bottom_navbar/views/bottom_navbar_view.dart';
 import 'package:manifex/Presentation/language/views/language_screen.dart';
@@ -37,6 +38,8 @@ class routes {
   static const String interactive_reading_screen = '/interactive_reading_screen';
   static const String native_speaking_skill_screen = '/native_speaking_skill_screen';
   static const String smart_writing_screen = '/smart_writing_screen';
+  static const String interactive_reading_task1 = '/interactive_reading_task1';
+  static const String sight_word_scrren = '/sight_word_scrren';
 
 
 
@@ -57,7 +60,8 @@ class routes {
     GetPage( name: unlock_rewards_screen, binding: InitialBinding(), page: () => UnlockRewardsScreen()),
     GetPage( name: interactive_reading_screen, binding: InitialBinding(), page: () => InteractiveReadingScreen()),
     GetPage( name: smart_writing_screen, binding: InitialBinding(), page: () => SmartWritingScreen()),
-    GetPage( name: native_speaking_skill_screen, binding: InitialBinding(), page: () => NativeSpeakingScreen()),
+    GetPage( name: interactive_reading_task1, binding: InitialBinding(), page: () => TaskOne()),
+    GetPage( name: sight_word_scrren, binding: InitialBinding(), page: () => SightWordPracticeScreen()),
 
   ];
 }
