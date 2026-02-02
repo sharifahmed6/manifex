@@ -16,6 +16,8 @@ import '../Presentation/Authentication/Login/View/login.dart';
 import '../Presentation/Authentication/SignUp/View/SignUp.dart';
 import '../Presentation/On_boarding/View/on_boarding.dart';
 import '../Presentation/Splash/View/Splash.dart';
+import '../Presentation/all_course/interactive_reading/views/interactive_task_four_screen.dart';
+import '../Presentation/all_course/interactive_reading/views/interactive_task_three_screen.dart';
 import '../Presentation/all_course/practices/views/practices_screen.dart';
 import 'Binding.dart';
 
@@ -40,6 +42,8 @@ class routes {
   static const String smart_writing_screen = '/smart_writing_screen';
   static const String interactive_reading_task1 = '/interactive_reading_task1';
   static const String sight_word_scrren = '/sight_word_scrren';
+  static const String interactive_task3_screen = '/interactive_task3_screen';
+  static const String interactive_task4_screen = '/interactive_task4_screen';
 
 
 
@@ -62,6 +66,8 @@ class routes {
     GetPage( name: smart_writing_screen, binding: InitialBinding(), page: () => SmartWritingScreen()),
     GetPage( name: interactive_reading_task1, binding: InitialBinding(), page: () => TaskOne()),
     GetPage( name: sight_word_scrren, binding: InitialBinding(), page: () => SightWordPracticeScreen()),
+    GetPage( name: interactive_task3_screen, binding: InitialBinding(), page: () => InteractiveTaskThreeScreen()),
+    GetPage( name: interactive_task4_screen, binding: InitialBinding(), page: () => InteractiveTaskFourScreen()),
 
   ];
 }

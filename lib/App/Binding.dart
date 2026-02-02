@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:manifex/Presentation/all_course/interactive_reading/controller/task_four_controller.dart';
 import 'package:manifex/Presentation/language/controller/language_controller.dart';
 import 'package:manifex/Presentation/privacy_policy/controller/privacy_policy_controller.dart';
 import 'package:manifex/Presentation/profile_edit/controller/profile_edit_controller.dart';
@@ -15,6 +16,7 @@ import '../Presentation/about_us/controller/about_us_controller.dart';
 import '../Presentation/all_course/interactive_reading/controller/interactive_reading_controller.dart';
 import '../Presentation/all_course/interactive_reading/controller/sight_word_controller.dart';
 import '../Presentation/all_course/interactive_reading/controller/task_one_controller.dart';
+import '../Presentation/all_course/interactive_reading/controller/task_three_controller.dart';
 import '../Presentation/all_course/native_speaking/controller/native_speaking_skill_controller.dart';
 import '../Presentation/all_course/practices/controller/practices_controller.dart';
 import '../Presentation/all_course/practices/controller/toggle_tab_controller.dart';
@@ -49,6 +51,8 @@ class InitialBinding extends Bindings {
     Get.lazyPut<NativeSpeakingSkillController>(() => NativeSpeakingSkillController(), fenix: true);
     Get.lazyPut<TaskOneController>(() => TaskOneController(), fenix: true);
     Get.lazyPut<SightWordController>(() => SightWordController(), fenix: true);
+    Get.lazyPut<TaskThreeController>(() => TaskThreeController(), fenix: true);
+    Get.lazyPut<TaskFourController>(() => TaskFourController(), fenix: true);
 
 
 

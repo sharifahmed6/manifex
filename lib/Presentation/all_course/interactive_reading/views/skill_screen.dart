@@ -59,6 +59,7 @@ class SkillScreen extends StatelessWidget {
             subTitle: 'Drag words to their matching pictures',
             buttonText: 'Task 3',
             onTap: (){
+              Get.toNamed(routes.interactive_task3_screen);
               print('Phoneme Flashcards');
             },
             isComplete: true,
@@ -71,6 +72,7 @@ class SkillScreen extends StatelessWidget {
             buttonText: 'Task 4',
             onTap: (){
               print('Reading Comprehension');
+              Get.toNamed(routes.interactive_task4_screen);
             },
             isComplete: true,
           ),

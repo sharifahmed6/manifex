@@ -34,8 +34,8 @@ class SightWordPracticeScreen extends StatelessWidget {
             CustomBackButton(text: 'Task 2'),
             SizedBox(height: 16.h,),
             GradientTitle(
-              normalText: 'Phoneme ',
-              gradientText: 'Flashcards',
+              normalText: 'Sight ',
+              gradientText: 'Word Practice',
               fontSize: 20,
             ),
             SizedBox(height: 16.h),
@@ -69,7 +69,7 @@ class SightWordPracticeScreen extends StatelessWidget {
                         onTap: () => c.onTapWord(w),
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 150),
-                          padding:  EdgeInsets.all(16.w),
+                          padding:  EdgeInsets.all(8.w),
                           decoration: BoxDecoration(
                             color: bg,
                             borderRadius: BorderRadius.circular(4.r),
