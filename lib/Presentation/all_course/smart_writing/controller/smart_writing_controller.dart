@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 
 class SmartWritingController extends GetxController {
   final selectedValue = ''.obs;
+  final inProgress= true.obs;
 
   final List<String> items = const [
     "Sports",

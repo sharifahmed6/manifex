@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:manifex/Presentation/all_course/interactive_reading/controller/interactive_reading_controller.dart';
 import 'package:manifex/Presentation/progress/widget/gradient_border_avater.dart';
 import '../../../../App/assets_path.dart';
 import '../../../Share/progress_card.dart';
@@ -7,8 +9,8 @@ import '../../../progress/widget/gradient_linear_progress.dart';
 import '../../practices/widget/skill_welcome_card.dart';
 
 class SkillProgressScreen extends StatelessWidget {
-  const SkillProgressScreen({super.key});
-
+   SkillProgressScreen({super.key});
+ final controller = Get.find<InteractiveReadingController>();
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -42,27 +44,31 @@ class SkillProgressScreen extends StatelessWidget {
             rightSubtitle: 'Days Streak!',
           ),
           SizedBox(height: 10.h),
-          ProgressCard(
-              color1: Color(0xffFFA6C8),
-              color2: Color(0xffB920ED),
-              imagePath: 'assets/icons/watch_icon.png',
-              leftTitle: 'Session Timer',
-              rightTitle: '12:34',
-              rightSubtitle: 'Remaining',
-              leftSubtitle: GradientLinearProgress(
-                value: 0.5,
-                height: 7.h,
-                backgroundColor: Color(0xffFFFFFF).withAlpha((2.56 * 15).toInt()),
-                gradient: const LinearGradient(
-                  colors: [
-                    Color(0xffFFA6C8),
-                    Color(0xffB920ED),
-                  ],
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                ),
-              )
-          ),
+          Obx((){
+            controller.tick.value;
+            final elapsed = controller.currentTime;
+            return ProgressCard(
+                color1: Color(0xffFFA6C8),
+                color2: Color(0xffB920ED),
+                imagePath: 'assets/icons/watch_icon.png',
+                leftTitle: 'Session Timer',
+                rightTitle: controller.format(elapsed),
+                rightSubtitle: 'Remaining',
+                leftSubtitle: GradientLinearProgress(
+                  value: 0.3,
+                  height: 7.h,
+                  backgroundColor: Color(0xffFFFFFF).withAlpha((2.56 * 15).toInt()),
+                  gradient: const LinearGradient(
+                    colors: [
+                      Color(0xffFFA6C8),
+                      Color(0xffB920ED),
+                    ],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                  ),
+                )
+            );
+          }),
           SizedBox(height: 10.h),
           ProgressCard(
             color1: Color(0xffB2DEFF),
