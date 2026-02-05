@@ -1,20 +1,24 @@
 import 'package:get/get.dart';
 import 'package:manifex/Presentation/about_us/views/about_us_screen.dart';
+import 'package:manifex/Presentation/all_course/interactive_reading/views/interactive_reading_screen.dart';
+import 'package:manifex/Presentation/all_course/interactive_reading/views/sight_word_screen.dart';
+import 'package:manifex/Presentation/all_course/interactive_reading/views/task_one.dart';
+import 'package:manifex/Presentation/all_course/smart_writing/views/smart_writing_screen.dart';
 import 'package:manifex/Presentation/bottom_navbar/views/bottom_navbar_view.dart';
 import 'package:manifex/Presentation/language/views/language_screen.dart';
-import 'package:manifex/Presentation/practices/views/practices_screen.dart';
 import 'package:manifex/Presentation/privacy_policy/views/privacy_policy_screen.dart';
 import 'package:manifex/Presentation/profile/views/profile_screen.dart';
 import 'package:manifex/Presentation/profile_edit/views/profile_edit_screen.dart';
 import 'package:manifex/Presentation/progress/views/progress_screen.dart';
 import 'package:manifex/Presentation/terms_condition/views/terms_condition_screen.dart';
 import 'package:manifex/Presentation/unlock_rewards/views/unlock_rewards_screen.dart';
-import '../Presentation/Authentication/Forget_password/find_account/View/find_account.dart';
 import '../Presentation/Authentication/Login/View/login.dart';
 import '../Presentation/Authentication/SignUp/View/SignUp.dart';
-import '../Presentation/Features/Sub_practices/Presentation/View/Presentation.dart';
 import '../Presentation/On_boarding/View/on_boarding.dart';
 import '../Presentation/Splash/View/Splash.dart';
+import '../Presentation/all_course/interactive_reading/views/interactive_task_four_screen.dart';
+import '../Presentation/all_course/interactive_reading/views/interactive_task_three_screen.dart';
+import '../Presentation/all_course/practices/views/practices_screen.dart';
 import 'Binding.dart';
 
 class routes {
@@ -33,7 +37,13 @@ class routes {
   static const String terms_conditon_screen = '/terms_conditon_screen';
   static const String privacy_policy_screen = '/privacy_policy_screen';
   static const String unlock_rewards_screen = '/unlock_rewards_screen';
-  static const String presentation_screen = '/presentation';
+  static const String interactive_reading_screen = '/interactive_reading_screen';
+  static const String native_speaking_skill_screen = '/native_speaking_skill_screen';
+  static const String smart_writing_screen = '/smart_writing_screen';
+  static const String interactive_reading_task1 = '/interactive_reading_task1';
+  static const String sight_word_scrren = '/sight_word_scrren';
+  static const String interactive_task3_screen = '/interactive_task3_screen';
+  static const String interactive_task4_screen = '/interactive_task4_screen';
 
 
 
@@ -52,7 +62,12 @@ class routes {
     GetPage( name: terms_conditon_screen, binding: InitialBinding(), page: () => TermsConditionScreen()),
     GetPage( name: privacy_policy_screen, binding: InitialBinding(), page: () => PrivacyPolicyScreen()),
     GetPage( name: unlock_rewards_screen, binding: InitialBinding(), page: () => UnlockRewardsScreen()),
-    GetPage( name: presentation_screen, binding: InitialBinding(), page: () => presentation()),
+    GetPage( name: interactive_reading_screen, binding: InitialBinding(), page: () => InteractiveReadingScreen()),
+    GetPage( name: smart_writing_screen, binding: InitialBinding(), page: () => SmartWritingScreen()),
+    GetPage( name: interactive_reading_task1, binding: InitialBinding(), page: () => TaskOne()),
+    GetPage( name: sight_word_scrren, binding: InitialBinding(), page: () => SightWordPracticeScreen()),
+    GetPage( name: interactive_task3_screen, binding: InitialBinding(), page: () => InteractiveTaskThreeScreen()),
+    GetPage( name: interactive_task4_screen, binding: InitialBinding(), page: () => InteractiveTaskFourScreen()),
 
   ];
 }

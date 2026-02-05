@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:manifex/App/AppColors.dart';
 import 'package:manifex/App/routes.dart';
 import 'package:manifex/Presentation/Share/button_gradient.dart';
 import 'package:manifex/Presentation/Share/scafold_background.dart';
 import 'package:manifex/Presentation/app_bar/views/custom_app_bar.dart';
-
-import '../../Share/text_title_small.dart';
+import '../../../Share/text_title_small.dart';
 import '../widget/transperent_gradient_border.dart';
-import 'package:get/get.dart';
+
 class PracticesScreen extends StatelessWidget {
   const PracticesScreen({super.key});
   @override
   Widget build(BuildContext context) {
     return scaffold_background(
       appBar: PreferredSize(
-          preferredSize: Size.fromHeight(kToolbarHeight),
-          child:  CustomAppBar(),
+        preferredSize: Size.fromHeight(kToolbarHeight),
+        child: CustomAppBar(),
       ),
       child: Padding(
-        padding: EdgeInsets.only(top: 5,left: 16,right: 16,bottom: 0),
+        padding: EdgeInsets.only(top: 5, left: 16, right: 16, bottom: 0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,51 +35,58 @@ class PracticesScreen extends StatelessWidget {
                 title: 'Interactive Reading',
                 subTitle:
                     'Poneme recognition an word games with visual cues designed for dyslexic learners',
+                onTap: (){
+                  Get.toNamed(routes.interactive_reading_screen);
+                }
               ),
-              SizedBox(height: 16.h,),
+              SizedBox(height: 16.h),
               _practicesCard(
                 imagePath: 'assets/icons/smart_writing_icon.png',
                 title: 'Smart Writing',
                 subTitle:
                     'Write. Learn. Improve. AI checks your grammar, structure, and style instantly.',
+                onTap: (){
+                  Get.toNamed(routes.smart_writing_screen);
+                }
               ),
-              SizedBox(height: 16.h,),
+              SizedBox(height: 16.h),
               _practicesCard(
                 imagePath: 'assets/icons/native_speaking_icon.png',
                 title: 'Native Speaking',
                 subTitle:
-                'Advanced Al pronunciation coaching with real-time feedback and accent training',
+                    'Advanced Al pronunciation coaching with real-time feedback and accent training',
+                onTap: (){
+                  Get.toNamed(routes.native_speaking_skill_screen);
+                }
               ),
-              SizedBox(height: 16.h,),
+              SizedBox(height: 16.h),
               _practicesCard(
                 imagePath: 'assets/icons/reward_icon.png',
                 title: 'Reward System',
                 subTitle:
-                'oneme recognition an word games with visual cues designed for dyslexic learners',
+                    'oneme recognition an word games with visual cues designed for dyslexic learners',
               ),
-              SizedBox(height: 16.h,),
+              SizedBox(height: 16.h),
               _practicesCard(
-                onPress: () => Get.toNamed(routes.presentation_screen),
                 imagePath: 'assets/icons/presentation_icon.png',
                 title: 'Presentation Practice',
                 subTitle:
-                'Practice English made for adults. Improve speaking, listening, and vocabulary with easy, real-life lessons you can use every day.',
+                    'Practice English made for adults. Improve speaking, listening, and vocabulary with easy, real-life lessons you can use every day.',
               ),
-              SizedBox(height: 16.h,),
+              SizedBox(height: 16.h),
               _practicesCard(
                 imagePath: 'assets/icons/person.png',
                 title: 'English for Adult Practice',
                 subTitle:
-                'Improve your English with real-life practice made especially for adults. Build confidence in speaking, listening, and vocabulary.',
+                    'Improve your English with real-life practice made especially for adults. Build confidence in speaking, listening, and vocabulary.',
               ),
-              SizedBox(height: 16.h,),
+              SizedBox(height: 16.h),
               _practicesCard(
                 imagePath: 'assets/icons/person.png',
                 title: 'Handwriting Practice',
-                subTitle:
-                'Learn to write letters the fun way',
+                subTitle: 'Learn to write letters the fun way',
               ),
-              SizedBox(height: 8.h,),
+              SizedBox(height: 8.h),
             ],
           ),
         ),
@@ -87,12 +94,7 @@ class PracticesScreen extends StatelessWidget {
     );
   }
 
-  Widget _practicesCard({
-    String? imagePath,
-    String? title,
-    String? subTitle,
-    VoidCallback? onPress,
-  }) {
+  Widget _practicesCard({String? imagePath, String? title, String? subTitle,VoidCallback? onTap}) {
     return TransparentGradientBorder(
       strokeWidth: 0.5,
       radius: 16.r,
@@ -121,30 +123,21 @@ class PracticesScreen extends StatelessWidget {
               ),
               child: _responsiveIcon(imagePath),
             ),
-
             CustomText(
               text: title ?? '',
               fontSize: 24,
               fontWeight: FontWeight.w500,
               textAlign: TextAlign.start,
             ),
-
             SizedBox(height: 16.h),
-
             CustomText(
               text: subTitle ?? '',
               fontSize: 16,
               color: AppColors.white.withAlpha((2.56 * 90).toInt()),
               textAlign: TextAlign.start,
             ),
-
             SizedBox(height: 16.h),
-
-            // ✅ Optional button action
-            ButtonGradient(
-              onTap: onPress,   // can be null safely
-              text: 'Start Reading',
-            ),
+            ButtonGradient(text: 'Start Reading',onTap: onTap),
           ],
         ),
       ),
@@ -168,5 +161,4 @@ class PracticesScreen extends StatelessWidget {
       },
     );
   }
-
 }

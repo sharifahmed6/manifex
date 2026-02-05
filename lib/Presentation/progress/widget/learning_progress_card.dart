@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../Share/text_title_small.dart';
-import '../../practices/widget/transperent_gradient_border.dart';
+import '../../all_course/practices/widget/transperent_gradient_border.dart';
 import '../controllers/progress_controller.dart';
 import 'gradient_linear_progress.dart';
 

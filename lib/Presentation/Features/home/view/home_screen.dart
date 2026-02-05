@@ -6,8 +6,8 @@ import 'package:manifex/Presentation/Share/GradientMask.dart';
 import 'package:manifex/Presentation/Share/button_gradient.dart';
 import 'package:manifex/Presentation/Share/scafold_background.dart';
 import '../../../../App/AppColors.dart';
+import '../../../all_course/practices/widget/transperent_gradient_border.dart';
 import '../../../app_bar/views/custom_app_bar.dart';
-import '../../../practices/widget/transperent_gradient_border.dart';
 import 'package:get/get.dart';
 
 class HomeScreen extends StatelessWidget {

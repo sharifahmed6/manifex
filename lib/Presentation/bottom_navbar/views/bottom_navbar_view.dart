@@ -4,10 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:manifex/App/AppColors.dart';
-import 'package:manifex/Presentation/practices/views/practices_screen.dart';
 import 'package:manifex/Presentation/profile/views/profile_screen.dart';
 import '../../Features/Subcription/View/Subcription.dart';
 import '../../Features/home/view/home_screen.dart';
+import '../../all_course/practices/views/practices_screen.dart';
 import '../../progress/views/progress_screen.dart';
 import '../controllers/bottom_navbar_controller.dart';
 

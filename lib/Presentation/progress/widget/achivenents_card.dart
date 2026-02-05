@@ -1,11 +1,8 @@
  import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:manifex/Presentation/Share/text_title_small.dart';
 import 'package:manifex/Presentation/progress/controllers/progress_controller.dart';
-
-import '../../practices/widget/transperent_gradient_border.dart';
 import 'achievment_gradient_border.dart';
 
 class AchivenentsCard extends StatelessWidget {

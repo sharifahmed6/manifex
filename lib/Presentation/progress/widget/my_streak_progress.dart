@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../Share/text_title_small.dart';
-import '../../practices/widget/transperent_gradient_border.dart';
+import '../../all_course/practices/widget/transperent_gradient_border.dart';
 import 'gradient_linear_progress.dart';
 
 class MyStreakProgress extends StatelessWidget {
