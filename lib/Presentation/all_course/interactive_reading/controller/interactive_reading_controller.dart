@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class InteractiveReadingController extends GetxController {
@@ -16,6 +14,16 @@ class InteractiveReadingController extends GetxController {
    }
    return totalDuration.value;
  }
+ /// Lock Skill Start
+  final t1Done = true.obs;
+  final t2Done = false.obs;
+  final t3Done = false.obs;
+  final t4Done = false.obs;
+  final t1SkillLock = true.obs;
+  final t2SkillLock = true.obs;
+  final t3SkillLock = true.obs;
+  final t4SkillLock = true.obs;
+  /// Lock Skill end
   @override
   void onInit() {
     super.onInit();
