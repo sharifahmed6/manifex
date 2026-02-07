@@ -86,16 +86,23 @@ class NetworkCaller {
   Future<NetworkResponse> postRequest({
     required String url,
     required Map<String, dynamic> body,
+    Map<String, String>? extraHeaders,
+    bool removeAuthorization = false,
   }) async {
     try {
       Uri uri = Uri.parse(url);
 
-      Map<String, String> headers = {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        // 'Authorization': 'Bearer token'
+      final headers = <String, String>{
+        'content-type': 'application/json',
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc4OGJmZTRmLWYwNjMtNGQyYy04NGY0LTIzM2RkNmNkOTlhYyIsImZpcnN0TmFtZSI6IlNoYXJpZiIsImxhc3ROYW1lIjoiQWhtZWQiLCJlbWFpbCI6InNoYXJpZmFobWVkMTQxM0BnbWFpbC5jb20iLCJwcm9maWxlUGljIjoiL2F2YXRhci0wMS5wbmciLCJyb2xlIjoiVVNFUiIsImlzVmVyaWZpZWQiOnRydWUsImlzU3Vic2NyaWJlZCI6dHJ1ZSwiaXNTdWJzY3JpcHRpb25GcmVlIjpmYWxzZSwibGFuZ3VhZ2UiOiJFbmdsaXNoIiwidXNlclR5cGUiOiJzdHVkZW50IiwiaWF0IjoxNzcwMjgwODE3LCJleHAiOjE3NzIwMDg4MTd9.gWHnZ8MLOXigDbsHNrh-vKhMq5SFkncrB_fh2SS8oEM'
       };
+      if (removeAuthorization) {
+        headers.removeWhere((k, _) => k.toLowerCase() == 'authorization');
+      }
 
+      if (extraHeaders != null && extraHeaders.isNotEmpty) {
+        headers.addAll(extraHeaders);
+      }
       _logRequest(
         url,
         headers,

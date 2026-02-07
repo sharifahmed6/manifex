@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 import 'package:get/get.dart';
 
 class InteractiveReadingController extends GetxController {
@@ -7,13 +8,19 @@ class InteractiveReadingController extends GetxController {
  Timer? _timer;
  final isRunning = false.obs;
  DateTime? _dateTime;
-
+ final allAnswerSubmit = false.obs;
  Duration get currentTime {
    if(isRunning.value && _dateTime != null){
      return totalDuration.value + DateTime.now().difference(_dateTime!);
    }
    return totalDuration.value;
  }
+ // Task Marks start
+  final task1 = ''.obs;
+  final  task2 = 0.0.obs;
+  final task3 = ''.obs;
+  final task4 = ''.obs;
+ // Task Marks end
  /// Lock Skill Start
   final t1Done = true.obs;
   final t2Done = false.obs;

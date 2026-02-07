@@ -7,6 +7,7 @@ import 'package:manifex/Presentation/Share/gradient_title.dart';
 import 'package:manifex/Presentation/Share/scafold_background.dart';
 import 'package:manifex/Presentation/Share/text_title_small.dart';
 import 'package:manifex/Presentation/app_bar/views/custom_app_bar.dart';
+import '../../../Share/custom_circle_progress_indicator.dart';
 import '../../../progress/widget/achievment_gradient_border.dart';
 import '../controller/interactive_reading_controller.dart';
 import '../controller/task_one_controller.dart';
@@ -56,7 +57,7 @@ class TaskOne extends StatelessWidget {
                       constraints: BoxConstraints(maxWidth: 420.w),
                       child: Obx(() {
                         if (c.isLoading.value) {
-                          return const Center(child: CircularProgressIndicator());
+                          return const Center(child: CustomCircleProgressIndicator());
                         }
 
                         if (c.error.isNotEmpty) {
@@ -82,7 +83,7 @@ class TaskOne extends StatelessWidget {
                         }
 
                         if (c.shuffledLetters.isEmpty || c.selected.isEmpty) {
-                          return const Center(child: CircularProgressIndicator());
+                          return const Center(child: CustomCircleProgressIndicator());
                         }
 
                         return Container(
@@ -214,6 +215,16 @@ class TaskOne extends StatelessWidget {
               children: [
                 Expanded(
                   child: GestureDetector(
+                    onTap: c.canReset ? c.resetSelection : null,
+                    child: Opacity(
+                      opacity: c.canReset ? 1 : 0.5,
+                      child: ButtonGradient(text: 'Reset', height: 50),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 12.w),
+                Expanded(
+                  child: GestureDetector(
                     onTap: c.canSubmit ? (){
                       c.submit();
                       interactiveReading.t2Done.value = true;
@@ -225,16 +236,6 @@ class TaskOne extends StatelessWidget {
                           text: 'Submit',
                           height: 50,
                       ),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 12.w),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: c.canReset ? c.resetSelection : null,
-                    child: Opacity(
-                      opacity: c.canReset ? 1 : 0.5,
-                      child: ButtonGradient(text: 'Reset', height: 50),
                     ),
                   ),
                 ),

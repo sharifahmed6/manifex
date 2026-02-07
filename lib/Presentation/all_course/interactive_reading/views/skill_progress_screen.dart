@@ -54,19 +54,6 @@ class SkillProgressScreen extends StatelessWidget {
                 leftTitle: 'Session Timer',
                 rightTitle: controller.format(elapsed),
                 rightSubtitle: 'Remaining',
-                leftSubtitle: GradientLinearProgress(
-                  value: 0.3,
-                  height: 7.h,
-                  backgroundColor: Color(0xffFFFFFF).withAlpha((2.56 * 15).toInt()),
-                  gradient: const LinearGradient(
-                    colors: [
-                      Color(0xffFFA6C8),
-                      Color(0xffB920ED),
-                    ],
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                  ),
-                )
             );
           }),
           SizedBox(height: 10.h),

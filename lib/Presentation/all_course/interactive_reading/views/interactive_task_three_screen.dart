@@ -2,6 +2,8 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:manifex/Presentation/Share/button_gradient.dart';
+import 'package:manifex/Presentation/Share/custom_circle_progress_indicator.dart';
 import 'package:manifex/Presentation/Share/scafold_background.dart';
 import 'package:manifex/Presentation/app_bar/views/custom_app_bar.dart';
 import '../../../Share/custom_back_button.dart';
@@ -9,63 +11,41 @@ import '../../../Share/gradient_title.dart';
 import '../../../Share/text_title_small.dart';
 import '../../../progress/widget/achievment_gradient_border.dart';
 import '../../practices/widget/transperent_gradient_border.dart';
+import '../controller/interactive_reading_controller.dart';
 import '../controller/task_three_controller.dart';
 
 class InteractiveTaskThreeScreen extends StatelessWidget {
   InteractiveTaskThreeScreen({super.key});
 
-  final c = Get.put(TaskThreeController());
-  LinearGradient gradientByKey(String key) {
-    switch (key) {
-      case 'apple':
-        return const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Color(0xffFFD6B7), Color(0xffE07C2F)],
-        );
-      case 'dog':
-        return const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Color(0xffFFA6C8), Color(0xffB920ED)],
-        );
-      default: // sun
-        return const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Color(0xffB2DEFF), Color(0xff3BA3F2)],
-        );
+  final c = Get.find<TaskThreeController>();
+  final interactiveReading = Get.find<InteractiveReadingController>();
+  LinearGradient gradientFromKey(String key) {
+    final h = key.hashCode.abs() % 3;
+    if (h == 0) {
+      return const LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [Color(0xffFFD6B7), Color(0xffE07C2F)],
+      );
+    } else if (h == 1) {
+      return const LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [Color(0xffFFA6C8), Color(0xffB920ED)],
+      );
     }
+    return const LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: [Color(0xffB2DEFF), Color(0xff3BA3F2)],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    if (c.words.isEmpty) {
-      c.loadFromApi(const [
-        ApiPair(
-          word: "APPLE",
-          image:
-              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbqqx475Jl4uzxMCaIjwrOE6bqmguZJpXgyA&s",
-          answerKey: "apple",
-        ),
-        ApiPair(
-          word: "DOG",
-          image:
-              "https://file.aiquickdraw.com/imgcompressed/img/compressed_aeaae7ca35b46daf50bb77732a392385.webp",
-          answerKey: "dog",
-        ),
-        ApiPair(
-          word: "SUN",
-          image:
-              "https://static.vecteezy.com/system/resources/thumbnails/044/631/634/small/a-half-sun-is-setting-downwards-icon-sunset-concept-for-graphic-design-logo-web-site-social-media-mobile-app-ui-illustration-png.png",
-          answerKey: "sun",
-        ),
-      ]);
-    }
-    final screenHeight = MediaQuery.of(context).size.height;
     return scaffold_background(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight),
+        preferredSize: const Size.fromHeight(kToolbarHeight),
         child: CustomAppBar(),
       ),
       child: Padding(
@@ -74,20 +54,85 @@ class InteractiveTaskThreeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomBackButton(text: 'Task 3 '),
+              CustomBackButton(text: 'Task 3'),
               SizedBox(height: 16.h),
-              GradientTitle(
-                normalText: 'Phoneme ',
-                gradientText: 'Flashcards',
-                fontSize: 20,
-              ),
+
+              Obx(() {
+                final title = c.sessionName.value.isEmpty
+                    ? 'Phoneme Flashcards'
+                    : c.sessionName.value;
+                return GradientTitle(
+                  normalText: '',
+                  gradientText: title,
+                  fontSize: 20,
+                );
+              }),
+
               SizedBox(height: 16.h),
               CustomText(
                 text: 'Drag words to their matching pictures',
-                color: Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
+                color: const Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
               ),
               SizedBox(height: 16.h),
+
               Obx(() {
+                if (c.isLoading.value) {
+                  return const Center(child: CustomCircleProgressIndicator());
+                }
+                if (c.error.value.isNotEmpty) {
+                  return Center(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 24.h),
+                      child: Column(
+                        children: [
+                          Text(
+                            c.error.value,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white.withAlpha(220),
+                              fontSize: 14.sp,
+                            ),
+                          ),
+                          SizedBox(height: 12.h),
+                          GestureDetector(
+                            onTap: c.loadFromServer,
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 16.w, vertical: 10.h),
+                              decoration: BoxDecoration(
+                                color: Colors.orange,
+                                borderRadius: BorderRadius.circular(12.r),
+                              ),
+                              child: Text(
+                                "Retry",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }
+                if (c.words.isEmpty || c.slots.isEmpty) {
+                  return Center(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 24.h),
+                      child: Text(
+                        "No data",
+                        style: TextStyle(
+                          color: Colors.white.withAlpha(220),
+                          fontSize: 14.sp,
+                        ),
+                      ),
+                    ),
+                  );
+                }
+
                 return TransparentGradientBorder(
                   strokeWidth: 0.5,
                   child: Container(
@@ -97,8 +142,8 @@ class InteractiveTaskThreeScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16.r),
                       gradient: LinearGradient(
                         colors: [
-                          Color(0xff111217).withAlpha(30),
-                          Color(0xffCFDBFF).withAlpha(20),
+                          const Color(0xff111217).withAlpha(30),
+                          const Color(0xffCFDBFF).withAlpha(20),
                         ],
                         begin: Alignment.bottomRight,
                         end: Alignment.topLeft,
@@ -108,16 +153,22 @@ class InteractiveTaskThreeScreen extends StatelessWidget {
                       children: [
                         Row(
                           children: [
+                            /// LEFT: Words
                             Expanded(
                               child: Column(
                                 children: [
-                                  CustomText(text: 'Words',fontSize: 18,fontWeight: FontWeight.w600,),
-                                  SizedBox(height: 8.h,),
+                                  CustomText(
+                                    text: 'Words',
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  SizedBox(height: 8.h),
                                   ListView.separated(
                                     shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
+                                    physics: const NeverScrollableScrollPhysics(),
                                     itemCount: c.words.length,
-                                    separatorBuilder: (_, __) => SizedBox(height: 12.h),
+                                    separatorBuilder: (_, __) =>
+                                        SizedBox(height: 12.h),
                                     itemBuilder: (_, i) {
                                       final w = c.words[i];
                                       return Obx(() {
@@ -126,7 +177,7 @@ class InteractiveTaskThreeScreen extends StatelessWidget {
                                           text: w.text,
                                           enabled: enabled,
                                           wordKey: w.key,
-                                          gradient: gradientByKey(w.key),
+                                          gradient: gradientFromKey(w.key),
                                         );
                                       });
                                     },
@@ -134,23 +185,29 @@ class InteractiveTaskThreeScreen extends StatelessWidget {
                                 ],
                               ),
                             ),
+
                             SizedBox(width: 12.w),
+
+                            /// RIGHT: Pictures
                             Expanded(
                               child: Column(
                                 children: [
-                                  CustomText(text: 'Picture',fontSize: 18,fontWeight: FontWeight.w600,),
-                                  SizedBox(height: 8.h,),
+                                  CustomText(
+                                    text: 'Picture',
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  SizedBox(height: 8.h),
                                   ListView.separated(
                                     shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
+                                    physics: const NeverScrollableScrollPhysics(),
                                     itemCount: c.slots.length,
-                                    separatorBuilder: (_, __) => SizedBox(height: 12.h),
+                                    separatorBuilder: (_, __) =>
+                                        SizedBox(height: 12.h),
                                     itemBuilder: (_, i) {
                                       final slot = c.slots[i];
                                       return Obx(() {
-                                        final filled = c.isSlotFilled(slot.slotId);
                                         final state = c.slotState(slot.slotId);
-                                        final placedKey = c.placedBySlotId[slot.slotId];
 
                                         return _DropSlot(
                                           slotId: slot.slotId,
@@ -174,33 +231,80 @@ class InteractiveTaskThreeScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        SizedBox(height: 16.h,),
-                        AchievmentGradientBorder(
-                          child: Container(
-                            width: double.infinity,
-                            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-                            child: ShaderMask(
-                              shaderCallback: (bounds) {
-                                return const LinearGradient(
-                                  colors: [
-                                    Color(0xffFFBC6F),
-                                    Color(0xffF176B7),
-                                    Color(0xff3797CD),
-                                  ],
-                                ).createShader(
-                                  Rect.fromLTWH(0, 0, bounds.width, bounds.height),
-                                );
-                              },
-                              child: CustomText(
-                                text: 'Nice! You found  of  sight words!',
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,
+
+                        SizedBox(height: 16.h),
+
+                        /// ✅ Bottom: Nice banner (only if allCorrect) + Finish button (if allFilled) + score
+                        Obx(() {
+                          final total = c.totalSlots;
+                          final correct = c.correctCount.value;
+
+                          final showNiceBanner = c.allCorrect; // সব correct হলে
+                          final showFinish = c.allFilled; // সব drop হলেই (ভুল হলেও)
+
+                          return Column(
+                            children: [
+                              if (!showNiceBanner)
+                              CustomText(
+                                text:
+                                "Correct: $correct/$total",
+                                fontSize: 18,
+                                color: const Color(0xffFFFFFF)
+                                    .withAlpha((2.56 * 80).toInt()),
                                 textAlign: TextAlign.center,
                               ),
-                            ),
-                          ),
-                        ),
+                              SizedBox(height: 8.h,),
+                              if (showNiceBanner)
+                                AchievmentGradientBorder(
+                                  child: Container(
+                                    width: double.infinity,
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 20.w, vertical: 10.h),
+                                    child: ShaderMask(
+                                      shaderCallback: (bounds) {
+                                        return const LinearGradient(
+                                          colors: [
+                                            Color(0xffFFBC6F),
+                                            Color(0xffF176B7),
+                                            Color(0xff3797CD),
+                                          ],
+                                        ).createShader(
+                                          Rect.fromLTWH(
+                                              0, 0, bounds.width, bounds.height),
+                                        );
+                                      },
+                                      child: CustomText(
+                                        text:
+                                        'Nice! You found $correct of $total sight words!',
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+
+                              if (showNiceBanner) SizedBox(height: 12.h),
+
+                              if (showFinish)
+                                ButtonGradient(
+                                  onTap: (){
+                                    c.finish();
+                                    interactiveReading.t4Done.value = true;
+                                    interactiveReading.t3SkillLock.value= false;
+                                  },
+                                  text: 'Finish',
+                                ),
+                              SizedBox(height: 8.h,),
+                              ButtonGradient(
+                                onTap: c.resetAll,
+                                text: 'Reset',
+                              ),
+                              if (showFinish) SizedBox(height: 10.h),
+                            ],
+                          );
+                        }),
                       ],
                     ),
                   ),
@@ -242,6 +346,7 @@ class _WordCard extends StatelessWidget {
     );
 
     if (!enabled) return card;
+
     return Draggable<String>(
       data: wordKey,
       feedback: Material(
@@ -281,7 +386,7 @@ class _DropSlot extends StatelessWidget {
         case DropState.wrong:
           return const Color(0xFFFF4D6D);
         case DropState.empty:
-        return Colors.white.withAlpha((2.56 * 50).toInt());
+          return Colors.white.withAlpha((2.56 * 50).toInt());
       }
     }
 
@@ -290,7 +395,6 @@ class _DropSlot extends StatelessWidget {
       onAcceptWithDetails: (d) => onDrop(d.data),
       builder: (context, candidate, rejected) {
         final hovering = candidate.isNotEmpty;
-
         final cRadius = 16.r;
         final bColor = hovering ? Colors.white.withAlpha(150) : borderColor();
 
@@ -333,7 +437,8 @@ class _DropSlot extends StatelessWidget {
                       text: label,
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
-                      color: const Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
+                      color: const Color(0xffFFFFFF)
+                          .withAlpha((2.56 * 90).toInt()),
                     ),
                   ],
                 ),
@@ -343,8 +448,5 @@ class _DropSlot extends StatelessWidget {
         );
       },
     );
-
   }
 }
-
-

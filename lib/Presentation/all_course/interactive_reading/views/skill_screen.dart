@@ -5,6 +5,7 @@ import 'package:manifex/App/routes.dart';
 import 'package:manifex/Presentation/Share/text_title_small.dart';
 import '../../../Share/gradient_title.dart';
 import '../../../Share/single_skill_card.dart';
+import '../../../progress/widget/achievment_gradient_border.dart';
 import '../../practices/widget/skill_welcome_card.dart';
 import '../controller/interactive_reading_controller.dart';
 
@@ -30,6 +31,8 @@ class SkillScreen extends StatelessWidget {
               color: Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
             ),
             SizedBox(height: 8.h,),
+            CustomText(text: controller.task1.value),
+            CustomText(text: controller.task2.value.toString()),
             SingleSkillCard(
               imagePath: 'assets/icons/phoneme_icon.png',
               title: 'Phoneme Flashcards',
@@ -82,6 +85,33 @@ class SkillScreen extends StatelessWidget {
               lock: controller.t4Done.value,
             ),
             SizedBox(height: 16.h,),
+            controller.allAnswerSubmit.value?
+            AchievmentGradientBorder(
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+                child: ShaderMask(
+                  shaderCallback: (bounds) {
+                    return const LinearGradient(
+                      colors: [
+                        Color(0xffFFBC6F),
+                        Color(0xffF176B7),
+                        Color(0xff3797CD),
+                      ],
+                    ).createShader(
+                      Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+                    );
+                  },
+                  child: CustomText(
+                    text: 'Submit All Answers',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ):SizedBox.shrink(),
           ],
         );
       }),

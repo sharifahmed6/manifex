@@ -6,6 +6,7 @@ import '../model/flashcards_model.dart';
 import 'interactive_reading_controller.dart';
 
 class TaskOneController extends GetxController {
+  final interactiveController = Get.find<InteractiveReadingController>();
   final FlutterTts tts = FlutterTts();
   final NetworkCaller _network = NetworkCaller();
 
@@ -14,7 +15,7 @@ class TaskOneController extends GetxController {
   // API state
   final isLoading = false.obs;
   final error = ''.obs;
-
+  final totalMarks = ''.obs;
   // API model
   final data = Rxn<FlashCardModel>();
 
@@ -177,10 +178,12 @@ class TaskOneController extends GetxController {
 
     if (answer == correct && correct.isNotEmpty) {
       isPerfect.value = true;
-      resultLabel.value = "Perfect! Go to Next Challenge (100/100)";
+      interactiveController.task1.value = '100';
+      resultLabel.value = "Perfect! Go to Next Challenge (${interactiveController.task1.value}/100)";
     } else {
       isPerfect.value = false;
-      resultLabel.value = "The correct word was: $correct (00/100)";
+      interactiveController.task1.value = '00';
+      resultLabel.value = "The correct word was: $correct (${interactiveController.task1.value}/100)";
     }
   }
 

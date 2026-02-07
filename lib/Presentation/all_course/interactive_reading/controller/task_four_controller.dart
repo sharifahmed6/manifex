@@ -1,37 +1,93 @@
 import 'package:get/get.dart';
+import '../../../../App/network_caller.dart';
+import '../model/reading_quiz_model.dart';
 
 class TaskFourController extends GetxController {
-  final readingData = <Map<String, dynamic>>[
-    {
-      "title": "Tom’s Adventure",
-      "passages": [
-        "Tom has a red ball. He likes to play with it in the park.",
-        "The ball is very bouncy. Tom throws it high up in the air.",
-        "His dog Max runs to catch the ball. They play together every day.",
-      ],
-      "image": "https://res.cloudinary.com/dd0ryfgtu/image/upload/v1770024350/ab035381f98d3701f9a9988d93ac8998bd1b1a34_1_movedp.png",
-      "questions": [
-        {
-          "questionNo": 1,
-          "question": "What color is Tom’s ball?",
-          "options": ["Blue", "Red", "Green"],
-          "correctIndex": 1,
-        },
-        {
-          "questionNo": 2,
-          "question": "What is the dog’s name?",
-          "options": ["Max", "Rex", "Buddy"],
-          "correctIndex": 0,
-        },
-      ],
-    },
-  ].obs;
+  final NetworkCaller networkCaller = NetworkCaller();
+
+  final isLoading = false.obs;
+  final error = ''.obs;
+
+  final data = Rxn<ReadingQuizData>();
 
   /// questionIndex -> selectedOptionIndex
   final RxMap<int, int> selectedAnswers = <int, int>{}.obs;
+
+  final isSubmitted = false.obs;
+  final correctCount = 0.obs;
+  final percent = 0.0.obs;
+
+  int get total => data.value?.questions.length ?? 0;
+
+  bool get allAnswered => total > 0 && selectedAnswers.length == total;
+
+  @override
+  void onReady() {
+    super.onReady();
+    load(age: 5);
+  }
+
+  Future<void> load({required int age}) async {
+    try {
+      isLoading.value = true;
+      error.value = '';
+
+      final url =
+          "https://ai.manifex.org/api/v1/reading/comprehension/generate_comprehension?age=$age";
+
+      final res = await networkCaller.getRequest(
+          url: url,
+        removeAuthorization: true,
+        extraHeaders: {'authtoken': '1'}
+      );
+
+      if (!res.isSuccess || res.responseData == null) {
+        error.value = res.errorMessage;
+        return;
+      }
+
+      data.value = ReadingQuizData.fromJson(res.responseData!);
+
+      // reset
+      selectedAnswers.clear();
+      selectedAnswers.refresh();
+      isSubmitted.value = false;
+      correctCount.value = 0;
+      percent.value = 0;
+    } catch (e) {
+      error.value = e.toString();
+    } finally {
+      isLoading.value = false;
+    }
+  }
 
   void selectOption(int questionIndex, int optionIndex) {
     selectedAnswers[questionIndex] = optionIndex;
     selectedAnswers.refresh();
   }
+
+  /// ✅ user সব answer select করার পর Next চাপলে score বের হবে
+  void submitNext() {
+    if (!allAnswered) return;
+
+    final d = data.value;
+    if (d == null) return;
+    if (d == null) return;
+
+    int correct = 0;
+    for (int i = 0; i < d.questions.length; i++) {
+      final q = d.questions[i];
+      final selected = selectedAnswers[i];
+      if (selected != null && selected == q.correctIndex) {
+        correct++;
+      }
+    }
+
+    correctCount.value = correct;
+    percent.value = total == 0 ? 0 : (correct / total) * 100;
+    isSubmitted.value = true;
+  }
+
+  String get scoreText =>
+      "${correctCount.value} of ${total}";
 }

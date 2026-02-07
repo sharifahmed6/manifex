@@ -1,58 +1,107 @@
-
 import 'package:get/get.dart';
-
+import '../../../../App/network_caller.dart';
 import '../model/sight_word_model.dart';
+import 'interactive_reading_controller.dart';
 
 class SightWordController extends GetxController {
-  final words = <SentenceWord>[].obs;
-  final targets = <String>[].obs;
+  final interactiveController = Get.find<InteractiveReadingController>();
+  final NetworkCaller networkCaller = NetworkCaller();
 
+  final isLoading = false.obs;
+  final error = ''.obs;
+
+  final items = <SightWordItem>[].obs;
+
+  final currentIndex = 0.obs;
+  final selectedIndex = (-1).obs;
+  final isAnswered = false.obs;
+
+  final correctCount = 0.obs;
+  final percent = 0.0.obs;
+
+  int get total => items.length;
+  SightWordItem get current => items[currentIndex.value];
+  bool get isLast => currentIndex.value == total - 1;
+
+  double get progressOutOf100 {
+    if (total == 0) return 0;
+    final step = 100 / total;
+    final value = correctCount.value * step;
+    return value.clamp(0, 100);
+  }
+  String get progressText {
+    final v = progressOutOf100.round();
+    return v.toString().padLeft(2, '0');
+  }
   @override
-  void onInit() {
-    super.onInit();
-    loadFromApi();
+  void onReady() {
+    super.onReady();
+    loadSightWords(userId: "test");
   }
 
-  void loadFromApi() {
-    final sentence =
-        "The cat sits on the mat. You can see it here in the room";
-    final apiTargets = ["the", "on", "you", "it", "room"];
+  Future<void> loadSightWords({required String userId}) async {
+    try {
+      isLoading.value = true;
+      error.value = '';
 
-    targets.value = apiTargets.map((e) => e.toLowerCase()).toList();
-    words.value = _tokenize(sentence);
+      final res = await networkCaller.postRequest(
+        url:
+        "https://ai.manifex.org/api/v1/reading/sight-word-practice/sight_words?user_id=$userId",
+        body: {
+          'age': '6',
+        },
+        removeAuthorization: true,
+        extraHeaders: const {"authtoken": "1"},
+      );
+
+      if (!res.isSuccess) {
+        error.value = res.errorMessage;
+        return;
+      }
+
+      final data = res.responseData;
+      final List list = (data?['response'] is List) ? data!['response'] : [];
+
+      items.value = list.map((e) => SightWordItem.fromJson(e)).toList();
+
+      // reset
+      currentIndex.value = 0;
+      selectedIndex.value = -1;
+      isAnswered.value = false;
+      correctCount.value = 0;
+      percent.value = 0;
+    } catch (e) {
+      error.value = e.toString();
+    } finally {
+      isLoading.value = false;
+    }
   }
 
-  List<SentenceWord> _tokenize(String sentence) {
-    final parts = sentence.split(" ");
-    int id = 0;
-    return parts.map((p) {
-      final clean = p.replaceAll(RegExp(r'[^a-zA-Z]'), '').toLowerCase();
-      return SentenceWord(id: id++, text: p, clean: clean);
-    }).toList();
+  void selectOption(int index) {
+    if (isAnswered.value) return;
+
+    selectedIndex.value = index;
+    isAnswered.value = true;
+
+    final ci = current.correctIndexSafe();
+    if (ci != -1 && index == ci) {
+      correctCount.value++;
+    }
   }
 
-  // ✅ total target occurrences in the sentence
-  int get totalTargetOccurrences {
-    final set = targets.toSet();
-    return words.where((w) => set.contains(w.clean)).length;
-  }
+  void nextOrFinish() {
+    if (!isAnswered.value) return;
 
-  int get selectedCount =>
-      words.where((w) => w.state != WordState.normal).length;
+    if (isLast) {
+      percent.value = total == 0 ? 0 : (correctCount.value / total) * 100;
 
-  int get foundOccurrences =>
-      words.where((w) => w.state == WordState.correct).length;
-
-  void onTapWord(SentenceWord w) {
-    if (w.state != WordState.normal) return;
-    if (selectedCount >= totalTargetOccurrences) return;
-
-    if (targets.contains(w.clean)) {
-      w.state = WordState.correct;
-    } else {
-      w.state = WordState.wrong;
+      Get.back();
+      interactiveController.task2.value = percent.value;
+      return;
     }
 
-    words.refresh();
+    currentIndex.value++;
+    selectedIndex.value = -1;
+    isAnswered.value = false;
   }
 }

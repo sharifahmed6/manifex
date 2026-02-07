@@ -1,23 +1,72 @@
 import 'dart:math';
 import 'package:get/get.dart';
+import '../../../../App/network_caller.dart';
+import '../model/word_match_response.dart';
 
 enum DropState { empty, correct, wrong }
 
 class TaskThreeController extends GetxController {
-  final words = <WordItem>[].obs;
+  final NetworkCaller networkCaller = NetworkCaller();
+
+  final isLoading = false.obs;
+  final error = ''.obs;
+  final sessionName = ''.obs;
+
+  final words = <WordItemUI>[].obs;
   final slots = <PictureSlot>[].obs;
 
-  // ✅ strongly typed RxMap/RxSet
   final RxMap<String, String> placedBySlotId = <String, String>{}.obs;
   final RxMap<String, DropState> stateBySlotId = <String, DropState>{}.obs;
   final RxSet<String> usedWordKeys = <String>{}.obs;
 
+  final correctCount = 0.obs;
+  final percent = 0.0.obs;
+
+  @override
+  void onReady() {
+    super.onReady();
+    loadFromServer();
+  }
+
+  Future<void> loadFromServer() async {
+    try {
+      isLoading.value = true;
+      error.value = '';
+
+      // ✅ double slash বাদ
+      final url = "https://api.manifex.org/api/v1/word-match";
+
+      // সাধারণত GET হয়, তোমার NetworkCaller.getRequest() এ token already আছে
+      final res = await networkCaller.getRequest(url: url);
+
+      if (!res.isSuccess || res.responseData == null) {
+        error.value = res.errorMessage;
+        return;
+      }
+
+      final parsed = WordMatchResponse.fromJson(res.responseData!);
+
+      sessionName.value = parsed.data.sessionName;
+
+      // words + images id match করে pairs বানানো
+      final pairs = parsed.data.words.map((w) {
+        final img = parsed.data.imageUrlById(w.id) ?? "";
+        return ApiPair(word: w.text, image: img, answerKey: w.id);
+      }).where((p) => p.image.isNotEmpty).toList();
+
+      loadFromApi(pairs);
+    } catch (e) {
+      error.value = e.toString();
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  // ✅ existing logic (slightly improved)
   void loadFromApi(List<ApiPair> pairs) {
     final rnd = Random();
 
-    final w = pairs
-        .map((p) => WordItem(key: p.answerKey, text: p.word))
-        .toList()
+    final w = pairs.map((p) => WordItemUI(key: p.answerKey, text: p.word)).toList()
       ..shuffle(rnd);
 
     final s = pairs
@@ -40,7 +89,9 @@ class TaskThreeController extends GetxController {
       stateBySlotId[sl.slotId] = DropState.empty;
     }
 
-    // ✅ force notify after bulk set
+    correctCount.value = 0;
+    percent.value = 0;
+
     placedBySlotId.refresh();
     usedWordKeys.refresh();
     stateBySlotId.refresh();
@@ -48,13 +99,11 @@ class TaskThreeController extends GetxController {
 
   bool isWordUsed(String wordKey) => usedWordKeys.contains(wordKey);
   bool isSlotFilled(String slotId) => placedBySlotId.containsKey(slotId);
-
-  String wordTextByKey(String key) => words.firstWhere((w) => w.key == key).text;
   DropState slotState(String slotId) => stateBySlotId[slotId] ?? DropState.empty;
 
   bool canAccept({required String slotId, required String wordKey}) {
-    if (isSlotFilled(slotId)) return false; // slot one-time
-    if (isWordUsed(wordKey)) return false;  // word one-time
+    if (isSlotFilled(slotId)) return false;
+    if (isWordUsed(wordKey)) return false;
     return true;
   }
 
@@ -72,20 +121,44 @@ class TaskThreeController extends GetxController {
     final state = ok ? DropState.correct : DropState.wrong;
     stateBySlotId[slotId] = state;
 
-    // ✅ VERY IMPORTANT: refresh all reactive collections
     placedBySlotId.refresh();
     usedWordKeys.refresh();
     stateBySlotId.refresh();
 
+    _recalculateScore();
     return state;
   }
 
-  bool get allCorrect =>
-      slots.isNotEmpty &&
-          slots.every((s) => stateBySlotId[s.slotId] == DropState.correct);
+  void _recalculateScore() {
+    int correct = 0;
+    for (final sl in slots) {
+      if (stateBySlotId[sl.slotId] == DropState.correct) correct++;
+    }
+    correctCount.value = correct;
+
+    final total = slots.length;
+    percent.value = total == 0 ? 0 : (correct / total) * 100;
+  }
 
   bool get allFilled =>
       slots.isNotEmpty && slots.every((s) => placedBySlotId.containsKey(s.slotId));
+
+  bool get allCorrect =>
+      slots.isNotEmpty && slots.every((s) => stateBySlotId[s.slotId] == DropState.correct);
+
+  int get totalSlots => slots.length;
+
+  void finish() {
+    if (!allFilled) return;
+
+    Get.back(result: {
+      "correct": correctCount.value,
+      "total": totalSlots,
+      "percent": percent.value,
+      "allCorrect": allCorrect,
+      "sessionName": sessionName.value,
+    });
+  }
 
   void resetAll() {
     placedBySlotId.clear();
@@ -99,28 +172,31 @@ class TaskThreeController extends GetxController {
     placedBySlotId.refresh();
     usedWordKeys.refresh();
     stateBySlotId.refresh();
+
+    _recalculateScore();
   }
 
   String _uid() => DateTime.now().microsecondsSinceEpoch.toString();
 }
 
+// ✅ UI helpers
 class ApiPair {
   final String word;
   final String image;
-  final String answerKey;
+  final String answerKey; // id
   const ApiPair({required this.word, required this.image, required this.answerKey});
 }
 
-class WordItem {
-  final String key;
+class WordItemUI {
+  final String key; // id
   final String text;
-  const WordItem({required this.key, required this.text});
+  const WordItemUI({required this.key, required this.text});
 }
 
 class PictureSlot {
   final String slotId;
   final String imageUrlOrAsset;
-  final String correctWordKey;
+  final String correctWordKey; // id
   const PictureSlot({
     required this.slotId,
     required this.imageUrlOrAsset,
