@@ -3,82 +3,120 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:manifex/App/routes.dart';
 import 'package:manifex/Presentation/Share/text_title_small.dart';
-import 'package:manifex/Presentation/all_course/interactive_reading/views/task_one.dart';
 import '../../../Share/gradient_title.dart';
 import '../../../Share/single_skill_card.dart';
+import '../../../progress/widget/achievment_gradient_border.dart';
 import '../../practices/widget/skill_welcome_card.dart';
+import '../controller/interactive_reading_controller.dart';
 
 class SkillScreen extends StatelessWidget {
-  const SkillScreen({super.key});
-
+   SkillScreen({super.key});
+ final controller = Get.find<InteractiveReadingController>();
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SkillWelcomeCard(),
-          SizedBox(height: 12.h),
-          GradientTitle(
-            fontSize: 20,
-            normalText: 'Reading ',
-            gradientText: 'Tasks',
-          ),
-          CustomText(
-            text: 'Complete each task to improve your English reading skill',
-            color: Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
-          ),
-          SizedBox(height: 8.h,),
-          SingleSkillCard(
-            imagePath: 'assets/icons/phoneme_icon.png',
-            title: 'Phoneme Flashcards',
-            subTitle: 'Click the cards to hear the sound',
-            buttonText: 'Task 1',
-            onTap: (){
-              Get.toNamed(routes.interactive_reading_task1);
-              print('Phoneme Flash cards');
-            },
-            isComplete: true,
-          ),
-          SizedBox(height: 16.h,),
-          SingleSkillCard(
-            imagePath: 'assets/icons/sight_words.png',
-            title: 'Sight Word Practice',
-            subTitle: 'Click on all the sight words you see. Some words may appear more than once.',
-            buttonText: 'Task 2',
-            onTap: (){
-              Get.toNamed(routes.sight_word_scrren);
-              print('Sight Word Practice');
-            },
-            isComplete: true,
-          ),
-          SizedBox(height: 16.h,),
-          SingleSkillCard(
-            imagePath: 'assets/icons/phoneme_icon.png',
-            title: 'Phoneme Flashcards',
-            subTitle: 'Drag words to their matching pictures',
-            buttonText: 'Task 3',
-            onTap: (){
-              Get.toNamed(routes.interactive_task3_screen);
-              print('Phoneme Flashcards');
-            },
-            isComplete: true,
-          ),
-          SizedBox(height: 16.h,),
-          SingleSkillCard(
-            imagePath: 'assets/icons/reading_comprehension_icon.png',
-            title: 'Reading Comprehension',
-            subTitle: 'Read the passage and answer the questions',
-            buttonText: 'Task 4',
-            onTap: (){
-              print('Reading Comprehension');
-              Get.toNamed(routes.interactive_task4_screen);
-            },
-            isComplete: true,
-          ),
-          SizedBox(height: 16.h,),
-        ],
-      ),
+      child: Obx((){
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SkillWelcomeCard(),
+            SizedBox(height: 12.h),
+            GradientTitle(
+              fontSize: 20,
+              normalText: 'Reading ',
+              gradientText: 'Tasks',
+            ),
+            CustomText(
+              text: 'Complete each task to improve your English reading skill',
+              color: Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
+            ),
+            SizedBox(height: 8.h,),
+            CustomText(text: controller.task1.value.toString()),
+            CustomText(text: controller.task2.value.toString()),
+            CustomText(text: controller.task3.value.toString()),
+            CustomText(text: controller.task4.value.toString()),
+            SingleSkillCard(
+              imagePath: 'assets/icons/phoneme_icon.png',
+              title: 'Phoneme Flashcards',
+              subTitle: 'Click the cards to hear the sound',
+              buttonText: 'Task 1',
+              onTap: (){
+                Get.toNamed(routes.interactive_reading_task1);
+                print('Phoneme Flash cards');
+              },
+              isComplete: controller.t1SkillLock.value,
+              lock: controller.t1Done.value,
+            ),
+            SizedBox(height: 16.h,),
+            SingleSkillCard(
+              imagePath: 'assets/icons/sight_words.png',
+              title: 'Sight Word Practice',
+              subTitle: 'Click on all the sight words you see. Some words may appear more than once.',
+              buttonText: 'Task 2',
+              onTap: (){
+                Get.toNamed(routes.sight_word_scrren);
+                print('Sight Word Practice');
+              },
+              isComplete: controller.t2SkillLock.value,
+              lock: controller.t2Done.value,
+            ),
+            SizedBox(height: 16.h,),
+            SingleSkillCard(
+              imagePath: 'assets/icons/phoneme_icon.png',
+              title: 'Phoneme Flashcards',
+              subTitle: 'Drag words to their matching pictures',
+              buttonText: 'Task 3',
+              onTap: (){
+                Get.toNamed(routes.interactive_task3_screen);
+                print('Phoneme Flashcards');
+              },
+              isComplete: controller.t3SkillLock.value,
+              lock: controller.t3Done.value,
+            ),
+            SizedBox(height: 16.h,),
+            SingleSkillCard(
+              imagePath: 'assets/icons/reading_comprehension_icon.png',
+              title: 'Reading Comprehension',
+              subTitle: 'Read the passage and answer the questions',
+              buttonText: 'Task 4',
+              onTap: (){
+                print('Reading Comprehension');
+                Get.toNamed(routes.interactive_task4_screen);
+              },
+              isComplete: controller.t4SkillLock.value,
+              lock: controller.t4Done.value,
+            ),
+            SizedBox(height: 16.h,),
+            controller.allAnswerSubmit.value?
+            AchievmentGradientBorder(
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+                child: ShaderMask(
+                  shaderCallback: (bounds) {
+                    return const LinearGradient(
+                      colors: [
+                        Color(0xffFFBC6F),
+                        Color(0xffF176B7),
+                        Color(0xff3797CD),
+                      ],
+                    ).createShader(
+                      Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+                    );
+                  },
+                  child: CustomText(
+                    text: 'Submit All Answers',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ):SizedBox.shrink(),
+          ],
+        );
+      }),
     );
   }
 }

@@ -1,6 +1,5 @@
 import 'dart:async';
-
-import 'package:flutter/material.dart';
+import 'dart:ffi';
 import 'package:get/get.dart';
 
 class InteractiveReadingController extends GetxController {
@@ -9,13 +8,29 @@ class InteractiveReadingController extends GetxController {
  Timer? _timer;
  final isRunning = false.obs;
  DateTime? _dateTime;
-
+ final allAnswerSubmit = false.obs;
  Duration get currentTime {
    if(isRunning.value && _dateTime != null){
      return totalDuration.value + DateTime.now().difference(_dateTime!);
    }
    return totalDuration.value;
  }
+ // Task Marks start
+  final task1 = 0.obs;
+  final  task2 = 0.0.obs;
+  final task3 = 0.0.obs;
+  final task4 = 0.0.obs;
+ // Task Marks end
+ /// Lock Skill Start
+  final t1Done = true.obs;
+  final t2Done = false.obs;
+  final t3Done = false.obs;
+  final t4Done = false.obs;
+  final t1SkillLock = true.obs;
+  final t2SkillLock = true.obs;
+  final t3SkillLock = true.obs;
+  final t4SkillLock = true.obs;
+  /// Lock Skill end
   @override
   void onInit() {
     super.onInit();

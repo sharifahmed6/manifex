@@ -1,20 +1,43 @@
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
+import 'package:manifex/App/Urls.dart';
+import '../../../../App/network_caller.dart';
+import '../model/flashcards_model.dart';
+import 'interactive_reading_controller.dart';
 
 class TaskOneController extends GetxController {
+  final interactiveController = Get.find<InteractiveReadingController>();
   final FlutterTts tts = FlutterTts();
+  final NetworkCaller _network = NetworkCaller();
 
-  final words = <String>['CAT', 'DOG', 'SUN'].obs;
-  final wordIndex = 0.obs;
+  final userId = "788bfe4f-f063-4d2c-84f4-233dd6cd99ac";
 
-  final letters = <String>[].obs;
+  // API state
+  final isLoading = false.obs;
+  final error = ''.obs;
+  final totalMarks = ''.obs;
+  // API model
+  final data = Rxn<FlashCardModel>();
+
+  // Letters
+  final originalLetters = <String>[].obs;
+  final shuffledLetters = <String>[].obs;
+
+  // Selection
   final selected = <bool>[].obs;
   final selectedOrder = <int>[].obs;
   final typed = ''.obs;
 
+  // Result
+  final isSubmitted = false.obs;
+  final isPerfect = false.obs;
+  final resultLabel = ''.obs;
+
   bool _ttsReady = false;
 
-  String get currentWord => words[wordIndex.value];
+  String get correctWord => data.value?.word ?? '';
+  bool get canSubmit => !isSubmitted.value && typed.value.isNotEmpty;
+  bool get canReset => !isSubmitted.value;
 
   @override
   void onInit() {
@@ -24,7 +47,75 @@ class TaskOneController extends GetxController {
 
   Future<void> _setup() async {
     await _initTts();
-    _loadWord(currentWord);
+    await fetchWord();
+  }
+
+  Future<void> fetchWord() async {
+    isLoading.value = true;
+    error.value = '';
+
+    try {
+      final res = await _network.getRequest(
+        url: urls.phonemeFlashcard('6', userId),
+        removeAuthorization: true,
+        extraHeaders: const {"authtoken": "1"},
+      );
+
+      if (!res.isSuccess) {
+        error.value = res.errorMessage;
+        return;
+      }
+
+      final model = FlashCardModel.fromJson(res.responseData);
+
+      if (!model.isValid) {
+        error.value = "Invalid data from API";
+        return;
+      }
+
+      data.value = model;
+
+      _loadFromModel(model);
+
+      // new word => reset result
+      isSubmitted.value = false;
+      isPerfect.value = false;
+      resultLabel.value = '';
+    } catch (_) {
+      error.value = "Something went wrong";
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  void _loadFromModel(FlashCardModel model) {
+    final correctChars = model.characters.isNotEmpty ? model.characters : model.word.split('');
+
+    originalLetters.value = List<String>.from(correctChars);
+
+    // shuffled copy for UI
+    final temp = List<String>.from(correctChars);
+    temp.shuffle();
+
+    // avoid same order (best effort)
+    if (_listEquals(temp, correctChars) && temp.length > 1) {
+      temp.shuffle();
+    }
+
+    shuffledLetters.value = temp;
+
+    // reset selection based on shuffled length
+    selected.value = List<bool>.filled(shuffledLetters.length, false);
+    selectedOrder.clear();
+    typed.value = '';
+  }
+
+  bool _listEquals(List<String> a, List<String> b) {
+    if (a.length != b.length) return false;
+    for (int i = 0; i < a.length; i++) {
+      if (a[i] != b[i]) return false;
+    }
+    return true;
   }
 
   Future<void> _initTts() async {
@@ -36,6 +127,7 @@ class TaskOneController extends GetxController {
       await tts.setVolume(1.0);
 
       tts.setErrorHandler((msg) {
+        // ignore: avoid_print
         print("TTS error: $msg");
       });
 
@@ -47,42 +139,53 @@ class TaskOneController extends GetxController {
     }
   }
 
-  void _loadWord(String word) {
-    letters.value = word.split('');
-    selected.value = List<bool>.filled(letters.length, false);
-    selectedOrder.clear();
-    _rebuildTyped();
-  }
-
   Future<void> toggleLetter(int index) async {
-    if (index < 0 || index >= letters.length) return;
+    if (index < 0 || index >= shuffledLetters.length) return;
+    if (isSubmitted.value) return;
+    if (selected[index]) return;
 
-    final wasSelected = selected[index];
+    selected[index] = true;
+    selected.refresh();
 
-    if (!wasSelected) {
-      selected[index] = true;
-      selected.refresh();
+    selectedOrder.add(index);
+    typed.value = selectedOrder.map((i) => shuffledLetters[i]).join();
 
-      selectedOrder.add(index);
-      _rebuildTyped();
-
-      if (_ttsReady) {
-        await tts.stop();
-        await tts.speak(letters[index]);
-      }
-    } else {
-      selected[index] = false;
-      selected.refresh();
-
-      selectedOrder.remove(index);
-      _rebuildTyped();
+    if (_ttsReady) {
+      await tts.stop();
+      await tts.speak(shuffledLetters[index]);
     }
   }
 
-  void _rebuildTyped() {
-    typed.value = selectedOrder.map((i) => letters[i]).join();
+  void resetSelection() {
+    if (!canReset) return;
+
+    selected.value = List<bool>.filled(shuffledLetters.length, false);
+    selectedOrder.clear();
+    typed.value = '';
+
+    // result not submitted yet => clear label
+    isPerfect.value = false;
+    resultLabel.value = '';
   }
 
+  void submit() {
+    if (!canSubmit) return;
+
+    final answer = typed.value.trim().toUpperCase();
+    final correct = correctWord.trim().toUpperCase();
+
+    isSubmitted.value = true;
+
+    if (answer == correct && correct.isNotEmpty) {
+      isPerfect.value = true;
+      interactiveController.task1.value = 100;
+      resultLabel.value = "Perfect! Go to Next Challenge (${interactiveController.task1.value}/100)";
+    } else {
+      isPerfect.value = false;
+      interactiveController.task1.value = 0;
+      resultLabel.value = "The correct word was: $correct (${interactiveController.task1.value}/100)";
+    }
+  }
 
   @override
   void onClose() {
