@@ -80,8 +80,9 @@ class OtpVerification extends StatelessWidget {
                     () => controller.isResendCode.value
                     ? GestureDetector(
                   onTap: (){
+                    otp.clear();
                     controller.isResendCode.value = false;
-                    controller.resent_code();
+                    controller.resent_code(email);
                   },
                   child: ShaderMask(
                     shaderCallback: (Rect bounds) {

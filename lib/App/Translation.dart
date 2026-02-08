@@ -45,7 +45,6 @@ class AppTranslation extends Translations {
       "Start Practices" : "Start Practices",
       "Trending Practices" : "Trending Practices",
       "Interactive Reading" : "Interactive Reading",
-
     },
   };
 }

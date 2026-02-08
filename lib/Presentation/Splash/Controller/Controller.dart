@@ -1,6 +1,7 @@
 
 import 'package:get/get.dart';
 import 'package:manifex/App/routes.dart';
+import 'package:manifex/Core/SharepreferenceHelper.dart';
 
 class SplashController extends GetxController {
   final radius = 50.0.obs;
@@ -11,9 +12,11 @@ class SplashController extends GetxController {
     Future.delayed(const Duration(milliseconds: 100), () {
       radius.value = 110;
       Future.delayed(const Duration(milliseconds: 1600), () {
-        //TODO: please handle your logic here
-        Get.toNamed(routes.on_borading_screen);
-
+        if(PrefHelper.isLoggedIn()){
+          Get.toNamed(routes.bottom_navbar);
+        }else{
+          Get.toNamed(routes.on_borading_screen);
+        }
       });
     });
   }
