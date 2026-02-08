@@ -15,6 +15,10 @@ class login extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final controller = Get.find<login_controller>();
 
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+
   @override
   Widget build(BuildContext context) {
     return scaffold_background(
@@ -52,6 +56,7 @@ class login extends StatelessWidget {
                   ),
                 ),
                 TextFormField(
+                  controller: emailController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter some text';
@@ -74,6 +79,7 @@ class login extends StatelessWidget {
                 ),
                 Obx(
                   () => TextFormField(
+                    controller: passwordController,
                     obscureText: controller.password.value,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -131,8 +137,7 @@ class login extends StatelessWidget {
                 ButtonGradient(
                   onTap: () {
                     if (_formKey.currentState!.validate()) {
-                      print("validated");
-                      Get.toNamed(routes.bottom_navbar);
+                      controller.Login(emailController.text, passwordController.text);
                     }
                   },
                   text: "Login".tr,
@@ -154,7 +159,7 @@ class login extends StatelessWidget {
                             alignment: PlaceholderAlignment.baseline,
                             baseline: TextBaseline.alphabetic,
                             child: GestureDetector(
-                              onTap: () => Get.toNamed(routes.signup_screen),
+                              onTap: () => Get.toNamed(routes.signupGmail_screen),
                               child: Text(
                                 "Create your account",
                                 style: TextStyle(

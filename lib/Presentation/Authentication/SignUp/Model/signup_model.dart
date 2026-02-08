@@ -3,6 +3,7 @@ class signupModel {
   String lastName;
   String ageGroup;
   String hobbies;
+  String userType;
   String email;
   String password;
   String confirmPassword;
@@ -13,6 +14,7 @@ class signupModel {
     required this.lastName,
     required this.ageGroup,
     required this.hobbies,
+    required this.userType,
     required this.email,
     required this.password,
     required this.confirmPassword,
@@ -27,6 +29,7 @@ class signupModel {
           lastName == other.lastName &&
           ageGroup == other.ageGroup &&
           hobbies == other.hobbies &&
+          userType == other.userType &&
           email == other.email &&
           password == other.password &&
           confirmPassword == other.confirmPassword);
@@ -37,6 +40,7 @@ class signupModel {
       lastName.hashCode ^
       ageGroup.hashCode ^
       hobbies.hashCode ^
+      userType.hashCode ^
       email.hashCode ^
       password.hashCode ^
       confirmPassword.hashCode;
@@ -48,6 +52,7 @@ class signupModel {
         ' lastName: $lastName,' +
         ' ageGroup: $ageGroup,' +
         ' hobbies: $hobbies,' +
+        ' userType: $userType,' +
         ' email: $email,' +
         ' password: $password,' +
         ' confirmPassword: $confirmPassword,' +
@@ -59,6 +64,7 @@ class signupModel {
     String? lastName,
     String? ageGroup,
     String? hobbies,
+    String? userType,
     String? email,
     String? password,
     String? confirmPassword,
@@ -68,6 +74,7 @@ class signupModel {
       lastName: lastName ?? this.lastName,
       ageGroup: ageGroup ?? this.ageGroup,
       hobbies: hobbies ?? this.hobbies,
+      userType: userType ?? this.userType,
       email: email ?? this.email,
       password: password ?? this.password,
       confirmPassword: confirmPassword ?? this.confirmPassword,
@@ -80,6 +87,7 @@ class signupModel {
       'lastName': this.lastName,
       'ageGroup': this.ageGroup,
       'hobbies': this.hobbies,
+      'userType': this.userType,
       'email': this.email,
       'password': this.password,
       'confirmPassword': this.confirmPassword,
@@ -92,6 +100,7 @@ class signupModel {
       lastName: map['lastName'] as String,
       ageGroup: map['ageGroup'] as String,
       hobbies: map['hobbies'] as String,
+      userType: map['userType'] as String,
       email: map['email'] as String,
       password: map['password'] as String,
       confirmPassword: map['confirmPassword'] as String,

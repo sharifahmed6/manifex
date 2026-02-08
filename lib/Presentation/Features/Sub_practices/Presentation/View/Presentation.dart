@@ -10,7 +10,7 @@ import '../../../../../App/assets_path.dart';
 import '../../../../Share/GradientMask.dart';
 import '../../../../Share/button_gradient.dart';
 import '../../../../Share/text_title_small.dart';
-import '../../../../practices/widget/transperent_gradient_border.dart';
+import '../../../../all_course/practices/widget/transperent_gradient_border.dart';
 import '../../../../progress/widget/gradient_linear_progress.dart';
 import '../Controller/Controller.dart';
 

@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 import 'package:manifex/Presentation/all_course/interactive_reading/controller/task_four_controller.dart';
 import 'package:manifex/Presentation/language/controller/language_controller.dart';
-import 'package:manifex/Presentation/practices/controller/practices_controller.dart';
 import 'package:manifex/Presentation/privacy_policy/controller/privacy_policy_controller.dart';
 import 'package:manifex/Presentation/profile_edit/controller/profile_edit_controller.dart';
 import 'package:manifex/Presentation/terms_condition/controller/terms_conditon_controller.dart';
@@ -11,7 +10,6 @@ import '../Presentation/Authentication/Forget_password/OTP_verification/Controll
 import '../Presentation/Authentication/Forget_password/find_account/Controller/Controller.dart';
 import '../Presentation/Authentication/Login/Controller/Controller.dart';
 import '../Presentation/Authentication/SignUp/Controller/Controller.dart';
-import '../Presentation/Features/Sub_practices/Presentation/Controller/Controller.dart';
 import '../Presentation/On_boarding/Controller/Controller.dart';
 import '../Presentation/Splash/Controller/Controller.dart';
 import '../Presentation/about_us/controller/about_us_controller.dart';

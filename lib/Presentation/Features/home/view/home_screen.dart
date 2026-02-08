@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:manifex/App/assets_path.dart';
+import 'package:manifex/Core/SharepreferenceHelper.dart';
 import 'package:manifex/Core/responsive.dart';
 import 'package:manifex/Presentation/Share/GradientMask.dart';
 import 'package:manifex/Presentation/Share/button_gradient.dart';
@@ -45,7 +46,7 @@ class HomeScreen extends StatelessWidget {
                       children: [
                         GradientMask(
                           child: Text(
-                            "Sadid Ahammed!",
+                            "${PrefHelper.getFirstName()} ${PrefHelper.getLastName()}!",
                             style: TextStyle(
                               fontSize: ScreenResponsive.responsiveFont(
                                 context,
