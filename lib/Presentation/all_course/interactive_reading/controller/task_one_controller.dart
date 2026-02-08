@@ -178,11 +178,11 @@ class TaskOneController extends GetxController {
 
     if (answer == correct && correct.isNotEmpty) {
       isPerfect.value = true;
-      interactiveController.task1.value = '100';
+      interactiveController.task1.value = 100;
       resultLabel.value = "Perfect! Go to Next Challenge (${interactiveController.task1.value}/100)";
     } else {
       isPerfect.value = false;
-      interactiveController.task1.value = '00';
+      interactiveController.task1.value = 0;
       resultLabel.value = "The correct word was: $correct (${interactiveController.task1.value}/100)";
     }
   }

@@ -31,7 +31,6 @@ class TaskOne extends StatelessWidget {
       child: LayoutBuilder(
         builder: (context, constraints) {
           return SingleChildScrollView(
-            padding: EdgeInsets.all(18.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -48,9 +47,8 @@ class TaskOne extends StatelessWidget {
                   color: const Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
                 ),
                 SizedBox(height: 16.h),
-
                 ConstrainedBox(
-                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                  constraints: BoxConstraints(minHeight: constraints.minHeight),
                   child: Align(
                     alignment: Alignment.topCenter,
                     child: ConstrainedBox(
@@ -59,7 +57,7 @@ class TaskOne extends StatelessWidget {
                         if (c.isLoading.value) {
                           return const Center(child: CustomCircleProgressIndicator());
                         }
-
+            
                         if (c.error.isNotEmpty) {
                           return Center(
                             child: Column(
@@ -81,11 +79,11 @@ class TaskOne extends StatelessWidget {
                             ),
                           );
                         }
-
+            
                         if (c.shuffledLetters.isEmpty || c.selected.isEmpty) {
                           return const Center(child: CustomCircleProgressIndicator());
                         }
-
+            
                         return Container(
                           padding: EdgeInsets.all(16.w),
                           decoration: BoxDecoration(
@@ -105,7 +103,7 @@ class TaskOne extends StatelessWidget {
                                 runSpacing: 10.h,
                                 children: List.generate(c.shuffledLetters.length, (i) {
                                   final letter = c.shuffledLetters[i];
-
+            
                                   final gradients = [
                                     const LinearGradient(
                                       colors: [Color(0xffFFD6B7), Color(0xffE07C2F)],
@@ -117,7 +115,7 @@ class TaskOne extends StatelessWidget {
                                       colors: [Color(0xffB2DEFF), Color(0xff3BA3F2)],
                                     ),
                                   ];
-
+            
                                   return GestureDetector(
                                     onTap: () => c.toggleLetter(i),
                                     child: AnimatedContainer(
@@ -149,9 +147,9 @@ class TaskOne extends StatelessWidget {
                                   );
                                 }),
                               ),
-
+            
                               SizedBox(height: 16.h),
-
+            
                               _selectedPhonemeCard(isLandscape),
                             ],
                           ),
@@ -207,7 +205,6 @@ class TaskOne extends StatelessWidget {
 
           SizedBox(height: 14.h),
 
-          // ✅ Submit/Reset (before submit)
           Obx(() {
             if (c.isSubmitted.value) return const SizedBox.shrink();
 
@@ -243,7 +240,6 @@ class TaskOne extends StatelessWidget {
             );
           }),
 
-          // ✅ After submit -> AchievmentGradientBorder show (tap => back)
           Obx(() {
             if (!c.isSubmitted.value) return const SizedBox.shrink();
 

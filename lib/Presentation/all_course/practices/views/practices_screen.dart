@@ -45,6 +45,7 @@ class PracticesScreen extends StatelessWidget {
                 title: 'Smart Writing',
                 subTitle:
                     'Write. Learn. Improve. AI checks your grammar, structure, and style instantly.',
+                buttonText: 'Start Writing',
                 onTap: (){
                   Get.toNamed(routes.smart_writing_screen);
                 }
@@ -55,6 +56,7 @@ class PracticesScreen extends StatelessWidget {
                 title: 'Native Speaking',
                 subTitle:
                     'Advanced Al pronunciation coaching with real-time feedback and accent training',
+                buttonText: 'Start Speaking',
                 onTap: (){
                   Get.toNamed(routes.native_speaking_skill_screen);
                 }
@@ -65,6 +67,7 @@ class PracticesScreen extends StatelessWidget {
                 title: 'Reward System',
                 subTitle:
                     'oneme recognition an word games with visual cues designed for dyslexic learners',
+                buttonText: 'Start Reward'
               ),
               SizedBox(height: 16.h),
               _practicesCard(
@@ -72,19 +75,21 @@ class PracticesScreen extends StatelessWidget {
                 title: 'Presentation Practice',
                 subTitle:
                     'Practice English made for adults. Improve speaking, listening, and vocabulary with easy, real-life lessons you can use every day.',
+                buttonText: 'Start Practice'
               ),
               SizedBox(height: 16.h),
               _practicesCard(
                 imagePath: 'assets/icons/person.png',
                 title: 'English for Adult Practice',
-                subTitle:
-                    'Improve your English with real-life practice made especially for adults. Build confidence in speaking, listening, and vocabulary.',
+                subTitle: 'Improve your English with real-life practice made especially for adults. Build confidence in speaking, listening, and vocabulary.',
+                buttonText: 'Start Adult Practice'
               ),
               SizedBox(height: 16.h),
               _practicesCard(
                 imagePath: 'assets/icons/person.png',
                 title: 'Handwriting Practice',
                 subTitle: 'Learn to write letters the fun way',
+                buttonText: 'Start Handwriting Practice'
               ),
               SizedBox(height: 8.h),
             ],
@@ -94,7 +99,7 @@ class PracticesScreen extends StatelessWidget {
     );
   }
 
-  Widget _practicesCard({String? imagePath, String? title, String? subTitle,VoidCallback? onTap}) {
+  Widget _practicesCard({String? imagePath, String? title, String? subTitle,VoidCallback? onTap,String? buttonText}) {
     return TransparentGradientBorder(
       strokeWidth: 0.5,
       radius: 16.r,
@@ -137,7 +142,7 @@ class PracticesScreen extends StatelessWidget {
               textAlign: TextAlign.start,
             ),
             SizedBox(height: 16.h),
-            ButtonGradient(text: 'Start Reading',onTap: onTap),
+            ButtonGradient(text: buttonText ?? 'Start Reading',onTap: onTap),
           ],
         ),
       ),

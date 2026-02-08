@@ -1,10 +1,13 @@
 import 'package:get/get.dart';
+import 'package:manifex/App/Urls.dart';
 import '../../../../App/network_caller.dart';
 import '../model/reading_quiz_model.dart';
+import 'interactive_reading_controller.dart';
 
 class TaskFourController extends GetxController {
+  final interactiveController = Get.find<InteractiveReadingController>();
   final NetworkCaller networkCaller = NetworkCaller();
-
+  final age = '6';
   final isLoading = false.obs;
   final error = ''.obs;
 
@@ -20,23 +23,18 @@ class TaskFourController extends GetxController {
   int get total => data.value?.questions.length ?? 0;
 
   bool get allAnswered => total > 0 && selectedAnswers.length == total;
-
   @override
-  void onReady() {
-    super.onReady();
-    load(age: 5);
+  void onInit() {
+    super.onInit();
+    load();
   }
-
-  Future<void> load({required int age}) async {
+  Future<void> load() async {
     try {
       isLoading.value = true;
       error.value = '';
 
-      final url =
-          "https://ai.manifex.org/api/v1/reading/comprehension/generate_comprehension?age=$age";
-
       final res = await networkCaller.getRequest(
-          url: url,
+          url: urls.aiQuestion(age),
         removeAuthorization: true,
         extraHeaders: {'authtoken': '1'}
       );
@@ -53,7 +51,7 @@ class TaskFourController extends GetxController {
       selectedAnswers.refresh();
       isSubmitted.value = false;
       correctCount.value = 0;
-      percent.value = 0;
+      interactiveController.task4.value = 0;
     } catch (e) {
       error.value = e.toString();
     } finally {
@@ -66,12 +64,10 @@ class TaskFourController extends GetxController {
     selectedAnswers.refresh();
   }
 
-  /// ✅ user সব answer select করার পর Next চাপলে score বের হবে
   void submitNext() {
     if (!allAnswered) return;
 
     final d = data.value;
-    if (d == null) return;
     if (d == null) return;
 
     int correct = 0;
@@ -84,7 +80,7 @@ class TaskFourController extends GetxController {
     }
 
     correctCount.value = correct;
-    percent.value = total == 0 ? 0 : (correct / total) * 100;
+    interactiveController.task4.value = total == 0 ? 0.0 : (correct / total) * 100.0;
     isSubmitted.value = true;
   }
 

@@ -16,10 +16,10 @@ class InteractiveReadingController extends GetxController {
    return totalDuration.value;
  }
  // Task Marks start
-  final task1 = ''.obs;
+  final task1 = 0.obs;
   final  task2 = 0.0.obs;
-  final task3 = ''.obs;
-  final task4 = ''.obs;
+  final task3 = 0.0.obs;
+  final task4 = 0.0.obs;
  // Task Marks end
  /// Lock Skill Start
   final t1Done = true.obs;

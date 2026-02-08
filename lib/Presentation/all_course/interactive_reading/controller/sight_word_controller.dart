@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:manifex/App/Urls.dart';
 import '../../../../App/network_caller.dart';
 import '../model/sight_word_model.dart';
 import 'interactive_reading_controller.dart';
@@ -6,7 +7,8 @@ import 'interactive_reading_controller.dart';
 class SightWordController extends GetxController {
   final interactiveController = Get.find<InteractiveReadingController>();
   final NetworkCaller networkCaller = NetworkCaller();
-
+  final userId = 'test';
+  final age = '6'.obs;
   final isLoading = false.obs;
   final error = ''.obs;
 
@@ -34,21 +36,19 @@ class SightWordController extends GetxController {
     return v.toString().padLeft(2, '0');
   }
   @override
-  void onReady() {
-    super.onReady();
-    loadSightWords(userId: "test");
+  void onInit() {
+    super.onInit();
+    loadSightWords();
   }
-
-  Future<void> loadSightWords({required String userId}) async {
+  Future<void> loadSightWords() async {
     try {
       isLoading.value = true;
       error.value = '';
 
       final res = await networkCaller.postRequest(
-        url:
-        "https://ai.manifex.org/api/v1/reading/sight-word-practice/sight_words?user_id=$userId",
+        url: urls.sighWordPractice(userId),
         body: {
-          'age': '6',
+          'age': age.value,
         },
         removeAuthorization: true,
         extraHeaders: const {"authtoken": "1"},

@@ -31,8 +31,10 @@ class SkillScreen extends StatelessWidget {
               color: Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
             ),
             SizedBox(height: 8.h,),
-            CustomText(text: controller.task1.value),
+            CustomText(text: controller.task1.value.toString()),
             CustomText(text: controller.task2.value.toString()),
+            CustomText(text: controller.task3.value.toString()),
+            CustomText(text: controller.task4.value.toString()),
             SingleSkillCard(
               imagePath: 'assets/icons/phoneme_icon.png',
               title: 'Phoneme Flashcards',

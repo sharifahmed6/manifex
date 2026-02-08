@@ -66,7 +66,7 @@ class InteractiveTaskFourScreen extends StatelessWidget {
                             ),
                             SizedBox(height: 12.h),
                             GestureDetector(
-                              onTap: () => controller.load(age: 5),
+                              onTap: () => controller.load(),
                               child: Container(
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 16.w, vertical: 10.h),

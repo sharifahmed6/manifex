@@ -1,11 +1,14 @@
 import 'dart:math';
 import 'package:get/get.dart';
+import 'package:manifex/App/Urls.dart';
 import '../../../../App/network_caller.dart';
 import '../model/word_match_response.dart';
+import 'interactive_reading_controller.dart';
 
 enum DropState { empty, correct, wrong }
 
 class TaskThreeController extends GetxController {
+  final interactiveController = Get.find<InteractiveReadingController>();
   final NetworkCaller networkCaller = NetworkCaller();
 
   final isLoading = false.obs;
@@ -33,11 +36,7 @@ class TaskThreeController extends GetxController {
       isLoading.value = true;
       error.value = '';
 
-      // ✅ double slash বাদ
-      final url = "https://api.manifex.org/api/v1/word-match";
-
-      // সাধারণত GET হয়, তোমার NetworkCaller.getRequest() এ token already আছে
-      final res = await networkCaller.getRequest(url: url);
+      final res = await networkCaller.getRequest(url: urls.match_word);
 
       if (!res.isSuccess || res.responseData == null) {
         error.value = res.errorMessage;
@@ -48,7 +47,6 @@ class TaskThreeController extends GetxController {
 
       sessionName.value = parsed.data.sessionName;
 
-      // words + images id match করে pairs বানানো
       final pairs = parsed.data.words.map((w) {
         final img = parsed.data.imageUrlById(w.id) ?? "";
         return ApiPair(word: w.text, image: img, answerKey: w.id);
@@ -62,7 +60,6 @@ class TaskThreeController extends GetxController {
     }
   }
 
-  // ✅ existing logic (slightly improved)
   void loadFromApi(List<ApiPair> pairs) {
     final rnd = Random();
 
@@ -150,14 +147,8 @@ class TaskThreeController extends GetxController {
 
   void finish() {
     if (!allFilled) return;
-
-    Get.back(result: {
-      "correct": correctCount.value,
-      "total": totalSlots,
-      "percent": percent.value,
-      "allCorrect": allCorrect,
-      "sessionName": sessionName.value,
-    });
+   interactiveController.task3.value = percent.value;
+    Get.back();
   }
 
   void resetAll() {
