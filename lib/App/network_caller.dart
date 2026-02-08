@@ -140,6 +140,7 @@ class NetworkCaller {
         ),
       );
     } catch (e) {
+      print("Error: $e");
       return NetworkResponse(
         statusCode: -1,
         isSuccess: false,

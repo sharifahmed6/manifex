@@ -1,22 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:manifex/Presentation/Authentication/SignUp/Model/signup_model.dart';
 import 'package:manifex/Presentation/Share/scafold_background.dart';
 import '../../../../App/AppColors.dart';
 import '../../../../App/assets_path.dart';
 import '../../../../App/routes.dart';
 import '../../../../Core/responsive.dart';
+import '../../../../Core/snakbar.dart';
 import '../../../Share/button_gradient.dart';
 import '../../../Share/manifex_logo.dart';
 import '../Controller/Controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 
 class signup extends StatelessWidget {
   signup({super.key});
   final controller = Get.find<signup_controller>();
   final _formKey = GlobalKey<FormState>();
 
-
+  TextEditingController firstName = TextEditingController();
+  TextEditingController lastName = TextEditingController();
+  TextEditingController password = TextEditingController();
+  TextEditingController confirmPassword = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +41,7 @@ class signup extends StatelessWidget {
                       .tr,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      fontSize: ScreenResponsive.responsiveFont(context,12)
+                    fontSize: ScreenResponsive.responsiveFont(context, 12),
                   ),
                 ),
                 CircleAvatar(
@@ -58,20 +62,25 @@ class signup extends StatelessWidget {
                             child: Text(
                               "First Name".tr,
                               style: TextStyle(
-                                fontSize: ScreenResponsive.responsiveFont(context,14),
+                                fontSize: ScreenResponsive.responsiveFont(
+                                  context,
+                                  14,
+                                ),
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
                           TextFormField(
+                            controller: firstName,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter some text';
-                              }else{
+                              } else {
                                 return null;
                               }
-                            }
-                          )
+                            },
+                            decoration: InputDecoration(hintText: "Jhon".tr),
+                          ),
                         ],
                       ),
                     ),
@@ -83,20 +92,25 @@ class signup extends StatelessWidget {
                             child: Text(
                               "Last Name".tr,
                               style: TextStyle(
-                                fontSize: ScreenResponsive.responsiveFont(context,14),
+                                fontSize: ScreenResponsive.responsiveFont(
+                                  context,
+                                  14,
+                                ),
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
                           TextFormField(
+                            controller: lastName,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter some text';
-                              }else{
+                              } else {
                                 return null;
                               }
-                            }
-                          )
+                            },
+                            decoration: InputDecoration(hintText: "Doe".tr),
+                          ),
                         ],
                       ),
                     ),
@@ -108,7 +122,7 @@ class signup extends StatelessWidget {
                   child: Text(
                     "Select your age group".tr,
                     style: TextStyle(
-                      fontSize: ScreenResponsive.responsiveFont(context,14),
+                      fontSize: ScreenResponsive.responsiveFont(context, 14),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -122,7 +136,10 @@ class signup extends StatelessWidget {
                   ),
 
                   dropdownColor: AppColors.primary,
-                  icon: Icon(Icons.arrow_drop_down, color: AppColors.primary), // dropdown icon color
+                  icon: Icon(
+                    Icons.arrow_drop_down,
+                    color: AppColors.primary,
+                  ), // dropdown icon color
                   isExpanded: true,
 
                   items: controller.ageGroups.map((age) {
@@ -130,13 +147,15 @@ class signup extends StatelessWidget {
                       value: age,
                       child: Text(
                         age,
-                        style: TextStyle(color: Colors.white), // item text color
+                        style: TextStyle(
+                          color: Colors.white,
+                        ), // item text color
                       ),
                     );
                   }).toList(),
 
                   onChanged: (value) {
-                    controller.selectedAgeGroup = value;
+                    controller.selectedAgeGroup = value!;
                   },
                 ),
 
@@ -145,7 +164,7 @@ class signup extends StatelessWidget {
                   child: Text(
                     "Select hobbies and Interests".tr,
                     style: TextStyle(
-                      fontSize: ScreenResponsive.responsiveFont(context,14),
+                      fontSize: ScreenResponsive.responsiveFont(context, 14),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -159,7 +178,10 @@ class signup extends StatelessWidget {
                   ),
 
                   dropdownColor: AppColors.primary,
-                  icon: Icon(Icons.arrow_drop_down, color: AppColors.primary), // dropdown icon color
+                  icon: Icon(
+                    Icons.arrow_drop_down,
+                    color: AppColors.primary,
+                  ), // dropdown icon color
                   isExpanded: true,
 
                   items: controller.hobbies.map((age) {
@@ -167,49 +189,94 @@ class signup extends StatelessWidget {
                       value: age,
                       child: Text(
                         age,
-                        style: TextStyle(color: Colors.white), // item text color
+                        style: TextStyle(
+                          color: Colors.white,
+                        ), // item text color
                       ),
                     );
                   }).toList(),
 
                   onChanged: (value) {
-                    controller.selectedHobbies = value;
+                    controller.selectedHobbies = value!;
                   },
                 ),
 
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "Email".tr,
+                    "User Type".tr,
                     style: TextStyle(
-                      fontSize: ScreenResponsive.responsiveFont(context,14),
+                      fontSize: ScreenResponsive.responsiveFont(context, 14),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-                TextFormField(
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter some text';
-                    } else if (GetUtils.isEmail(value) == false) {
-                      return 'Please enter a valid email address';
-                    }
-                    return null;
+
+                DropdownButtonFormField<String>(
+                  value: controller.selectedUserType,
+                  hint: const Text(
+                    "Select User Type",
+                    style: TextStyle(color: Colors.grey),
+                  ),
+
+                  dropdownColor: AppColors.primary,
+                  icon: Icon(
+                    Icons.arrow_drop_down,
+                    color: AppColors.primary,
+                  ), // dropdown icon color
+                  isExpanded: true,
+
+                  items: controller.userTypes.map((age) {
+                    return DropdownMenuItem<String>(
+                      value: age,
+                      child: Text(
+                        age,
+                        style: TextStyle(
+                          color: Colors.white,
+                        ), // item text color
+                      ),
+                    );
+                  }).toList(),
+
+                  onChanged: (value) {
+                    controller.selectedHobbies = value!;
                   },
-                  decoration: InputDecoration(hintText: "Enter your email".tr),
                 ),
+
+                // Align(
+                //   alignment: Alignment.centerLeft,
+                //   child: Text(
+                //     "Email".tr,
+                //     style: TextStyle(
+                //       fontSize: ScreenResponsive.responsiveFont(context,14),
+                //       fontWeight: FontWeight.bold,
+                //     ),
+                //   ),
+                // ),
+                // TextFormField(
+                //   validator: (value) {
+                //     if (value == null || value.isEmpty) {
+                //       return 'Please enter some text';
+                //     } else if (GetUtils.isEmail(value) == false) {
+                //       return 'Please enter a valid email address';
+                //     }
+                //     return null;
+                //   },
+                //   decoration: InputDecoration(hintText: "Enter your email".tr),
+                // ),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
                     "Password".tr,
                     style: TextStyle(
-                      fontSize: ScreenResponsive.responsiveFont(context,14),
+                      fontSize: ScreenResponsive.responsiveFont(context, 14),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
                 Obx(
-                      () => TextFormField(
+                  () => TextFormField(
+                    controller: password,
                     obscureText: controller.password.value,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -224,7 +291,7 @@ class signup extends StatelessWidget {
                       suffixIcon: GestureDetector(
                         onTap: () {
                           controller.password.value =
-                          !controller.password.value;
+                              !controller.password.value;
                         },
                         child: Icon(
                           controller.password.value
@@ -242,20 +309,21 @@ class signup extends StatelessWidget {
                   child: Text(
                     "Confirm Password".tr,
                     style: TextStyle(
-                      fontSize: ScreenResponsive.responsiveFont(context,14),
+                      fontSize: ScreenResponsive.responsiveFont(context, 14),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
                 Obx(
-                      () => TextFormField(
+                  () => TextFormField(
+                    controller: confirmPassword,
                     obscureText: controller.confirm_password.value,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter some text';
                       } else if (value.length < 6) {
                         return 'Password must be at least 6 characters';
-                      } else if (value != controller.password.value) {
+                      } else if (value != password.text) {
                         return 'Passwords do not match';
                       }
                       return null;
@@ -265,7 +333,7 @@ class signup extends StatelessWidget {
                       suffixIcon: GestureDetector(
                         onTap: () {
                           controller.confirm_password.value =
-                          !controller.confirm_password.value;
+                              !controller.confirm_password.value;
                         },
                         child: Icon(
                           controller.confirm_password.value
@@ -280,8 +348,31 @@ class signup extends StatelessWidget {
                 const SizedBox(height: 10),
                 ButtonGradient(
                   onTap: () {
+
                     if (_formKey.currentState!.validate()) {
-                      print("validated");
+
+                      if(controller.selectedAgeGroup == "") {
+                        AppSnackbar.show("Please select your age group");
+                        return;
+                      }else if(controller.selectedHobbies == "") {
+                        AppSnackbar.show("Please select your hobbies");
+                        return;
+                      }else if(controller.selectedUserType == "") {
+                        AppSnackbar.show("Please select your user type");
+                        return;
+                      }else{
+                        signupModel model = signupModel(
+                          firstName: firstName.text,
+                          lastName: lastName.text,
+                          ageGroup: controller.selectedAgeGroup,
+                          hobbies: controller.selectedHobbies,
+                          userType: controller.selectedUserType,
+                          email: controller.emailAddress.value,
+                          password: password.text,
+                          confirmPassword: confirmPassword.text,
+                        );
+                        controller.createAccount(model);
+                      }
                     }
                   },
                   text: "Sign Up".tr,
@@ -289,7 +380,12 @@ class signup extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Already a member?  ", style: TextStyle(fontSize: ScreenResponsive.responsiveFont(context, 14)),),
+                    Text(
+                      "Already a member?  ",
+                      style: TextStyle(
+                        fontSize: ScreenResponsive.responsiveFont(context, 14),
+                      ),
+                    ),
                     GestureDetector(
                       onTap: () => Get.toNamed(routes.login_screen),
                       child: Text(
@@ -297,12 +393,19 @@ class signup extends StatelessWidget {
                         style: TextStyle(
                           color: AppColors.sky,
                           fontWeight: FontWeight.bold,
-                          fontSize: ScreenResponsive.responsiveFont(context,14),
-
+                          fontSize: ScreenResponsive.responsiveFont(
+                            context,
+                            14,
+                          ),
                         ),
                       ),
                     ),
-                    Text(" to your account", style: TextStyle( fontSize: ScreenResponsive.responsiveFont(context,14),),),
+                    Text(
+                      " to your account",
+                      style: TextStyle(
+                        fontSize: ScreenResponsive.responsiveFont(context, 14),
+                      ),
+                    ),
                   ],
                 ),
               ],

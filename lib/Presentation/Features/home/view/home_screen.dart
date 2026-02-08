@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:manifex/App/assets_path.dart';
+import 'package:manifex/Core/SharepreferenceHelper.dart';
 import 'package:manifex/Core/responsive.dart';
 import 'package:manifex/Presentation/Share/GradientMask.dart';
 import 'package:manifex/Presentation/Share/button_gradient.dart';
@@ -36,6 +37,7 @@ class HomeScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   spacing: 5,
                   children: [
+                    SizedBox(width: double.infinity,),
                     Wrap(
                       alignment: WrapAlignment.start,
                       crossAxisAlignment: WrapCrossAlignment.center,
@@ -44,7 +46,7 @@ class HomeScreen extends StatelessWidget {
                       children: [
                         GradientMask(
                           child: Text(
-                            "Sadid Ahammed!",
+                            "${PrefHelper.getFirstName()} ${PrefHelper.getLastName()}!",
                             style: TextStyle(
                               fontSize: ScreenResponsive.responsiveFont(
                                 context,
@@ -309,6 +311,7 @@ class HomeScreen extends StatelessWidget {
                   child: Column(
                     spacing: 5,
                     children: [
+                      SizedBox(width: double.infinity,),
                       Text(
                         "Phoneme Flashcards".tr,
                         style: TextStyle(

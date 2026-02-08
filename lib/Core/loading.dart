@@ -41,18 +41,20 @@ class _LoaderWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        color: AppColors.primary,
+        // color: AppColors.primary,
         borderRadius: BorderRadius.circular(50),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const CircularProgressIndicator.adaptive(),
+          const CircularProgressIndicator.adaptive(
+            backgroundColor: Colors.white,
+          ),
           const SizedBox(width: 10),
           Text(
             message,
-            style: const TextStyle(color: Colors.black),
+            style: const TextStyle(color: Colors.white),
           )
         ],
       ),

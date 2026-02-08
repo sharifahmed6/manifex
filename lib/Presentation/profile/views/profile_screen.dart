@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:manifex/App/AppColors.dart';
 import 'package:manifex/App/routes.dart';
 import 'package:manifex/Presentation/Share/scafold_background.dart';
 import 'package:manifex/Presentation/Share/text_title_small.dart';
 import 'package:manifex/Presentation/app_bar/views/custom_app_bar.dart';
 import 'package:manifex/Presentation/progress/widget/gradient_border_avater.dart';
+
+import '../../../Core/SharepreferenceHelper.dart';
+import '../../../Core/loading.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -161,20 +165,63 @@ class ProfileScreen extends StatelessWidget {
                       color: Color(0xffFFFFFF).withAlpha((2.56 * 22).toInt()),
                     ),
                     SizedBox(height: 16.h),
-                    Row(
-                      children: [
-                        Image.asset(
-                          'assets/icons/logout_icon.png',
-                          width: 24,
-                          height: 24,
-                        ),
-                        SizedBox(width: 8.w),
-                        CustomText(
-                          text: 'Logout',
-                          fontSize: 16,
-                          color: Color(0xffFF5959),
-                        ),
-                      ],
+                    GestureDetector(
+                      onTap: () {
+                        Get.dialog(
+                          AlertDialog(
+                            backgroundColor: AppColors.primary,
+                            title: const Text("Logout", style: TextStyle(color: Colors.red, fontWeight: FontWeight.w500),),
+                            content: const Text("Are you sure you want to logout?"),
+                            actions: [
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: TextButton(
+                                      onPressed: () => Get.back(),
+                                      child: const Text("Cancel", style: TextStyle(color: Colors.white),),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      onPressed: () async {
+                                        Get.back();
+                                        AppLoader.show();
+                                        await PrefHelper.clear();
+                                        AppLoader.hide();
+                                        Get.offAllNamed(routes.login_screen);
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.red,
+                                      ),
+                                      child: const Text(
+                                        "Logout",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                          barrierDismissible: false,
+                        );
+
+                      },
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            'assets/icons/logout_icon.png',
+                            width: 24,
+                            height: 24,
+                          ),
+                          SizedBox(width: 8.w),
+                          CustomText(
+                            text: 'Logout',
+                            fontSize: 16,
+                            color: Color(0xffFF5959),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -209,7 +256,7 @@ class ProfileScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         GradientBorderAvatar(
-          image: AssetImage('assets/images/splash_icon.png'),
+          image: NetworkImage(PrefHelper.getProfilePicture()),
         ),
         SizedBox(width: 16.w),
         Expanded(
@@ -217,10 +264,12 @@ class ProfileScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             spacing: 6.h,
             children: [
-              CustomText(text: 'Sharif Ahmed', fontSize: 24),
+              CustomText(text: '${PrefHelper.getFirstName()} ${PrefHelper.getLastName()}', fontSize: 24),
               CustomText(
-                text: 'xyz@gmail.com',
+                text: PrefHelper.getEmail(),
                 fontSize: 16,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 fontWeight: FontWeight.w300,
                 color: Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
               ),

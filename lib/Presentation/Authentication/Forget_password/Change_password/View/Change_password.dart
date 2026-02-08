@@ -115,7 +115,9 @@ class resent_password extends StatelessWidget {
             const SizedBox(height: 10),
             ButtonGradient(
               onTap: () {
-
+                if (_formKey.currentState!.validate()) {
+                  controller.resetPassword(email, password.text);
+                }
               },
               text: "Reset Password".tr,
             )

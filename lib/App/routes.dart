@@ -12,8 +12,10 @@ import 'package:manifex/Presentation/profile_edit/views/profile_edit_screen.dart
 import 'package:manifex/Presentation/progress/views/progress_screen.dart';
 import 'package:manifex/Presentation/terms_condition/views/terms_condition_screen.dart';
 import 'package:manifex/Presentation/unlock_rewards/views/unlock_rewards_screen.dart';
+import '../Presentation/Authentication/Forget_password/find_account/View/find_account.dart';
 import '../Presentation/Authentication/Login/View/login.dart';
 import '../Presentation/Authentication/SignUp/View/SignUp.dart';
+import '../Presentation/Authentication/SignUp/View/signupGmail.dart';
 import '../Presentation/On_boarding/View/on_boarding.dart';
 import '../Presentation/Splash/View/Splash.dart';
 import '../Presentation/all_course/interactive_reading/views/interactive_task_four_screen.dart';
@@ -44,6 +46,7 @@ class routes {
   static const String sight_word_scrren = '/sight_word_scrren';
   static const String interactive_task3_screen = '/interactive_task3_screen';
   static const String interactive_task4_screen = '/interactive_task4_screen';
+  static const String signupGmail_screen = '/signupGmail';
 
 
 
@@ -57,6 +60,7 @@ class routes {
     GetPage( name: progress_screen, binding: InitialBinding(), page: () => ProgressScreen()),
     GetPage( name: profile_screen, binding: InitialBinding(), page: () => ProfileScreen()),
     GetPage( name: profile_edit_screen, binding: InitialBinding(), page: () => ProfileEditScreen()),
+    GetPage( name: find_account_screen, binding: InitialBinding(), page: () => find_account()),
     GetPage( name: language_screen, binding: InitialBinding(), page: () => LanguageScreen()),
     GetPage( name: about_us_screen, binding: InitialBinding(), page: () => AboutUsScreen()),
     GetPage( name: terms_conditon_screen, binding: InitialBinding(), page: () => TermsConditionScreen()),
@@ -68,6 +72,7 @@ class routes {
     GetPage( name: sight_word_scrren, binding: InitialBinding(), page: () => SightWordPracticeScreen()),
     GetPage( name: interactive_task3_screen, binding: InitialBinding(), page: () => InteractiveTaskThreeScreen()),
     GetPage( name: interactive_task4_screen, binding: InitialBinding(), page: () => InteractiveTaskFourScreen()),
+    GetPage( name: signupGmail_screen, binding: InitialBinding(), page: () => signupGmail()),
 
   ];
 }
