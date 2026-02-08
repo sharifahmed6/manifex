@@ -62,9 +62,6 @@ class PrefHelper {
     await _prefs!.setString(_kProfilePic, profilePic);
     await _prefs!.setString(_kUserType, userType);
     await _prefs!.setString(_kLanguage, language);
-
-    await _prefs!.setString(_kLanguage, language);
-    await _prefs!.setString(_kLanguage, language);
   }
 
   // ---------- GET ----------
@@ -75,6 +72,7 @@ class PrefHelper {
   static String getLastName() => _prefs?.getString(_kLastName) ?? "";
   static String getEmail() => _prefs?.getString(_kEmail) ?? "";
   static String getUserType() => _prefs?.getString(_kUserType) ?? "";
+  static String getProfilePicture() => _prefs?.getString(_kProfilePic) ?? "";
 
   // ---------- LOGOUT ----------
   static Future<void> clear() async {

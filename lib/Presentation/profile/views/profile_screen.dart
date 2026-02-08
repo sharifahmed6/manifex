@@ -256,7 +256,7 @@ class ProfileScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         GradientBorderAvatar(
-          image: AssetImage('assets/images/splash_icon.png'),
+          image: NetworkImage(PrefHelper.getProfilePicture()),
         ),
         SizedBox(width: 16.w),
         Expanded(

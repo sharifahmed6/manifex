@@ -3,7 +3,6 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:manifex/App/network_caller.dart';
 import 'package:manifex/App/routes.dart';
 import 'package:manifex/Core/loading.dart';
-
 import '../../../../App/Urls.dart';
 import '../../../../Core/SharepreferenceHelper.dart';
 import '../../../../Core/snakbar.dart';
@@ -46,8 +45,6 @@ class login_controller extends GetxController {
     }else{
       AppSnackbar.show(response.errorMessage);
     }
-
-
   }
 
   Map<String, dynamic> decodeJwtToJson(String token) {
@@ -58,5 +55,4 @@ class login_controller extends GetxController {
       return {};
     }
   }
-
 }
