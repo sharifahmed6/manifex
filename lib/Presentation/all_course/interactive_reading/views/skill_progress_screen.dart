@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:manifex/Presentation/Features/home/controller/home_controller.dart';
 import 'package:manifex/Presentation/all_course/interactive_reading/controller/interactive_reading_controller.dart';
 import 'package:manifex/Presentation/progress/widget/gradient_border_avater.dart';
 import '../../../../App/assets_path.dart';
@@ -11,6 +12,7 @@ import '../../practices/widget/skill_welcome_card.dart';
 class SkillProgressScreen extends StatelessWidget {
    SkillProgressScreen({super.key});
  final controller = Get.find<InteractiveReadingController>();
+ final homeController = Get.find<HomeController>();
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -40,7 +42,7 @@ class SkillProgressScreen extends StatelessWidget {
                 ),
               ),
             ),
-            rightTitle: '6',
+            rightTitle: '${homeController.profileInfo.value?.data?.userProgress?.dayStreak}',
             rightSubtitle: 'Days Streak!',
           ),
           SizedBox(height: 10.h),
@@ -84,7 +86,7 @@ class SkillProgressScreen extends StatelessWidget {
             color2: Color(0xff01803A),
             imagePath: 'assets/icons/champion.png',
             leftTitle: 'Today’s Goal',
-            rightTitle: '75%',
+            rightTitle: '${homeController.profileInfo.value?.data?.userProgress?.overallAccuracy.toInt()}%',
             rightSubtitle: 'Accuracy',
             leftSubtitle: GradientLinearProgress(
               value: 0.5,

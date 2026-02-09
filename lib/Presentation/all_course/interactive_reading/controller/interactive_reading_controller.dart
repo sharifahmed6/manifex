@@ -1,8 +1,14 @@
 import 'dart:async';
 import 'dart:ffi';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:manifex/App/Urls.dart';
+import 'package:manifex/App/network_caller.dart';
 
 class InteractiveReadingController extends GetxController {
+  final isLoading = false.obs;
   final totalDuration = Duration.zero.obs;
   final tick = 0.obs;
  Timer? _timer;
@@ -61,7 +67,55 @@ void stop(){
     final s = d.inSeconds.remainder(60);
     return '${two(h)}:${two(m)}:${two(s)}';
   }
-
+Future<void> interactiveReadingAnsSubmit()async{
+  final seconds = totalDuration.value.inSeconds;
+  try{
+      isLoading.value = true;
+      NetworkResponse response = await NetworkCaller().postRequest(url: urls.readingTaskComplete,
+          body: {
+            "sessionName": "Reading",
+            "tasks": [
+              {"taskName": "Task 1", "marks": task1.value.round(), "isAnswer": true},
+              {"taskName": "Task 2", "marks": task2.value.round(),  "isAnswer": true},
+              {"taskName": "Task 3", "marks": task3.value.round(),  "isAnswer": true},
+              {"taskName": "Task 4", "marks": task4.value.round(),  "isAnswer": true},
+            ],
+            "timeSpent": seconds
+          }
+      );
+      if(response.isSuccess){
+        final message = response.responseData?['message'];
+        Get.back();
+        Get.showSnackbar(
+           GetSnackBar(
+            title: "Success",
+            message: message,
+            duration: Duration(seconds: 4),
+            backgroundColor: Colors.green,
+            snackPosition: SnackPosition.TOP,
+          ),
+        );
+      }else{
+        final message = response.responseData?['message'];
+        Get.back();
+        Get.showSnackbar(
+          GetSnackBar(
+            title: "Error",
+            message: message,
+            duration: Duration(seconds: 4),
+            backgroundColor: Colors.green,
+            snackPosition: SnackPosition.TOP,
+          ),
+        );
+      }
+    }catch(e){
+      if (kDebugMode) {
+        print(e);
+      }
+    }finally{
+      isLoading.value = false;
+    }
+}
 
   @override
   void onClose() {

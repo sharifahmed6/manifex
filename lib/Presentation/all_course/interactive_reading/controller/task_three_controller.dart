@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:get/get.dart';
 import 'package:manifex/App/Urls.dart';
 import '../../../../App/network_caller.dart';
+import '../../../Features/home/controller/home_controller.dart';
 import '../model/word_match_response.dart';
 import 'interactive_reading_controller.dart';
 
