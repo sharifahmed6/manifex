@@ -158,7 +158,7 @@ class HomeScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Progress".tr,
+                                  "Streak".tr,
                                   style: TextStyle(
                                     fontSize: ScreenResponsive.responsiveFont(
                                       context,
@@ -254,7 +254,7 @@ class HomeScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Progress".tr,
+                                  "Today’s Goal".tr,
                                   style: TextStyle(
                                     fontSize: ScreenResponsive.responsiveFont(
                                       context,

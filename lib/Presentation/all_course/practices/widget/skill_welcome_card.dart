@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:manifex/Core/SharepreferenceHelper.dart';
 
 import '../../../../App/assets_path.dart';
 import '../../../Share/welcome_card.dart';
@@ -21,7 +22,7 @@ class SkillWelcomeCard extends StatelessWidget {
         ),
         SizedBox(height: 8.h,),
         WelcomeCard(
-          name: 'Sharif',
+          name: '${PrefHelper.getFirstName()}',
           describe: "I'm Mercury, your AI reading companion. Today we'll practice reading together with some exciting challenges. Are you ready to unlock your potential?",
         ),
       ],

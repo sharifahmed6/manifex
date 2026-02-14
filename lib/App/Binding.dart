@@ -20,6 +20,8 @@ import '../Presentation/all_course/interactive_reading/controller/task_three_con
 import '../Presentation/all_course/native_speaking/controller/native_speaking_skill_controller.dart';
 import '../Presentation/all_course/practices/controller/practices_controller.dart';
 import '../Presentation/all_course/practices/controller/toggle_tab_controller.dart';
+import '../Presentation/all_course/presentationPractice/Controller/Controller.dart';
+import '../Presentation/all_course/presentationPractice/Widgets/powerWordsPluse/Controller/Controller.dart';
 import '../Presentation/all_course/smart_writing/controller/smart_writing_controller.dart';
 import '../Presentation/bottom_navbar/controllers/bottom_navbar_controller.dart';
 import '../Presentation/profile/controller/profile_controller.dart';
@@ -53,6 +55,8 @@ class InitialBinding extends Bindings {
     Get.lazyPut<SightWordController>(() => SightWordController(), fenix: true);
     Get.lazyPut<TaskThreeController>(() => TaskThreeController(), fenix: true);
     Get.lazyPut<TaskFourController>(() => TaskFourController(), fenix: true);
+    Get.lazyPut<presentationPracticeController>(() => presentationPracticeController(), fenix: true);
+    Get.lazyPut<powerWordsPluseController>(() => powerWordsPluseController(), fenix: true);
 
 
 
