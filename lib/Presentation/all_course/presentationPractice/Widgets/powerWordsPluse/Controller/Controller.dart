@@ -131,6 +131,7 @@ class powerWordsPluseController extends GetxController {
       }
 
       Get.dialog(
+        barrierDismissible: false,
           CustomCircleProgressIndicator()
       );
       // Send request

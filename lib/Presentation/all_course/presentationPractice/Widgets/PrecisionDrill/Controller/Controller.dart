@@ -1,9 +1,14 @@
 import 'dart:async';
-
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 import 'package:get/get.dart';
+import 'package:manifex/App/Urls.dart';
 import 'package:manifex/Core/snakbar.dart';
 import 'package:permission_handler/permission_handler.dart';
+
+import '../../../../../../Core/SharepreferenceHelper.dart';
+import '../../../../../Share/custom_circle_progress_indicator.dart';
 
 class PrecisionDrillController extends GetxController {
 
@@ -11,6 +16,8 @@ class PrecisionDrillController extends GetxController {
 
   var isRunning = false.obs;
   var currentWord = "".obs;
+  var score = 0.obs;
+  var feedback = ''.obs;
 
   Timer? _timer;
   int _currentIndex = 0;
@@ -18,7 +25,7 @@ class PrecisionDrillController extends GetxController {
   var currentSpeed = "Slow".obs;
   var AudioFilePath = ''.obs;
 
-  final Map<String, List<String>> precisionDrill = {
+  var precisionDrill = {
     "slow": [
       "perception"
     ],
@@ -36,10 +43,62 @@ class PrecisionDrillController extends GetxController {
   };
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     initRecorder();
     super.onInit();
   }
+
+  @override
+  Future<void> onReady() async {
+    // TODO: implement onReady
+    await getPrecisionDrill();
+    super.onReady();
+  }
+
+
+  Future<void> getPrecisionDrill() async {
+    final userId = PrefHelper.getUserId().toString();
+    final url = Uri.parse("https://ai.manifex.org/api/v1/presentation/precision-drill/get_precision_drill?user_id=$userId"
+    );
+
+    try {
+      Get.dialog(
+          barrierDismissible: false,
+          CustomCircleProgressIndicator()
+      );
+      final response = await http.get(
+        url,
+        headers: {
+          'authtoken': '1',
+        },
+      );
+      Get.back();
+
+      print("Status Code: ${response.statusCode}");
+      print("Raw Body: ${response.body}");
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> decoded =
+        jsonDecode(response.body);
+
+        // Convert safely to Map<String, List<String>>
+        final Map<String, List<String>> converted = {};
+
+        decoded.forEach((key, value) {
+          converted[key] = List<String>.from(value);
+        });
+
+        precisionDrill = converted;
+
+        print("Parsed Data: $precisionDrill");
+      } else {
+        print("Server returned error: ${response.statusCode}");
+      }
+    } catch (e) {
+      print("HTTP Error: $e");
+    }
+  }
+
 
   Future<void> initRecorder() async {
     await Permission.microphone.request();
@@ -54,6 +113,8 @@ class PrecisionDrillController extends GetxController {
     _currentIndex = 0;
     currentSpeed.value = "Slow";
     AudioFilePath.value = '';
+    score.value = 0;
+    feedback.value = '';
 
 
     await recorder.startRecorder(toFile: 'precision_drill.aac');
@@ -84,11 +145,11 @@ class PrecisionDrillController extends GetxController {
   int _getDuration(String section) {
     switch (section) {
       case "slow":
-        return 8;
-      case "medium":
         return 5;
-      case "fast":
+      case "medium":
         return 3;
+      case "fast":
+        return 2;
       default:
         return 5;
     }
@@ -115,9 +176,67 @@ class PrecisionDrillController extends GetxController {
     isRunning.value = false;
     _timer?.cancel();
     String? path = await recorder.stopRecorder();
-    print("Recorded Path : $path");
-    AppSnackbar.show(path!);
-    AudioFilePath.value = path;
+    AudioFilePath.value = path!;
+  }
+
+  List<String> getAllPrecisionWords(Map<String, List<String>> drill) {
+    return [
+      ...?drill['slow'],
+      ...?drill['medium'],
+      ...?drill['fast'],
+    ];
+  }
+
+
+  Future<void> submit() async {
+    final url = Uri.parse("https://ai.manifex.org/api/v1/presentation/precision-drill/precision_drill");
+
+
+    try {
+      // Create Multipart request
+      final request = http.MultipartRequest('POST', url);
+
+      // Headers
+      request.headers.addAll({
+        'Content-Type': 'application/json',
+        'authtoken': '1',
+      });
+      final allWords = getAllPrecisionWords(precisionDrill);
+
+      // Add text field
+      request.fields['wordlist'] = jsonEncode(allWords);
+
+
+      // Add audio files if provided
+      if (AudioFilePath.isNotEmpty) {
+        request.files.add(await http.MultipartFile.fromPath(
+          'file',
+          AudioFilePath.value,
+        ));
+      }
+
+      Get.dialog(
+          barrierDismissible: false,
+          CustomCircleProgressIndicator()
+      );
+      final streamedResponse = await request.send();
+      final response = await http.Response.fromStream(streamedResponse);
+      Get.back();
+
+      print("Status Code: ${response.statusCode}");
+      print("Response Body: ${response.body}");
+
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        final Map<String, dynamic> data = jsonDecode(response.body);
+        score.value = data['score'] ?? 0;
+        feedback.value = data['feedback'] ?? '';
+
+      } else {
+        print("Error submitting word: ${response.body}");
+      }
+    } catch (e) {
+      print("HTTP Error: $e");
+    }
   }
 
   @override
