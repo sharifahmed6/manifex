@@ -21,6 +21,9 @@ import '../Presentation/all_course/native_speaking/controller/native_speaking_sk
 import '../Presentation/all_course/practices/controller/practices_controller.dart';
 import '../Presentation/all_course/practices/controller/toggle_tab_controller.dart';
 import '../Presentation/all_course/presentationPractice/Controller/Controller.dart';
+import '../Presentation/all_course/presentationPractice/Widgets/ContextSpin/Controller/Controller.dart';
+import '../Presentation/all_course/presentationPractice/Widgets/PrecisionDrill/Controller/Controller.dart';
+import '../Presentation/all_course/presentationPractice/Widgets/flowChain/Controller/Controller.dart';
 import '../Presentation/all_course/presentationPractice/Widgets/powerWordsPluse/Controller/Controller.dart';
 import '../Presentation/all_course/smart_writing/controller/smart_writing_controller.dart';
 import '../Presentation/bottom_navbar/controllers/bottom_navbar_controller.dart';
@@ -57,6 +60,9 @@ class InitialBinding extends Bindings {
     Get.lazyPut<TaskFourController>(() => TaskFourController(), fenix: true);
     Get.lazyPut<presentationPracticeController>(() => presentationPracticeController(), fenix: true);
     Get.lazyPut<powerWordsPluseController>(() => powerWordsPluseController(), fenix: true);
+    Get.lazyPut<PrecisionDrillController>(() => PrecisionDrillController(), fenix: true);
+    Get.lazyPut<ContextSpinController>(() => ContextSpinController(), fenix: true);
+    Get.lazyPut<flowChainController>(() => flowChainController(), fenix: true);
 
 
 

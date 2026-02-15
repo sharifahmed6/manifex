@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:manifex/App/AppColors.dart';
-import 'package:manifex/App/assets_path.dart';
+import 'package:manifex/Core/SharepreferenceHelper.dart';
 import 'package:manifex/Core/responsive.dart';
 import 'package:manifex/Core/snakbar.dart';
-import 'package:manifex/Presentation/Features/Subcription/View/Subcription.dart';
 import 'package:manifex/Presentation/Share/GradientMask.dart';
 import 'package:manifex/Presentation/Share/scafold_background.dart';
 import 'package:get/get.dart';
@@ -80,7 +79,7 @@ class powerWordsPlus extends StatelessWidget {
                           ),)
                         ),
                         GestureDetector(
-                          onTap: () => controller.skipWord(),
+                          onTap: () => controller.nextWord(),
                           child: Container(
                             padding: EdgeInsets.symmetric(
                               horizontal: 10,
@@ -169,7 +168,7 @@ class powerWordsPlus extends StatelessWidget {
                                 width: ScreenResponsive.w(context, 70),
                                 decoration: BoxDecoration(
                                   color: controller.defineRecording.value
-                                      ? Colors.red
+                                      ?  Colors.red
                                       : null,
                                   gradient: controller.defineRecording.value
                                       ? null
@@ -302,30 +301,97 @@ class powerWordsPlus extends StatelessWidget {
               ),
 
               const SizedBox(height: 10),
-              Container(
-                height: 55,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  gradient: LinearGradient(
-                    colors: [AppColors.yellow, AppColors.pink, AppColors.sky],
+              GestureDetector(
+                onTap: (){
+                  if(controller.defineAudioFile.value.isNotEmpty && controller.sentenceAudioFile.value.isNotEmpty && controller.feedback.value.isEmpty){
+                    controller.submit(
+                      define: controller.defineAudioFile.value,
+                      sentence: controller.sentenceAudioFile.value,
+                      word: controller.powerWords[controller.currentWord.value],
+                    );
+                  }else if(controller.feedback.value.isNotEmpty){
+                    controller.nextWord();
+                  } else{
+                    AppSnackbar.show("Please record both audio files.");
+                  }
+                },
+                child: Obx(() => Container(
+                  height: 55,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    gradient: LinearGradient(
+                      colors: [AppColors.yellow, AppColors.pink, AppColors.sky],
+                    ),
                   ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  spacing: 5,
-                  children: [
-                    Text(
-                      "Check with AI".tr,
-                      style: TextStyle(fontWeight: FontWeight.w600),
-                    ),
-                    Image.asset(
-                      'assets/icons/ai_icon.png',
-                      width: 24.w,
-                      height: 24.h,
-                    ),
-                  ],
-                ),
+                  child: controller.feedback.value.isEmpty ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    spacing: 5,
+                    children: [
+                      Text(
+                        "Check with AI".tr,
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                      Image.asset(
+                        'assets/icons/ai_icon.png',
+                        width: 24.w,
+                        height: 24.h,
+                      ),
+                    ],
+                  ) : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        controller.currentWord.value == controller.powerWords.length - 1 ? "Finish" : "Next Word".tr,
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
+                ),)
               ),
+              const SizedBox(height: 10),
+
+
+              Obx(() => controller.feedback.value.isNotEmpty ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Obx(() => Container(
+                    padding: EdgeInsets.all(15),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withAlpha(15),
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(color: Colors.grey, width: 0.7),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text("Your Score"),
+                            Spacer(),
+                            Text("${controller.score.value}%"),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        GradientMask(
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(50),
+                            child: LinearProgressIndicator(
+                              minHeight: 8,
+                              color: Colors.white,
+                              backgroundColor: Colors.black26,
+                              value:(controller.score.value / 100),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),),
+                  const SizedBox(height: 10),
+                  GradientMask(child: Text("AI Feedback", style: TextStyle(fontWeight: FontWeight.w600, fontSize: ScreenResponsive.responsiveFont(context, 18)),)),
+                  Obx(() => Text(controller.feedback.value),)
+                ],
+              ) : SizedBox.shrink(),)
             ],
           ),
         ),

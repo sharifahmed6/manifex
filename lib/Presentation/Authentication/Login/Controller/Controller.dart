@@ -35,6 +35,7 @@ class login_controller extends GetxController {
         profilePic: userInfo['profilePic'],
         userType: userInfo['userType'],
         language: userInfo['language'],
+        userId: userInfo['id'],
       );
 
       await PrefHelper.saveSubscription(
@@ -50,6 +51,7 @@ class login_controller extends GetxController {
   Map<String, dynamic> decodeJwtToJson(String token) {
     try {
       final Map<String, dynamic> decoded = JwtDecoder.decode(token);
+      print(decoded);
       return decoded;
     } catch (e) {
       return {};

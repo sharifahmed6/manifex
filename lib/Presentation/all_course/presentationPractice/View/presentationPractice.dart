@@ -102,7 +102,7 @@ class _skillScreen extends StatelessWidget {
             subTitle: 'Focused practice drills designed to improve accuracy, speed, and skill through repetition.'.tr,
             buttonText: 'Task 2',
             onTap: (){
-              print('Phoneme Flash cards');
+              Get.toNamed(routes.PrecisionDrill_screen);
             },
             isComplete: controller.listComplete[1],
             lock: controller.listLock[2],
@@ -114,7 +114,7 @@ class _skillScreen extends StatelessWidget {
             subTitle: 'Engaging exercises that help learners understand context, meaning, and usage effectively.'.tr,
             buttonText: 'Task 3',
             onTap: (){
-              print('Phoneme Flash cards');
+              Get.toNamed(routes.ContextSpin_screen);
             },
             isComplete: controller.listComplete[2],
             lock: controller.listLock[2],
@@ -126,7 +126,7 @@ class _skillScreen extends StatelessWidget {
             subTitle: 'Practice in sequence to strengthen skills, memory, and confident performance flow.'.tr,
             buttonText: 'Task 4',
             onTap: (){
-              print('Phoneme Flash cards');
+              Get.toNamed(routes.flowChain_screen);
             },
             isComplete: controller.listComplete[3],
             lock: controller.listLock[3],

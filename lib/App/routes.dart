@@ -24,6 +24,9 @@ import '../Presentation/all_course/interactive_reading/views/interactive_task_fo
 import '../Presentation/all_course/interactive_reading/views/interactive_task_three_screen.dart';
 import '../Presentation/all_course/practices/views/practices_screen.dart';
 import '../Presentation/all_course/presentationPractice/View/presentationPractice.dart';
+import '../Presentation/all_course/presentationPractice/Widgets/ContextSpin/View/ContextSpin.dart';
+import '../Presentation/all_course/presentationPractice/Widgets/PrecisionDrill/View/PrecisionDrill.dart';
+import '../Presentation/all_course/presentationPractice/Widgets/flowChain/View/flowChain.dart';
 import '../Presentation/all_course/presentationPractice/Widgets/powerWordsPluse/View/powerWordsPluse.dart';
 import 'Binding.dart';
 
@@ -55,6 +58,9 @@ class routes {
   static const String EnglishAdultPractice_screen = '/EnglishAdultPractice';
   static const String HandwritingPractice_screen = '/HandwritingPractice';
   static const String powerWordsPlus_screen = '/powerWordsPlus';
+  static const String PrecisionDrill_screen = '/PrecisionDrill';
+  static const String ContextSpin_screen = '/ContextSpin';
+  static const String flowChain_screen = '/flowChain';
 
 
 
@@ -85,6 +91,9 @@ class routes {
     GetPage( name: EnglishAdultPractice_screen, binding: InitialBinding(), page: () => EnglishAdultPractice()),
     GetPage( name: HandwritingPractice_screen, binding: InitialBinding(), page: () => HandwritingPractice()),
     GetPage( name: powerWordsPlus_screen, binding: InitialBinding(), page: () => powerWordsPlus()),
+    GetPage( name: PrecisionDrill_screen, binding: InitialBinding(), page: () => PrecisionDrill()),
+    GetPage( name: ContextSpin_screen, binding: InitialBinding(), page: () => ContextSpin()),
+    GetPage( name: flowChain_screen, binding: InitialBinding(), page: () => flowChain()),
 
   ];
 }

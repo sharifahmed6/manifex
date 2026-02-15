@@ -13,6 +13,13 @@ class urls {
   static String verifyRestPasswordOtp = "$baseUrl/auth/verify-reset-password-otp";
   static String restPassword = "$baseUrl/auth/reset-password";
 
+
+
+  static String getFlowChain = "$baseUrl/presentation/flow-chain/get_flow_chain?user_id=test";
+  static String flowChainScore = "$baseUrl/presentation/flow-chain/flow_chain";
+  static String getPowerWords = "https://ai.manifex.org/api/v1/presentation/power-words/get_power_words";
+  static String powerWordsScore= "$baseUrl/presentation/power-words/power_words";
+
    ///  backend api
 static String match_word = "$baseUrl/word-match";
 }
