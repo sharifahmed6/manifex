@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:manifex/Presentation/Features/Subcription/View/Subcription.dart';
 import 'package:manifex/Presentation/Share/GradientMask.dart';
 import 'package:manifex/Presentation/Share/scafold_background.dart';
 import '../../../../../../App/AppColors.dart';
@@ -9,6 +8,7 @@ import '../../../../../../Core/snakbar.dart';
 import '../../../../../Share/gradient_title.dart';
 import '../Controller/Controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 class ContextSpin extends StatelessWidget {
   ContextSpin({super.key});
   final controller = Get.find<ContextSpinController>();
@@ -151,16 +151,10 @@ class ContextSpin extends StatelessWidget {
                       ],
                     ),
                   ),
-        
-        
-        
                 ],
               ),
             ),
-        
             const SizedBox(height: 20),
-        
-        
             GestureDetector(
               onTap: (){
                 if(controller.AudioFilePath.value.isNotEmpty){
@@ -195,7 +189,6 @@ class ContextSpin extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-        
             Obx(
                   () => controller.feedback.value.isNotEmpty
                   ? Column(

@@ -13,6 +13,13 @@ import '../Presentation/Authentication/SignUp/Controller/Controller.dart';
 import '../Presentation/On_boarding/Controller/Controller.dart';
 import '../Presentation/Splash/Controller/Controller.dart';
 import '../Presentation/about_us/controller/about_us_controller.dart';
+import '../Presentation/all_course/EnglishAdultPractice/Controller/Controller.dart';
+import '../Presentation/all_course/EnglishAdultPractice/Widgets/auditoryDiscrimination/Controller/Controller.dart';
+import '../Presentation/all_course/EnglishAdultPractice/Widgets/phonemeGraphemeMapping/Controller/Controller.dart';
+import '../Presentation/all_course/EnglishAdultPractice/Widgets/phraseMaker/Controller/Controller.dart';
+import '../Presentation/all_course/EnglishAdultPractice/Widgets/sentenceBuilder/Controller/Controller.dart';
+import '../Presentation/all_course/EnglishAdultPractice/Widgets/wordFlash/Controller/Controller.dart';
+import '../Presentation/all_course/EnglishAdultPractice/Widgets/wordPartsWorkshop/Controller/Controller.dart';
 import '../Presentation/all_course/interactive_reading/controller/interactive_reading_controller.dart';
 import '../Presentation/all_course/interactive_reading/controller/sight_word_controller.dart';
 import '../Presentation/all_course/interactive_reading/controller/task_one_controller.dart';
@@ -63,6 +70,14 @@ class InitialBinding extends Bindings {
     Get.lazyPut<PrecisionDrillController>(() => PrecisionDrillController(), fenix: true);
     Get.lazyPut<ContextSpinController>(() => ContextSpinController(), fenix: true);
     Get.lazyPut<flowChainController>(() => flowChainController(), fenix: true);
+    Get.lazyPut<EnglishAdultPracticeController>(() => EnglishAdultPracticeController(), fenix: true);
+
+    Get.lazyPut<auditoryDiscriminationController>(() => auditoryDiscriminationController(), fenix: true);
+    Get.lazyPut<phonemeGraphemeMappingController>(() => phonemeGraphemeMappingController(), fenix: true);
+    Get.lazyPut<phraseMakerController>(() => phraseMakerController(), fenix: true);
+    Get.lazyPut<sentenceBuilderController>(() => sentenceBuilderController(), fenix: true);
+    Get.lazyPut<wordFlashController>(() => wordFlashController(), fenix: true);
+    Get.lazyPut<wordPartsWorkshopController>(() => wordPartsWorkshopController(), fenix: true);
 
 
 

@@ -19,6 +19,12 @@ import '../Presentation/Authentication/SignUp/View/signupGmail.dart';
 import '../Presentation/On_boarding/View/on_boarding.dart';
 import '../Presentation/Splash/View/Splash.dart';
 import '../Presentation/all_course/EnglishAdultPractice/View/EnglishAdultPractice.dart';
+import '../Presentation/all_course/EnglishAdultPractice/Widgets/auditoryDiscrimination/View/auditoryDiscrimination.dart';
+import '../Presentation/all_course/EnglishAdultPractice/Widgets/phonemeGraphemeMapping/View/phonemeGraphemeMapping.dart';
+import '../Presentation/all_course/EnglishAdultPractice/Widgets/phraseMaker/View/phraseMaker.dart';
+import '../Presentation/all_course/EnglishAdultPractice/Widgets/sentenceBuilder/View/sentenceBuilder.dart';
+import '../Presentation/all_course/EnglishAdultPractice/Widgets/wordFlash/View/wordFlash.dart';
+import '../Presentation/all_course/EnglishAdultPractice/Widgets/wordPartsWorkshop/View/wordPartsWorkshop.dart';
 import '../Presentation/all_course/HandwritingPractice/View/HandwritingPractice.dart';
 import '../Presentation/all_course/interactive_reading/views/interactive_task_four_screen.dart';
 import '../Presentation/all_course/interactive_reading/views/interactive_task_three_screen.dart';
@@ -61,6 +67,12 @@ class routes {
   static const String PrecisionDrill_screen = '/PrecisionDrill';
   static const String ContextSpin_screen = '/ContextSpin';
   static const String flowChain_screen = '/flowChain';
+  static const String auditoryDiscrimination_screen = '/auditoryDiscrimination';
+  static const String phonemeGraphemeMapping_screen = '/phonemeGraphemeMapping';
+  static const String phraseMaker_screen = '/phraseMaker';
+  static const String sentenceBuilder_screen = '/sentenceBuilder';
+  static const String wordFlash_screen = '/wordFlash';
+  static const String wordPartsWorkshop_screen = '/wordPartsWorkshop';
 
 
 
@@ -94,6 +106,12 @@ class routes {
     GetPage( name: PrecisionDrill_screen, binding: InitialBinding(), page: () => PrecisionDrill()),
     GetPage( name: ContextSpin_screen, binding: InitialBinding(), page: () => ContextSpin()),
     GetPage( name: flowChain_screen, binding: InitialBinding(), page: () => flowChain()),
+    GetPage( name: auditoryDiscrimination_screen, binding: InitialBinding(), page: () => auditoryDiscrimination()),
+    GetPage( name: phonemeGraphemeMapping_screen, binding: InitialBinding(), page: () => phonemeGraphemeMapping()),
+    GetPage( name: phraseMaker_screen, binding: InitialBinding(), page: () => phraseMaker()),
+    GetPage( name: sentenceBuilder_screen, binding: InitialBinding(), page: () => sentenceBuilder()),
+    GetPage( name: wordFlash_screen, binding: InitialBinding(), page: () => wordFlash()),
+    GetPage( name: wordPartsWorkshop_screen, binding: InitialBinding(), page: () => wordPartsWorkshop()),
 
   ];
 }
