@@ -29,6 +29,8 @@ import '../Presentation/all_course/EnglishAdultPractice/Widgets/wordPartsWorksho
 import '../Presentation/all_course/HandwritingPractice/View/HandwritingPractice.dart';
 import '../Presentation/all_course/interactive_reading/views/interactive_task_four_screen.dart';
 import '../Presentation/all_course/interactive_reading/views/interactive_task_three_screen.dart';
+import '../Presentation/all_course/native_speaking/views/native_speaking_screen.dart';
+import '../Presentation/all_course/native_speaking/views/native_task_one.dart';
 import '../Presentation/all_course/practices/views/practices_screen.dart';
 import '../Presentation/all_course/presentationPractice/View/presentationPractice.dart';
 import '../Presentation/all_course/presentationPractice/Widgets/ContextSpin/View/ContextSpin.dart';
@@ -75,6 +77,7 @@ class routes {
   static const String sentenceBuilder_screen = '/sentenceBuilder';
   static const String wordFlash_screen = '/wordFlash';
   static const String wordPartsWorkshop_screen = '/wordPartsWorkshop';
+  static const String nativeOneScreen = '/native_one_screen';
 
 
 
@@ -96,6 +99,7 @@ class routes {
     GetPage( name: unlock_rewards_screen, binding: InitialBinding(), page: () => UnlockRewardsScreen()),
     GetPage( name: interactive_reading_screen, binding: InitialBinding(), page: () => InteractiveReadingScreen()),
     GetPage( name: smart_writing_screen, binding: InitialBinding(), page: () => SmartWritingScreen()),
+    GetPage( name: native_speaking_skill_screen, binding: InitialBinding(), page: () => NativeSpeakingScreen()),
     GetPage( name: interactive_reading_task1, binding: InitialBinding(), page: () => TaskOne()),
     GetPage( name: sight_word_scrren, binding: InitialBinding(), page: () => SightWordPracticeScreen()),
     GetPage( name: interactive_task3_screen, binding: InitialBinding(), page: () => InteractiveTaskThreeScreen()),
@@ -115,6 +119,7 @@ class routes {
     GetPage( name: sentenceBuilder_screen, binding: InitialBinding(), page: () => sentenceBuilder()),
     GetPage( name: wordFlash_screen, binding: InitialBinding(), page: () => wordFlash()),
     GetPage( name: wordPartsWorkshop_screen, binding: InitialBinding(), page: () => wordPartsWorkshop()),
+    GetPage( name: nativeOneScreen, binding: InitialBinding(), page: () => NaviteTaskOne()),
 
   ];
 }

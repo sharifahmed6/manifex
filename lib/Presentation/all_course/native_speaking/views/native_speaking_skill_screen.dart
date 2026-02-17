@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:manifex/App/routes.dart';
 import 'package:manifex/Presentation/Share/text_title_small.dart';
 import '../../../Share/gradient_title.dart';
 import '../../../Share/single_skill_card.dart';
@@ -32,7 +34,7 @@ class NativeSpeakingSkillScreen extends StatelessWidget {
             subTitle: 'Word Level Training',
             buttonText: 'Task 1',
             onTap: (){
-              print('Pronunciation Practice');
+              Get.toNamed(routes.nativeOneScreen);
             },
             isComplete: true,
           ),

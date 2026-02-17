@@ -1,0 +1,259 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+import 'package:get/get.dart';
+import 'package:manifex/App/Urls.dart';
+import 'package:manifex/App/network_caller.dart';
+import 'package:manifex/Presentation/Features/home/controller/home_controller.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
+import 'native_speaking_skill_controller.dart';
+
+class NativeTaskOneController extends GetxController {
+  final NetworkCaller networkCaller = NetworkCaller();
+  final homeController = Get.find<HomeController>();
+  final FlutterTts flutterTts = FlutterTts();
+  final stt.SpeechToText speechToText = stt.SpeechToText();
+
+  // UI states
+  final isLoading = false.obs;
+  final isListening = false.obs;
+  final showFeedback = false.obs;
+  final isSuccess = false.obs;
+
+  // Data
+  final words = <String>[].obs;
+  final currentWordIndex = 0.obs;
+  final currentWord = ''.obs;
+  final feedbackMessage = ''.obs;
+
+  // Speech recognition
+  final speechAvailable = false.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    initSpeech();
+    fetchPronunciationWords();
+    initTts();
+  }
+
+  @override
+  void onClose() {
+    flutterTts.stop();
+    speechToText.stop();
+    super.onClose();
+  }
+
+  /// Initialize Text-to-Speech
+  Future<void> initTts() async {
+    await flutterTts.setLanguage("en-US");
+    await flutterTts.setSpeechRate(0.5);
+    await flutterTts.setVolume(1.0);
+    await flutterTts.setPitch(1.0);
+  }
+
+  /// Initialize Speech Recognition
+  Future<void> initSpeech() async {
+    try {
+      speechAvailable.value = await speechToText.initialize(
+        onError: (error) {
+          print('Speech recognition error: $error');
+          Get.snackbar(
+            'Error',
+            'Speech recognition error: ${error.errorMsg}',
+            snackPosition: SnackPosition.TOP,
+            backgroundColor: Colors.red.withAlpha(200),
+            colorText: Colors.white,
+          );
+        },
+        onStatus: (status) {
+          print('Speech recognition status: $status');
+        },
+      );
+
+      if (!speechAvailable.value) {
+        Get.snackbar(
+          'Not Available',
+          'Speech recognition is not available on this device',
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.orange.withAlpha(200),
+          colorText: Colors.white,
+        );
+      }
+    } catch (e) {
+      print('Speech init error: $e');
+      speechAvailable.value = false;
+    }
+  }
+
+  /// Fetch pronunciation words from API
+  Future<void> fetchPronunciationWords() async {
+    try {
+      isLoading.value = true;
+
+      final response = await networkCaller.getRequest(
+        url: urls.getPronunciation(
+          homeController.userId,
+          homeController.apiAge.toString(),
+        ),
+        removeAuthorization: true,
+        extraHeaders: {"authtoken": "1"},
+      );
+
+      if (response.isSuccess && response.responseData != null) {
+        final data = response.responseData!;
+
+        // Try different possible response structures
+        List<dynamic>? wordsList;
+
+        if (data.containsKey('words')) {
+          wordsList = data['words'];
+        } else if (data.containsKey('data')) {
+          final dataField = data['data'];
+          if (dataField is List) {
+            wordsList = dataField;
+          } else if (dataField is Map && dataField.containsKey('words')) {
+            wordsList = dataField['words'];
+          }
+        } else if (data is List) {
+          wordsList = data as List<dynamic>;
+        }
+
+        if (wordsList != null && wordsList.isNotEmpty) {
+          words.assignAll(wordsList.map((e) => e.toString()).toList());
+          currentWordIndex.value = 0;
+          currentWord.value = words[0];
+        } else {
+          Get.snackbar(
+            'No Words',
+            'No pronunciation words found',
+            snackPosition: SnackPosition.TOP,
+          );
+        }
+      } else {
+        Get.snackbar(
+          'Error',
+          response.errorMessage,
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.red.withAlpha(200),
+          colorText: Colors.white,
+        );
+      }
+    } catch (e) {
+      print('Error fetching words: $e');
+      Get.snackbar(
+        'Error',
+        'Failed to load words',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.red.withAlpha(200),
+        colorText: Colors.white,
+      );
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  /// Play word pronunciation using TTS (headphone button)
+  Future<void> playWordPronunciation() async {
+    if (currentWord.value.isEmpty) return;
+
+    try {
+      await flutterTts.speak(currentWord.value);
+    } catch (e) {
+      print('TTS error: $e');
+      Get.snackbar(
+        'Error',
+        'Failed to play pronunciation',
+        snackPosition: SnackPosition.TOP,
+      );
+    }
+  }
+
+  /// Start listening to user speech (microphone button)
+  Future<void> startListening() async {
+    if (!speechAvailable.value) {
+      Get.snackbar(
+        'Not Available',
+        'Speech recognition is not available',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.orange.withAlpha(200),
+        colorText: Colors.white,
+      );
+      return;
+    }
+
+    if (isListening.value) return;
+
+    try {
+      isListening.value = true;
+      showFeedback.value = false;
+
+      await speechToText.listen(
+        onResult: (result) {
+          if (result.finalResult) {
+            final recognizedWords = result.recognizedWords.trim().toLowerCase();
+            final targetWord = currentWord.value.trim().toLowerCase();
+
+            checkPronunciation(recognizedWords, targetWord);
+            speechToText.stop();
+            isListening.value = false;
+          }
+        },
+        listenFor: const Duration(seconds: 5),
+        pauseFor: const Duration(seconds: 3),
+        listenOptions: stt.SpeechListenOptions(
+          partialResults: false,
+          cancelOnError: true,
+        ),
+      );
+    } catch (e) {
+      print('Listening error: $e');
+      isListening.value = false;
+      Get.snackbar(
+        'Error',
+        'Failed to start speech recognition',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.red.withAlpha(200),
+        colorText: Colors.white,
+      );
+    }
+  }
+
+  /// Check if pronunciation matches
+  void checkPronunciation(String recognized, String target) {
+    final isMatch = recognized == target;
+
+    // Update score in parent controller
+    try {
+      final parentController = Get.find<NativeSpeakingSkillController>();
+      parentController.score.value = isMatch ? 100 : 0;
+    } catch (e) {
+      print('Parent controller not found: $e');
+    }
+
+    isSuccess.value = isMatch;
+
+    if (isMatch) {
+      feedbackMessage.value = 'Perfect! Great Pronunciation!';
+    } else {
+      feedbackMessage.value = 'Try again! You said: "$recognized"';
+    }
+
+    showFeedback.value = true;
+
+    // Auto-hide feedback after 3 seconds
+    Future.delayed(const Duration(seconds: 3), () {
+      showFeedback.value = false;
+    });
+  }
+
+  /// Load next word (reset button)
+  void loadNextWord() {
+    if (words.isEmpty) return;
+
+    showFeedback.value = false;
+    isSuccess.value = false;
+
+    currentWordIndex.value = (currentWordIndex.value + 1) % words.length;
+    currentWord.value = words[currentWordIndex.value];
+  }
+}
