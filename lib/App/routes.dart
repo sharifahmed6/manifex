@@ -19,9 +19,22 @@ import '../Presentation/Authentication/SignUp/View/SignUp.dart';
 import '../Presentation/Authentication/SignUp/View/signupGmail.dart';
 import '../Presentation/On_boarding/View/on_boarding.dart';
 import '../Presentation/Splash/View/Splash.dart';
+import '../Presentation/all_course/EnglishAdultPractice/View/EnglishAdultPractice.dart';
+import '../Presentation/all_course/EnglishAdultPractice/Widgets/auditoryDiscrimination/View/auditoryDiscrimination.dart';
+import '../Presentation/all_course/EnglishAdultPractice/Widgets/phonemeGraphemeMapping/View/phonemeGraphemeMapping.dart';
+import '../Presentation/all_course/EnglishAdultPractice/Widgets/phraseMaker/View/phraseMaker.dart';
+import '../Presentation/all_course/EnglishAdultPractice/Widgets/sentenceBuilder/View/sentenceBuilder.dart';
+import '../Presentation/all_course/EnglishAdultPractice/Widgets/wordFlash/View/wordFlash.dart';
+import '../Presentation/all_course/EnglishAdultPractice/Widgets/wordPartsWorkshop/View/wordPartsWorkshop.dart';
+import '../Presentation/all_course/HandwritingPractice/View/HandwritingPractice.dart';
 import '../Presentation/all_course/interactive_reading/views/interactive_task_four_screen.dart';
 import '../Presentation/all_course/interactive_reading/views/interactive_task_three_screen.dart';
 import '../Presentation/all_course/practices/views/practices_screen.dart';
+import '../Presentation/all_course/presentationPractice/View/presentationPractice.dart';
+import '../Presentation/all_course/presentationPractice/Widgets/ContextSpin/View/ContextSpin.dart';
+import '../Presentation/all_course/presentationPractice/Widgets/PrecisionDrill/View/PrecisionDrill.dart';
+import '../Presentation/all_course/presentationPractice/Widgets/flowChain/View/flowChain.dart';
+import '../Presentation/all_course/presentationPractice/Widgets/powerWordsPluse/View/powerWordsPluse.dart';
 import 'Binding.dart';
 
 class routes {
@@ -49,6 +62,19 @@ class routes {
   static const String interactive_task3_screen = '/interactive_task3_screen';
   static const String interactive_task4_screen = '/interactive_task4_screen';
   static const String signupGmail_screen = '/signupGmail';
+  static const String presentationPractice_screen = '/presentationPractice';
+  static const String EnglishAdultPractice_screen = '/EnglishAdultPractice';
+  static const String HandwritingPractice_screen = '/HandwritingPractice';
+  static const String powerWordsPlus_screen = '/powerWordsPlus';
+  static const String PrecisionDrill_screen = '/PrecisionDrill';
+  static const String ContextSpin_screen = '/ContextSpin';
+  static const String flowChain_screen = '/flowChain';
+  static const String auditoryDiscrimination_screen = '/auditoryDiscrimination';
+  static const String phonemeGraphemeMapping_screen = '/phonemeGraphemeMapping';
+  static const String phraseMaker_screen = '/phraseMaker';
+  static const String sentenceBuilder_screen = '/sentenceBuilder';
+  static const String wordFlash_screen = '/wordFlash';
+  static const String wordPartsWorkshop_screen = '/wordPartsWorkshop';
 
 
 
@@ -76,6 +102,19 @@ class routes {
     GetPage( name: interactive_task4_screen, binding: InitialBinding(), page: () => InteractiveTaskFourScreen()),
     GetPage( name: signupGmail_screen, binding: InitialBinding(), page: () => signupGmail()),
     GetPage( name: home_screen, binding: InitialBinding(), page: () => HomeScreen()),
+    GetPage( name: presentationPractice_screen, binding: InitialBinding(), page: () => presentationPractice()),
+    GetPage( name: EnglishAdultPractice_screen, binding: InitialBinding(), page: () => EnglishAdultPractice()),
+    GetPage( name: HandwritingPractice_screen, binding: InitialBinding(), page: () => HandwritingPractice()),
+    GetPage( name: powerWordsPlus_screen, binding: InitialBinding(), page: () => powerWordsPlus()),
+    GetPage( name: PrecisionDrill_screen, binding: InitialBinding(), page: () => PrecisionDrill()),
+    GetPage( name: ContextSpin_screen, binding: InitialBinding(), page: () => ContextSpin()),
+    GetPage( name: flowChain_screen, binding: InitialBinding(), page: () => flowChain()),
+    GetPage( name: auditoryDiscrimination_screen, binding: InitialBinding(), page: () => auditoryDiscrimination()),
+    GetPage( name: phonemeGraphemeMapping_screen, binding: InitialBinding(), page: () => phonemeGraphemeMapping()),
+    GetPage( name: phraseMaker_screen, binding: InitialBinding(), page: () => phraseMaker()),
+    GetPage( name: sentenceBuilder_screen, binding: InitialBinding(), page: () => sentenceBuilder()),
+    GetPage( name: wordFlash_screen, binding: InitialBinding(), page: () => wordFlash()),
+    GetPage( name: wordPartsWorkshop_screen, binding: InitialBinding(), page: () => wordPartsWorkshop()),
 
   ];
 }

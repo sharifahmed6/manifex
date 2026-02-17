@@ -50,14 +50,17 @@ class NetworkCaller {
 
       _logResponse(uri.toString(), response);
 
-      Map<String, dynamic>? decodedBody;
+      dynamic decodedBody;
+
       if (response.body.isNotEmpty) {
         try {
           decodedBody = jsonDecode(response.body);
-        } catch (_) {
+        } catch (e) {
+          print("Decode Error: $e");
           decodedBody = null;
         }
       }
+
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
         return NetworkResponse(
