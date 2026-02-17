@@ -88,28 +88,33 @@ class SkillScreen extends StatelessWidget {
             ),
             SizedBox(height: 16.h,),
             controller.allAnswerSubmit.value?
-            AchievmentGradientBorder(
-              child: Container(
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-                child: ShaderMask(
-                  shaderCallback: (bounds) {
-                    return const LinearGradient(
-                      colors: [
-                        Color(0xffFFBC6F),
-                        Color(0xffF176B7),
-                        Color(0xff3797CD),
-                      ],
-                    ).createShader(
-                      Rect.fromLTWH(0, 0, bounds.width, bounds.height),
-                    );
-                  },
-                  child: CustomText(
-                    text: 'Submit All Answers',
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                    textAlign: TextAlign.center,
+            GestureDetector(
+              onTap: (){
+                controller.interactiveReadingAnsSubmit();
+              },
+              child: AchievmentGradientBorder(
+                child: Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+                  child: ShaderMask(
+                    shaderCallback: (bounds) {
+                      return const LinearGradient(
+                        colors: [
+                          Color(0xffFFBC6F),
+                          Color(0xffF176B7),
+                          Color(0xff3797CD),
+                        ],
+                      ).createShader(
+                        Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+                      );
+                    },
+                    child: CustomText(
+                      text: 'Submit All Answers',
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 ),
               ),

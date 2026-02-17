@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:manifex/App/Urls.dart';
 import '../../../../App/network_caller.dart';
+import '../../../Features/home/controller/home_controller.dart';
 
 class SmartWritingController extends GetxController {
   final NetworkCaller networkCaller = NetworkCaller();
-
+  final homeController = Get.find<HomeController>();
   final selectedValue = ''.obs;
 
   // UI states
@@ -37,14 +39,12 @@ class SmartWritingController extends GetxController {
     super.onClose();
   }
 
-  // GET categories
   Future<void> fetchCategories() async {
     try {
       isLoadingItem.value = true;
 
       final response = await networkCaller.getRequest(
-        // remove space: user_id=test
-        url: "https://ai.manifex.org/api/v1/writing/category?age=1&user_id=test",
+        url: urls.smartWritingCategories(homeController.apiAge.toString(), homeController.userId),
         removeAuthorization: true,
         extraHeaders: {"authtoken": "1"},
       );
@@ -72,19 +72,18 @@ class SmartWritingController extends GetxController {
     score.value = 0;
     motivation.value = '';
 
-    await fetchRelatedWords(topic: value, age: "6");
+    await fetchRelatedWords(topic: value);
   }
   
   Future<void> fetchRelatedWords({
     required String topic,
-    required String age,
   }) async {
     try {
       isLoadingRelated.value = true;
 
       final res = await networkCaller.postRequest(
-        url: "https://ai.manifex.org/api/v1/writing/topic?user_id=test",
-        body: {"topic": topic, "age": age},
+        url: urls.relatedWord(homeController.userId),
+        body: {"topic": topic, "age": "${homeController.apiAge}"},
         removeAuthorization: true,
         extraHeaders: {"authtoken": "1"},
       );
@@ -148,7 +147,7 @@ class SmartWritingController extends GetxController {
       };
 
       final res = await networkCaller.postRequest(
-        url: "https://ai.manifex.org/api/v1/writing/final",
+        url: urls.smartWriting,
         body: body,
         removeAuthorization: true,
         extraHeaders: {"authtoken": "1"},
@@ -162,9 +161,7 @@ class SmartWritingController extends GetxController {
         );
         return;
       }
-
       final json = res.responseData!;
-      // ✅ response: { sentence_score: 10, motivation: "..." }
       final s = json["sentence_score"];
       final m = json["motivation"];
 
@@ -172,6 +169,7 @@ class SmartWritingController extends GetxController {
       motivation.value = (m ?? "").toString();
 
       inProgress.value = true;
+     await smartWritingDataSend();
     } catch (e) {
       Get.snackbar(
         "Error",
@@ -180,6 +178,18 @@ class SmartWritingController extends GetxController {
       );
     } finally {
       isSubmitting.value = false;
+    }
+  }
+  Future<void> smartWritingDataSend()async{
+    NetworkResponse response = await NetworkCaller().postRequest(
+        url: urls.smartWritingDataSend,
+        body: {
+          "sentence_score": score.value,
+          "motivation": motivation.value
+        }
+    );
+    if(response.isSuccess){
+      print('success');
     }
   }
 }

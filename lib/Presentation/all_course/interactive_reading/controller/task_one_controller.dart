@@ -1,16 +1,17 @@
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
 import 'package:manifex/App/Urls.dart';
+import 'package:manifex/Presentation/Features/home/controller/home_controller.dart';
 import '../../../../App/network_caller.dart';
 import '../model/flashcards_model.dart';
 import 'interactive_reading_controller.dart';
 
 class TaskOneController extends GetxController {
   final interactiveController = Get.find<InteractiveReadingController>();
+  final homeController = Get.find<HomeController>();
   final FlutterTts tts = FlutterTts();
   final NetworkCaller _network = NetworkCaller();
 
-  final userId = "788bfe4f-f063-4d2c-84f4-233dd6cd99ac";
 
   // API state
   final isLoading = false.obs;
@@ -56,7 +57,7 @@ class TaskOneController extends GetxController {
 
     try {
       final res = await _network.getRequest(
-        url: urls.phonemeFlashcard('6', userId),
+        url: urls.phonemeFlashcard(homeController.apiAge.toString(), homeController.userId),
         removeAuthorization: true,
         extraHeaders: const {"authtoken": "1"},
       );

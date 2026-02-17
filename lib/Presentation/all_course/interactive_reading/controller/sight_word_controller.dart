@@ -1,14 +1,14 @@
 import 'package:get/get.dart';
 import 'package:manifex/App/Urls.dart';
 import '../../../../App/network_caller.dart';
+import '../../../Features/home/controller/home_controller.dart';
 import '../model/sight_word_model.dart';
 import 'interactive_reading_controller.dart';
 
 class SightWordController extends GetxController {
   final interactiveController = Get.find<InteractiveReadingController>();
+  final homeController = Get.find<HomeController>();
   final NetworkCaller networkCaller = NetworkCaller();
-  final userId = 'test';
-  final age = '6'.obs;
   final isLoading = false.obs;
   final error = ''.obs;
 
@@ -46,9 +46,9 @@ class SightWordController extends GetxController {
       error.value = '';
 
       final res = await networkCaller.postRequest(
-        url: urls.sighWordPractice(userId),
+        url: urls.sighWordPractice(homeController.userId),
         body: {
-          'age': age.value,
+          'age': homeController.apiAge.toString(),
         },
         removeAuthorization: true,
         extraHeaders: const {"authtoken": "1"},

@@ -200,6 +200,7 @@ class InteractiveTaskFourScreen extends StatelessWidget {
                                     ? (){
                                   interactiveController.allAnswerSubmit.value = true;
                                   interactiveController.t4SkillLock.value = false;
+                                  interactiveController.stop();
                                   Get.back();
                                 }
                                     : (canNext ? controller.submitNext : null),

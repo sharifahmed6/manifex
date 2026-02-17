@@ -1,13 +1,14 @@
 import 'package:get/get.dart';
 import 'package:manifex/App/Urls.dart';
 import '../../../../App/network_caller.dart';
+import '../../../Features/home/controller/home_controller.dart';
 import '../model/reading_quiz_model.dart';
 import 'interactive_reading_controller.dart';
 
 class TaskFourController extends GetxController {
   final interactiveController = Get.find<InteractiveReadingController>();
+  final homeController = Get.find<HomeController>();
   final NetworkCaller networkCaller = NetworkCaller();
-  final age = '6';
   final isLoading = false.obs;
   final error = ''.obs;
 
@@ -34,7 +35,7 @@ class TaskFourController extends GetxController {
       error.value = '';
 
       final res = await networkCaller.getRequest(
-          url: urls.aiQuestion(age),
+          url: urls.aiQuestion(homeController.apiAge.toString()),
         removeAuthorization: true,
         extraHeaders: {'authtoken': '1'}
       );

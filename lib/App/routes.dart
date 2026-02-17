@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:manifex/Presentation/Features/home/view/home_screen.dart';
 import 'package:manifex/Presentation/about_us/views/about_us_screen.dart';
 import 'package:manifex/Presentation/all_course/interactive_reading/views/interactive_reading_screen.dart';
 import 'package:manifex/Presentation/all_course/interactive_reading/views/sight_word_screen.dart';
@@ -42,6 +43,7 @@ class routes {
   static const String login_screen = '/login';
   static const String signup_screen = '/signup';
   static const String bottom_navbar = '/bottom_navbar';
+  static const String home_screen = '/home_screen';
   static const String practices_screen = '/practices_screen';
   static const String progress_screen = '/progress_screen';
   static const String find_account_screen = '/find_account';
@@ -99,6 +101,7 @@ class routes {
     GetPage( name: interactive_task3_screen, binding: InitialBinding(), page: () => InteractiveTaskThreeScreen()),
     GetPage( name: interactive_task4_screen, binding: InitialBinding(), page: () => InteractiveTaskFourScreen()),
     GetPage( name: signupGmail_screen, binding: InitialBinding(), page: () => signupGmail()),
+    GetPage( name: home_screen, binding: InitialBinding(), page: () => HomeScreen()),
     GetPage( name: presentationPractice_screen, binding: InitialBinding(), page: () => presentationPractice()),
     GetPage( name: EnglishAdultPractice_screen, binding: InitialBinding(), page: () => EnglishAdultPractice()),
     GetPage( name: HandwritingPractice_screen, binding: InitialBinding(), page: () => HandwritingPractice()),

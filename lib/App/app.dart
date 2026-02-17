@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       designSize: const Size(430, 932),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (_, __) => GetMaterialApp(
+      builder: (_, _) => GetMaterialApp(
         debugShowCheckedModeBanner: false,
         translations: AppTranslation(),
         // locale: Locale('pl', 'PL'),
