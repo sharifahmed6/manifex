@@ -21,7 +21,6 @@ class urls {
   static String profileInfo = "$baseUrl/auth/me";
   static String readingTaskComplete = "$baseUrl/reading-task/submit";
   static String smartWritingDataSend = "$baseUrl/writing-Task/submit";
-}
 
 
 
@@ -33,5 +32,4 @@ class urls {
 
 
    ///  backend api
-static String match_word = "$baseUrl/word-match";
 }

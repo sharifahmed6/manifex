@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
+import 'package:manifex/Core/TTSService.dart';
 import 'package:manifex/Presentation/Features/Subcription/View/Subcription.dart';
 import 'package:manifex/Presentation/Share/GradientMask.dart';
 import 'package:manifex/Presentation/Share/scafold_background.dart';
@@ -77,7 +78,7 @@ class auditoryDiscrimination extends StatelessWidget {
                             Center(
                               child: GestureDetector(
                                 onTap: () {
-
+                                  TTSService.speak(controller.word_pairs[controller.currentIndex.value]['word1']!);
                                 },
                                 child: Container(
                                   height: ScreenResponsive.h(context, 70),
@@ -110,6 +111,8 @@ class auditoryDiscrimination extends StatelessWidget {
                             Center(
                               child: GestureDetector(
                                 onTap: () {
+                                  TTSService.speak(controller.word_pairs[controller.currentIndex.value]['word2']!);
+
                                 },
                                 child: Container(
                                   height: ScreenResponsive.h(context, 70),
@@ -204,9 +207,7 @@ class auditoryDiscrimination extends StatelessWidget {
               GestureDetector(
                 onTap: (){
                   if(controller.finalAnswer.value.isNotEmpty){
-                    // controller.submit();
-                    AppSnackbar.show(controller.finalAnswer.value);
-
+                    controller.submit();
                   }else{
                     AppSnackbar.show("Please select answer.");
                   }
