@@ -75,21 +75,30 @@ class PracticesScreen extends StatelessWidget {
                 title: 'Presentation Practice',
                 subTitle:
                     'Practice English made for adults. Improve speaking, listening, and vocabulary with easy, real-life lessons you can use every day.',
-                buttonText: 'Start Practice'
+                buttonText: 'Start Practice',
+                onTap: (){
+                  Get.toNamed(routes.presentationPractice_screen);
+                }
               ),
               SizedBox(height: 16.h),
               _practicesCard(
                 imagePath: 'assets/icons/person.png',
                 title: 'English for Adult Practice',
                 subTitle: 'Improve your English with real-life practice made especially for adults. Build confidence in speaking, listening, and vocabulary.',
-                buttonText: 'Start Adult Practice'
+                buttonText: 'Start Adult Practice',
+                onTap: (){
+                  Get.toNamed(routes.EnglishAdultPractice_screen);
+                }
               ),
               SizedBox(height: 16.h),
               _practicesCard(
                 imagePath: 'assets/icons/person.png',
                 title: 'Handwriting Practice',
                 subTitle: 'Learn to write letters the fun way',
-                buttonText: 'Start Handwriting Practice'
+                buttonText: 'Start Handwriting Practice',
+                onTap: (){
+                  Get.toNamed(routes.HandwritingPractice_screen);
+                }
               ),
               SizedBox(height: 8.h),
             ],

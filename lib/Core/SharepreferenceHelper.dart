@@ -19,6 +19,7 @@ class PrefHelper {
   static const _kProfilePic = "profile_pic";
   static const _kUserType = "user_type";
   static const _kLanguage = "language";
+  static const _kUserId = "id_001";
 
   static const _kIsSubscribed = "is_subscribed";
   static const _kIsSubscriptionFree = "is_subscription_free";
@@ -50,6 +51,7 @@ class PrefHelper {
     required String profilePic,
     required String userType,
     required String language,
+    required String userId,
   }) async {
     await init();
     await _prefs!.setString(_kAccessToken, accessToken);
@@ -62,6 +64,7 @@ class PrefHelper {
     await _prefs!.setString(_kProfilePic, profilePic);
     await _prefs!.setString(_kUserType, userType);
     await _prefs!.setString(_kLanguage, language);
+    await _prefs!.setString(_kUserId, userId);
   }
 
   // ---------- GET ----------
@@ -73,6 +76,12 @@ class PrefHelper {
   static String getEmail() => _prefs?.getString(_kEmail) ?? "";
   static String getUserType() => _prefs?.getString(_kUserType) ?? "";
   static String getProfilePicture() => _prefs?.getString(_kProfilePic) ?? "";
+  static String getAge() => _prefs?.getString(_kAge) ?? "";
+  static String getHobbies() => _prefs?.getString(_kHobbies) ?? "";
+  static String getLanguage() => _prefs?.getString(_kLanguage) ?? "";
+  static String getUserId() => _prefs?.getString(_kUserId) ?? "";
+
+
 
   // ---------- LOGOUT ----------
   static Future<void> clear() async {
