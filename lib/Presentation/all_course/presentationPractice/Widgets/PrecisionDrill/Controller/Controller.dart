@@ -9,6 +9,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 import '../../../../../../Core/SharepreferenceHelper.dart';
 import '../../../../../Share/custom_circle_progress_indicator.dart';
+import '../../../Controller/Controller.dart';
 
 class PrecisionDrillController extends GetxController {
 
@@ -91,6 +92,7 @@ class PrecisionDrillController extends GetxController {
         precisionDrill = converted;
 
         print("Parsed Data: $precisionDrill");
+
       } else {
         print("Server returned error: ${response.statusCode}");
       }
@@ -230,6 +232,8 @@ class PrecisionDrillController extends GetxController {
         final Map<String, dynamic> data = jsonDecode(response.body);
         score.value = data['score'] ?? 0;
         feedback.value = data['feedback'] ?? '';
+        Get.find<presentationPracticeController>().finalResult.add(data);
+        Get.find<presentationPracticeController>().showFinalResult();
 
       } else {
         print("Error submitting word: ${response.body}");

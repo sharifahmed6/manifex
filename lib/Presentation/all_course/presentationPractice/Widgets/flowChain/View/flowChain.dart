@@ -7,6 +7,7 @@ import '../../../../../../Core/responsive.dart';
 import '../../../../../../Core/snakbar.dart';
 import '../../../../../Share/gradient_title.dart';
 import '../../../../../app_bar/views/custom_app_bar.dart';
+import '../../../Controller/Controller.dart';
 import '../Controller/Controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -169,14 +170,20 @@ class flowChain extends StatelessWidget {
               const SizedBox(height: 20),
 
               GestureDetector(
-                onTap: (){
+                onTap: () async {
                   if(controller.AudioFilePath.value.isNotEmpty){
-                    controller.submit();
+                    if (controller.feedback.value.isEmpty) {
+                      controller.submit();
+                    }else{
+                      await Get.find<presentationPracticeController>().submitFinalAnswers();
+                      Get.back();
+                      AppSnackbar.show("Finished Task 4");
+                    }
                   }else{
                     AppSnackbar.show("Please record audio file.");
                   }
                 },
-                child: Container(
+                child: Obx(() => Container(
                   height: 55,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
@@ -184,7 +191,7 @@ class flowChain extends StatelessWidget {
                       colors: [AppColors.yellow, AppColors.pink, AppColors.sky],
                     ),
                   ),
-                  child: Row(
+                  child: controller.feedback.value.isEmpty ? Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     spacing: 5,
                     children: [
@@ -198,8 +205,17 @@ class flowChain extends StatelessWidget {
                         height: 24.h,
                       ),
                     ],
+                  ) : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    spacing: 5,
+                    children: [
+                      Text(
+                        "Complete".tr,
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                    ],
                   ),
-                ),
+                ),)
               ),
 
               const SizedBox(height: 20),

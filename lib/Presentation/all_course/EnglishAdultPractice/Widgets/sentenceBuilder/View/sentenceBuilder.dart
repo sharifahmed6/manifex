@@ -90,7 +90,7 @@ class sentenceBuilder extends StatelessWidget {
                     Text("Your phrase:".tr, style: TextStyle(fontSize: ScreenResponsive.responsiveFont(context, 12), fontWeight: FontWeight.bold),),
                     const SizedBox(height: 10),
                     Obx(() {
-                      if (controller.finalWords.isEmpty) {
+                      if (controller.finalSentence.isEmpty) {
                         return Center(
                           child: Text(
                             "No words selected", // You can translate if needed
@@ -102,27 +102,33 @@ class sentenceBuilder extends StatelessWidget {
                           ),
                         );
                       } else {
+                        // Split the sentence into words
+                        final selectedWords = controller.finalSentence.split(' ');
+
                         return Wrap(
                           spacing: 12,
                           runSpacing: 12,
-                          children: controller.finalWords.map((word) {
+                          children: selectedWords.map((word) {
                             return _interestChip(
                               text: word,
                               isSelected: false,
                               onTap: () {
+                                // Optional: remove word from selection if tapped
+                                controller.toggleWord(word);
                               },
                             );
                           }).toList(),
                         );
                       }
                     }),
+
                     const SizedBox(height: 20),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         GestureDetector(
-                          onTap: () => controller.previousWord(),
+                          onTap: () => controller.previousSentence(),
                           child: Container(
                             padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                             decoration: BoxDecoration(
@@ -141,7 +147,7 @@ class sentenceBuilder extends StatelessWidget {
                         ),
 
                         GestureDetector(
-                          onTap: () => controller.nextWord(),
+                          onTap: () => controller.nextSentence(),
                           child: Container(
                             padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                             decoration: BoxDecoration(

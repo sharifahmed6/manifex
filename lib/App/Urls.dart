@@ -29,6 +29,7 @@ class urls {
   static String getPowerWords = "https://ai.manifex.org/api/v1/presentation/power-words/get_power_words";
   static String powerWordsScore= "$baseUrl/presentation/power-words/power_words";
   static String getPrecisionDrillurls(String userId) => "$baseUrl/presentation/precision-drill/get_precision_drill?user_id=$userId";
+  static String presentationSubmit = "$baseUrl/presentation/submit";
 
 
    ///  backend api

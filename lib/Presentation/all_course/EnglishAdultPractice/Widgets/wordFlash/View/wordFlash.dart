@@ -60,6 +60,7 @@ class wordFlash extends StatelessWidget {
                 child: Obx(() => Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Obx(() => GradientMask(child: Text("Word ${controller.currentIndex.value + 1} of ${controller.words.length}", style: TextStyle(fontSize: ScreenResponsive.responsiveFont(context, 18), fontWeight: FontWeight.w600),)),),
                     const SizedBox(height: 10),
                     Text("Read the word aloud before it vanishes".tr, style: TextStyle(fontSize: ScreenResponsive.responsiveFont(context, 17), fontWeight: FontWeight.w600),),
                     const SizedBox(height: 10),

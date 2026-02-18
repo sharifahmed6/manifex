@@ -1,18 +1,17 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
+import '../../../../../../Core/SharepreferenceHelper.dart';
 import '../../../../../../Core/snakbar.dart';
-
+import '../../../../../Share/custom_circle_progress_indicator.dart';
+import 'package:http/http.dart' as http;
 class wordFlashController extends GetxController {
   var currentIndex = 0.obs;
   var words = [
-  "exacerbate",
-  "ubiquitous",
-  "perspicacious",
-  "ephemeral",
-  "idiosyncratic"
-  ];
+    "Loading.."
+  ].obs;
 
   var isRunning = false.obs;
   var AudioFilePath = ''.obs;
@@ -104,5 +103,49 @@ class wordFlashController extends GetxController {
       AppSnackbar.show("No more words left.");
     }
   }
+
+  @override
+  void onReady() {
+    // TODO: implement onReady
+    getWordFlash();
+    super.onReady();
+  }
+
+  Future<void> getWordFlash() async {
+    final userId = PrefHelper.getUserId().toString();
+
+    final url = Uri.parse("https://ai.manifex.org/api/v1/adult/word-flash/get_word_flash?user_id=$userId");
+
+    try {
+      Get.dialog(
+        CustomCircleProgressIndicator(),
+        barrierDismissible: false,
+      );
+
+      final response = await http.get(
+        url,
+        headers: {'authtoken': '1'},
+      );
+
+      if (Get.isDialogOpen ?? false) {
+        Get.back();
+      }
+
+      if (response.statusCode == 200) {
+        words.clear();
+        final decoded = jsonDecode(response.body);
+        words.assignAll(List<String>.from(decoded['words']));
+      } else {
+        AppSnackbar.show("Failed to load exercises");
+      }
+    } catch (e) {
+      if (Get.isDialogOpen ?? false) {
+        Get.back();
+      }
+      AppSnackbar.show("Something went wrong");
+      print("HTTP Error: $e");
+    }
+  }
+
 
 }

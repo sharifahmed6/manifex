@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import '../../../../../../Core/SharepreferenceHelper.dart';
 import '../../../../../../Core/snakbar.dart';
 import '../../../../../Share/custom_circle_progress_indicator.dart';
+import '../../../Controller/Controller.dart';
 
 class ContextSpinController extends GetxController {
   final FlutterSoundRecorder recorder = FlutterSoundRecorder();
@@ -131,6 +132,8 @@ class ContextSpinController extends GetxController {
         final Map<String, dynamic> data = jsonDecode(response.body);
         score.value = data['score'] ?? 0;
         feedback.value = data['feedback'] ?? '';
+        Get.find<presentationPracticeController>().finalResult.add(data);
+        Get.find<presentationPracticeController>().showFinalResult();
 
       } else {
         print("Error submitting word: ${response.body}");

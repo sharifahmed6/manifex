@@ -157,7 +157,21 @@ class auditoryDiscrimination extends StatelessWidget {
                         )
                       ],
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
+
+                    Obx(() => controller.finalAnswer.value.isNotEmpty ? Center(
+                      child: Container(
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          border: Border.all(
+                              color: Colors.green
+                          ),
+                        ),
+                        child: Text("You have selected : ${controller.finalAnswer.value}".tr, style: TextStyle(color: Colors.green),),
+                      ),
+                    ) : SizedBox.shrink(),),
+                    const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

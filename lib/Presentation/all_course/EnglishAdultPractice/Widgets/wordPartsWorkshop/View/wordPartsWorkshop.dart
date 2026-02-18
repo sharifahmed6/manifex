@@ -68,14 +68,31 @@ class wordPartsWorkshop extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Obx(() => GradientMask(child: Text("Word ${controller.currentIndex.value + 1} of ${(controller.data['suffix'] as List).length}", style: TextStyle(fontSize: ScreenResponsive.responsiveFont(context, 18), fontWeight: FontWeight.w600),)),),
+                    Obx(() {
+                      final wp = controller.wordParts.value;
+                      final total = wp?.suffix.length ?? 0; // safe if null
+
+                      return GradientMask(
+                        child: Text(
+                          "Word ${controller.currentIndex.value + 1} of $total",
+                          style: TextStyle(
+                            fontSize: ScreenResponsive.responsiveFont(context, 18),
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      );
+                    }),
 
                     Text("Combine prefixes, roots, and suffixes to expand vocabulary.".tr, style: TextStyle(fontSize: ScreenResponsive.responsiveFont(context, 17), fontWeight: FontWeight.w600),),
                     const SizedBox(height: 15),
                     Obx(() {
-                      final word = "${controller.data['prefix']![controller.currentIndex.value]}"
-                          "${controller.data['root']![controller.currentIndex.value]}"
-                          "${controller.data['suffix']![controller.currentIndex.value]}";
+                      final wp = controller.wordParts.value;
+                      if (wp == null) return CircularProgressIndicator.adaptive();
+
+                      final word =
+                          "${wp.prefix[controller.currentIndex.value]}"
+                          "${wp.root[controller.currentIndex.value]}"
+                          "${wp.suffix[controller.currentIndex.value]}";
 
                       return Center(
                         child: Text(
@@ -90,56 +107,139 @@ class wordPartsWorkshop extends StatelessWidget {
 
                     const SizedBox(height: 15),
 
-                    Obx(() => Row(
-                      spacing: 8,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Prefix", style: TextStyle(fontWeight: FontWeight.bold, fontSize: ScreenResponsive.responsiveFont(context, 16)),),
-                              const SizedBox(height: 5),
-                              SizedBox(
-                                  width: double.infinity,
-                                  child: _interestChip(text: controller.data['prefix']![controller.currentIndex.value], isSelected: false, onTap: () {  })),
+                    Obx(() {
+                      final wp = controller.wordParts.value;
+                      final index = controller.currentIndex.value;
 
-                              const SizedBox(height: 20),
-                              Text("Meaning:", style: TextStyle( fontSize: ScreenResponsive.responsiveFont(context, 16)),),
-                              Text(controller.data['prefix_meaning']![controller.currentIndex.value], style: TextStyle(fontWeight: FontWeight.bold, fontSize: ScreenResponsive.responsiveFont(context, 16)),),
-                            ],
-                          ),
-                        ),Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Root", style: TextStyle(fontWeight: FontWeight.bold, fontSize: ScreenResponsive.responsiveFont(context, 16)),),
-                              const SizedBox(height: 5),
-                              SizedBox(
+                      if (wp == null) return CircularProgressIndicator.adaptive();
+
+                      // Safety check to avoid out-of-range errors
+                      if (index >= wp.prefix.length ||
+                          index >= wp.root.length ||
+                          index >= wp.suffix.length) {
+                        return Center(child: Text("No data available"));
+                      }
+
+                      return Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        spacing: 8,
+                        children: [
+                          // Prefix Column
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Prefix",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: ScreenResponsive.responsiveFont(context, 16),
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                                SizedBox(
                                   width: double.infinity,
-                                  child: _interestChip(text: controller.data['root']![controller.currentIndex.value], isSelected: false, onTap: () {  })),
-                              const SizedBox(height: 20),
-                              Text("Meaning:", style: TextStyle( fontSize: ScreenResponsive.responsiveFont(context, 16)),),
-                              Text(controller.data['root_meaning']![controller.currentIndex.value], style: TextStyle(fontWeight: FontWeight.bold, fontSize: ScreenResponsive.responsiveFont(context, 16)),),
-                            ],
+                                  child: _interestChip(
+                                    text: wp.prefix[index],
+                                    isSelected: false,
+                                    onTap: () {},
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                                Text(
+                                  "Meaning:",
+                                  style: TextStyle(
+                                      fontSize: ScreenResponsive.responsiveFont(context, 16)),
+                                ),
+                                Text(
+                                  wp.prefixMeaning[index],
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: ScreenResponsive.responsiveFont(context, 16),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Suffix", style: TextStyle(fontWeight: FontWeight.bold, fontSize: ScreenResponsive.responsiveFont(context, 16)),),
-                              const SizedBox(height: 5),
-                              SizedBox(
+
+                          // Root Column
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Root",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: ScreenResponsive.responsiveFont(context, 16),
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                                SizedBox(
                                   width: double.infinity,
-                                  child: _interestChip(text: controller.data['suffix']![controller.currentIndex.value], isSelected: false, onTap: () {  })),
-                              const SizedBox(height: 20),
-                              Text("Meaning:", style: TextStyle( fontSize: ScreenResponsive.responsiveFont(context, 16)),),
-                              Text(controller.data['suffix_meaning']![controller.currentIndex.value], style: TextStyle(fontWeight: FontWeight.bold, fontSize: ScreenResponsive.responsiveFont(context, 16)),),
-                            ],
+                                  child: _interestChip(
+                                    text: wp.root[index],
+                                    isSelected: false,
+                                    onTap: () {},
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                                Text(
+                                  "Meaning:",
+                                  style: TextStyle(
+                                      fontSize: ScreenResponsive.responsiveFont(context, 16)),
+                                ),
+                                Text(
+                                  wp.rootMeaning[index],
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: ScreenResponsive.responsiveFont(context, 16),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
-                    ),),
+
+                          // Suffix Column
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Suffix",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: ScreenResponsive.responsiveFont(context, 16),
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: _interestChip(
+                                    text: wp.suffix[index],
+                                    isSelected: false,
+                                    onTap: () {},
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                                Text(
+                                  "Meaning:",
+                                  style: TextStyle(
+                                      fontSize: ScreenResponsive.responsiveFont(context, 16)),
+                                ),
+                                Text(
+                                  wp.suffixMeaning[index],
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: ScreenResponsive.responsiveFont(context, 16),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      );
+                    }),
 
                     const SizedBox(height: 20),
                     Row(

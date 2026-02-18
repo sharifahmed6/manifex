@@ -7,15 +7,19 @@ import 'package:manifex/Presentation/Share/GradientMask.dart';
 import 'package:manifex/Presentation/Share/button_gradient.dart';
 import 'package:manifex/Presentation/Share/scafold_background.dart';
 import '../../../../App/AppColors.dart';
+import '../../../../App/routes.dart';
 import '../../../all_course/practices/widget/transperent_gradient_border.dart';
 import '../../../app_bar/views/custom_app_bar.dart';
 import 'package:get/get.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+import '../controller/home_controller.dart';
+
+class HomeScreen extends GetView<HomeController> {
+  HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    Get.put(HomeController);
     return scaffold_background(
       child: Padding(
         padding: EdgeInsets.all(16),
@@ -113,7 +117,7 @@ class HomeScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Session Timer".tr,
+                                  "Total Words".tr,
                                   style: TextStyle(
                                     fontSize: ScreenResponsive.responsiveFont(
                                       context,
@@ -122,7 +126,7 @@ class HomeScreen extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  "12:34 Remaining",
+                                  controller.totalWords,
                                   style: TextStyle(
                                     fontSize: ScreenResponsive.responsiveFont(
                                       context,
@@ -166,8 +170,9 @@ class HomeScreen extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                Text(
-                                  "6 Days",
+
+                                Obx(() => Text(
+                                  "${controller.dayStreak} Days",
                                   style: TextStyle(
                                     fontSize: ScreenResponsive.responsiveFont(
                                       context,
@@ -175,7 +180,7 @@ class HomeScreen extends StatelessWidget {
                                     ),
                                     fontWeight: FontWeight.bold,
                                   ),
-                                ),
+                                ),)
                               ],
                             ),
                           ),
@@ -209,7 +214,7 @@ class HomeScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Progress".tr,
+                                  "Daily Goal".tr,
                                   style: TextStyle(
                                     fontSize: ScreenResponsive.responsiveFont(
                                       context,
@@ -218,7 +223,7 @@ class HomeScreen extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  "2/4 Remaining",
+                                  controller.dailyGoal,
                                   style: TextStyle(
                                     fontSize: ScreenResponsive.responsiveFont(
                                       context,
@@ -263,7 +268,7 @@ class HomeScreen extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  "75% Accuracy",
+                                  "${controller.overallAccuracy}% Accuracy",
                                   style: TextStyle(
                                     fontSize: ScreenResponsive.responsiveFont(
                                       context,
@@ -330,7 +335,7 @@ class HomeScreen extends StatelessWidget {
                       SizedBox(
                         width: ScreenResponsive.w(context, 200),
                         height: ScreenResponsive.h(context, 50),
-                        child: ButtonGradient(text: "Start Practices".tr),
+                        child: ButtonGradient(text: "Start Practices".tr, onTap: () => Get.toNamed(routes.interactive_reading_screen)),
                       ),
                     ],
                   ),
@@ -353,6 +358,7 @@ class HomeScreen extends StatelessWidget {
                 subTitle:
                 'Poneme recognition an word games with visual cues designed for dyslexic learners',
                 context: context,
+                onTap: () => Get.toNamed(routes.interactive_reading_screen)
               ),
               SizedBox(height: 16.h,),
               _practicesCard(
@@ -361,6 +367,7 @@ class HomeScreen extends StatelessWidget {
                 subTitle:
                 'Write. Learn. Improve. AI checks your grammar, structure, and style instantly.',
                 context: context,
+                onTap: () => Get.toNamed(routes.smart_writing_screen)
               ),
 
 
@@ -374,7 +381,8 @@ class HomeScreen extends StatelessWidget {
 }
 
 
-Widget _practicesCard({String? imagePath, String? title, String? subTitle, required BuildContext context}) {
+
+Widget _practicesCard({String? imagePath, String? title, String? subTitle, VoidCallback? onTap, required BuildContext context}) {
   return TransparentGradientBorder(
     strokeWidth: 0.5,
     radius: ScreenResponsive.r(context, 16),
@@ -418,7 +426,7 @@ Widget _practicesCard({String? imagePath, String? title, String? subTitle, requi
             ),
           ),
           SizedBox(height: 10.h),
-          ButtonGradient(text: 'Start Reading'),
+          ButtonGradient(text: 'Start Reading'.tr, onTap: onTap,),
         ],
       ),
     ),

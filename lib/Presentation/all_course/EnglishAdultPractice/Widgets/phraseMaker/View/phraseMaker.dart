@@ -62,7 +62,19 @@ class phraseMaker extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Obx(() => GradientMask(child: Text("Word ${controller.currentIndex.value + 1} of ${controller.phrases.length}", style: TextStyle(fontSize: ScreenResponsive.responsiveFont(context, 18), fontWeight: FontWeight.w600),)),),
+                    Obx(() {
+                      final total = controller.phrases.length;
+
+                      return GradientMask(
+                        child: Text(
+                          "Word ${controller.currentIndex.value + 1} of $total",
+                          style: TextStyle(
+                            fontSize: ScreenResponsive.responsiveFont(context, 18),
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      );
+                    }),
 
                     Text("Arrange the words in correct order".tr, style: TextStyle(fontSize: ScreenResponsive.responsiveFont(context, 17), fontWeight: FontWeight.w600),),
                     const SizedBox(height: 5),
@@ -89,11 +101,12 @@ class phraseMaker extends StatelessWidget {
                     const SizedBox(height: 20),
                     Text("Your phrase:".tr, style: TextStyle(fontSize: ScreenResponsive.responsiveFont(context, 12), fontWeight: FontWeight.bold),),
                     const SizedBox(height: 10),
+                    // Display selected words
                     Obx(() {
-                      if (controller.finalWords.isEmpty) {
+                      if (controller.selectedWords.isEmpty) {
                         return Center(
                           child: Text(
-                            "No words selected", // You can translate if needed
+                            "No words selected",
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
@@ -105,12 +118,11 @@ class phraseMaker extends StatelessWidget {
                         return Wrap(
                           spacing: 12,
                           runSpacing: 12,
-                          children: controller.finalWords.map((word) {
+                          children: controller.selectedWords.map((word) {
                             return _interestChip(
                               text: word,
                               isSelected: false,
-                              onTap: () {
-                              },
+                              onTap: () => controller.toggleWord(word),
                             );
                           }).toList(),
                         );
@@ -118,13 +130,14 @@ class phraseMaker extends StatelessWidget {
                     }),
                     const SizedBox(height: 20),
 
+                    // Previous / Next Buttons
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         GestureDetector(
-                          onTap: () => controller.previousWord(),
+                          onTap: () => controller.previousPhrase(),
                           child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                             decoration: BoxDecoration(
                               color: Colors.white.withAlpha(15),
                               borderRadius: BorderRadius.circular(50),
@@ -132,18 +145,24 @@ class phraseMaker extends StatelessWidget {
                             ),
                             child: Row(
                               children: [
-                                Icon(Icons.arrow_back, color: Colors.white, size: 18,),
+                                const Icon(Icons.arrow_back, color: Colors.white, size: 18),
                                 const SizedBox(width: 5),
-                                Text("Previous", style: TextStyle(color: Colors.white, fontSize: ScreenResponsive.responsiveFont(context, 16), fontWeight: FontWeight.w600),)
+                                Text(
+                                  "Previous",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: ScreenResponsive.responsiveFont(context, 16),
+                                      fontWeight: FontWeight.w600),
+                                ),
                               ],
                             ),
                           ),
                         ),
 
                         GestureDetector(
-                          onTap: () => controller.nextWord(),
+                          onTap: () => controller.nextPhrase(),
                           child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                             decoration: BoxDecoration(
                               color: Colors.white.withAlpha(15),
                               borderRadius: BorderRadius.circular(50),
@@ -151,13 +170,20 @@ class phraseMaker extends StatelessWidget {
                             ),
                             child: Row(
                               children: [
-                                Text("Next", style: TextStyle(color: Colors.white, fontSize: ScreenResponsive.responsiveFont(context, 16), fontWeight: FontWeight.w600),),
+                                Text(
+                                  "Next",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: ScreenResponsive.responsiveFont(context, 16),
+                                      fontWeight: FontWeight.w600),
+                                ),
                                 const SizedBox(width: 5),
-                                Icon(Icons.arrow_forward, color: Colors.white, size: 18,),
+                                const Icon(Icons.arrow_forward, color: Colors.white, size: 18),
                               ],
                             ),
                           ),
-                        )
+                        ),
+
                       ],
                     )
                   ],
