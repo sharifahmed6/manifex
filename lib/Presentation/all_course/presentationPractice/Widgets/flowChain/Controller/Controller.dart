@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import '../../../../../../Core/SharepreferenceHelper.dart';
 import '../../../../../../Core/snakbar.dart';
 import '../../../../../Share/custom_circle_progress_indicator.dart';
+import '../../../Controller/Controller.dart';
 
 class flowChainController extends GetxController {
   final FlutterSoundRecorder recorder = FlutterSoundRecorder();
@@ -136,37 +137,46 @@ class flowChainController extends GetxController {
         "https://ai.manifex.org/api/v1/presentation/flow-chain/flow_chain");
 
     try {
-      // Create Multipart request
-      final request = http.MultipartRequest('POST', url);
-
-      // ✅ Headers (do NOT set content-type manually for MultipartRequest)
-      request.headers.addAll({
-        'authtoken': '1',
-        // 'Content-Type' is set automatically by MultipartRequest
-      });
-
-      // ✅ Send the word list as JSON string
-      final words = selectedWords.value ?? [];
-      request.fields['word_list'] = jsonEncode(words);
-
-      // ✅ Add audio file if provided
-      if (AudioFilePath.value.isNotEmpty) {
-        request.files.add(await http.MultipartFile.fromPath(
-          'file',
-          AudioFilePath.value,
-        ));
-      }
-
-      // ✅ Show loading
+      // Show loading
       Get.dialog(
         barrierDismissible: false,
-        CustomCircleProgressIndicator(),
+        const CustomCircleProgressIndicator(),
       );
+
+      final request = http.MultipartRequest('POST', url);
+
+      // Headers
+      request.headers.addAll({
+        'authtoken': '1',
+        'Accept': 'application/json',
+      });
+
+      // ✅ Get words safely
+      final List<String> words =
+      (selectedWords.value ?? []).map((e) => e.toString()).toList();
+
+      if (words.isEmpty) {
+        Get.back();
+        Get.snackbar("Error", "Word list is empty");
+        return;
+      }
+
+      // ✅ IMPORTANT FIX:
+      // Send as comma-separated string instead of jsonEncode
+      request.fields['word_list'] = words.join(",");
+
+      // ✅ Add audio file if exists
+      if (AudioFilePath.value.isNotEmpty) {
+        request.files.add(
+          await http.MultipartFile.fromPath(
+            'file',
+            AudioFilePath.value,
+          ),
+        );
+      }
 
       // Send request
       final streamedResponse = await request.send();
-
-      // Convert to http.Response
       final response = await http.Response.fromStream(streamedResponse);
 
       // Close loading
@@ -176,20 +186,31 @@ class flowChainController extends GetxController {
       print("Response Body: ${response.body}");
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
-        // ✅ Parse response safely
+        if (response.body.isEmpty) {
+          Get.snackbar("Error", "Empty response from server");
+          return;
+        }
+
         final Map<String, dynamic> data = jsonDecode(response.body);
 
+        // ✅ Safe parsing
         score.value = data['score'] ?? 0;
         feedback.value = data['feedback'] ?? '';
+        Get.find<presentationPracticeController>().finalResult.add(data);
 
-        print("Word submitted successfully");
       } else {
-        print("Error submitting word: ${response.body}");
+        // Backend validation error
+        Get.snackbar("Server Error", response.body);
+        print("Server returned error: ${response.statusCode}");
       }
+
     } catch (e) {
+      Get.back();
       print("HTTP Error: $e");
+      Get.snackbar("Error", "Something went wrong");
     }
   }
+
 
 
 

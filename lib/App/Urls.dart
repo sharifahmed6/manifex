@@ -21,6 +21,10 @@ class urls {
   static String profileInfo = "$baseUrl/auth/me";
   static String readingTaskComplete = "$baseUrl/reading-task/submit";
   static String smartWritingDataSend = "$baseUrl/writing-Task/submit";
+<<<<<<< Sadid
+
+=======
+>>>>>>> main
 
 
   static String getFlowChain(String userId) => "$baseUrl/presentation/flow-chain/get_flow_chain?user_id=$userId";
@@ -28,5 +32,11 @@ class urls {
   static String getPowerWords = "https://ai.manifex.org/api/v1/presentation/power-words/get_power_words";
   static String powerWordsScore= "$baseUrl/presentation/power-words/power_words";
   static String getPrecisionDrillurls(String userId) => "$baseUrl/presentation/precision-drill/get_precision_drill?user_id=$userId";
+  static String presentationSubmit = "$baseUrl/presentation/submit";
 
+<<<<<<< Sadid
+
+   ///  backend api
+=======
+>>>>>>> main
 }

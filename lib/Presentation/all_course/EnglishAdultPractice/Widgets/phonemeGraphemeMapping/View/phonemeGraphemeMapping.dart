@@ -74,7 +74,9 @@ class phonemeGraphemeMapping extends StatelessWidget {
                     Center(
                       child: GestureDetector(
                         onTap: () {
-                          TTSService.speak("${controller.exercises[controller.currentIndex.value]['word']}");
+                          TTSService.speak(
+                              controller.exercises[controller.currentIndex.value].word
+                          );
                         },
                         child: Container(
                           height: ScreenResponsive.h(context, 70),
@@ -183,11 +185,16 @@ class phonemeGraphemeMapping extends StatelessWidget {
                   if(controller.selectedWords.isEmpty){
                     AppSnackbar.show("Please select answer.");
                   }else{
-                    if(controller.combinedText == controller.exercises[controller.currentIndex.value]['word']){
+                    if (controller.combinedText == controller.exercises[controller.currentIndex.value].word) {
+                      controller.correctWord.value++;
                       AppSnackbar.show("Correct");
-                    }else{
+                      controller.nextWord();
+                    } else {
                       AppSnackbar.show("Incorrect");
+                      controller.nextWord();
                     }
+
+
                   }
 
                 },

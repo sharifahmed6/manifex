@@ -62,7 +62,7 @@ class _skillScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
+      child: Obx(() => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SkillWelcomeCard(),
@@ -96,7 +96,7 @@ class _skillScreen extends StatelessWidget {
               Get.toNamed(routes.phonemeGraphemeMapping_screen);
             },
             isComplete: controller.listComplete[1],
-            lock: controller.listLock[2],
+            lock: controller.listLock[1],
           ),
           const SizedBox(height: 15,),
 
@@ -149,7 +149,7 @@ class _skillScreen extends StatelessWidget {
             lock: controller.listLock[3],
           ),
         ],
-      ),
+      ),)
     );
   }
 }
