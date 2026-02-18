@@ -205,10 +205,10 @@ class NativeTaskOneController extends GetxController {
             isListening.value = false;
           }
         },
-        listenFor: const Duration(seconds: 4),
-        pauseFor: const Duration(seconds: 3),
+        listenFor: const Duration(minutes: 3),
+        pauseFor: const Duration(seconds: 4),
         listenOptions: stt.SpeechListenOptions(
-          partialResults: false,
+          partialResults: true,
           cancelOnError: true,
         ),
       );
@@ -233,6 +233,7 @@ class NativeTaskOneController extends GetxController {
     try {
       final parentController = Get.find<NativeSpeakingSkillController>();
       parentController.score.value = isMatch ? 100 : 0;
+      parentController.taskOneScore.value = isMatch ? 100 : 0;
     } catch (e) {
       print('Parent controller not found: $e');
     }

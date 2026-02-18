@@ -242,122 +242,167 @@ class NativeTaskTwo extends StatelessWidget {
     );
   }
 
-  /// Feedback banner
+  /// Feedback banner with Fluency Score progress bar
   Widget _buildFeedbackBanner() {
     return Obx(() {
       if (!controller.showFeedback.value) {
         return const SizedBox.shrink();
       }
 
-      return Container(
-        width: double.infinity,
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-        decoration: BoxDecoration(
-          color: Colors.white.withAlpha(30),
-          border: Border.all(
-            width: 2,
-            color: controller.isSuccess.value
-                ? const Color(0xFFFFBC6F)
-                : Colors.red,
-          ),
-          borderRadius: BorderRadius.circular(16.r),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Icon + message + score row
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+      final score = controller.fluencyScore.value;
+      final percent = (score * 100).round();
+
+      return Column(
+        children: [
+          // ── Fluency Score card ──────────────────────────────────────
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
+            decoration: BoxDecoration(
+              color: const Color(0xFF1A1C24),
+              borderRadius: BorderRadius.circular(16.r),
+              border: Border.all(color: Colors.white.withAlpha(30)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  width: 20.w,
-                  height: 20.w,
-                  decoration: BoxDecoration(
-                    gradient: controller.isSuccess.value
-                        ? const LinearGradient(
-                            colors: [
-                              Color(0xFFFFBC6F),
-                              Color(0xFFF176B7),
-                              Color(0xFF3797CD),
-                            ],
-                          )
-                        : null,
-                    color: controller.isSuccess.value ? null : Colors.red,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    controller.isSuccess.value ? Icons.check : Icons.close,
-                    color: Colors.white,
-                    size: 12.sp,
-                  ),
-                ),
-                SizedBox(width: 12.w),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      CustomText(
-                        text: controller.feedbackMessage.value,
-                        fontSize: 16,
+                // Label + percentage
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Fluency Score',
+                      style: TextStyle(
+                        fontSize: 15.sp,
                         fontWeight: FontWeight.w600,
-                        color: controller.isSuccess.value
-                            ? const Color(0xFFFFBC6F)
-                            : Colors.red,
-                        textAlign: TextAlign.center,
+                        color: Colors.white,
                       ),
-                      SizedBox(height: 4.h),
-                      Text(
-                        controller.isSuccess.value ? '100/100' : '00/100',
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w700,
-                          color: controller.isSuccess.value
-                              ? const Color(0xFFFFBC6F)
-                              : Colors.red,
-                        ),
+                    ),
+                    Text(
+                      '$percent%',
+                      style: TextStyle(
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 10.h),
+                // Progress bar track
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(100.r),
+                  child: Stack(
+                    children: [
+                      // Track background
+                      Container(
+                        height: 10.h,
+                        width: double.infinity,
+                        color: Colors.white.withAlpha(30),
+                      ),
+                      // Filled portion
+                      LayoutBuilder(
+                        builder: (context, constraints) {
+                          return Container(
+                            height: 10.h,
+                            width: constraints.maxWidth * score,
+                            decoration: const BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Color(0xFFFFBC6F),
+                                  Color(0xFFF176B7),
+                                  Color(0xFF3797CD),
+                                ],
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                              ),
+                            ),
+                          );
+                        },
                       ),
                     ],
                   ),
                 ),
               ],
             ),
+          ),
 
-            SizedBox(height: 16.h),
+          SizedBox(height: 16.h),
 
-            // "Perfect! Go to Next Challenge" button
-            GestureDetector(
-              onTap: () => Get.back(),
-              child: Container(
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: 14.h),
+          // ── Feedback message ────────────────────────────────────────
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 22.w,
+                height: 22.w,
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [
-                      Color(0xFFFFBC6F),
-                      Color(0xFFF176B7),
-                      Color(0xFF3797CD),
-                    ],
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                  ),
-                  borderRadius: BorderRadius.circular(12.r),
+                  gradient: controller.isSuccess.value
+                      ? const LinearGradient(
+                          colors: [
+                            Color(0xFFFFBC6F),
+                            Color(0xFFF176B7),
+                            Color(0xFF3797CD),
+                          ],
+                        )
+                      : null,
+                  color: controller.isSuccess.value ? null : Colors.red,
+                  shape: BoxShape.circle,
                 ),
+                child: Icon(
+                  controller.isSuccess.value ? Icons.check : Icons.close,
+                  color: Colors.white,
+                  size: 13.sp,
+                ),
+              ),
+              SizedBox(width: 10.w),
+              Expanded(
                 child: Text(
-                  controller.isSuccess.value
-                      ? 'Perfect! Go to Next Challenge'
-                      : 'Go to Next Challenge',
-                  textAlign: TextAlign.center,
+                  controller.feedbackMessage.value,
                   style: TextStyle(
-                    fontSize: 15.sp,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                    color: controller.isSuccess.value
+                        ? const Color(0xFFFFBC6F)
+                        : Colors.red,
                   ),
                 ),
               ),
+            ],
+          ),
+
+          SizedBox(height: 16.h),
+
+          // ── Go to Next Challenge button ──────────────────────────────
+          GestureDetector(
+            onTap: () => Get.back(),
+            child: Container(
+              width: double.infinity,
+              padding: EdgeInsets.symmetric(vertical: 14.h),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [
+                    Color(0xFFFFBC6F),
+                    Color(0xFFF176B7),
+                    Color(0xFF3797CD),
+                  ],
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                ),
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+              child: Text(
+                'Go to Next Challenge',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 15.sp,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                ),
+              ),
             ),
-          ],
-        ),
+          ),
+        ],
       );
     });
   }

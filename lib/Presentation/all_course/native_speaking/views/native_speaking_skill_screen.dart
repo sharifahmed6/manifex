@@ -27,51 +27,51 @@ class NativeSpeakingSkillScreen extends StatelessWidget {
             text: 'Complete each task to improve your English reading skill',
             color: Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
           ),
-          SizedBox(height: 8.h,),
+          SizedBox(height: 8.h),
           SingleSkillCard(
             imagePath: 'assets/icons/pronunctation_icon.png',
             title: 'Pronunciation Practice',
             subTitle: 'Word Level Training',
             buttonText: 'Task 1',
-            onTap: (){
+            onTap: () {
               Get.toNamed(routes.nativeOneScreen);
             },
             isComplete: true,
           ),
-          SizedBox(height: 16.h,),
+          SizedBox(height: 16.h),
           SingleSkillCard(
             imagePath: 'assets/icons/microphone_icon.png',
             title: 'Phrase Repeat',
             subTitle: 'Follow Mercury\'s Lead',
             buttonText: 'Task 2',
-            onTap: (){
+            onTap: () {
               Get.toNamed(routes.nativeTwoScreen);
             },
             isComplete: true,
           ),
-          SizedBox(height: 16.h,),
+          SizedBox(height: 16.h),
           SingleSkillCard(
             imagePath: 'assets/icons/listen_&_speak_icon.png',
             title: 'Listen & Speak',
             subTitle: 'Sentence Repetition',
             buttonText: 'Task 3',
-            onTap: (){
-              print('Listen & Speak');
+            onTap: () {
+              Get.toNamed(routes.nativeThreeScreen);
             },
             isComplete: true,
           ),
-          SizedBox(height: 16.h,),
+          SizedBox(height: 16.h),
           SingleSkillCard(
             imagePath: 'assets/icons/vocabulary.png',
             title: 'Vocabulary Challenge',
             subTitle: 'Daily Word Practice',
             buttonText: 'Task 4',
-            onTap: (){
+            onTap: () {
               print('Vocabulary Challenge');
             },
             isComplete: true,
           ),
-          SizedBox(height: 16.h,),
+          SizedBox(height: 16.h),
         ],
       ),
     );

@@ -41,4 +41,6 @@ class urls {
       "${aiBaseUrl}speaking/pronunciation/get_pronunciation?age=$age&user_id=$userId";
   static String getPhraseRepeat(String userId, String age) =>
       "${aiBaseUrl}speaking/phrase-repeat/get_phrase_repeat?age=$age&user_id=$userId";
+  static String getListenSpeak(String userId, String age) =>
+      "${aiBaseUrl}speaking/listen-speak/get_listen_speak?age=$age&user_id=$userId";
 }

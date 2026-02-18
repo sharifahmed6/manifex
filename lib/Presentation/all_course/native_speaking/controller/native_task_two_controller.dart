@@ -24,6 +24,7 @@ class NativeTaskTwoController extends GetxController {
   final currentPhraseIndex = 0.obs;
   final currentWord = ''.obs;
   final feedbackMessage = ''.obs;
+  final fluencyScore = 0.0.obs; // 0.0 to 1.0
 
   // Speech recognition
   final speechAvailable = false.obs;
@@ -201,16 +202,18 @@ class NativeTaskTwoController extends GetxController {
           if (result.finalResult) {
             final recognizedWords = result.recognizedWords.trim().toLowerCase();
             final targetPhrase = currentWord.value.trim().toLowerCase();
+            // confidence: 0.0–1.0 from speech engine (how clearly it heard)
+            final confidence = result.confidence > 0 ? result.confidence : 1.0;
 
-            checkPronunciation(recognizedWords, targetPhrase);
+            checkPronunciation(recognizedWords, targetPhrase, confidence);
             speechToText.stop();
             isListening.value = false;
           }
         },
-        listenFor: const Duration(seconds: 4),
-        pauseFor: const Duration(seconds: 3),
+        listenFor: const Duration(minutes: 3),
+        pauseFor: const Duration(seconds: 4),
         listenOptions: stt.SpeechListenOptions(
-          partialResults: false,
+          partialResults: true,
           cancelOnError: true,
         ),
       );
@@ -227,14 +230,48 @@ class NativeTaskTwoController extends GetxController {
     }
   }
 
+  /// Calculate word-overlap similarity (0.0 to 1.0)
+  double _calculateSimilarity(String recognized, String target) {
+    if (target.isEmpty) return 0.0;
+    if (recognized.isEmpty) return 0.0;
+
+    final targetWords = target.split(' ');
+    final recognizedWords = recognized.split(' ');
+
+    int matchCount = 0;
+    final recognizedCopy = List<String>.from(recognizedWords);
+
+    for (final word in targetWords) {
+      final idx = recognizedCopy.indexOf(word);
+      if (idx != -1) {
+        matchCount++;
+        recognizedCopy.removeAt(idx);
+      }
+    }
+
+    return matchCount / targetWords.length;
+  }
+
   /// Check if phrase matches
-  void checkPronunciation(String recognized, String target) {
-    final isMatch = recognized == target;
+  /// [confidence] = speech engine clarity score (0.0–1.0)
+  void checkPronunciation(
+    String recognized,
+    String target, [
+    double confidence = 1.0,
+  ]) {
+    final wordSimilarity = _calculateSimilarity(recognized, target);
+
+    // Combined score: 60% word accuracy + 40% speech clarity
+    final combined = (wordSimilarity * 0.6) + (confidence * 0.4);
+    final isMatch = combined >= 0.75;
+
+    fluencyScore.value = combined.clamp(0.0, 1.0);
 
     // Update score in parent controller
     try {
       final parentController = Get.find<NativeSpeakingSkillController>();
-      parentController.score.value = isMatch ? 100 : 0;
+      parentController.score.value = (combined * 100).round();
+      parentController.taskTwoScore.value = (combined * 100).round();
     } catch (e) {
       print('Parent controller not found: $e');
     }

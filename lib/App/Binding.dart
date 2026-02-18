@@ -28,6 +28,7 @@ import '../Presentation/all_course/interactive_reading/controller/task_three_con
 import '../Presentation/all_course/native_speaking/controller/native_speaking_skill_controller.dart';
 import '../Presentation/all_course/native_speaking/controller/native_task_one_controller.dart';
 import '../Presentation/all_course/native_speaking/controller/native_task_two_controller.dart';
+import '../Presentation/all_course/native_speaking/controller/native_task_three_controller.dart';
 import '../Presentation/all_course/practices/controller/practices_controller.dart';
 import '../Presentation/all_course/practices/controller/toggle_tab_controller.dart';
 import '../Presentation/all_course/presentationPractice/Controller/Controller.dart';
@@ -44,48 +45,121 @@ class InitialBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<SplashController>(() => SplashController(), fenix: true);
-    Get.lazyPut<on_boarding_controller>(() => on_boarding_controller(), fenix: true);
+    Get.lazyPut<on_boarding_controller>(
+      () => on_boarding_controller(),
+      fenix: true,
+    );
     Get.lazyPut<login_controller>(() => login_controller(), fenix: true);
     Get.lazyPut<signup_controller>(() => signup_controller(), fenix: true);
-    Get.lazyPut<BottomNavbarController>(() => BottomNavbarController(), fenix: true);
+    Get.lazyPut<BottomNavbarController>(
+      () => BottomNavbarController(),
+      fenix: true,
+    );
     Get.lazyPut<PracticesController>(() => PracticesController(), fenix: true);
     Get.lazyPut<ProgressController>(() => ProgressController(), fenix: true);
-    Get.lazyPut<find_account_controller>(() => find_account_controller(), fenix: true);
-    Get.lazyPut<OTP_verification_controller>(() => OTP_verification_controller(), fenix: true);
-    Get.lazyPut<reset_password_controller>(() => reset_password_controller(), fenix: true);
+    Get.lazyPut<find_account_controller>(
+      () => find_account_controller(),
+      fenix: true,
+    );
+    Get.lazyPut<OTP_verification_controller>(
+      () => OTP_verification_controller(),
+      fenix: true,
+    );
+    Get.lazyPut<reset_password_controller>(
+      () => reset_password_controller(),
+      fenix: true,
+    );
     Get.lazyPut<ProfileController>(() => ProfileController(), fenix: true);
-    Get.lazyPut<ProfileEditController>(() => ProfileEditController(), fenix: true);
+    Get.lazyPut<ProfileEditController>(
+      () => ProfileEditController(),
+      fenix: true,
+    );
     Get.lazyPut<LanguageController>(() => LanguageController(), fenix: true);
     Get.lazyPut<AboutUsController>(() => AboutUsController(), fenix: true);
-    Get.lazyPut<TermsConditonController>(() => TermsConditonController(), fenix: true);
-    Get.lazyPut<PrivacyPolicyController>(() => PrivacyPolicyController(), fenix: true);
-    Get.lazyPut<UnlockRewardsController>(() => UnlockRewardsController(), fenix: true);
-    Get.lazyPut<InteractiveReadingController>(() => InteractiveReadingController(), fenix: true);
+    Get.lazyPut<TermsConditonController>(
+      () => TermsConditonController(),
+      fenix: true,
+    );
+    Get.lazyPut<PrivacyPolicyController>(
+      () => PrivacyPolicyController(),
+      fenix: true,
+    );
+    Get.lazyPut<UnlockRewardsController>(
+      () => UnlockRewardsController(),
+      fenix: true,
+    );
+    Get.lazyPut<InteractiveReadingController>(
+      () => InteractiveReadingController(),
+      fenix: true,
+    );
     Get.lazyPut<ToggleTabController>(() => ToggleTabController(), fenix: true);
-    Get.lazyPut<SmartWritingController>(() => SmartWritingController(), fenix: true);
-    Get.lazyPut<NativeSpeakingSkillController>(() => NativeSpeakingSkillController(), fenix: true);
+    Get.lazyPut<SmartWritingController>(
+      () => SmartWritingController(),
+      fenix: true,
+    );
+    Get.lazyPut<NativeSpeakingSkillController>(
+      () => NativeSpeakingSkillController(),
+      fenix: true,
+    );
     Get.lazyPut<TaskOneController>(() => TaskOneController(), fenix: true);
     Get.lazyPut<SightWordController>(() => SightWordController(), fenix: true);
     Get.lazyPut<TaskThreeController>(() => TaskThreeController(), fenix: true);
     Get.lazyPut<TaskFourController>(() => TaskFourController(), fenix: true);
     Get.put(HomeController());
-    Get.lazyPut<presentationPracticeController>(() => presentationPracticeController(), fenix: true);
-    Get.lazyPut<powerWordsPluseController>(() => powerWordsPluseController(), fenix: true);
-    Get.lazyPut<PrecisionDrillController>(() => PrecisionDrillController(), fenix: true);
-    Get.lazyPut<ContextSpinController>(() => ContextSpinController(), fenix: true);
+    Get.lazyPut<presentationPracticeController>(
+      () => presentationPracticeController(),
+      fenix: true,
+    );
+    Get.lazyPut<powerWordsPluseController>(
+      () => powerWordsPluseController(),
+      fenix: true,
+    );
+    Get.lazyPut<PrecisionDrillController>(
+      () => PrecisionDrillController(),
+      fenix: true,
+    );
+    Get.lazyPut<ContextSpinController>(
+      () => ContextSpinController(),
+      fenix: true,
+    );
     Get.lazyPut<flowChainController>(() => flowChainController(), fenix: true);
-    Get.lazyPut<EnglishAdultPracticeController>(() => EnglishAdultPracticeController(), fenix: true);
+    Get.lazyPut<EnglishAdultPracticeController>(
+      () => EnglishAdultPracticeController(),
+      fenix: true,
+    );
 
-    Get.lazyPut<auditoryDiscriminationController>(() => auditoryDiscriminationController(), fenix: true);
-    Get.lazyPut<phonemeGraphemeMappingController>(() => phonemeGraphemeMappingController(), fenix: true);
-    Get.lazyPut<phraseMakerController>(() => phraseMakerController(), fenix: true);
-    Get.lazyPut<sentenceBuilderController>(() => sentenceBuilderController(), fenix: true);
+    Get.lazyPut<auditoryDiscriminationController>(
+      () => auditoryDiscriminationController(),
+      fenix: true,
+    );
+    Get.lazyPut<phonemeGraphemeMappingController>(
+      () => phonemeGraphemeMappingController(),
+      fenix: true,
+    );
+    Get.lazyPut<phraseMakerController>(
+      () => phraseMakerController(),
+      fenix: true,
+    );
+    Get.lazyPut<sentenceBuilderController>(
+      () => sentenceBuilderController(),
+      fenix: true,
+    );
     Get.lazyPut<wordFlashController>(() => wordFlashController(), fenix: true);
-    Get.lazyPut<wordPartsWorkshopController>(() => wordPartsWorkshopController(), fenix: true);
-    Get.lazyPut<NativeTaskOneController>(() => NativeTaskOneController(), fenix: true);
-    Get.lazyPut<NativeTaskTwoController>(() => NativeTaskTwoController(), fenix: true);
-
-
-
+    Get.lazyPut<wordPartsWorkshopController>(
+      () => wordPartsWorkshopController(),
+      fenix: true,
+    );
+    Get.lazyPut<NativeTaskOneController>(
+      () => NativeTaskOneController(),
+      fenix: true,
+    );
+    Get.lazyPut<NativeTaskTwoController>(
+      () => NativeTaskTwoController(),
+      fenix: true,
+    );
+    Get.lazyPut<NativeTaskThreeController>(
+      () => NativeTaskThreeController(),
+      fenix: true,
+    );
   }
 }
