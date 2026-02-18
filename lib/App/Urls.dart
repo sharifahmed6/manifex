@@ -35,6 +35,10 @@ class urls {
       "https://ai.manifex.org/api/v1/presentation/power-words/get_power_words";
   static String powerWordsScore =
       "$baseUrl/presentation/power-words/power_words";
-  static String getPrecisionDrillurls(String userId) => "$baseUrl/presentation/precision-drill/get_precision_drill?user_id=$userId";
-  static String getPronunciation( String userId,  String age) => "${aiBaseUrl}speaking/pronunciation/get_pronunciation?age=$age&user_id=$userId";
+  static String getPrecisionDrillurls(String userId) =>
+      "$baseUrl/presentation/precision-drill/get_precision_drill?user_id=$userId";
+  static String getPronunciation(String userId, String age) =>
+      "${aiBaseUrl}speaking/pronunciation/get_pronunciation?age=$age&user_id=$userId";
+  static String getPhraseRepeat(String userId, String age) =>
+      "${aiBaseUrl}speaking/phrase-repeat/get_phrase_repeat?age=$age&user_id=$userId";
 }

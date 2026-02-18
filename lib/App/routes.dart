@@ -31,6 +31,7 @@ import '../Presentation/all_course/interactive_reading/views/interactive_task_fo
 import '../Presentation/all_course/interactive_reading/views/interactive_task_three_screen.dart';
 import '../Presentation/all_course/native_speaking/views/native_speaking_screen.dart';
 import '../Presentation/all_course/native_speaking/views/native_task_one.dart';
+import '../Presentation/all_course/native_speaking/views/native_task_two.dart';
 import '../Presentation/all_course/practices/views/practices_screen.dart';
 import '../Presentation/all_course/presentationPractice/View/presentationPractice.dart';
 import '../Presentation/all_course/presentationPractice/Widgets/ContextSpin/View/ContextSpin.dart';
@@ -78,6 +79,7 @@ class routes {
   static const String wordFlash_screen = '/wordFlash';
   static const String wordPartsWorkshop_screen = '/wordPartsWorkshop';
   static const String nativeOneScreen = '/native_one_screen';
+  static const String nativeTwoScreen = '/native_two_screen';
 
 
 
@@ -120,6 +122,7 @@ class routes {
     GetPage( name: wordFlash_screen, binding: InitialBinding(), page: () => wordFlash()),
     GetPage( name: wordPartsWorkshop_screen, binding: InitialBinding(), page: () => wordPartsWorkshop()),
     GetPage( name: nativeOneScreen, binding: InitialBinding(), page: () => NaviteTaskOne()),
+    GetPage( name: nativeTwoScreen, binding: InitialBinding(), page: () => NativeTaskTwo()),
 
   ];
 }

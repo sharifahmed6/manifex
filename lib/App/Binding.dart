@@ -27,6 +27,7 @@ import '../Presentation/all_course/interactive_reading/controller/task_one_contr
 import '../Presentation/all_course/interactive_reading/controller/task_three_controller.dart';
 import '../Presentation/all_course/native_speaking/controller/native_speaking_skill_controller.dart';
 import '../Presentation/all_course/native_speaking/controller/native_task_one_controller.dart';
+import '../Presentation/all_course/native_speaking/controller/native_task_two_controller.dart';
 import '../Presentation/all_course/practices/controller/practices_controller.dart';
 import '../Presentation/all_course/practices/controller/toggle_tab_controller.dart';
 import '../Presentation/all_course/presentationPractice/Controller/Controller.dart';
@@ -82,6 +83,7 @@ class InitialBinding extends Bindings {
     Get.lazyPut<wordFlashController>(() => wordFlashController(), fenix: true);
     Get.lazyPut<wordPartsWorkshopController>(() => wordPartsWorkshopController(), fenix: true);
     Get.lazyPut<NativeTaskOneController>(() => NativeTaskOneController(), fenix: true);
+    Get.lazyPut<NativeTaskTwoController>(() => NativeTaskTwoController(), fenix: true);
 
 
 

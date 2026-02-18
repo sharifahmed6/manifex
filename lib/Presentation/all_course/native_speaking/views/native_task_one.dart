@@ -10,7 +10,6 @@ import 'package:manifex/Presentation/progress/views/achivement_screen.dart';
 
 import '../../../Share/custom_back_button.dart';
 import '../../../Share/gradient_title.dart';
-import '../../../progress/widget/achievment_gradient_border.dart';
 
 class NaviteTaskOne extends StatelessWidget {
   NaviteTaskOne({super.key});
@@ -168,8 +167,10 @@ class NaviteTaskOne extends StatelessWidget {
                       // Microphone button (record)
                       Obx(
                         () => _buildControlButtonGradient(
-                          icon: Icons.mic,
-                          onTap: controller.startListening,
+                          icon: controller.isListening.value
+                              ? Icons.mic
+                              : Icons.mic_off,
+                          onTap: controller.toggleListening,
                           isActive: controller.isListening.value,
                         ),
                       ),
@@ -183,44 +184,6 @@ class NaviteTaskOne extends StatelessWidget {
                         isActive: false,
                       ),
                     ],
-                  ),
-                  SizedBox(height: 10.h),
-                  GestureDetector(
-                    onTap: () {},
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: 50.h,
-                      child: AchievmentGradientBorder(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white,
-                                gradient: LinearGradient(
-                                  colors: [
-                                    const Color(0xFFFFBC6F),
-                                    const Color(0xFFF176B7),
-                                    const Color(0xFF3797CD),
-                                  ],
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                ),
-                              ),
-                              child: Icon(
-                                Icons.check,
-                                size: 20.sp,
-                                color: Colors.white,
-                              ),
-                            ),
-                            SizedBox(width: 16.w),
-                            Text('Perfect! Great Pronunciation!'),
-                          ],
-                        ),
-                      ),
-                    ),
                   ),
                 ],
               ),
@@ -288,7 +251,7 @@ class NaviteTaskOne extends StatelessWidget {
 
       return Container(
         width: double.infinity,
-        padding: EdgeInsets.symmetric(horizontal: 36.w, vertical: 20.h),
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
         decoration: BoxDecoration(
           color: Colors.white.withAlpha(30),
           border: Border.all(
@@ -299,41 +262,98 @@ class NaviteTaskOne extends StatelessWidget {
           ),
           borderRadius: BorderRadius.circular(16.r),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              width: 20.w,
-              height: 20.w,
-              decoration: BoxDecoration(
-                gradient: controller.isSuccess.value
-                    ? const LinearGradient(
-                        colors: [
-                          Color(0xFFFFBC6F),
-                          Color(0xFFF176B7),
-                          Color(0xFF3797CD),
-                        ],
-                      )
-                    : null,
-                color: controller.isSuccess.value ? null : Colors.red,
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                controller.isSuccess.value ? Icons.check : Icons.close,
-                color: Colors.white,
-                size: 12.sp,
-              ),
+            // Icon + message + score row
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 20.w,
+                  height: 20.w,
+                  decoration: BoxDecoration(
+                    gradient: controller.isSuccess.value
+                        ? const LinearGradient(
+                            colors: [
+                              Color(0xFFFFBC6F),
+                              Color(0xFFF176B7),
+                              Color(0xFF3797CD),
+                            ],
+                          )
+                        : null,
+                    color: controller.isSuccess.value ? null : Colors.red,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    controller.isSuccess.value ? Icons.check : Icons.close,
+                    color: Colors.white,
+                    size: 12.sp,
+                  ),
+                ),
+                SizedBox(width: 12.w),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      CustomText(
+                        text: controller.feedbackMessage.value,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: controller.isSuccess.value
+                            ? const Color(0xFFFFBC6F)
+                            : Colors.red,
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 4.h),
+                      Text(
+                        controller.isSuccess.value ? '100/100' : '00/100',
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w700,
+                          color: controller.isSuccess.value
+                              ? const Color(0xFFFFBC6F)
+                              : Colors.red,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            SizedBox(width: 12.w),
-            Expanded(
-              child: CustomText(
-                text: controller.feedbackMessage.value,
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: controller.isSuccess.value
-                    ? const Color(0xFFFFBC6F)
-                    : Colors.red,
-                textAlign: TextAlign.center,
+
+            SizedBox(height: 16.h),
+
+            // "Perfect! Go to Next Challenge" button
+            GestureDetector(
+              onTap: () => Get.back(),
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(vertical: 14.h),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [
+                      Color(0xFFFFBC6F),
+                      Color(0xFFF176B7),
+                      Color(0xFF3797CD),
+                    ],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                  ),
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+                child: Text(
+                  controller.isSuccess.value
+                      ? 'Perfect! Go to Next Challenge'
+                      : 'Go to Next Challenge',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
+                ),
               ),
             ),
           ],

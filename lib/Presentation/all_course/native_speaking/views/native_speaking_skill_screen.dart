@@ -45,7 +45,7 @@ class NativeSpeakingSkillScreen extends StatelessWidget {
             subTitle: 'Follow Mercury\'s Lead',
             buttonText: 'Task 2',
             onTap: (){
-              print('Phrase Repeat');
+              Get.toNamed(routes.nativeTwoScreen);
             },
             isComplete: true,
           ),

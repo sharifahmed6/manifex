@@ -57,16 +57,15 @@ class NativeTaskOneController extends GetxController {
       speechAvailable.value = await speechToText.initialize(
         onError: (error) {
           print('Speech recognition error: $error');
-          Get.snackbar(
-            'Error',
-            'Speech recognition error: ${error.errorMsg}',
-            snackPosition: SnackPosition.TOP,
-            backgroundColor: Colors.red.withAlpha(200),
-            colorText: Colors.white,
-          );
+          // Silently turn off mic on any error (e.g. timeout, no speech)
+          isListening.value = false;
         },
         onStatus: (status) {
           print('Speech recognition status: $status');
+          // Auto off when speech recognition stops on its own
+          if (status == 'done' || status == 'notListening') {
+            isListening.value = false;
+          }
         },
       );
 
@@ -168,6 +167,16 @@ class NativeTaskOneController extends GetxController {
     }
   }
 
+  /// Toggle microphone — start if off, stop if on
+  Future<void> toggleListening() async {
+    if (isListening.value) {
+      await speechToText.stop();
+      isListening.value = false;
+      return;
+    }
+    await startListening();
+  }
+
   /// Start listening to user speech (microphone button)
   Future<void> startListening() async {
     if (!speechAvailable.value) {
@@ -180,8 +189,6 @@ class NativeTaskOneController extends GetxController {
       );
       return;
     }
-
-    if (isListening.value) return;
 
     try {
       isListening.value = true;
@@ -198,7 +205,7 @@ class NativeTaskOneController extends GetxController {
             isListening.value = false;
           }
         },
-        listenFor: const Duration(seconds: 5),
+        listenFor: const Duration(seconds: 4),
         pauseFor: const Duration(seconds: 3),
         listenOptions: stt.SpeechListenOptions(
           partialResults: false,
@@ -239,11 +246,6 @@ class NativeTaskOneController extends GetxController {
     }
 
     showFeedback.value = true;
-
-    // Auto-hide feedback after 3 seconds
-    Future.delayed(const Duration(seconds: 3), () {
-      showFeedback.value = false;
-    });
   }
 
   /// Load next word (reset button)
