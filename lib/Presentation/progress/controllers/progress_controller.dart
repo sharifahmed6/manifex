@@ -11,21 +11,30 @@ class ProgressController extends GetxController {
   final userProgress = const UserProgressResponse().obs;
   final progressError = ''.obs;
   final selectedDay = '30 D'.obs;
-  RxBool lock = true.obs;
   final progressDays = ['30 D', '60 D', '90 D'];
+
   @override
   void onInit() {
     super.onInit();
-    getUserProgress();
+    // Default to 30 days
+    getUserProgress("30");
+
+    // Listen to changes in selectedDay and refetch data
+    ever(selectedDay, (String day) {
+      // Convert '30 D' -> '30' or '14 D' -> '14'
+      final dayValue = day.split(' ')[0];
+      print("Refetching user progress for $dayValue days");
+      getUserProgress(dayValue);
+    });
   }
 
-  Future<void> getUserProgress() async {
+  Future<void> getUserProgress(String days) async {
     try {
       isLoading.value = true;
       progressError.value = '';
 
       NetworkResponse response = await NetworkCaller().getRequest(
-        url: urls.userProgress,
+        url: "${urls.userProgress}?days=$days",
       );
 
       if (response.isSuccess) {
@@ -33,18 +42,11 @@ class ProgressController extends GetxController {
           response.responseData,
         );
 
-        final message =
-            response.responseData?['message']?.toString() ?? "Loaded";
+        // final message =
+        //     response.responseData?['message']?.toString() ?? "Loaded";
 
-        Get.showSnackbar(
-          GetSnackBar(
-            title: "Success",
-            message: message,
-            duration: const Duration(seconds: 3),
-            backgroundColor: Colors.green,
-            snackPosition: SnackPosition.TOP,
-          ),
-        );
+        // Optional: Show snackbar only on manual trigger or error
+        // Get.showSnackbar(...)
       } else {
         final message = response.errorMessage.isNotEmpty
             ? response.errorMessage
@@ -66,10 +68,10 @@ class ProgressController extends GetxController {
       progressError.value = "Something went wrong";
 
       Get.showSnackbar(
-        GetSnackBar(
+        const GetSnackBar(
           title: "Error",
           message: "Something went wrong",
-          duration: const Duration(seconds: 4),
+          duration: Duration(seconds: 4),
           backgroundColor: Colors.red,
           snackPosition: SnackPosition.TOP,
         ),
