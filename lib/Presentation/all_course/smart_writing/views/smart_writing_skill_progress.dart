@@ -64,28 +64,6 @@ class SmartWritingSkillProgress extends StatelessWidget {
           ),
           SizedBox(height: 10.h),
           ProgressCard(
-            color1: Color(0xffB2DEFF),
-            color2: Color(0xff3BA3F2),
-            imagePath: 'assets/icons/progress.png',
-            leftTitle: 'Progress',
-            rightTitle: '2/4',
-            rightSubtitle: 'Remaining',
-            leftSubtitle: GradientLinearProgress(
-              value: 0.5,
-              height: 7.h,
-              backgroundColor: Color(0xffFFFFFF).withAlpha((2.56 * 15).toInt()),
-              gradient: const LinearGradient(
-                colors: [
-                  Color(0xffB2DEFF),
-                  Color(0xff3BA3F2),
-                ],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-              ),
-            ),
-          ),
-          SizedBox(height: 10.h),
-          ProgressCard(
             color1: Color(0xff11D067),
             color2: Color(0xff01803A),
             imagePath: 'assets/icons/champion.png',

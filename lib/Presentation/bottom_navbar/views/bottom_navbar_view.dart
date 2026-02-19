@@ -13,12 +13,12 @@ import '../controllers/bottom_navbar_controller.dart';
 
 class BottomNavbarView extends GetView<BottomNavbarController> {
   BottomNavbarView({super.key});
-  final List<Widget> screens = [
-    HomeScreen(),
-    PracticesScreen(),
-    ProgressScreen(),
-    subscription(),
-    ProfileScreen(),
+  final List<Widget Function()> screens = [
+        () => HomeScreen(),
+        () => PracticesScreen(),
+        () => ProgressScreen(),
+        () => subscription(),
+        () => ProfileScreen(),
   ];
 
   final List<String> icons = [
@@ -34,7 +34,7 @@ class BottomNavbarView extends GetView<BottomNavbarController> {
     return Scaffold(
       extendBody: true,
       backgroundColor: Colors.transparent,
-      body: Obx(() => screens[controller.selectedIndex.value]),
+      body: Obx(() => screens[controller.selectedIndex.value]()),
       bottomNavigationBar: LayoutBuilder(
         builder: (context, constraints) {
           final isWide = constraints.maxWidth > 500;

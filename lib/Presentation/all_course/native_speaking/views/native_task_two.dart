@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:manifex/Presentation/Share/custom_circle_progress_indicator.dart';
 import 'package:manifex/Presentation/Share/scafold_background.dart';
 import 'package:manifex/Presentation/Share/text_title_small.dart';
+import 'package:manifex/Presentation/all_course/native_speaking/controller/native_speaking_skill_controller.dart';
 import 'package:manifex/Presentation/all_course/native_speaking/controller/native_task_two_controller.dart';
 import 'package:manifex/Presentation/app_bar/views/custom_app_bar.dart';
 
@@ -375,7 +376,15 @@ class NativeTaskTwo extends StatelessWidget {
 
           // ── Go to Next Challenge button ──────────────────────────────
           GestureDetector(
-            onTap: () => Get.back(),
+            onTap: () {
+              try {
+                final skillCtrl = Get.find<NativeSpeakingSkillController>();
+                skillCtrl.t2Complete.value = false; // hide task 2 button/logo
+                skillCtrl.t3Done.value = false; // unlock task 3
+                skillCtrl.checkAllComplete();
+              } catch (_) {}
+              Get.back();
+            },
             child: Container(
               width: double.infinity,
               padding: EdgeInsets.symmetric(vertical: 14.h),

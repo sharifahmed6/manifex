@@ -69,7 +69,9 @@ class InteractiveTaskFourScreen extends StatelessWidget {
                               onTap: () => controller.load(),
                               child: Container(
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: 16.w, vertical: 10.h),
+                                  horizontal: 16.w,
+                                  vertical: 10.h,
+                                ),
                                 decoration: BoxDecoration(
                                   color: Colors.orange,
                                   borderRadius: BorderRadius.circular(12.r),
@@ -130,7 +132,7 @@ class InteractiveTaskFourScreen extends StatelessWidget {
                             padding: EdgeInsets.only(bottom: 12.h),
                             child: Obx(() {
                               final selected =
-                              controller.selectedAnswers[qIndex];
+                                  controller.selectedAnswers[qIndex];
 
                               return _QuestionCard(
                                 questionNo: (qIndex + 1).toString(),
@@ -172,7 +174,11 @@ class InteractiveTaskFourScreen extends StatelessWidget {
                                           ],
                                         ).createShader(
                                           Rect.fromLTWH(
-                                              0, 0, bounds.width, bounds.height),
+                                            0,
+                                            0,
+                                            bounds.width,
+                                            bounds.height,
+                                          ),
                                         );
                                       },
                                       child: CustomText(
@@ -190,23 +196,30 @@ class InteractiveTaskFourScreen extends StatelessWidget {
                                     child: CustomText(
                                       text: "$selectedCount/$total selected",
                                       fontSize: 18,
-                                      color: Colors.white
-                                          .withAlpha((2.56 * 85).toInt()),
+                                      color: Colors.white.withAlpha(
+                                        (2.56 * 85).toInt(),
+                                      ),
                                     ),
                                   ),
                                 ),
                               GestureDetector(
                                 onTap: controller.isSubmitted.value
-                                    ? (){
-                                  interactiveController.allAnswerSubmit.value = true;
-                                  interactiveController.t4SkillLock.value = false;
-                                  interactiveController.stop();
-                                  Get.back();
-                                }
+                                    ? () {
+                                        interactiveController.t4Done.value =
+                                            false;
+                                        interactiveController
+                                                .t4SkillLock
+                                                .value =
+                                            false;
+                                        interactiveController
+                                            .checkAllComplete();
+                                        interactiveController.stop();
+                                        Get.back();
+                                      }
                                     : (canNext ? controller.submitNext : null),
                                 child: Opacity(
                                   opacity:
-                                  (controller.isSubmitted.value || canNext)
+                                      (controller.isSubmitted.value || canNext)
                                       ? 1
                                       : 0.5,
                                   child: Container(
@@ -216,8 +229,7 @@ class InteractiveTaskFourScreen extends StatelessWidget {
                                     ),
                                     decoration: BoxDecoration(
                                       color: Colors.orange,
-                                      borderRadius:
-                                      BorderRadius.circular(14.r),
+                                      borderRadius: BorderRadius.circular(14.r),
                                     ),
                                     child: CustomText(
                                       text: controller.isSubmitted.value
@@ -302,10 +314,7 @@ class _StoryCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(14.r),
             child: AspectRatio(
               aspectRatio: 16 / 9,
-              child: Image.network(
-                imagePath,
-                fit: BoxFit.cover,
-              ),
+              child: Image.network(imagePath, fit: BoxFit.cover),
             ),
           ),
         ],
@@ -353,11 +362,15 @@ class _QuestionCard extends StatelessWidget {
             color: const Color(0xffFFFFFF).withAlpha((2.56 * 95).toInt()),
           ),
           SizedBox(height: 10.h),
-          CustomText(
-            text: question,
-            fontSize: 16,
-            fontWeight: FontWeight.w700,
-            color: const Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
+          // Question text — wraps naturally, no overflow
+          Text(
+            question,
+            style: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w700,
+              color: const Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
+            ),
+            softWrap: true,
           ),
           SizedBox(height: 12.h),
           ...List.generate(options.length, (i) {

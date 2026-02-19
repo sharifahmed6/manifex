@@ -33,6 +33,7 @@ import '../Presentation/all_course/native_speaking/views/native_speaking_screen.
 import '../Presentation/all_course/native_speaking/views/native_task_one.dart';
 import '../Presentation/all_course/native_speaking/views/native_task_two.dart';
 import '../Presentation/all_course/native_speaking/views/native_task_three.dart';
+import '../Presentation/all_course/native_speaking/views/native_task_four.dart';
 import '../Presentation/all_course/practices/views/practices_screen.dart';
 import '../Presentation/all_course/presentationPractice/View/presentationPractice.dart';
 import '../Presentation/all_course/presentationPractice/Widgets/ContextSpin/View/ContextSpin.dart';
@@ -84,6 +85,7 @@ class routes {
   static const String nativeOneScreen = '/native_one_screen';
   static const String nativeTwoScreen = '/native_two_screen';
   static const String nativeThreeScreen = '/native_three_screen';
+  static const String nativeFourScreen = '/native_four_screen';
 
   static final pages = [
     GetPage(
@@ -281,6 +283,11 @@ class routes {
       name: nativeThreeScreen,
       binding: InitialBinding(),
       page: () => NativeTaskThree(),
+    ),
+    GetPage(
+      name: nativeFourScreen,
+      binding: InitialBinding(),
+      page: () => NativeTaskFour(),
     ),
   ];
 }

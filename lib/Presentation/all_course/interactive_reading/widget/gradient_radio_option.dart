@@ -37,12 +37,15 @@ class GradientRadioOption extends StatelessWidget {
               ),
             ),
             SizedBox(width: 10.w),
-            Text(
-              text,
-              style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
-                color: Colors.white.withOpacity(isSelected ? 1 : 0.9),
+            Expanded(
+              child: Text(
+                text,
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
+                  color: Colors.white.withOpacity(isSelected ? 1 : 0.9),
+                ),
+                softWrap: true,
               ),
             ),
           ],
@@ -53,10 +56,7 @@ class GradientRadioOption extends StatelessWidget {
 }
 
 class _GradientRadioPainter extends CustomPainter {
-  _GradientRadioPainter({
-    required this.isSelected,
-    required this.strokeWidth,
-  });
+  _GradientRadioPainter({required this.isSelected, required this.strokeWidth});
 
   final bool isSelected;
   final double strokeWidth;

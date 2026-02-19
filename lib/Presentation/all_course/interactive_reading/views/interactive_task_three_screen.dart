@@ -98,7 +98,9 @@ class InteractiveTaskThreeScreen extends StatelessWidget {
                             onTap: c.loadFromServer,
                             child: Container(
                               padding: EdgeInsets.symmetric(
-                                  horizontal: 16.w, vertical: 10.h),
+                                horizontal: 16.w,
+                                vertical: 10.h,
+                              ),
                               decoration: BoxDecoration(
                                 color: Colors.orange,
                                 borderRadius: BorderRadius.circular(12.r),
@@ -165,7 +167,8 @@ class InteractiveTaskThreeScreen extends StatelessWidget {
                                   SizedBox(height: 8.h),
                                   ListView.separated(
                                     shrinkWrap: true,
-                                    physics: const NeverScrollableScrollPhysics(),
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
                                     itemCount: c.words.length,
                                     separatorBuilder: (_, __) =>
                                         SizedBox(height: 12.h),
@@ -200,7 +203,8 @@ class InteractiveTaskThreeScreen extends StatelessWidget {
                                   SizedBox(height: 8.h),
                                   ListView.separated(
                                     shrinkWrap: true,
-                                    physics: const NeverScrollableScrollPhysics(),
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
                                     itemCount: c.slots.length,
                                     separatorBuilder: (_, __) =>
                                         SizedBox(height: 12.h),
@@ -239,27 +243,29 @@ class InteractiveTaskThreeScreen extends StatelessWidget {
                           final total = c.totalSlots;
                           final correct = c.correctCount.value;
 
-                          final showNiceBanner = c.allCorrect; // সব correct হলে
-                          final showFinish = c.allFilled; // সব drop হলেই (ভুল হলেও)
+                          final showNiceBanner = c.allCorrect;
+                          final showFinish = c.allFilled;
 
                           return Column(
                             children: [
                               if (!showNiceBanner)
-                              CustomText(
-                                text:
-                                "Correct: $correct/$total",
-                                fontSize: 18,
-                                color: const Color(0xffFFFFFF)
-                                    .withAlpha((2.56 * 80).toInt()),
-                                textAlign: TextAlign.center,
-                              ),
-                              SizedBox(height: 8.h,),
+                                CustomText(
+                                  text: "Correct: $correct/$total",
+                                  fontSize: 18,
+                                  color: const Color(
+                                    0xffFFFFFF,
+                                  ).withAlpha((2.56 * 80).toInt()),
+                                  textAlign: TextAlign.center,
+                                ),
+                              SizedBox(height: 8.h),
                               if (showNiceBanner)
                                 AchievmentGradientBorder(
                                   child: Container(
                                     width: double.infinity,
                                     padding: EdgeInsets.symmetric(
-                                        horizontal: 20.w, vertical: 10.h),
+                                      horizontal: 20.w,
+                                      vertical: 10.h,
+                                    ),
                                     child: ShaderMask(
                                       shaderCallback: (bounds) {
                                         return const LinearGradient(
@@ -270,12 +276,16 @@ class InteractiveTaskThreeScreen extends StatelessWidget {
                                           ],
                                         ).createShader(
                                           Rect.fromLTWH(
-                                              0, 0, bounds.width, bounds.height),
+                                            0,
+                                            0,
+                                            bounds.width,
+                                            bounds.height,
+                                          ),
                                         );
                                       },
                                       child: CustomText(
                                         text:
-                                        'Nice! You found $correct of $total sight words!',
+                                            'Nice! You found $correct of $total sight words!',
                                         fontSize: 16,
                                         fontWeight: FontWeight.w600,
                                         color: Colors.white,
@@ -289,18 +299,17 @@ class InteractiveTaskThreeScreen extends StatelessWidget {
 
                               if (showFinish)
                                 ButtonGradient(
-                                  onTap: (){
+                                  onTap: () {
                                     c.finish();
-                                    interactiveReading.t4Done.value = true;
-                                    interactiveReading.t3SkillLock.value= false;
+                                    interactiveReading.t4Done.value = false;
+                                    interactiveReading.t3SkillLock.value =
+                                        false;
+                                    interactiveReading.checkAllComplete();
                                   },
                                   text: 'Finish',
                                 ),
-                              SizedBox(height: 8.h,),
-                              ButtonGradient(
-                                onTap: c.resetAll,
-                                text: 'Reset',
-                              ),
+                              SizedBox(height: 8.h),
+                              ButtonGradient(onTap: c.resetAll, text: 'Reset'),
                               if (showFinish) SizedBox(height: 10.h),
                             ],
                           );
@@ -437,8 +446,9 @@ class _DropSlot extends StatelessWidget {
                       text: label,
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
-                      color: const Color(0xffFFFFFF)
-                          .withAlpha((2.56 * 90).toInt()),
+                      color: const Color(
+                        0xffFFFFFF,
+                      ).withAlpha((2.56 * 90).toInt()),
                     ),
                   ],
                 ),

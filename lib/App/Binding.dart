@@ -29,6 +29,7 @@ import '../Presentation/all_course/native_speaking/controller/native_speaking_sk
 import '../Presentation/all_course/native_speaking/controller/native_task_one_controller.dart';
 import '../Presentation/all_course/native_speaking/controller/native_task_two_controller.dart';
 import '../Presentation/all_course/native_speaking/controller/native_task_three_controller.dart';
+import '../Presentation/all_course/native_speaking/controller/native_task_four_controller.dart';
 import '../Presentation/all_course/practices/controller/practices_controller.dart';
 import '../Presentation/all_course/practices/controller/toggle_tab_controller.dart';
 import '../Presentation/all_course/presentationPractice/Controller/Controller.dart';
@@ -159,6 +160,10 @@ class InitialBinding extends Bindings {
     );
     Get.lazyPut<NativeTaskThreeController>(
       () => NativeTaskThreeController(),
+      fenix: true,
+    );
+    Get.lazyPut<NativeTaskFourController>(
+      () => NativeTaskFourController(),
       fenix: true,
     );
   }

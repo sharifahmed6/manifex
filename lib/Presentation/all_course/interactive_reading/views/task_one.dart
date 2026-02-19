@@ -55,9 +55,11 @@ class TaskOne extends StatelessWidget {
                       constraints: BoxConstraints(maxWidth: 420.w),
                       child: Obx(() {
                         if (c.isLoading.value) {
-                          return const Center(child: CustomCircleProgressIndicator());
+                          return const Center(
+                            child: CustomCircleProgressIndicator(),
+                          );
                         }
-            
+
                         if (c.error.isNotEmpty) {
                           return Center(
                             child: Column(
@@ -79,18 +81,22 @@ class TaskOne extends StatelessWidget {
                             ),
                           );
                         }
-            
+
                         if (c.shuffledLetters.isEmpty || c.selected.isEmpty) {
-                          return const Center(child: CustomCircleProgressIndicator());
+                          return const Center(
+                            child: CustomCircleProgressIndicator(),
+                          );
                         }
-            
+
                         return Container(
                           padding: EdgeInsets.all(16.w),
                           decoration: BoxDecoration(
                             color: Colors.white.withAlpha((2.56 * 3).toInt()),
                             borderRadius: BorderRadius.circular(18.r),
                             border: Border.all(
-                              color: Colors.white.withAlpha((2.56 * 14).toInt()),
+                              color: Colors.white.withAlpha(
+                                (2.56 * 14).toInt(),
+                              ),
                             ),
                           ),
                           child: Column(
@@ -101,55 +107,73 @@ class TaskOne extends StatelessWidget {
                                 alignment: WrapAlignment.center,
                                 spacing: 30.w,
                                 runSpacing: 10.h,
-                                children: List.generate(c.shuffledLetters.length, (i) {
-                                  final letter = c.shuffledLetters[i];
-            
-                                  final gradients = [
-                                    const LinearGradient(
-                                      colors: [Color(0xffFFD6B7), Color(0xffE07C2F)],
-                                    ),
-                                    const LinearGradient(
-                                      colors: [Color(0xffFFA6C8), Color(0xffB920ED)],
-                                    ),
-                                    const LinearGradient(
-                                      colors: [Color(0xffB2DEFF), Color(0xff3BA3F2)],
-                                    ),
-                                  ];
-            
-                                  return GestureDetector(
-                                    onTap: () => c.toggleLetter(i),
-                                    child: AnimatedContainer(
-                                      duration: const Duration(milliseconds: 160),
-                                      width: tileSize,
-                                      height: tileSize,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(16.r),
-                                        gradient: gradients[i % gradients.length],
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          CustomText(
-                                            text: letter,
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: isLandscape ? 24 : 32,
-                                            color: Colors.white,
-                                          ),
-                                          SizedBox(height: 6.h),
-                                          Icon(
-                                            Icons.volume_up_rounded,
-                                            color: Colors.white,
-                                            size: isLandscape ? 18.sp : 24.sp,
-                                          ),
+                                children: List.generate(
+                                  c.shuffledLetters.length,
+                                  (i) {
+                                    final letter = c.shuffledLetters[i];
+
+                                    final gradients = [
+                                      const LinearGradient(
+                                        colors: [
+                                          Color(0xffFFD6B7),
+                                          Color(0xffE07C2F),
                                         ],
                                       ),
-                                    ),
-                                  );
-                                }),
+                                      const LinearGradient(
+                                        colors: [
+                                          Color(0xffFFA6C8),
+                                          Color(0xffB920ED),
+                                        ],
+                                      ),
+                                      const LinearGradient(
+                                        colors: [
+                                          Color(0xffB2DEFF),
+                                          Color(0xff3BA3F2),
+                                        ],
+                                      ),
+                                    ];
+
+                                    return GestureDetector(
+                                      onTap: () => c.toggleLetter(i),
+                                      child: AnimatedContainer(
+                                        duration: const Duration(
+                                          milliseconds: 160,
+                                        ),
+                                        width: tileSize,
+                                        height: tileSize,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                            16.r,
+                                          ),
+                                          gradient:
+                                              gradients[i % gradients.length],
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            CustomText(
+                                              text: letter,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: isLandscape ? 24 : 32,
+                                              color: Colors.white,
+                                            ),
+                                            SizedBox(height: 6.h),
+                                            Icon(
+                                              Icons.volume_up_rounded,
+                                              color: Colors.white,
+                                              size: isLandscape ? 18.sp : 24.sp,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
                               ),
-            
+
                               SizedBox(height: 16.h),
-            
+
                               _selectedPhonemeCard(isLandscape),
                             ],
                           ),
@@ -195,12 +219,14 @@ class TaskOne extends StatelessWidget {
                 color: Colors.white.withAlpha((2.56 * 30).toInt()),
               ),
             ),
-            child: Obx(() => CustomText(
-              text: c.typed.value,
-              fontSize: isLandscape ? 20 : 25,
-              fontWeight: FontWeight.w700,
-              color: Colors.white,
-            )),
+            child: Obx(
+              () => CustomText(
+                text: c.typed.value,
+                fontSize: isLandscape ? 20 : 25,
+                fontWeight: FontWeight.w700,
+                color: Colors.white,
+              ),
+            ),
           ),
 
           SizedBox(height: 14.h),
@@ -222,17 +248,17 @@ class TaskOne extends StatelessWidget {
                 SizedBox(width: 12.w),
                 Expanded(
                   child: GestureDetector(
-                    onTap: c.canSubmit ? (){
-                      c.submit();
-                      interactiveReading.t2Done.value = true;
-                      interactiveReading.t1SkillLock.value = false;
-                    } : null,
+                    onTap: c.canSubmit
+                        ? () {
+                            c.submit();
+                            interactiveReading.t2Done.value = false;
+                            interactiveReading.t1SkillLock.value = false;
+                            interactiveReading.checkAllComplete();
+                          }
+                        : null,
                     child: Opacity(
                       opacity: c.canSubmit ? 1 : 0.5,
-                      child: ButtonGradient(
-                          text: 'Submit',
-                          height: 50,
-                      ),
+                      child: ButtonGradient(text: 'Submit', height: 50),
                     ),
                   ),
                 ),
@@ -251,7 +277,10 @@ class TaskOne extends StatelessWidget {
                   child: AchievmentGradientBorder(
                     child: Container(
                       width: double.infinity,
-                      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 20.w,
+                        vertical: 12.h,
+                      ),
                       child: ShaderMask(
                         shaderCallback: (bounds) {
                           return const LinearGradient(
