@@ -94,7 +94,7 @@ class NativeSpeakingSkillScreen extends StatelessWidget {
             controller.allTasksDone.value
                 ? GestureDetector(
                     onTap: () {
-                      // TODO: add native speaking submit API call
+                      controller.nativeSpeakingAnsSubmit();
                     },
                     child: AchievmentGradientBorder(
                       child: Container(

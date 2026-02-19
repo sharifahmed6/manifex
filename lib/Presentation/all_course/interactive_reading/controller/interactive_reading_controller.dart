@@ -40,8 +40,8 @@ class InteractiveReadingController extends GetxController {
 
   /// Lock Skill end
 
-  /// Which task the user is currently on (1–4) — reflects completed task count
-  final currentTask = 1.obs;
+  /// How many tasks are completed (0–4)
+  final currentTask = 0.obs;
 
   /// Called whenever a task is completed — updates currentTask and allAnswerSubmit
   void checkAllComplete() {
@@ -53,7 +53,7 @@ class InteractiveReadingController extends GetxController {
     if (!t3SkillLock.value) done++;
     if (!t4SkillLock.value) done++;
     if (done > 4) done = 4;
-    currentTask.value = done == 0 ? 1 : done;
+    currentTask.value = done;
     allAnswerSubmit.value = (done >= 4);
   }
 

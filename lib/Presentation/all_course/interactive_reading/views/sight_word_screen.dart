@@ -253,10 +253,12 @@ class SightWordPracticeScreen extends StatelessWidget {
                           ),*/
                           GestureDetector(
                             onTap: () {
+                              if (c.isLast) {
+                                interactiveReading.t3Done.value = false;
+                                interactiveReading.t2SkillLock.value = false;
+                                interactiveReading.checkAllComplete();
+                              }
                               c.nextOrFinish();
-                              interactiveReading.t3Done.value = false;
-                              interactiveReading.t2SkillLock.value = false;
-                              interactiveReading.checkAllComplete();
                             },
                             child: Container(
                               padding: EdgeInsets.symmetric(

@@ -8,7 +8,7 @@ import '../controllers/progress_controller.dart';
 import 'gradient_linear_progress.dart';
 
 class LearningProgressCard extends StatelessWidget {
-   LearningProgressCard({super.key});
+  LearningProgressCard({super.key});
   final controller = Get.find<ProgressController>();
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class LearningProgressCard extends StatelessWidget {
                 ),
                 const Spacer(),
                 Obx(
-                      () => Container(
+                  () => Container(
                     padding: EdgeInsets.symmetric(horizontal: 18.w),
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -93,15 +93,15 @@ class LearningProgressCard extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 16.h,),
+            SizedBox(height: 16.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(text: 'Reading Comprehension'),
-                CustomText(text: '50%')
+                CustomText(text: '50%'),
               ],
             ),
-            SizedBox(height: 8.h,),
+            SizedBox(height: 8.h),
             GradientLinearProgress(
               value: 0.5,
               height: 7.h,
@@ -116,15 +116,15 @@ class LearningProgressCard extends StatelessWidget {
                 end: Alignment.centerLeft,
               ),
             ),
-            SizedBox(height: 16.h,),
+            SizedBox(height: 16.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(text: 'Writing Skills'),
-                CustomText(text: '70%')
+                CustomText(text: '70%'),
               ],
             ),
-            SizedBox(height: 8.h,),
+            SizedBox(height: 8.h),
             GradientLinearProgress(
               value: 0.7,
               height: 7.h,
@@ -139,15 +139,15 @@ class LearningProgressCard extends StatelessWidget {
                 end: Alignment.centerLeft,
               ),
             ),
-            SizedBox(height: 16.h,),
+            SizedBox(height: 16.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(text: 'Pronunciation'),
-                CustomText(text: '85%')
+                CustomText(text: '85%'),
               ],
             ),
-            SizedBox(height: 8.h,),
+            SizedBox(height: 8.h),
             GradientLinearProgress(
               value: 0.8,
               height: 7.h,
@@ -162,15 +162,15 @@ class LearningProgressCard extends StatelessWidget {
                 end: Alignment.centerLeft,
               ),
             ),
-            SizedBox(height: 16.h,),
+            SizedBox(height: 16.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(text: 'Vocabulary'),
-                CustomText(text: '35%')
+                CustomText(text: '35%'),
               ],
             ),
-            SizedBox(height: 8.h,),
+            SizedBox(height: 8.h),
             GradientLinearProgress(
               value: 0.35,
               height: 7.h,
@@ -185,21 +185,31 @@ class LearningProgressCard extends StatelessWidget {
                 end: Alignment.centerLeft,
               ),
             ),
-            SizedBox(height: 16.h,),
+            SizedBox(height: 16.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CustomText(text: 'Today\'s Goal',fontWeight: FontWeight.w500,),
-                CustomText(text: '75%',fontWeight: FontWeight.w500,),
-              ],),
-            SizedBox(height: 8.h,),
+                CustomText(text: 'Today\'s Goal', fontWeight: FontWeight.w500),
+                CustomText(text: '75%', fontWeight: FontWeight.w500),
+              ],
+            ),
+            SizedBox(height: 8.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CustomText(text: '4 Lessons Completed',fontWeight: FontWeight.w600,fontSize: 18,),
-                CustomText(text: '3/4',fontWeight: FontWeight.w600,fontSize: 18,),
-              ],),
-            SizedBox(height: 8.h,),
+                CustomText(
+                  text: '4 Lessons Completed',
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18,
+                ),
+                CustomText(
+                  text: '3/4',
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18,
+                ),
+              ],
+            ),
+            SizedBox(height: 8.h),
             GradientLinearProgress(
               value: 0.75,
               height: 7.h,
@@ -220,4 +230,3 @@ class LearningProgressCard extends StatelessWidget {
     );
   }
 }
-

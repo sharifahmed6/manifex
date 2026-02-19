@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:manifex/App/Urls.dart';
@@ -15,10 +16,27 @@ class SmartWritingController extends GetxController {
   final isLoadingRelated = false.obs;
   final isSubmitting = false.obs;
 
+  // Timer variables
+  final totalDuration = Duration.zero.obs;
+  final tick = 0.obs;
+  Timer? _timer;
+  final isRunning = false.obs;
+  DateTime? _dateTime;
+
+  Duration get currentTime {
+    if (isRunning.value && _dateTime != null) {
+      return totalDuration.value + DateTime.now().difference(_dateTime!);
+    }
+    return totalDuration.value;
+  }
+
+  // Progress variables
+  final currentTask = 0.obs;
+
   // data lists
-  final items = <String>[].obs;          
-  final relatedWords = <String>[].obs;  
-  final relatedWord = false.obs;     
+  final items = <String>[].obs;
+  final relatedWords = <String>[].obs;
+  final relatedWord = false.obs;
 
   // writing input
   final writingController = TextEditingController();
@@ -31,10 +49,40 @@ class SmartWritingController extends GetxController {
   void onInit() {
     super.onInit();
     fetchCategories();
+    start();
+  }
+
+  void start() {
+    if (isRunning.value) return;
+    isRunning.value = true;
+    _dateTime = DateTime.now();
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      tick.value++;
+    });
+  }
+
+  void stop() {
+    if (!isRunning.value) return;
+    final now = DateTime.now();
+    final session = now.difference(_dateTime!);
+    totalDuration.value = totalDuration.value + session;
+    _timer?.cancel();
+    _timer = null;
+    isRunning.value = false;
+    _dateTime = null;
+  }
+
+  String format(Duration d) {
+    String two(int n) => n.toString().padLeft(2, '0');
+    final h = d.inHours;
+    final m = d.inMinutes.remainder(60);
+    final s = d.inSeconds.remainder(60);
+    return '${two(h)}:${two(m)}:${two(s)}';
   }
 
   @override
   void onClose() {
+    _timer?.cancel();
     writingController.dispose();
     super.onClose();
   }
@@ -44,7 +92,10 @@ class SmartWritingController extends GetxController {
       isLoadingItem.value = true;
 
       final response = await networkCaller.getRequest(
-        url: urls.smartWritingCategories(homeController.apiAge.toString(), homeController.userId),
+        url: urls.smartWritingCategories(
+          homeController.apiAge.toString(),
+          homeController.userId,
+        ),
         removeAuthorization: true,
         extraHeaders: {"authtoken": "1"},
       );
@@ -58,26 +109,24 @@ class SmartWritingController extends GetxController {
         items.assignAll(list);
       }
     } catch (e) {
-       print(e);
+      print(e);
     } finally {
       isLoadingItem.value = false;
     }
   }
-  
+
   Future<void> select(String value) async {
     selectedValue.value = value;
     writingController.clear();
-    
+
     inProgress.value = false;
     score.value = 0;
     motivation.value = '';
 
     await fetchRelatedWords(topic: value);
   }
-  
-  Future<void> fetchRelatedWords({
-    required String topic,
-  }) async {
+
+  Future<void> fetchRelatedWords({required String topic}) async {
     try {
       isLoadingRelated.value = true;
 
@@ -93,7 +142,7 @@ class SmartWritingController extends GetxController {
         relatedWord.value = false;
         return;
       }
-      
+
       final json = res.responseData!;
       final rawAny = json["related_words"];
 
@@ -102,7 +151,7 @@ class SmartWritingController extends GetxController {
           : <String>[];
 
       relatedWords.assignAll(parsed);
-      
+
       relatedWord.value = relatedWords.isNotEmpty;
     } catch (_) {
       relatedWords.clear();
@@ -111,18 +160,18 @@ class SmartWritingController extends GetxController {
       isLoadingRelated.value = false;
     }
   }
-  
+
   Future<void> submitFinalWriting() async {
     final topic = selectedValue.value.trim();
     final paragraph = writingController.text.trim();
-    
+
     if (topic.isEmpty) {
       Get.snackbar(
         "Select Topic",
         "Please select a topic first",
         snackPosition: SnackPosition.TOP,
         backgroundColor: Colors.red.withAlpha(200),
-        colorText: Colors.white
+        colorText: Colors.white,
       );
       return;
     }
@@ -131,8 +180,8 @@ class SmartWritingController extends GetxController {
         "Write Something",
         "Please write something in the box",
         snackPosition: SnackPosition.TOP,
-          backgroundColor: Colors.red.withAlpha(200),
-          colorText: Colors.white
+        backgroundColor: Colors.red.withAlpha(200),
+        colorText: Colors.white,
       );
       return;
     }
@@ -169,7 +218,9 @@ class SmartWritingController extends GetxController {
       motivation.value = (m ?? "").toString();
 
       inProgress.value = true;
-     await smartWritingDataSend();
+      currentTask.value = 1;
+      stop();
+      await smartWritingDataSend();
     } catch (e) {
       Get.snackbar(
         "Error",
@@ -180,15 +231,13 @@ class SmartWritingController extends GetxController {
       isSubmitting.value = false;
     }
   }
-  Future<void> smartWritingDataSend()async{
+
+  Future<void> smartWritingDataSend() async {
     NetworkResponse response = await NetworkCaller().postRequest(
-        url: urls.smartWritingDataSend,
-        body: {
-          "sentence_score": score.value,
-          "motivation": motivation.value
-        }
+      url: urls.smartWritingDataSend,
+      body: {"sentence_score": score.value, "motivation": motivation.value},
     );
-    if(response.isSuccess){
+    if (response.isSuccess) {
       print('success');
     }
   }

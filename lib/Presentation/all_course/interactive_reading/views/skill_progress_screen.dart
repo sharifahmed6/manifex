@@ -20,32 +20,34 @@ class SkillProgressScreen extends StatelessWidget {
         children: [
           SkillWelcomeCard(),
           SizedBox(height: 16.h),
-          ProgressCard(
-            color1: Color(0xffFFD6B7),
-            color2: Color(0xffE07C2F),
-            imagePath: assets_path.fire,
-            leftTitle: 'Streak',
-            leftSubtitle: ShaderMask(
-              shaderCallback: (bounds) {
-                return const LinearGradient(
-                  colors: [Color(0xffFFD6B7), Color(0xffE07C2F)],
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                ).createShader(bounds);
-              },
-              child: Text(
-                "Keep it up!",
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
+          Obx(() {
+            return ProgressCard(
+              color1: Color(0xffFFD6B7),
+              color2: Color(0xffE07C2F),
+              imagePath: assets_path.fire,
+              leftTitle: 'Streak',
+              leftSubtitle: ShaderMask(
+                shaderCallback: (bounds) {
+                  return const LinearGradient(
+                    colors: [Color(0xffFFD6B7), Color(0xffE07C2F)],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                  ).createShader(bounds);
+                },
+                child: Text(
+                  "Keep it up!",
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
                 ),
               ),
-            ),
-            rightTitle:
-                '${homeController.profileInfo.value?.data?.userProgress?.dayStreak}',
-            rightSubtitle: 'Days Streak!',
-          ),
+              rightTitle:
+                  '${homeController.profileInfo.value?.data?.userProgress?.dayStreak ?? 0}',
+              rightSubtitle: 'Days Streak!',
+            );
+          }),
           SizedBox(height: 10.h),
           Obx(() {
             controller.tick.value;
@@ -86,25 +88,33 @@ class SkillProgressScreen extends StatelessWidget {
             );
           }),
           SizedBox(height: 10.h),
-          ProgressCard(
-            color1: Color(0xff11D067),
-            color2: Color(0xff01803A),
-            imagePath: 'assets/icons/champion.png',
-            leftTitle: 'Today’s Goal',
-            rightTitle:
-                '${homeController.profileInfo.value?.data?.userProgress?.overallAccuracy.toInt()}%',
-            rightSubtitle: 'Accuracy',
-            leftSubtitle: GradientLinearProgress(
-              value: 0.5,
-              height: 7.h,
-              backgroundColor: Color(0xffFFFFFF).withAlpha((2.56 * 15).toInt()),
-              gradient: const LinearGradient(
-                colors: [Color(0xff11D067), Color(0xff01803A)],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
+          Obx(() {
+            final accuracyPercent = (homeController.profileInfo.value?.data?.userProgress?.overallAccuracy ?? 0)
+                .toDouble();
+
+            final progressValue = (accuracyPercent / 100).clamp(0.0, 1.0);
+            return ProgressCard(
+              color1: Color(0xff11D067),
+              color2: Color(0xff01803A),
+              imagePath: 'assets/icons/champion.png',
+              leftTitle: 'Today’s Goal',
+              rightTitle:
+                  '${homeController.profileInfo.value?.data?.userProgress?.overallAccuracy.toInt() ?? 0}%',
+              rightSubtitle: 'Accuracy',
+              leftSubtitle: GradientLinearProgress(
+                value: progressValue,
+                height: 7.h,
+                backgroundColor: Color(
+                  0xffFFFFFF,
+                ).withAlpha((2.56 * 15).toInt()),
+                gradient: const LinearGradient(
+                  colors: [Color(0xff11D067), Color(0xff01803A)],
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                ),
               ),
-            ),
-          ),
+            );
+          }),
           SizedBox(height: 10.h),
         ],
       ),
