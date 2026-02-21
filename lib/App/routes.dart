@@ -27,6 +27,7 @@ import '../Presentation/all_course/EnglishAdultPractice/Widgets/sentenceBuilder/
 import '../Presentation/all_course/EnglishAdultPractice/Widgets/wordFlash/View/wordFlash.dart';
 import '../Presentation/all_course/EnglishAdultPractice/Widgets/wordPartsWorkshop/View/wordPartsWorkshop.dart';
 import '../Presentation/all_course/HandwritingPractice/View/HandwritingPractice.dart';
+import '../Presentation/all_course/HandwritingPractice/Widgets/AFHandwriting/View/AFHandwriting.dart';
 import '../Presentation/all_course/interactive_reading/views/interactive_task_four_screen.dart';
 import '../Presentation/all_course/interactive_reading/views/interactive_task_three_screen.dart';
 import '../Presentation/all_course/practices/views/practices_screen.dart';

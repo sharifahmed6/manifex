@@ -23,7 +23,7 @@ class wordPartsWorkshopController extends GetxController {
       final practiceController =
       Get.find<EnglishAdultPracticeController>();
       practiceController.finalResult[3]['marks'] = 100;
-      practiceController.unLockTask(3);
+      practiceController.unLockTask(4);
 
       print("Final Result: ${practiceController.finalResult}");
 

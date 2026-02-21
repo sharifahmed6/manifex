@@ -99,7 +99,6 @@ class phraseMakerController extends GetxController {
     } else {
       AppSnackbar.show("Incorrect");
     }
-
     nextPhrase();
   }
 
@@ -112,7 +111,7 @@ class phraseMakerController extends GetxController {
       double result = (correctSentence / phrases.length) * 100;
       final practiceController =  Get.find<EnglishAdultPracticeController>();
       practiceController.finalResult[4]['marks'] = result;
-      practiceController.unLockTask(4);
+      practiceController.unLockTask(5);
       AppSnackbar.show("Task 5 Completed.");
       Future.delayed(const Duration(milliseconds: 300), () {
         Get.back();

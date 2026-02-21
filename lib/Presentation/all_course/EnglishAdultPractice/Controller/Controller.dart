@@ -1,11 +1,15 @@
 import 'package:get/get.dart';
+import 'dart:async';
+import '../../../../App/Urls.dart';
+import '../../../../App/network_caller.dart';
+import '../../../../Core/loading.dart';
 
 class EnglishAdultPracticeController extends GetxController {
   var selectedIndex = 0.obs;
   void changeTab(int index) => selectedIndex.value = index;
 
-  var listLock = [false, false, false, false].obs;
-  var listComplete = [true, true, true, true].obs;
+  var listLock = [false, true, true, true, true, true].obs;
+  var listComplete = [true, true, true, true, true, true].obs;
 
   var finalResult = [
     {"taskName": "Task 1", "marks": 0, "isAnswer": true},
@@ -21,8 +25,79 @@ class EnglishAdultPracticeController extends GetxController {
     listComplete[index - 1] = false;
   }
 
-  void showFinalResult() {
-    print("Final Result Length: ${finalResult.length}");
-    print("Final Result: $finalResult");
+
+  Future<void> FinalSubmission() async {
+    AppLoader.show();
+
+    try {
+      NetworkResponse response = await NetworkCaller().postRequest(
+        url: urls.adultTaskSubmit,
+        body: {"tasks": finalResult, "timeSpent": seconds.value},
+      );
+      AppLoader.hide();
+
+      if (response.statusCode == 201 &&
+          response.responseData != null &&
+          response.responseData?['success'] == true) {
+        listComplete[5] = false;
+      } else {
+        print("Error submitting final answers ❌");
+        print("Server message: ${response.responseData?['message'] ?? response.errorMessage}");
+      }
+    } catch (e) {
+      AppLoader.hide();
+      print("HTTP Error: $e");
+    }
+
+
+  }
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    startTimer();
+    super.onInit();
+  }
+
+
+
+
+
+
+
+  //=================== Timer Section ==========================================
+  Timer? _timer;
+
+  // This variable stores seconds
+  RxInt seconds = 0.obs;
+
+  /// Start Timer
+  void startTimer() {
+    stopTimer(); // Prevent multiple timers
+
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      seconds.value++;
+    });
+  }
+
+  /// Stop Timer
+  void stopTimer() {
+    _timer?.cancel();
+    _timer = null;
+  }
+
+  /// Reset Timer
+  void resetTimer() {
+    stopTimer();
+    seconds.value = 0;
+  }
+
+  /// Get current seconds value
+  int get currentSeconds => seconds.value;
+
+  @override
+  void onClose() {
+    stopTimer();
+    super.onClose();
   }
 }

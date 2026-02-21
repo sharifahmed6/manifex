@@ -22,6 +22,7 @@ import '../Presentation/all_course/EnglishAdultPractice/Widgets/sentenceBuilder/
 import '../Presentation/all_course/EnglishAdultPractice/Widgets/wordFlash/Controller/Controller.dart';
 import '../Presentation/all_course/EnglishAdultPractice/Widgets/wordPartsWorkshop/Controller/Controller.dart';
 import '../Presentation/all_course/HandwritingPractice/Controller/Controller.dart';
+import '../Presentation/all_course/HandwritingPractice/Widgets/AFHandwriting/Controller/Controller.dart';
 import '../Presentation/all_course/interactive_reading/controller/interactive_reading_controller.dart';
 import '../Presentation/all_course/interactive_reading/controller/sight_word_controller.dart';
 import '../Presentation/all_course/interactive_reading/controller/task_one_controller.dart';
@@ -82,6 +83,7 @@ class InitialBinding extends Bindings {
     Get.lazyPut<wordFlashController>(() => wordFlashController(), fenix: true);
     Get.lazyPut<wordPartsWorkshopController>(() => wordPartsWorkshopController(), fenix: true);
     Get.lazyPut<HandwritingPracticeController>(() => HandwritingPracticeController(), fenix: true);
+    Get.lazyPut<AFHandwritingController>(() => AFHandwritingController(), fenix: true);
 
 
 
