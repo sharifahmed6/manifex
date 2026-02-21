@@ -30,6 +30,8 @@ class urls {
   static String powerWordsScore= "$baseUrl/presentation/power-words/power_words";
   static String getPrecisionDrillurls(String userId) => "$baseUrl/presentation/precision-drill/get_precision_drill?user_id=$userId";
   static String presentationSubmit = "$baseUrl/presentation/submit";
+  static String adultTaskSubmit = "$baseUrl/adult-task/submit";
+  static String word_flash = "$baseUrl/adult/word-flash/word_flash";
 
 
    ///  backend api

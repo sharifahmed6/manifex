@@ -7,10 +7,13 @@ import '../../../../../../Core/snakbar.dart';
 import '../../../../../Share/custom_circle_progress_indicator.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../Controller/Controller.dart';
 import '../Model/Model.dart';
 class sentenceBuilderController extends GetxController {
   RxList<SentenceModel> sentences = <SentenceModel>[].obs;
   var currentIndex = 0.obs;
+  var correctSentence = 0.obs;
+
 
   // Words displayed shuffled
   RxList<String> words = <String>[].obs;
@@ -80,12 +83,19 @@ class sentenceBuilderController extends GetxController {
 
   bool isSelected(String word) => selectedWords.contains(word);
 
-  void nextSentence() {
+  Future<void> nextSentence() async {
     if (currentIndex.value < sentences.length - 1) {
       currentIndex.value++;
       loadWords();
     } else {
-      AppSnackbar.show("No more sentences left.");
+      final practiceController = Get.find<EnglishAdultPracticeController>();
+      practiceController.finalResult[5]['marks'] = 100;
+      practiceController.unLockTask(6);
+      AppSnackbar.show("Task 6 Completed.");
+      await practiceController.FinalSubmission();
+      Future.delayed(const Duration(milliseconds: 300), () {
+        Get.back();
+      });
     }
   }
 
@@ -108,10 +118,12 @@ class sentenceBuilderController extends GetxController {
         sentences[currentIndex.value].phrase;
 
     if (correct) {
+      correctSentence.value++;
       AppSnackbar.show("Correct");
     } else {
       AppSnackbar.show("Incorrect");
     }
+    nextSentence();
   }
 
 }

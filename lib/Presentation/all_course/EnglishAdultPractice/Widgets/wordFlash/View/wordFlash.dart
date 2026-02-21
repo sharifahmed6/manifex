@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../../../../App/AppColors.dart';
 import '../../../../../../Core/responsive.dart';
+import '../../../../../../Core/snakbar.dart';
 import '../../../../../Share/GradientMask.dart';
 import '../../../../../Share/gradient_title.dart';
 import '../../../../../Share/scafold_background.dart';
@@ -172,28 +173,37 @@ class wordFlash extends StatelessWidget {
               const SizedBox(height: 20),
 
               
-              Container(
-                height: 55,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  gradient: LinearGradient(
-                    colors: [AppColors.yellow, AppColors.pink, AppColors.sky],
+              GestureDetector(
+                onTap: () {
+                  if(controller.AudioFilePath.value.isNotEmpty){
+                    controller.submit();
+                  }else{
+                    AppSnackbar.show("Please record the word flash");
+                  }
+                },
+                child: Container(
+                  height: 55,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    gradient: LinearGradient(
+                      colors: [AppColors.yellow, AppColors.pink, AppColors.sky],
+                    ),
                   ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  spacing: 5,
-                  children: [
-                    Text(
-                      "Check with AI".tr,
-                      style: TextStyle(fontWeight: FontWeight.w600),
-                    ),
-                    Image.asset(
-                      'assets/icons/ai_icon.png',
-                      width: 24.w,
-                      height: 24.h,
-                    ),
-                  ],
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    spacing: 5,
+                    children: [
+                      Text(
+                        "Check with AI".tr,
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                      Image.asset(
+                        'assets/icons/ai_icon.png',
+                        width: 24.w,
+                        height: 24.h,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
