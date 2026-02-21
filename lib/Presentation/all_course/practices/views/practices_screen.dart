@@ -67,7 +67,10 @@ class PracticesScreen extends StatelessWidget {
                 title: 'Reward System',
                 subTitle:
                     'oneme recognition an word games with visual cues designed for dyslexic learners',
-                buttonText: 'Start Reward'
+                buttonText: 'Start Reward',
+                onTap: (){
+                  Get.toNamed(routes.unlock_rewards_screen);
+                }
               ),
               SizedBox(height: 16.h),
               _practicesCard(

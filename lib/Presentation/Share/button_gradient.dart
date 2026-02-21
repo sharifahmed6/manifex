@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../App/AppColors.dart';
 
 class ButtonGradient extends StatelessWidget {
@@ -17,41 +18,32 @@ class ButtonGradient extends StatelessWidget {
     this.text = "Button",
   });
 
-  double _responsiveFont(BuildContext context, double size) {
-    final width = MediaQuery.of(context).size.width;
-    final scale = width / 375; // base width (iPhone X design standard)
-    final value = size * scale;
-    return value.clamp(size * 0.85, size * 1.2); // prevent too small/large text
-  }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: height ?? MediaQuery.of(context).size.height * 0.065, // responsive height
+        height: height ?? 48.h,
         width: double.infinity,
+        constraints: BoxConstraints(
+          minHeight: 38.h.clamp(40, 60),
+        ), // Ensure minimum usable height
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(
-            borderRadius ?? MediaQuery.of(context).size.width * 0.04, // responsive radius
-          ),
+          borderRadius: BorderRadius.circular(borderRadius ?? 12.r),
           gradient: LinearGradient(
-            colors: [
-              AppColors.yellow,
-              AppColors.pink,
-              AppColors.sky,
-            ],
+            colors: [AppColors.yellow, AppColors.pink, AppColors.sky],
           ),
         ),
         child: Center(
-          child: child ??
+          child:
+              child ??
               Text(
                 text,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
-                  fontSize: _responsiveFont(context, 16), // responsive font
+                  fontSize: 16.sp,
                 ),
               ),
         ),

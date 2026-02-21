@@ -5,10 +5,11 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../Share/text_title_small.dart';
 import '../../all_course/practices/widget/transperent_gradient_border.dart';
 import '../controllers/progress_controller.dart';
+import '../../Share/custom_circle_progress_indicator.dart';
 import 'gradient_linear_progress.dart';
 
 class LearningProgressCard extends StatelessWidget {
-   LearningProgressCard({super.key});
+  LearningProgressCard({super.key});
   final controller = Get.find<ProgressController>();
   @override
   Widget build(BuildContext context) {
@@ -40,7 +41,7 @@ class LearningProgressCard extends StatelessWidget {
                 ),
                 const Spacer(),
                 Obx(
-                      () => Container(
+                  () => Container(
                     padding: EdgeInsets.symmetric(horizontal: 18.w),
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -93,131 +94,178 @@ class LearningProgressCard extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 16.h,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomText(text: 'Reading Comprehension'),
-                CustomText(text: '50%')
-              ],
-            ),
-            SizedBox(height: 8.h,),
-            GradientLinearProgress(
-              value: 0.5,
-              height: 7.h,
-              backgroundColor: Color(0xffFFFFFF).withAlpha((2.56 * 15).toInt()),
-              gradient: const LinearGradient(
-                colors: [
-                  Color(0xffFBAA81),
-                  Color(0xffF27CB1),
-                  Color(0xff001925),
+            SizedBox(height: 16.h),
+            Obx(() {
+              if (controller.isLoading.value) {
+                return const Center(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 20),
+                    child: CustomCircleProgressIndicator(),
+                  ),
+                );
+              }
+              final p = controller.userProgress.value.data;
+              if (p == null) return const SizedBox.shrink();
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const CustomText(text: 'Reading Comprehension'),
+                      CustomText(text: '${p.readingProgress}%'),
+                    ],
+                  ),
+                  SizedBox(height: 8.h),
+                  GradientLinearProgress(
+                    value: (p.readingProgress / 100).clamp(0.0, 1.0),
+                    height: 7.h,
+                    backgroundColor: const Color(
+                      0xffFFFFFF,
+                    ).withAlpha((2.56 * 15).toInt()),
+                    gradient: const LinearGradient(
+                      colors: [
+                        Color(0xffFBAA81),
+                        Color(0xffF27CB1),
+                        Color(0xff001925),
+                      ],
+                      begin: Alignment.centerRight,
+                      end: Alignment.centerLeft,
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const CustomText(text: 'Writing Skills'),
+                      CustomText(text: '${p.writingProgress}%'),
+                    ],
+                  ),
+                  SizedBox(height: 8.h),
+                  GradientLinearProgress(
+                    value: (p.writingProgress / 100).clamp(0.0, 1.0),
+                    height: 7.h,
+                    backgroundColor: const Color(
+                      0xffFFFFFF,
+                    ).withAlpha((2.56 * 15).toInt()),
+                    gradient: const LinearGradient(
+                      colors: [
+                        Color(0xffFBAA81),
+                        Color(0xffF27CB1),
+                        Color(0xff001925),
+                      ],
+                      begin: Alignment.centerRight,
+                      end: Alignment.centerLeft,
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const CustomText(text: 'Pronunciation'),
+                      CustomText(text: '${p.speakingProgress}%'),
+                    ],
+                  ),
+                  SizedBox(height: 8.h),
+                  GradientLinearProgress(
+                    value: (p.speakingProgress / 100).clamp(0.0, 1.0),
+                    height: 7.h,
+                    backgroundColor: const Color(
+                      0xffFFFFFF,
+                    ).withAlpha((2.56 * 15).toInt()),
+                    gradient: const LinearGradient(
+                      colors: [
+                        Color(0xffFBAA81),
+                        Color(0xffF27CB1),
+                        Color(0xff001925),
+                      ],
+                      begin: Alignment.centerRight,
+                      end: Alignment.centerLeft,
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const CustomText(text: 'Vocabulary'),
+                      CustomText(text: '${p.vocabularyProgress}%'),
+                    ],
+                  ),
+                  SizedBox(height: 8.h),
+                  GradientLinearProgress(
+                    value: (p.vocabularyProgress / 100).clamp(0.0, 1.0),
+                    height: 7.h,
+                    backgroundColor: const Color(
+                      0xffFFFFFF,
+                    ).withAlpha((2.56 * 15).toInt()),
+                    gradient: const LinearGradient(
+                      colors: [
+                        Color(0xffFBAA81),
+                        Color(0xffF27CB1),
+                        Color(0xff001925),
+                      ],
+                      begin: Alignment.centerRight,
+                      end: Alignment.centerLeft,
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const CustomText(
+                        text: 'Today\'s Goal',
+                        fontWeight: FontWeight.w500,
+                      ),
+                      CustomText(
+                        text: p.dailyGoal > 0
+                            ? '${((p.dailyGoalCompleted / p.dailyGoal) * 100).toInt()}%'
+                            : '0%',
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 8.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomText(
+                        text: '${p.dailyGoalCompleted} Lessons Completed',
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                      ),
+                      CustomText(
+                        text: '${p.dailyGoalCompleted}/${p.dailyGoal}',
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 8.h),
+                  GradientLinearProgress(
+                    value: p.dailyGoal > 0
+                        ? (p.dailyGoalCompleted / p.dailyGoal).clamp(0.0, 1.0)
+                        : 0.0,
+                    height: 7.h,
+                    backgroundColor: const Color(
+                      0xffFFFFFF,
+                    ).withAlpha((2.56 * 15).toInt()),
+                    gradient: const LinearGradient(
+                      colors: [
+                        Color(0xffFBAA81),
+                        Color(0xffF27CB1),
+                        Color(0xff001925),
+                      ],
+                      begin: Alignment.centerRight,
+                      end: Alignment.centerLeft,
+                    ),
+                  ),
                 ],
-                begin: Alignment.centerRight,
-                end: Alignment.centerLeft,
-              ),
-            ),
-            SizedBox(height: 16.h,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomText(text: 'Writing Skills'),
-                CustomText(text: '70%')
-              ],
-            ),
-            SizedBox(height: 8.h,),
-            GradientLinearProgress(
-              value: 0.7,
-              height: 7.h,
-              backgroundColor: Color(0xffFFFFFF).withAlpha((2.56 * 15).toInt()),
-              gradient: const LinearGradient(
-                colors: [
-                  Color(0xffFBAA81),
-                  Color(0xffF27CB1),
-                  Color(0xff001925),
-                ],
-                begin: Alignment.centerRight,
-                end: Alignment.centerLeft,
-              ),
-            ),
-            SizedBox(height: 16.h,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomText(text: 'Pronunciation'),
-                CustomText(text: '85%')
-              ],
-            ),
-            SizedBox(height: 8.h,),
-            GradientLinearProgress(
-              value: 0.8,
-              height: 7.h,
-              backgroundColor: Color(0xffFFFFFF).withAlpha((2.56 * 15).toInt()),
-              gradient: const LinearGradient(
-                colors: [
-                  Color(0xffFBAA81),
-                  Color(0xffF27CB1),
-                  Color(0xff001925),
-                ],
-                begin: Alignment.centerRight,
-                end: Alignment.centerLeft,
-              ),
-            ),
-            SizedBox(height: 16.h,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomText(text: 'Vocabulary'),
-                CustomText(text: '35%')
-              ],
-            ),
-            SizedBox(height: 8.h,),
-            GradientLinearProgress(
-              value: 0.35,
-              height: 7.h,
-              backgroundColor: Color(0xffFFFFFF).withAlpha((2.56 * 15).toInt()),
-              gradient: const LinearGradient(
-                colors: [
-                  Color(0xffFBAA81),
-                  Color(0xffF27CB1),
-                  Color(0xff001925),
-                ],
-                begin: Alignment.centerRight,
-                end: Alignment.centerLeft,
-              ),
-            ),
-            SizedBox(height: 16.h,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomText(text: 'Today\'s Goal',fontWeight: FontWeight.w500,),
-                CustomText(text: '75%',fontWeight: FontWeight.w500,),
-              ],),
-            SizedBox(height: 8.h,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomText(text: '4 Lessons Completed',fontWeight: FontWeight.w600,fontSize: 18,),
-                CustomText(text: '3/4',fontWeight: FontWeight.w600,fontSize: 18,),
-              ],),
-            SizedBox(height: 8.h,),
-            GradientLinearProgress(
-              value: 0.75,
-              height: 7.h,
-              backgroundColor: Color(0xffFFFFFF).withAlpha((2.56 * 15).toInt()),
-              gradient: const LinearGradient(
-                colors: [
-                  Color(0xffFBAA81),
-                  Color(0xffF27CB1),
-                  Color(0xff001925),
-                ],
-                begin: Alignment.centerRight,
-                end: Alignment.centerLeft,
-              ),
-            ),
+              );
+            }),
           ],
         ),
       ),
     );
   }
 }
-

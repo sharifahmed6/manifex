@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import '../../../App/AppColors.dart';
 import '../../../App/assets_path.dart';
+import '../../Features/home/controller/home_controller.dart';
 import '../../Share/text_title_small.dart';
 
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({super.key});
-
   @override
   Widget build(BuildContext context) {
+    final controller = Get.find<HomeController>();
     return  Padding(
       padding:  EdgeInsets.symmetric(horizontal: 12.w),
       child: Row(
@@ -29,16 +31,16 @@ class CustomAppBar extends StatelessWidget {
                 width: 2,
               ),
             ),
-            child: Row(
+            child: Obx(()=> Row(
               mainAxisSize: MainAxisSize.min,
               spacing: 6.w,
               children: [
                 Image.asset(assets_path.fire,width: 20.w,height: 20.h,),
-                CustomText(text: '7',fontWeight: FontWeight.w600,)
+                CustomText(text: '${controller.profileInfo.value?.data?.userProgress?.dayStreak ?? 0}',fontWeight: FontWeight.w600,)
               ],
-            ),
+            )),
           ),
-          SizedBox(width: 8.w,),
+/*          SizedBox(width: 8.w,),
           Container(
             padding: EdgeInsets.symmetric(
               horizontal: 20.w,
@@ -60,7 +62,7 @@ class CustomAppBar extends StatelessWidget {
                 CustomText(text: '777',fontWeight: FontWeight.w600,)
               ],
             ),
-          ),
+          ),*/
         ],
       ),
     );

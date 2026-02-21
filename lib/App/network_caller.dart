@@ -2,18 +2,21 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:logger/logger.dart';
 
+import '../Core/SharepreferenceHelper.dart';
+
 class NetworkResponse {
   final int statusCode;
-  final Map<String,dynamic>? responseData;
+  final Map<String, dynamic>? responseData;
   final bool isSuccess;
   final String errorMessage;
   NetworkResponse({
     required this.statusCode,
     required this.isSuccess,
-     this.responseData,
+    this.responseData,
     this.errorMessage = "Something went wrong",
-});
+  });
 }
+
 class NetworkCaller {
   final Logger _logger = Logger();
 
@@ -28,14 +31,13 @@ class NetworkCaller {
 
       if (queryParams != null && queryParams.isNotEmpty) {
         uri = uri.replace(
-          queryParameters:
-          queryParams.map((k, v) => MapEntry(k, v.toString())),
+          queryParameters: queryParams.map((k, v) => MapEntry(k, v.toString())),
         );
       }
 
       final headers = <String, String>{
         'content-type': 'application/json',
-         'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc4OGJmZTRmLWYwNjMtNGQyYy04NGY0LTIzM2RkNmNkOTlhYyIsImZpcnN0TmFtZSI6IlNoYXJpZiIsImxhc3ROYW1lIjoiQWhtZWQiLCJlbWFpbCI6InNoYXJpZmFobWVkMTQxM0BnbWFpbC5jb20iLCJwcm9maWxlUGljIjoiL2F2YXRhci0wMS5wbmciLCJyb2xlIjoiVVNFUiIsImlzVmVyaWZpZWQiOnRydWUsImlzU3Vic2NyaWJlZCI6dHJ1ZSwiaXNTdWJzY3JpcHRpb25GcmVlIjpmYWxzZSwibGFuZ3VhZ2UiOiJFbmdsaXNoIiwidXNlclR5cGUiOiJzdHVkZW50IiwiaWF0IjoxNzcwMjgwODE3LCJleHAiOjE3NzIwMDg4MTd9.gWHnZ8MLOXigDbsHNrh-vKhMq5SFkncrB_fh2SS8oEM'
+        'Authorization': 'Bearer ${PrefHelper.getAccessToken()}',
       };
       if (removeAuthorization) {
         headers.removeWhere((k, _) => k.toLowerCase() == 'authorization');
@@ -61,7 +63,6 @@ class NetworkCaller {
         }
       }
 
-
       if (response.statusCode >= 200 && response.statusCode < 300) {
         return NetworkResponse(
           statusCode: response.statusCode,
@@ -73,10 +74,7 @@ class NetworkCaller {
       return NetworkResponse(
         statusCode: response.statusCode,
         isSuccess: false,
-        errorMessage: _extractErrorMessage(
-          decodedBody,
-          response.statusCode,
-        ),
+        errorMessage: _extractErrorMessage(decodedBody, response.statusCode),
       );
     } catch (e) {
       return NetworkResponse(
@@ -86,6 +84,7 @@ class NetworkCaller {
       );
     }
   }
+
   Future<NetworkResponse> postRequest({
     required String url,
     required Map<String, dynamic> body,
@@ -97,7 +96,7 @@ class NetworkCaller {
 
       final headers = <String, String>{
         'content-type': 'application/json',
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc4OGJmZTRmLWYwNjMtNGQyYy04NGY0LTIzM2RkNmNkOTlhYyIsImZpcnN0TmFtZSI6IlNoYXJpZiIsImxhc3ROYW1lIjoiQWhtZWQiLCJlbWFpbCI6InNoYXJpZmFobWVkMTQxM0BnbWFpbC5jb20iLCJwcm9maWxlUGljIjoiL2F2YXRhci0wMS5wbmciLCJyb2xlIjoiVVNFUiIsImlzVmVyaWZpZWQiOnRydWUsImlzU3Vic2NyaWJlZCI6dHJ1ZSwiaXNTdWJzY3JpcHRpb25GcmVlIjpmYWxzZSwibGFuZ3VhZ2UiOiJFbmdsaXNoIiwidXNlclR5cGUiOiJzdHVkZW50IiwiaWF0IjoxNzcwMjgwODE3LCJleHAiOjE3NzIwMDg4MTd9.gWHnZ8MLOXigDbsHNrh-vKhMq5SFkncrB_fh2SS8oEM'
+        'Authorization': 'Bearer ${PrefHelper.getAccessToken()}',
       };
       if (removeAuthorization) {
         headers.removeWhere((k, _) => k.toLowerCase() == 'authorization');
@@ -106,14 +105,13 @@ class NetworkCaller {
       if (extraHeaders != null && extraHeaders.isNotEmpty) {
         headers.addAll(extraHeaders);
       }
-      _logRequest(
-        url,
-        headers,
-        requestBody: body,
-      );
+      _logRequest(url, headers, requestBody: body);
 
-      Response response =
-      await post(uri, headers: headers, body: jsonEncode(body));
+      Response response = await post(
+        uri,
+        headers: headers,
+        body: jsonEncode(body),
+      );
 
       _logResponse(url, response);
 
@@ -137,10 +135,7 @@ class NetworkCaller {
       return NetworkResponse(
         statusCode: response.statusCode,
         isSuccess: false,
-        errorMessage: _extractErrorMessage(
-          decodedBody,
-          response.statusCode,
-        ),
+        errorMessage: _extractErrorMessage(decodedBody, response.statusCode),
       );
     } catch (e) {
       print("Error: $e");
@@ -151,6 +146,7 @@ class NetworkCaller {
       );
     }
   }
+
   Future<NetworkResponse> patchRequest({
     required String url,
     required Map<String, dynamic> body,
@@ -160,17 +156,73 @@ class NetworkCaller {
 
       Map<String, String> headers = {
         'Content-Type': 'application/json',
-        // 'Authorization': 'Bearer token'
+        'Authorization': 'Bearer ${PrefHelper.getAccessToken()}',
       };
 
-      _logRequest(
-        url,
-        headers,
-        requestBody: body,
-      );
+      _logRequest(url, headers, requestBody: body);
 
-      Response response =
-      await patch(uri, headers: headers, body: jsonEncode(body));
+      final response = await patch(
+        uri,
+        headers: headers,
+        body: jsonEncode(body),
+      );
+      _logResponse(url, response);
+      Map<String, dynamic>? decodedBody;
+      if (response.body.isNotEmpty) {
+        try {
+          decodedBody = jsonDecode(response.body);
+        } catch (_) {
+          decodedBody = null;
+        }
+      }
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        return NetworkResponse(
+          statusCode: response.statusCode,
+          isSuccess: true,
+          responseData: decodedBody,
+        );
+      }
+      return NetworkResponse(
+        statusCode: response.statusCode,
+        isSuccess: false,
+        errorMessage: _extractErrorMessage(decodedBody, response.statusCode),
+      );
+    } catch (e) {
+      return NetworkResponse(
+        statusCode: -1,
+        isSuccess: false,
+        errorMessage: 'No internet connection or server unreachable',
+      );
+    }
+  }
+
+  Future<NetworkResponse> putRequest({
+    required String url,
+    required Map<String, dynamic> body,
+    Map<String, String>? extraHeaders,
+    bool removeAuthorization = false,
+  }) async {
+    try {
+      Uri uri = Uri.parse(url);
+
+      final headers = <String, String>{
+        'content-type': 'application/json',
+        'Authorization': 'Bearer ${PrefHelper.getAccessToken()}',
+      };
+      if (removeAuthorization) {
+        headers.removeWhere((k, _) => k.toLowerCase() == 'authorization');
+      }
+
+      if (extraHeaders != null && extraHeaders.isNotEmpty) {
+        headers.addAll(extraHeaders);
+      }
+      _logRequest(url, headers, requestBody: body);
+
+      Response response = await put(
+        uri,
+        headers: headers,
+        body: jsonEncode(body),
+      );
 
       _logResponse(url, response);
 
@@ -194,12 +246,10 @@ class NetworkCaller {
       return NetworkResponse(
         statusCode: response.statusCode,
         isSuccess: false,
-        errorMessage: _extractErrorMessage(
-          decodedBody,
-          response.statusCode,
-        ),
+        errorMessage: _extractErrorMessage(decodedBody, response.statusCode),
       );
     } catch (e) {
+      print("Error: $e");
       return NetworkResponse(
         statusCode: -1,
         isSuccess: false,
@@ -207,6 +257,7 @@ class NetworkCaller {
       );
     }
   }
+
   Future<NetworkResponse> deleteRequest({
     required String url,
     Map<String, dynamic>? body,
@@ -219,11 +270,7 @@ class NetworkCaller {
         // 'Authorization': 'Bearer token'
       };
 
-      _logRequest(
-        url,
-        headers,
-        requestBody: body,
-      );
+      _logRequest(url, headers, requestBody: body);
 
       Response response = await delete(
         uri,
@@ -253,10 +300,7 @@ class NetworkCaller {
       return NetworkResponse(
         statusCode: response.statusCode,
         isSuccess: false,
-        errorMessage: _extractErrorMessage(
-          decodedBody,
-          response.statusCode,
-        ),
+        errorMessage: _extractErrorMessage(decodedBody, response.statusCode),
       );
     } catch (e) {
       return NetworkResponse(
@@ -267,10 +311,7 @@ class NetworkCaller {
     }
   }
 
-  String _extractErrorMessage(
-      Map<String, dynamic>? body,
-      int statusCode,
-      ) {
+  String _extractErrorMessage(Map<String, dynamic>? body, int statusCode) {
     if (body != null) {
       return body['message'] ??
           body['error'] ??
@@ -298,21 +339,19 @@ class NetworkCaller {
   }
 
   void _logRequest(
-      String url,
-      Map<String, dynamic>? headers, {
-        Map<String, dynamic>? requestBody,
-      }) {
-    _logger.i(
-      'URL => $url\nHeaders => $headers\nRequest Body => $requestBody',
-    );
+    String url,
+    Map<String, dynamic>? headers, {
+    Map<String, dynamic>? requestBody,
+  }) {
+    _logger.i('URL => $url\nHeaders => $headers\nRequest Body => $requestBody');
   }
 
   void _logResponse(String url, Response response) {
     _logger.i(
       'URL => $url\n'
-          'Status Code => ${response.statusCode}\n'
-          'Headers => ${response.headers}\n'
-          'Body => ${response.body}',
+      'Status Code => ${response.statusCode}\n'
+      'Headers => ${response.headers}\n'
+      'Body => ${response.body}',
     );
   }
 

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:manifex/App/network_caller.dart';
@@ -15,15 +16,17 @@ class login_controller extends GetxController {
 
   Future<void> Login(String email, String password) async {
     AppLoader.show();
-    NetworkResponse response = await NetworkCaller().postRequest(url: urls.login, body: {
-      "email": email,
-      "password": password
-    });
+    NetworkResponse response = await NetworkCaller().postRequest(
+      url: urls.login,
+      body: {"email": email, "password": password},
+    );
     AppLoader.hide();
 
-    if(response.statusCode == 200){
-      final Map<String, dynamic> userInfo = decodeJwtToJson(response.responseData?['data']['accessToken']);
-      if(isRemeber.value) PrefHelper.saveLoggedIn();
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> userInfo = decodeJwtToJson(
+        response.responseData?['data']['accessToken'],
+      );
+      if (isRemeber.value) PrefHelper.saveLoggedIn();
 
       await PrefHelper.saveLoginData(
         accessToken: response.responseData?['data']['accessToken'],
@@ -43,8 +46,12 @@ class login_controller extends GetxController {
         isSubscriptionFree: userInfo['isSubscriptionFree'],
       );
       Get.offAllNamed(routes.bottom_navbar);
-    }else{
-      AppSnackbar.show(response.errorMessage);
+    } else {
+      AppSnackbar.show(
+        response.errorMessage,
+        title: "Login Failed",
+        backgroundColor: Colors.red,
+      );
     }
   }
 

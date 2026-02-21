@@ -30,6 +30,11 @@ import '../Presentation/all_course/HandwritingPractice/View/HandwritingPractice.
 import '../Presentation/all_course/HandwritingPractice/Widgets/AFHandwriting/View/AFHandwriting.dart';
 import '../Presentation/all_course/interactive_reading/views/interactive_task_four_screen.dart';
 import '../Presentation/all_course/interactive_reading/views/interactive_task_three_screen.dart';
+import '../Presentation/all_course/native_speaking/views/native_speaking_screen.dart';
+import '../Presentation/all_course/native_speaking/views/native_task_one.dart';
+import '../Presentation/all_course/native_speaking/views/native_task_two.dart';
+import '../Presentation/all_course/native_speaking/views/native_task_three.dart';
+import '../Presentation/all_course/native_speaking/views/native_task_four.dart';
 import '../Presentation/all_course/practices/views/practices_screen.dart';
 import '../Presentation/all_course/presentationPractice/View/presentationPractice.dart';
 import '../Presentation/all_course/presentationPractice/Widgets/ContextSpin/View/ContextSpin.dart';
@@ -55,8 +60,10 @@ class routes {
   static const String terms_conditon_screen = '/terms_conditon_screen';
   static const String privacy_policy_screen = '/privacy_policy_screen';
   static const String unlock_rewards_screen = '/unlock_rewards_screen';
-  static const String interactive_reading_screen = '/interactive_reading_screen';
-  static const String native_speaking_skill_screen = '/native_speaking_skill_screen';
+  static const String interactive_reading_screen =
+      '/interactive_reading_screen';
+  static const String native_speaking_skill_screen =
+      '/native_speaking_skill_screen';
   static const String smart_writing_screen = '/smart_writing_screen';
   static const String interactive_reading_task1 = '/interactive_reading_task1';
   static const String sight_word_scrren = '/sight_word_scrren';
@@ -76,48 +83,212 @@ class routes {
   static const String sentenceBuilder_screen = '/sentenceBuilder';
   static const String wordFlash_screen = '/wordFlash';
   static const String wordPartsWorkshop_screen = '/wordPartsWorkshop';
-
-
+  static const String nativeOneScreen = '/native_one_screen';
+  static const String nativeTwoScreen = '/native_two_screen';
+  static const String nativeThreeScreen = '/native_three_screen';
+  static const String nativeFourScreen = '/native_four_screen';
 
   static final pages = [
-    GetPage( name: splash_screen, binding: InitialBinding(), page: () => splash()),
-    GetPage( name: on_borading_screen, binding: InitialBinding(), page: () => on_borading()),
-    GetPage( name: login_screen, binding: InitialBinding(), page: () => login()),
-    GetPage( name: signup_screen, binding: InitialBinding(), page: () => signup()),
-    GetPage( name: bottom_navbar, binding: InitialBinding(), page: () => BottomNavbarView()),
-    GetPage( name: practices_screen, binding: InitialBinding(), page: () => PracticesScreen()),
-    GetPage( name: progress_screen, binding: InitialBinding(), page: () => ProgressScreen()),
-    GetPage( name: profile_screen, binding: InitialBinding(), page: () => ProfileScreen()),
-    GetPage( name: profile_edit_screen, binding: InitialBinding(), page: () => ProfileEditScreen()),
-    GetPage( name: find_account_screen, binding: InitialBinding(), page: () => find_account()),
-    GetPage( name: language_screen, binding: InitialBinding(), page: () => LanguageScreen()),
-    GetPage( name: about_us_screen, binding: InitialBinding(), page: () => AboutUsScreen()),
-    GetPage( name: terms_conditon_screen, binding: InitialBinding(), page: () => TermsConditionScreen()),
-    GetPage( name: privacy_policy_screen, binding: InitialBinding(), page: () => PrivacyPolicyScreen()),
-    GetPage( name: unlock_rewards_screen, binding: InitialBinding(), page: () => UnlockRewardsScreen()),
-    GetPage( name: interactive_reading_screen, binding: InitialBinding(), page: () => InteractiveReadingScreen()),
-    GetPage( name: smart_writing_screen, binding: InitialBinding(), page: () => SmartWritingScreen()),
-    GetPage( name: interactive_reading_task1, binding: InitialBinding(), page: () => TaskOne()),
-    GetPage( name: sight_word_scrren, binding: InitialBinding(), page: () => SightWordPracticeScreen()),
-    GetPage( name: interactive_task3_screen, binding: InitialBinding(), page: () => InteractiveTaskThreeScreen()),
-    GetPage( name: interactive_task4_screen, binding: InitialBinding(), page: () => InteractiveTaskFourScreen()),
-    GetPage( name: signupGmail_screen, binding: InitialBinding(), page: () => signupGmail()),
-    GetPage( name: home_screen, binding: InitialBinding(), page: () => HomeScreen()),
-    GetPage( name: presentationPractice_screen, binding: InitialBinding(), page: () => presentationPractice()),
-    GetPage( name: EnglishAdultPractice_screen, binding: InitialBinding(), page: () => EnglishAdultPractice()),
-    GetPage( name: HandwritingPractice_screen, binding: InitialBinding(), page: () => HandwritingPractice()),
-    GetPage( name: powerWordsPlus_screen, binding: InitialBinding(), page: () => powerWordsPlus()),
-    GetPage( name: PrecisionDrill_screen, binding: InitialBinding(), page: () => PrecisionDrill()),
-    GetPage( name: ContextSpin_screen, binding: InitialBinding(), page: () => ContextSpin()),
-    GetPage( name: flowChain_screen, binding: InitialBinding(), page: () => flowChain()),
-    GetPage( name: auditoryDiscrimination_screen, binding: InitialBinding(), page: () => auditoryDiscrimination()),
-    GetPage( name: phonemeGraphemeMapping_screen, binding: InitialBinding(), page: () => phonemeGraphemeMapping()),
-    GetPage( name: phraseMaker_screen, binding: InitialBinding(), page: () => phraseMaker()),
-    GetPage( name: sentenceBuilder_screen, binding: InitialBinding(), page: () => sentenceBuilder()),
-    GetPage( name: wordFlash_screen, binding: InitialBinding(), page: () => wordFlash()),
-    GetPage( name: wordPartsWorkshop_screen, binding: InitialBinding(), page: () => wordPartsWorkshop()),
-
+    GetPage(
+      name: splash_screen,
+      binding: InitialBinding(),
+      page: () => splash(),
+    ),
+    GetPage(
+      name: on_borading_screen,
+      binding: InitialBinding(),
+      page: () => on_borading(),
+    ),
+    GetPage(name: login_screen, binding: InitialBinding(), page: () => login()),
+    GetPage(
+      name: signup_screen,
+      binding: InitialBinding(),
+      page: () => signup(),
+    ),
+    GetPage(
+      name: bottom_navbar,
+      binding: InitialBinding(),
+      page: () => BottomNavbarView(),
+    ),
+    GetPage(
+      name: practices_screen,
+      binding: InitialBinding(),
+      page: () => PracticesScreen(),
+    ),
+    GetPage(
+      name: progress_screen,
+      binding: InitialBinding(),
+      page: () => ProgressScreen(),
+    ),
+    GetPage(
+      name: profile_screen,
+      binding: InitialBinding(),
+      page: () => ProfileScreen(),
+    ),
+    GetPage(
+      name: profile_edit_screen,
+      binding: InitialBinding(),
+      page: () => ProfileEditScreen(),
+    ),
+    GetPage(
+      name: find_account_screen,
+      binding: InitialBinding(),
+      page: () => find_account(),
+    ),
+    GetPage(
+      name: language_screen,
+      binding: InitialBinding(),
+      page: () => LanguageScreen(),
+    ),
+    GetPage(
+      name: about_us_screen,
+      binding: InitialBinding(),
+      page: () => AboutUsScreen(),
+    ),
+    GetPage(
+      name: terms_conditon_screen,
+      binding: InitialBinding(),
+      page: () => TermsConditionScreen(),
+    ),
+    GetPage(
+      name: privacy_policy_screen,
+      binding: InitialBinding(),
+      page: () => PrivacyPolicyScreen(),
+    ),
+    GetPage(
+      name: unlock_rewards_screen,
+      binding: InitialBinding(),
+      page: () => UnlockRewardsScreen(),
+    ),
+    GetPage(
+      name: interactive_reading_screen,
+      binding: InitialBinding(),
+      page: () => InteractiveReadingScreen(),
+    ),
+    GetPage(
+      name: smart_writing_screen,
+      binding: InitialBinding(),
+      page: () => SmartWritingScreen(),
+    ),
+    GetPage(
+      name: native_speaking_skill_screen,
+      binding: InitialBinding(),
+      page: () => NativeSpeakingScreen(),
+    ),
+    GetPage(
+      name: interactive_reading_task1,
+      binding: InitialBinding(),
+      page: () => TaskOne(),
+    ),
+    GetPage(
+      name: sight_word_scrren,
+      binding: InitialBinding(),
+      page: () => SightWordPracticeScreen(),
+    ),
+    GetPage(
+      name: interactive_task3_screen,
+      binding: InitialBinding(),
+      page: () => InteractiveTaskThreeScreen(),
+    ),
+    GetPage(
+      name: interactive_task4_screen,
+      binding: InitialBinding(),
+      page: () => InteractiveTaskFourScreen(),
+    ),
+    GetPage(
+      name: signupGmail_screen,
+      binding: InitialBinding(),
+      page: () => signupGmail(),
+    ),
+    GetPage(
+      name: home_screen,
+      binding: InitialBinding(),
+      page: () => HomeScreen(),
+    ),
+    GetPage(
+      name: presentationPractice_screen,
+      binding: InitialBinding(),
+      page: () => presentationPractice(),
+    ),
+    GetPage(
+      name: EnglishAdultPractice_screen,
+      binding: InitialBinding(),
+      page: () => EnglishAdultPractice(),
+    ),
+    GetPage(
+      name: HandwritingPractice_screen,
+      binding: InitialBinding(),
+      page: () => HandwritingPractice(),
+    ),
+    GetPage(
+      name: powerWordsPlus_screen,
+      binding: InitialBinding(),
+      page: () => powerWordsPlus(),
+    ),
+    GetPage(
+      name: PrecisionDrill_screen,
+      binding: InitialBinding(),
+      page: () => PrecisionDrill(),
+    ),
+    GetPage(
+      name: ContextSpin_screen,
+      binding: InitialBinding(),
+      page: () => ContextSpin(),
+    ),
+    GetPage(
+      name: flowChain_screen,
+      binding: InitialBinding(),
+      page: () => flowChain(),
+    ),
+    GetPage(
+      name: auditoryDiscrimination_screen,
+      binding: InitialBinding(),
+      page: () => auditoryDiscrimination(),
+    ),
+    GetPage(
+      name: phonemeGraphemeMapping_screen,
+      binding: InitialBinding(),
+      page: () => phonemeGraphemeMapping(),
+    ),
+    GetPage(
+      name: phraseMaker_screen,
+      binding: InitialBinding(),
+      page: () => phraseMaker(),
+    ),
+    GetPage(
+      name: sentenceBuilder_screen,
+      binding: InitialBinding(),
+      page: () => sentenceBuilder(),
+    ),
+    GetPage(
+      name: wordFlash_screen,
+      binding: InitialBinding(),
+      page: () => wordFlash(),
+    ),
+    GetPage(
+      name: wordPartsWorkshop_screen,
+      binding: InitialBinding(),
+      page: () => wordPartsWorkshop(),
+    ),
+    GetPage(
+      name: nativeOneScreen,
+      binding: InitialBinding(),
+      page: () => NaviteTaskOne(),
+    ),
+    GetPage(
+      name: nativeTwoScreen,
+      binding: InitialBinding(),
+      page: () => NativeTaskTwo(),
+    ),
+    GetPage(
+      name: nativeThreeScreen,
+      binding: InitialBinding(),
+      page: () => NativeTaskThree(),
+    ),
+    GetPage(
+      name: nativeFourScreen,
+      binding: InitialBinding(),
+      page: () => NativeTaskFour(),
+    ),
   ];
 }
-
-

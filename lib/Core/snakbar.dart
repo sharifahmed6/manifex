@@ -3,40 +3,26 @@ import 'package:get/get.dart';
 
 class AppSnackbar {
   static void show(
-      String message, {
-        String title = '',
-        Duration duration = const Duration(seconds: 2),
-      }) {
+    String message, {
+    String title = '',
+    Duration duration = const Duration(seconds: 3),
+    SnackPosition snackPosition = SnackPosition.TOP,
+    Color backgroundColor = Colors.black87,
+  }) {
     if (Get.isSnackbarOpen) Get.closeAllSnackbars();
 
-    Get.rawSnackbar(
-      title: title.isEmpty ? null : title,
-      message: message,
-      duration: duration,
-      snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: Colors.black87,
+    Get.snackbar(
+      title,
+      message,
+      snackPosition: snackPosition,
+      backgroundColor: backgroundColor,
+      colorText: Colors.white,
       margin: const EdgeInsets.all(16),
       borderRadius: 12,
+      duration: duration,
       isDismissible: true,
-      animationDuration: const Duration(milliseconds: 250),
-
-      snackStyle: SnackStyle.FLOATING,
-
-      messageText: Text(
-        message,
-        textAlign: TextAlign.center,
-        style: const TextStyle(color: Colors.white, fontSize: 14),
-      ),
-      titleText: title.isEmpty
-          ? null
-          : Text(
-        title,
-        textAlign: TextAlign.center,
-        style: const TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
+      animationDuration: const Duration(milliseconds: 500),
+      forwardAnimationCurve: Curves.easeOutBack,
     );
   }
 }

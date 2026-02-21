@@ -8,6 +8,7 @@ import 'package:manifex/Presentation/Share/text_title_small.dart';
 import 'package:manifex/Presentation/app_bar/views/custom_app_bar.dart';
 import 'package:manifex/Presentation/progress/widget/gradient_border_avater.dart';
 
+import '../../../App/assets_path.dart';
 import '../../../Core/SharepreferenceHelper.dart';
 import '../../../Core/loading.dart';
 
@@ -256,7 +257,7 @@ class ProfileScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         GradientBorderAvatar(
-          image: NetworkImage(PrefHelper.getProfilePicture()),
+          image: AssetImage(assets_path.splash_image),
         ),
         SizedBox(width: 16.w),
         Expanded(

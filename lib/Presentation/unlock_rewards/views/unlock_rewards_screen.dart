@@ -5,84 +5,107 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:manifex/Presentation/Share/custom_circle_progress_indicator.dart';
 import 'package:manifex/Presentation/Share/scafold_background.dart';
 import 'package:manifex/Presentation/unlock_rewards/controller/unlock_rewards_controller.dart';
 import 'package:video_player/video_player.dart';
-
 import '../../Share/text_title_small.dart';
 import '../../app_bar/views/custom_app_bar.dart';
-import '../model/task_view_model.dart';
 import '../widget/reward_video_card.dart';
 
 class UnlockRewardsScreen extends StatelessWidget {
-   UnlockRewardsScreen({super.key});
+  UnlockRewardsScreen({super.key});
   @override
   Widget build(BuildContext context) {
     final c = Get.find<UnlockRewardsController>();
-    const videoUrl = "https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4";
-    const thumbUrl = "https://picsum.photos/900/500";
     return scaffold_background(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
         child: CustomAppBar(),
       ),
-      child: Padding(
-        padding: EdgeInsets.all(16.0.w),
-        child: Column(
-          children: [
-            Row(
-              spacing: 8.w,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Get.back();
-                  },
-                  child: Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                    size: 32.sp,
-                  ),
-                ),
-                CustomText(
-                  text: 'Unlock Rewards',
-                  fontSize: 24.sp,
-                  fontWeight: FontWeight.w500,
-                ),
-              ],
-            ),
-            SizedBox(height: 16.h),
-            _gradientTitle(
-              normalText: 'Learning Feels Better When',
-              gradientText: 'You\'re Rewarded',
-            ),
-            SizedBox(height: 12.h),
-            Expanded(
-              child: ListView(
-                children: [
-                  // ✅ Card UI
-                  Obx(() {
-                    return RewardVideoLockedCard(
-                      thumbnailUrl: thumbUrl,
-                      title: "Best Goals of the Week – 30s\nhighlight",
-                      subtitle: "Celebrate your progress with the best football mom...",
-                      unlocked: c.unlocked,
-                      remaining: (4 - c.completedCount).clamp(0, 4),
-                      tasks: List.generate(
-                        c.tasks.length,
-                            (i) => TaskViewModel(title: c.tasks[i], done: c.taskDone(i)),
-                      ),
-                      onPlay: () {
-                        if (!c.unlocked) return; // extra safety
-                        Get.bottomSheet(
-                          VideoPlayerSheet(videoUrl: videoUrl),
-                          isScrollControlled: true,
-                          backgroundColor: Colors.transparent,
-                        );
-                      },
-                    );
-                  }),
+      child: OrientationBuilder(
+        builder: (context, orientation) {
+          final isLandscape = orientation == Orientation.landscape;
 
-/*                  const SizedBox(height: 18),
+          return Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: 16.0.w,
+              vertical: isLandscape ? 8.h : 16.h,
+            ),
+            child: Column(
+              children: [
+                Row(
+                  spacing: 8.w,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Get.back();
+                      },
+                      child: Icon(
+                        Icons.arrow_back,
+                        color: Colors.white,
+                        size: 32.sp,
+                      ),
+                    ),
+                    CustomText(
+                      text: 'Unlock Rewards',
+                      fontSize: isLandscape ? 20.sp : 24.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ],
+                ),
+                SizedBox(height: isLandscape ? 8.h : 16.h),
+                if (!isLandscape)
+                  _gradientTitle(
+                    normalText: 'Learning Feels Better When',
+                    gradientText: 'You\'re Rewarded',
+                  ),
+                if (!isLandscape) SizedBox(height: 12.h),
+                Expanded(
+                  child: ListView(
+                    children: [
+                      // ✅ Card UI
+                      Obx(() {
+                        if (c.isLoading.value) {
+                          return const Center(
+                            child: CustomCircleProgressIndicator(
+                              size: 30,
+                              color: Colors.blue,
+                            ),
+                          );
+                        }
+                        final reward = c.rewardModel.value;
+                        if (reward == null) {
+                          return const Center(
+                            child: Text("No rewards available"),
+                          );
+                        }
+
+                        final data = reward.data;
+                        final video = data.unlockedVideo;
+
+                        return RewardVideoLockedCard(
+                          thumbnailUrl:
+                              "https://picsum.photos/900/500", // Fallback or from video data
+                          title: video?.title ?? "Daily Reward Video",
+                          subtitle:
+                              video?.description ??
+                              "Complete tasks to unlock this exclusive content",
+                          category: video?.category ?? "Educational",
+                          views: video?.views ?? 0,
+                          unlocked: data.alreadyUnlocked,
+                          remaining: data.progress.remainingCount,
+                          taskStatus: data.progress.taskStatus,
+                          onPlayToggle: () => c.togglePlayPause(),
+                          isPlaying: c.isPlaying.value,
+                          isVideoInitialized: c.isVideoInitialized.value,
+                          currentTime: c.formatDuration(c.videoPosition.value),
+                          totalTime: c.formatDuration(c.videoDuration.value),
+                          chewieController: c.chewieController,
+                        );
+                      }),
+
+                      /*                  const SizedBox(height: 18),
 
                   Container(
                     padding: const EdgeInsets.all(14),
@@ -126,11 +149,13 @@ class UnlockRewardsScreen extends StatelessWidget {
                       );
                     }),
                   ),*/
-                ],
-              ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
@@ -238,7 +263,9 @@ class _VideoPlayerSheetState extends State<VideoPlayerSheet> {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(14),
           child: AspectRatio(
-            aspectRatio: _vp.value.isInitialized ? _vp.value.aspectRatio : 16 / 9,
+            aspectRatio: _vp.value.isInitialized
+                ? _vp.value.aspectRatio
+                : 16 / 9,
             child: _chewie == null
                 ? const Center(child: CircularProgressIndicator())
                 : Chewie(controller: _chewie!),
