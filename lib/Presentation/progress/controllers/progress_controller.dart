@@ -4,11 +4,14 @@ import 'package:get/get.dart';
 
 import '../../../App/Urls.dart';
 import '../../../App/network_caller.dart';
+import '../model/achievement_model.dart' as badge_model;
 import '../model/user_progress_model.dart';
 
 class ProgressController extends GetxController {
   final isLoading = false.obs;
+  final isBadgeLoading = false.obs;
   final userProgress = const UserProgressResponse().obs;
+  final userBadges = <badge_model.Badge>[].obs;
   final progressError = ''.obs;
   final selectedDay = '30 D'.obs;
   final progressDays = ['30 D', '60 D', '90 D'];
@@ -25,7 +28,11 @@ class ProgressController extends GetxController {
       final dayValue = day.split(' ')[0];
       print("Refetching user progress for $dayValue days");
       getUserProgress(dayValue);
+      getUserBadges();
     });
+
+    // Initial fetch
+    getUserBadges();
   }
 
   Future<void> getUserProgress(String days) async {
@@ -83,5 +90,43 @@ class ProgressController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  Future<void> getUserBadges() async {
+    try {
+      isBadgeLoading.value = true;
+      NetworkResponse response = await NetworkCaller().getRequest(
+        url: urls.userBadges,
+      );
+
+      if (response.isSuccess) {
+        final badgeResponse = badge_model.UserBadgesResponse.fromJson(
+          response.responseData,
+        );
+
+        // Sort: unlocked badges first
+        final List<badge_model.Badge> sortedBadges = List.from(
+          badgeResponse.data,
+        );
+        sortedBadges.sort((a, b) {
+          if (a.isUnlocked && !b.isUnlocked) return -1;
+          if (!a.isUnlocked && b.isUnlocked) return 1;
+          return 0;
+        });
+
+        userBadges.value = sortedBadges;
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("Error fetching badges: $e");
+      }
+    } finally {
+      isBadgeLoading.value = false;
+    }
+  }
+
+  Future<void> refreshData() async {
+    final dayValue = selectedDay.value.split(' ')[0];
+    await Future.wait([getUserProgress(dayValue), getUserBadges()]);
   }
 }

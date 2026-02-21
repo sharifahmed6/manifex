@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../Share/text_title_small.dart';
 import '../../all_course/practices/widget/transperent_gradient_border.dart';
 import '../controllers/progress_controller.dart';
+import '../../Share/custom_circle_progress_indicator.dart';
 import 'gradient_linear_progress.dart';
 
 class LearningProgressCard extends StatelessWidget {
@@ -95,6 +96,14 @@ class LearningProgressCard extends StatelessWidget {
             ),
             SizedBox(height: 16.h),
             Obx(() {
+              if (controller.isLoading.value) {
+                return const Center(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 20),
+                    child: CustomCircleProgressIndicator(),
+                  ),
+                );
+              }
               final p = controller.userProgress.value.data;
               if (p == null) return const SizedBox.shrink();
 

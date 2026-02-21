@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:manifex/Presentation/progress/controllers/progress_controller.dart';
 import '../../../App/assets_path.dart';
+import '../../Share/custom_circle_progress_indicator.dart';
 import '../../Share/progress_card.dart';
 import '../widget/gradient_linear_progress.dart';
 
@@ -14,6 +15,14 @@ class DailyAverageProgress extends StatelessWidget {
     final controller = Get.find<ProgressController>();
 
     return Obx(() {
+      if (controller.isLoading.value) {
+        return const Center(
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 20),
+            child: CustomCircleProgressIndicator(),
+          ),
+        );
+      }
       final p = controller.userProgress.value.data;
       if (p == null) return const SizedBox.shrink();
 

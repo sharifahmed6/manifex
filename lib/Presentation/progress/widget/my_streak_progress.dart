@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:manifex/Presentation/progress/controllers/progress_controller.dart';
+import '../../Share/custom_circle_progress_indicator.dart';
 import '../../Share/text_title_small.dart';
 import '../../all_course/practices/widget/transperent_gradient_border.dart';
 import 'gradient_linear_progress.dart';
@@ -14,6 +15,14 @@ class MyStreakProgress extends StatelessWidget {
     final controller = Get.find<ProgressController>();
 
     return Obx(() {
+      if (controller.isLoading.value) {
+        return const Center(
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 20),
+            child: CustomCircleProgressIndicator(),
+          ),
+        );
+      }
       final p = controller.userProgress.value.data;
       if (p == null) return const SizedBox.shrink();
 

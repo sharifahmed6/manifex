@@ -46,4 +46,5 @@ class urls {
   static String getVocabularyChallenge(String userId, String age) =>
       "${aiBaseUrl}speaking/vocabulary-challenge/get_vocabulary?age=$age&user_id=$userId";
   static String userProgress = "$baseUrl/progress";
+  static String userBadges = "$baseUrl/badge/user-badges";
 }
