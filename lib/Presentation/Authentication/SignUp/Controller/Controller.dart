@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:manifex/App/Urls.dart';
@@ -17,40 +18,32 @@ class signup_controller extends GetxController {
   var emailAddress = "".obs;
   var otp = "".obs;
   var selectedAgeGroup = "";
-  final List<String> ageGroups = [
-    "6 - 9",
-    "10 - 13",
-    "14 - 17",
-    "18 - 40",
-  ];
+  final List<String> ageGroups = ["6 - 9", "10 - 13", "14 - 17", "18 - 40"];
   var selectedHobbies = "";
-  final List<String> hobbies = [
-    "Dancing",
-    "Gaming",
-    "Sports",
-  ];
+  final List<String> hobbies = ["Dancing", "Gaming", "Sports"];
   var selectedUserType = "";
-  final List<String> userTypes = [
-    "Student",
-    "Teacher",
-    "Parent",
-    ];
-
-
-
-
+  final List<String> userTypes = ["Student", "Teacher", "Parent"];
 
   Future<void> resent_code(String email) async {
     AppLoader.show();
-    NetworkResponse response = await NetworkCaller().postRequest(url: urls.resendOtp, body: {
-      "email": email
-    });
+    NetworkResponse response = await NetworkCaller().postRequest(
+      url: urls.resendOtp,
+      body: {"email": email},
+    );
     AppLoader.hide();
-    
-    if(response.statusCode == 200){
-      AppSnackbar.show(response.responseData?['message']);
-    }else{
-      AppSnackbar.show(response.errorMessage);
+
+    if (response.statusCode == 200) {
+      AppSnackbar.show(
+        response.responseData?['message'],
+        title: "Success",
+        backgroundColor: Colors.green,
+      );
+    } else {
+      AppSnackbar.show(
+        response.errorMessage,
+        title: "Error",
+        backgroundColor: Colors.red,
+      );
     }
   }
 
@@ -60,41 +53,51 @@ class signup_controller extends GetxController {
     Get.toNamed(routes.signup_screen);
   }
 
-
   Future<void> sent_otp(String email) async {
     AppLoader.show();
-    NetworkResponse response = await NetworkCaller().postRequest(url: urls.createOne, body: {
-      "email": email
-    });
+    NetworkResponse response = await NetworkCaller().postRequest(
+      url: urls.createOne,
+      body: {"email": email},
+    );
     AppLoader.hide();
 
-    if(response.statusCode == 200){
-      Get.to(signupVerification(email: email,));
-    }else{
-      AppSnackbar.show(response.errorMessage);
+    if (response.statusCode == 200) {
+      Get.to(signupVerification(email: email));
+    } else {
+      AppSnackbar.show(
+        response.errorMessage,
+        title: "OTP Failed",
+        backgroundColor: Colors.red,
+      );
     }
   }
 
   Future<void> createAccount(signupModel model) async {
     AppLoader.show();
-    NetworkResponse response = await NetworkCaller().postRequest(url: urls.userVerify, body: {
-      "otpCode": otp.value,
-      "data": {
-        "firstName": model.firstName,
-        "lastName": model.lastName,
-        "email": model.email,
-        "password": model.password,
-        "age": model.ageGroup,
-        "hobbies": model.hobbies,
-        "profilePic": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png",
-        "userType": model.userType.toLowerCase(),
-        "language": "English"
-      }
-    });
+    NetworkResponse response = await NetworkCaller().postRequest(
+      url: urls.userVerify,
+      body: {
+        "otpCode": otp.value,
+        "data": {
+          "firstName": model.firstName,
+          "lastName": model.lastName,
+          "email": model.email,
+          "password": model.password,
+          "age": model.ageGroup,
+          "hobbies": model.hobbies,
+          "profilePic":
+              "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png",
+          "userType": model.userType.toLowerCase(),
+          "language": "English",
+        },
+      },
+    );
     AppLoader.hide();
-    if(response.statusCode == 200) {
+    if (response.statusCode == 200) {
       final accessToken = response.responseData?['data']['accessToken'];
-      final Map<String, dynamic> userInfo = decodeJwtToJson(response.responseData?['data']['accessToken']);
+      final Map<String, dynamic> userInfo = decodeJwtToJson(
+        response.responseData?['data']['accessToken'],
+      );
 
       await PrefHelper.saveLoginData(
         accessToken: accessToken,
@@ -103,7 +106,8 @@ class signup_controller extends GetxController {
         email: model.email.toString(),
         age: model.ageGroup.toString(),
         hobbies: model.hobbies.toString(),
-        profilePic: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png",
+        profilePic:
+            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png",
         userType: model.userType.toLowerCase(),
         language: "English",
         userId: userInfo['id'],
@@ -114,12 +118,19 @@ class signup_controller extends GetxController {
         isSubscriptionFree: userInfo['isSubscriptionFree'],
       );
 
-      AppSnackbar.show("Account created & logged in");
+      AppSnackbar.show(
+        "Account created & logged in",
+        title: "Success",
+        backgroundColor: Colors.green,
+      );
       Get.offAllNamed(routes.bottom_navbar);
-    }else{
-      AppSnackbar.show(response.errorMessage);
+    } else {
+      AppSnackbar.show(
+        response.errorMessage,
+        title: "Signup Failed",
+        backgroundColor: Colors.red,
+      );
     }
-
   }
 
   Map<String, dynamic> decodeJwtToJson(String token) {
@@ -138,10 +149,5 @@ class signup_controller extends GetxController {
     selectedHobbies = hobbies.first;
     selectedUserType = userTypes.first;
     selectedAgeGroup = ageGroups.first;
-
   }
-
-
-
-
 }

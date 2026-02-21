@@ -25,6 +25,7 @@ class UserProgressData {
   final int dailyGoal;
   final int dailyGoalCompleted;
   final int todayLessons;
+  final int totalTimeSpent;
   final List<Badge> badges;
 
   const UserProgressData({
@@ -41,6 +42,7 @@ class UserProgressData {
     this.dailyGoal = 0,
     this.dailyGoalCompleted = 0,
     this.todayLessons = 0,
+    this.totalTimeSpent = 0,
     this.badges = const [],
   });
 
@@ -50,8 +52,8 @@ class UserProgressData {
     final badgesJson = json['badges'];
     final badgeList = (badgesJson is List)
         ? badgesJson
-        .map((e) => Badge.fromJson(e as Map<String, dynamic>?))
-        .toList()
+              .map((e) => Badge.fromJson(e as Map<String, dynamic>?))
+              .toList()
         : <Badge>[];
 
     return UserProgressData(
@@ -68,10 +70,10 @@ class UserProgressData {
       dailyGoal: _asInt(json['dailyGoal']),
       dailyGoalCompleted: _asInt(json['dailyGoalCompleted']),
       todayLessons: _asInt(json['todayLessons']),
+      totalTimeSpent: _asInt(json['totalTimeSpent']),
       badges: badgeList,
     );
   }
-
 }
 
 class Badge {
@@ -79,11 +81,7 @@ class Badge {
   final String type;
   final DateTime? earnedAt;
 
-  const Badge({
-    this.name = '',
-    this.type = '',
-    this.earnedAt,
-  });
+  const Badge({this.name = '', this.type = '', this.earnedAt});
 
   factory Badge.fromJson(Map<String, dynamic>? json) {
     if (json == null) return const Badge();

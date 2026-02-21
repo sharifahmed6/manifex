@@ -129,4 +129,21 @@ class ProgressController extends GetxController {
     final dayValue = selectedDay.value.split(' ')[0];
     await Future.wait([getUserProgress(dayValue), getUserBadges()]);
   }
+
+  String formatSeconds(int totalSeconds) {
+    if (totalSeconds <= 0) return '00:00';
+    final int hours = totalSeconds ~/ 3600;
+    final int minutes = (totalSeconds % 3600) ~/ 60;
+    final int seconds = totalSeconds % 60;
+
+    String h = hours.toString().padLeft(2, '0');
+    String m = minutes.toString().padLeft(2, '0');
+    String s = seconds.toString().padLeft(2, '0');
+
+    if (hours > 0) {
+      return '$h:$m:$s';
+    } else {
+      return '$m:$s';
+    }
+  }
 }

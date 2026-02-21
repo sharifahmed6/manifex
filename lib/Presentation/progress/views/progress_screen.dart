@@ -8,6 +8,7 @@ import 'package:manifex/Presentation/Share/text_title_small.dart';
 import 'package:manifex/Presentation/Share/welcome_card.dart';
 import 'package:manifex/Presentation/app_bar/views/custom_app_bar.dart';
 import 'package:manifex/Presentation/progress/controllers/progress_controller.dart';
+import '../../../Core/SharepreferenceHelper.dart';
 import '../widget/gradient_border_avater.dart';
 import '../widget/learning_progress_card.dart';
 import '../widget/my_streak_progress.dart';
@@ -52,13 +53,12 @@ class ProgressScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 5.h),
                 WelcomeCard(
-                  name: 'Sharif',
+                  name: PrefHelper.getFirstName(),
                   describe:
                       'I can see how much effort you’ve put in! Together, we’ll keep improving your reading, writing, and speaking skills.',
                 ),
                 SizedBox(height: 10.h),
                 DailyAverageProgress(),
-                _gradientTitle(),
                 _gradientTitle(
                   normalText: "Learning You ",
                   gradientText: "Can See",

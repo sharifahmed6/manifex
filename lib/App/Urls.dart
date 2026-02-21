@@ -47,4 +47,7 @@ class urls {
       "${aiBaseUrl}speaking/vocabulary-challenge/get_vocabulary?age=$age&user_id=$userId";
   static String userProgress = "$baseUrl/progress";
   static String userBadges = "$baseUrl/badge/user-badges";
+  static String rewardVideoCheck = "$baseUrl/reward-video/check/daily/rewards";
+  static String updateProfile = "$baseUrl/users/update-profile";
+  static String changePassword = "$baseUrl/auth/change-password";
 }
