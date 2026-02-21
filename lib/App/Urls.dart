@@ -21,7 +21,10 @@ class urls {
   static String profileInfo = "$baseUrl/auth/me";
   static String readingTaskComplete = "$baseUrl/reading-task/submit";
   static String smartWritingDataSend = "$baseUrl/writing-Task/submit";
+<<<<<<< Sadid
 
+=======
+>>>>>>> main
 
 
   static String getFlowChain(String userId) => "$baseUrl/presentation/flow-chain/get_flow_chain?user_id=$userId";
@@ -33,6 +36,9 @@ class urls {
   static String adultTaskSubmit = "$baseUrl/adult-task/submit";
   static String word_flash = "$baseUrl/adult/word-flash/word_flash";
 
+<<<<<<< Sadid
 
    ///  backend api
+=======
+>>>>>>> main
 }
