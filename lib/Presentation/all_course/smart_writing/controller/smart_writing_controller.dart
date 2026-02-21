@@ -18,6 +18,7 @@ class SmartWritingController extends GetxController {
 
   // Timer variables
   final totalDuration = Duration.zero.obs;
+  final second = 0.obs;
   final tick = 0.obs;
   Timer? _timer;
   final isRunning = false.obs;
@@ -66,6 +67,7 @@ class SmartWritingController extends GetxController {
     final now = DateTime.now();
     final session = now.difference(_dateTime!);
     totalDuration.value = totalDuration.value + session;
+    second.value = totalDuration.value.inSeconds;
     _timer?.cancel();
     _timer = null;
     isRunning.value = false;
@@ -188,11 +190,13 @@ class SmartWritingController extends GetxController {
 
     try {
       isSubmitting.value = true;
+      stop();
 
       final body = {
         "topic": topic,
         "related_words": relatedWords.toList(),
         "user_paragraph": paragraph,
+        "timeSpent": second.value,
       };
 
       final res = await networkCaller.postRequest(
@@ -219,7 +223,6 @@ class SmartWritingController extends GetxController {
 
       inProgress.value = true;
       currentTask.value = 1;
-      stop();
       await smartWritingDataSend();
     } catch (e) {
       Get.snackbar(
