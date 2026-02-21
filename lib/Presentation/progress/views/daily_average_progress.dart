@@ -59,7 +59,7 @@ class DailyAverageProgress extends StatelessWidget {
             color2: const Color(0xffB920ED),
             imagePath: assets_path.time_file,
             leftTitle: 'Session Timer',
-            rightTitle: controller.formatSeconds(p.totalTimeSpent),
+            rightTitle: controller.formatSeconds(p.todaySessionTime),
             rightSubtitle: 'Total Spent',
           ),
           SizedBox(height: 10.h),
@@ -70,20 +70,6 @@ class DailyAverageProgress extends StatelessWidget {
             leftTitle: 'Lessons',
             rightTitle: '${p.todayLessons}',
             rightSubtitle: 'Today',
-            leftSubtitle: GradientLinearProgress(
-              value: (p.dailyGoal > 0)
-                  ? (p.dailyGoalCompleted / p.dailyGoal).clamp(0.0, 1.0)
-                  : 0.0,
-              height: 7.h,
-              backgroundColor: const Color(
-                0xffFFFFFF,
-              ).withAlpha((2.56 * 15).toInt()),
-              gradient: const LinearGradient(
-                colors: [Color(0xffFFA6C8), Color(0xffB920ED)],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-              ),
-            ),
           ),
           SizedBox(height: 10.h),
           ProgressCard(
@@ -114,10 +100,10 @@ class DailyAverageProgress extends StatelessWidget {
             color2: const Color(0xff01803A),
             imagePath: 'assets/icons/champion.png',
             leftTitle: 'Today\'s Goal',
-            rightTitle: '${p.overallAccuracy}%',
+            rightTitle: '${p.todayAccuracy}%',
             rightSubtitle: 'Accuracy',
             leftSubtitle: GradientLinearProgress(
-              value: (p.overallAccuracy / 100).clamp(0.0, 1.0),
+              value: (p.todayAccuracy / 100).clamp(0.0, 1.0),
               height: 7.h,
               backgroundColor: const Color(
                 0xffFFFFFF,

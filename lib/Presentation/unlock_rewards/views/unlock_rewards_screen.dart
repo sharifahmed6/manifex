@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:manifex/Presentation/Share/custom_circle_progress_indicator.dart';
 import 'package:manifex/Presentation/Share/scafold_background.dart';
 import 'package:manifex/Presentation/unlock_rewards/controller/unlock_rewards_controller.dart';
 import 'package:video_player/video_player.dart';
@@ -67,7 +68,10 @@ class UnlockRewardsScreen extends StatelessWidget {
                       Obx(() {
                         if (c.isLoading.value) {
                           return const Center(
-                            child: CircularProgressIndicator(),
+                            child: CustomCircleProgressIndicator(
+                              size: 30,
+                              color: Colors.blue,
+                            ),
                           );
                         }
                         final reward = c.rewardModel.value;

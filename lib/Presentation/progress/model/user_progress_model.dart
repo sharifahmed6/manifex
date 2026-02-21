@@ -26,6 +26,8 @@ class UserProgressData {
   final int dailyGoalCompleted;
   final int todayLessons;
   final int totalTimeSpent;
+  final int todayAccuracy;
+  final int todaySessionTime;
   final List<Badge> badges;
 
   const UserProgressData({
@@ -43,6 +45,8 @@ class UserProgressData {
     this.dailyGoalCompleted = 0,
     this.todayLessons = 0,
     this.totalTimeSpent = 0,
+    this.todayAccuracy = 0,
+    this.todaySessionTime = 0,
     this.badges = const [],
   });
 
@@ -71,6 +75,8 @@ class UserProgressData {
       dailyGoalCompleted: _asInt(json['dailyGoalCompleted']),
       todayLessons: _asInt(json['todayLessons']),
       totalTimeSpent: _asInt(json['totalTimeSpent']),
+      todayAccuracy: _asInt(json['todayAccuracy']),
+      todaySessionTime: _asInt(json['todaySessionTime']),
       badges: badgeList,
     );
   }
