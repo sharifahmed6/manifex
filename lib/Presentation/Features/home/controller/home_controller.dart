@@ -16,6 +16,13 @@ class HomeController extends GetxController {
 
   String get userId => profileInfo.value?.data?.id ?? '';
   String get ageRange => profileInfo.value?.data?.age ?? '';
+  String get totalWords => profileInfo.value?.data?.userProgress?.totalWords.toString() ?? '0';
+  String get totalLessons => profileInfo.value?.data?.userProgress?.totalLessons.toString() ?? '0';
+  String get overallAccuracy => profileInfo.value?.data?.userProgress?.overallAccuracy.toString() ?? '0';
+  String get dailyGoal => profileInfo.value?.data?.userProgress?.dailyGoal.toString() ?? '0';
+  String get dayStreak => profileInfo.value?.data?.userProgress?.dayStreak.toString() ?? '0';
+
+
   int get apiAge => _mapAgeToApi(ageRange);
   bool get isReady => userId.isNotEmpty;
 

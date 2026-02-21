@@ -9,6 +9,7 @@ import '../../../../../Share/gradient_title.dart';
 import '../../../../../app_bar/views/custom_app_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../Controller/Controller.dart';
 import '../Controller/Controller.dart';
 
 class PrecisionDrill extends StatelessWidget {
@@ -187,12 +188,18 @@ class PrecisionDrill extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   if (controller.AudioFilePath.value.isNotEmpty) {
-                    controller.submit();
+                    if (controller.feedback.value.isEmpty) {
+                      controller.submit();
+                    }else{
+                      Get.find<presentationPracticeController>().unlocktask(2);
+                      Get.back();
+                      AppSnackbar.show("Finished Task 2");
+                    }
                   } else {
                     AppSnackbar.show("Please record audio file.");
                   }
                 },
-                child: Container(
+                child: Obx(() => Container(
                   height: 55,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
@@ -200,7 +207,7 @@ class PrecisionDrill extends StatelessWidget {
                       colors: [AppColors.yellow, AppColors.pink, AppColors.sky],
                     ),
                   ),
-                  child: Row(
+                  child: controller.feedback.value.isEmpty ?  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     spacing: 5,
                     children: [
@@ -214,8 +221,16 @@ class PrecisionDrill extends StatelessWidget {
                         height: 24.h,
                       ),
                     ],
+                  ) : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Complete".tr,
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                    ],
                   ),
-                ),
+                ),)
               ),
               const SizedBox(height: 20),
 

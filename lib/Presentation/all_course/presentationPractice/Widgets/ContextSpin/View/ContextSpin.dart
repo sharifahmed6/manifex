@@ -6,6 +6,7 @@ import '../../../../../../App/AppColors.dart';
 import '../../../../../../Core/responsive.dart';
 import '../../../../../../Core/snakbar.dart';
 import '../../../../../Share/gradient_title.dart';
+import '../../../Controller/Controller.dart';
 import '../Controller/Controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -158,12 +159,18 @@ class ContextSpin extends StatelessWidget {
             GestureDetector(
               onTap: (){
                 if(controller.AudioFilePath.value.isNotEmpty){
-                  controller.submit();
+                  if (controller.feedback.value.isEmpty) {
+                    controller.submit();
+                  }else{
+                    Get.find<presentationPracticeController>().unlocktask(3);
+                    Get.back();
+                    AppSnackbar.show("Finished Task 3");
+                  }
                 }else{
                   AppSnackbar.show("Please record audio file.");
                 }
               },
-              child: Container(
+              child: Obx(() => Container(
                 height: 55,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
@@ -171,7 +178,7 @@ class ContextSpin extends StatelessWidget {
                     colors: [AppColors.yellow, AppColors.pink, AppColors.sky],
                   ),
                 ),
-                child: Row(
+                child: controller.feedback.value.isEmpty ? Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   spacing: 5,
                   children: [
@@ -185,8 +192,17 @@ class ContextSpin extends StatelessWidget {
                       height: 24.h,
                     ),
                   ],
+                ) : Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  spacing: 5,
+                  children: [
+                    Text(
+                      "Complete".tr,
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                  ],
                 ),
-              ),
+              ),)
             ),
             const SizedBox(height: 20),
             Obx(

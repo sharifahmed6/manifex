@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../../../../App/AppColors.dart';
 import '../../../../../../Core/responsive.dart';
+import '../../../../../../Core/snakbar.dart';
 import '../../../../../Share/GradientMask.dart';
 import '../../../../../Share/gradient_title.dart';
 import '../../../../../Share/scafold_background.dart';
@@ -57,7 +58,7 @@ class wordFlash extends StatelessWidget {
                   borderRadius: BorderRadius.circular(15),
                   border: Border.all(color: Colors.grey, width: 0.7),
                 ),
-                child: Column(
+                child: Obx(() => Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Obx(() => GradientMask(child: Text("Word ${controller.currentIndex.value + 1} of ${controller.words.length}", style: TextStyle(fontSize: ScreenResponsive.responsiveFont(context, 18), fontWeight: FontWeight.w600),)),),
@@ -65,30 +66,60 @@ class wordFlash extends StatelessWidget {
                     Text("Read the word aloud before it vanishes".tr, style: TextStyle(fontSize: ScreenResponsive.responsiveFont(context, 17), fontWeight: FontWeight.w600),),
                     const SizedBox(height: 10),
                     Text("This text should appear for 1-3 seconds and then blur out or disappear.".tr, style: TextStyle(fontSize: ScreenResponsive.responsiveFont(context, 12)),),
+                    if (controller.isCounting.value)
+                      Text(
+                        "You have ${controller.countdown.value} seconds to read the word.",
+                        style: TextStyle(
+                          fontSize: ScreenResponsive.responsiveFont(context, 12),
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red,
+                        ),
+                      ),
                     const SizedBox(height: 20),
                     Obx(() => Center(child: Text("\"${controller.words[controller.currentIndex.value]}\"", style: TextStyle(fontSize: ScreenResponsive.responsiveFont(context, 24), fontWeight: FontWeight.w600),)),),
                     const SizedBox(height: 10),
-                    Center(
-                      child: Container(
-                        height: ScreenResponsive.h(context, 70),
-                        width: ScreenResponsive.w(context, 70),
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              AppColors.yellow,
-                              AppColors.pink,
-                              AppColors.sky,
-                            ],
+                    Obx(() => Center(
+                      child: GestureDetector(
+                        onTap: () {
+                          controller.isRunning.value ? controller.stopRecording() : controller.startRecording();
+                        },
+                        child: Container(
+                          height: ScreenResponsive.h(context, 70),
+                          width: ScreenResponsive.w(context, 70),
+                          decoration: BoxDecoration(
+                            color: controller.isRunning.value
+                                ?  Colors.red
+                                : controller.AudioFilePath.value.isNotEmpty ? Colors.green : null,
+                            gradient: controller.isRunning.value
+                                ? null
+                                : LinearGradient(
+                              colors: [
+                                AppColors.yellow,
+                                AppColors.pink,
+                                AppColors.sky,
+                              ],
+                            ),
+                            shape: BoxShape.circle,
                           ),
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          Icons.volume_up_sharp,
-                          size: 40,
-                          color: Colors.white,
+                          child: Icon(
+                            controller.isRunning.value ? Icons.mic_off : Icons.mic,
+                            size: 40,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
-                    ),
+                    ),),
+                    const SizedBox(height: 10),
+
+                    if(controller.AudioFilePath.value.isNotEmpty)
+                      Center(child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        spacing: 5,
+                        children: [
+                          Icon(Icons.check, color: Colors.green, size: 18,),
+                          Text("Word Flash recorded", style: TextStyle(color: Colors.green),),
+                        ],
+                      )),
 
                     const SizedBox(height: 10),
 
@@ -137,31 +168,42 @@ class wordFlash extends StatelessWidget {
                     )
 
                   ],
-                ),
+                ),)
               ),
               const SizedBox(height: 20),
-              Container(
-                height: 55,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  gradient: LinearGradient(
-                    colors: [AppColors.yellow, AppColors.pink, AppColors.sky],
+
+              
+              GestureDetector(
+                onTap: () {
+                  if(controller.AudioFilePath.value.isNotEmpty){
+                    controller.submit();
+                  }else{
+                    AppSnackbar.show("Please record the word flash");
+                  }
+                },
+                child: Container(
+                  height: 55,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    gradient: LinearGradient(
+                      colors: [AppColors.yellow, AppColors.pink, AppColors.sky],
+                    ),
                   ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  spacing: 5,
-                  children: [
-                    Text(
-                      "Check with AI".tr,
-                      style: TextStyle(fontWeight: FontWeight.w600),
-                    ),
-                    Image.asset(
-                      'assets/icons/ai_icon.png',
-                      width: 24.w,
-                      height: 24.h,
-                    ),
-                  ],
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    spacing: 5,
+                    children: [
+                      Text(
+                        "Check with AI".tr,
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                      Image.asset(
+                        'assets/icons/ai_icon.png',
+                        width: 24.w,
+                        height: 24.h,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -171,3 +213,6 @@ class wordFlash extends StatelessWidget {
     );
   }
 }
+
+
+

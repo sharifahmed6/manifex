@@ -28,6 +28,7 @@ class urls {
   static String readingTaskComplete = "$baseUrl/reading-task/submit";
   static String smartWritingDataSend = "$baseUrl/writing-Task/submit";
 
+
   static String getFlowChain(String userId) =>
       "$baseUrl/presentation/flow-chain/get_flow_chain?user_id=$userId";
   static String flowChainScore = "$baseUrl/presentation/flow-chain/flow_chain";
@@ -50,4 +51,11 @@ class urls {
   static String rewardVideoCheck = "$baseUrl/reward-video/check/daily/rewards";
   static String updateProfile = "$baseUrl/users/update-profile";
   static String changePassword = "$baseUrl/auth/change-password";
+  static String getPowerWords = "https://ai.manifex.org/api/v1/presentation/power-words/get_power_words";
+  static String powerWordsScore= "$baseUrl/presentation/power-words/power_words";
+  static String getPrecisionDrillurls(String userId) => "$baseUrl/presentation/precision-drill/get_precision_drill?user_id=$userId";
+  static String presentationSubmit = "$baseUrl/presentation/submit";
+  static String adultTaskSubmit = "$baseUrl/adult-task/submit";
+  static String word_flash = "$baseUrl/adult/word-flash/word_flash";
+
 }

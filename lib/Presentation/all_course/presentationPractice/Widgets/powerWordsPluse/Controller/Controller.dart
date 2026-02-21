@@ -10,6 +10,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../../Core/SharepreferenceHelper.dart';
 import '../../../../../Share/custom_circle_progress_indicator.dart';
+import '../../../Controller/Controller.dart';
 
 class powerWordsPluseController extends GetxController {
   final NetworkCaller networkCaller = NetworkCaller();
@@ -28,7 +29,7 @@ class powerWordsPluseController extends GetxController {
   var feedback = ''.obs;
 
 
-  void nextWord() {
+  Future<void> nextWord() async {
     if (currentWord.value < powerWords.length - 1) {
       currentWord.value++;
       defineRecording.value = false;
@@ -39,7 +40,9 @@ class powerWordsPluseController extends GetxController {
       score.value = 0;
       feedback.value = '';
     } else {
-      AppSnackbar.show("No more words left.");
+      await Get.find<presentationPracticeController>().unlocktask(1);
+      Get.back();
+      AppSnackbar.show("Finished Task 1");
     }
   }
 
@@ -141,13 +144,15 @@ class powerWordsPluseController extends GetxController {
       final response = await http.Response.fromStream(streamedResponse);
       Get.back();
 
-      print("Status Code: ${response.statusCode}");
-      print("Response Body: ${response.body}");
+      // print("Status Code: ${response.statusCode}");
+      // print("Response Body: ${response.body}");
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
         final Map<String, dynamic> data = jsonDecode(response.body);
         score.value = data['score'] ?? 0;
         feedback.value = data['feedback'] ?? '';
+        Get.find<presentationPracticeController>().finalResult.add(data);
+        Get.find<presentationPracticeController>().showFinalResult();
       } else {
         print("Error submitting word: ${response.body}");
       }
