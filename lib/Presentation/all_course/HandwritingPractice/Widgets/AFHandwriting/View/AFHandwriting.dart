@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:manifex/Presentation/Share/scafold_background.dart';
 import 'package:get/get.dart';
+import '../../../../../../App/AppColors.dart';
 import '../../../../../../Core/responsive.dart';
 import '../../../../../../Core/snakbar.dart';
 import '../../../../../Share/GradientMask.dart';
 import '../../../../../Share/gradient_title.dart';
 import '../../../../../app_bar/views/custom_app_bar.dart';
+import '../../../Controller/Controller.dart';
 import '../../TracingScreen/Controller/Controller.dart';
 import '../../TracingScreen/View/TracingScreen.dart';
 
@@ -173,6 +175,55 @@ class AFHandwriting extends StatelessWidget {
                         height: 500,
                         child: Obx(
                               () => TracingScreen(word: latter[currentIndex.value]),
+                        ),
+                      ),
+                    ),
+
+                    GestureDetector(
+                      onTap: () async {
+                        final controller = Get.put(TracingController());
+                        final word = latter[currentIndex.value];
+                        String? pngPath = await controller.saveSignaturePng(controller: controller.signatureController, fileName: 'traced_word_$word', word: word);
+                        controller.imagePath.value = pngPath!;
+
+                        if (pngPath != null) {
+                          final HController = Get.find<HandwritingPracticeController>();
+                          word == 'F' ? HController.unLockTask(1) : word == 'L' ? HController.unLockTask(2) : word == 'R' ? HController.unLockTask(3) : word == 'Z' ? HController.unLockTask(4) :
+                          word == 'f' ? HController.unLockTask(5) : word == 'l' ? HController.unLockTask(6) : word == 'r' ? HController.unLockTask(7) : word == 'z' ? HController.unLockTask(8) :
+                          word == '9' ? HController.unLockTask(10) : currentIndex++;
+                          print("PNG saved at: $pngPath");
+                          controller.submit(imagePath: pngPath!, word: word);
+                          controller.clearCanvas();
+
+                        }
+                      },
+                      child: Container(
+                        height: 55,
+                        margin: const EdgeInsets.symmetric(horizontal: 15),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          gradient: LinearGradient(
+                            colors: [AppColors.yellow, AppColors.pink, AppColors.sky],
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const SizedBox(width: 5),
+                            Text(
+                              "Check with AI".tr,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
+                            ),
+                            const SizedBox(width: 5),
+                            Image.asset(
+                              'assets/icons/ai_icon.png',
+                              width: 24,
+                              height: 24,
+                            ),
+                          ],
                         ),
                       ),
                     ),

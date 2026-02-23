@@ -10,6 +10,7 @@ import '../Presentation/Authentication/Forget_password/OTP_verification/Controll
 import '../Presentation/Authentication/Forget_password/find_account/Controller/Controller.dart';
 import '../Presentation/Authentication/Login/Controller/Controller.dart';
 import '../Presentation/Authentication/SignUp/Controller/Controller.dart';
+import '../Presentation/Features/Subcription/Controller/Controller.dart';
 import '../Presentation/Features/home/controller/home_controller.dart';
 import '../Presentation/On_boarding/Controller/Controller.dart';
 import '../Presentation/Splash/Controller/Controller.dart';
@@ -171,6 +172,7 @@ class InitialBinding extends Bindings {
     Get.lazyPut<wordPartsWorkshopController>(() => wordPartsWorkshopController(), fenix: true);
     Get.lazyPut<HandwritingPracticeController>(() => HandwritingPracticeController(), fenix: true);
     Get.lazyPut<AFHandwritingController>(() => AFHandwritingController(), fenix: true);
+    Get.lazyPut<subscriptionController>(() => subscriptionController(), fenix: true);
 
 
 

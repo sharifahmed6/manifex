@@ -7,6 +7,8 @@ import '../../../Share/scafold_background.dart';
 import '../../../Share/single_skill_card.dart';
 import '../../../app_bar/views/custom_app_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../ShareProgress/View/ShareProgress.dart';
+import '../../ShareProgress/View/Tab.dart';
 import '../../interactive_reading/widget/interactive_border_color_gradient.dart';
 import '../../practices/widget/skill_welcome_card.dart';
 import '../Controller/Controller.dart';
@@ -33,20 +35,31 @@ class EnglishAdultPractice extends StatelessWidget {
             SizedBox(height: 18.h),
 
             InteractiveBorderColor(
-                child: GradientToggleTabs()
+                child: Obx(() => GradientToggle(
+                  selectedIndex: controller.selectedIndex.value,
+                  onTabChanged: (index) {
+                    controller.selectedIndex.value = index;
+                  },
+                )),
             ),
             SizedBox(height: 18.h),
             Expanded(
               child: Obx(() {
+                int falseCount = controller.listLock.where((e) => !e).length;
+
                 return IndexedStack(
                   index: controller.selectedIndex.value,
                   children: [
                     _skillScreen(),
-                    _skillScreen(),
+                    ShareProgress(
+                      timer: controller.formattedTime,
+                      currentTask: falseCount,
+                      totalTask: controller.listLock.length,
+                    ),
                   ],
                 );
               }),
-            ),
+            )
           ],
         ),
       ),

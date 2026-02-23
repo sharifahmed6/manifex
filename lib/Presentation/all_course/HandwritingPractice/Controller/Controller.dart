@@ -1,10 +1,13 @@
+import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:manifex/Core/snakbar.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:signature/signature.dart';
+import 'dart:ui' as ui;
 
 class HandwritingPracticeController extends GetxController {
 
@@ -24,26 +27,82 @@ class HandwritingPracticeController extends GetxController {
 
   Future<String?> saveSignaturePng(SignatureController controller, String fileName) async {
     try {
-      // 1️⃣ Get PNG bytes
-      Uint8List? pngBytes = await controller.toPngBytes();
+      // 1️⃣ Convert signature to image
+      final ui.Image? signatureImage = await controller.toImage();
+      if (signatureImage == null) return null;
 
-      if (pngBytes == null) return null;
+      // 2️⃣ Create a white background canvas
+      final recorder = ui.PictureRecorder();
+      final canvas = Canvas(
+        recorder,
+        Rect.fromLTWH(
+          0,
+          0,
+          signatureImage.width.toDouble(),
+          signatureImage.height.toDouble(),
+        ),
+      );
 
-      // 2️⃣ Get app document directory
+      // Paint white background
+      final paint = Paint()..color = Colors.white;
+      canvas.drawRect(
+        Rect.fromLTWH(
+          0,
+          0,
+          signatureImage.width.toDouble(),
+          signatureImage.height.toDouble(),
+        ),
+        paint,
+      );
+
+      // Draw the signature on top
+      canvas.drawImage(signatureImage, Offset.zero, Paint());
+
+      // 3️⃣ Convert canvas to PNG bytes
+      final picture = recorder.endRecording();
+      final img = await picture.toImage(signatureImage.width, signatureImage.height);
+      final byteData = await img.toByteData(format: ui.ImageByteFormat.png);
+
+      if (byteData == null) return null;
+
+      // 4️⃣ Save to file
       final directory = await getApplicationDocumentsDirectory();
-
-      // 3️⃣ Create file path
       final file = File('${directory.path}/$fileName.png');
+      await file.writeAsBytes(byteData.buffer.asUint8List());
 
-      // 4️⃣ Write bytes to file
-      await file.writeAsBytes(pngBytes);
-
-      // 5️⃣ Return file path
       return file.path;
     } catch (e) {
-      print("Error saving signature: $e");
+      print("Error saving signature with white background: $e");
       return null;
     }
+  }
+
+  RxInt seconds = 0.obs;
+  Timer? _timer;
+
+  @override
+  void onInit() {
+    super.onInit();
+    startTimer();
+  }
+
+  void startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      seconds.value++;
+    });
+  }
+
+  String get formattedTime {
+    final h = (seconds.value ~/ 3600).toString().padLeft(2, '0');
+    final m = ((seconds.value % 3600) ~/ 60).toString().padLeft(2, '0');
+    final s = (seconds.value % 60).toString().padLeft(2, '0');
+    return "$h:$m:$s";
+  }
+
+  @override
+  void onClose() {
+    _timer?.cancel();
+    super.onClose();
   }
 
 }

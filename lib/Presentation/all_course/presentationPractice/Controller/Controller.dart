@@ -48,5 +48,33 @@ class presentationPracticeController extends GetxController {
     }
   }
 
+  RxInt seconds = 0.obs;
+  Timer? _timer;
+
+  @override
+  void onInit() {
+    super.onInit();
+    startTimer();
+  }
+
+  void startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      seconds.value++;
+    });
+  }
+
+  String get formattedTime {
+    final h = (seconds.value ~/ 3600).toString().padLeft(2, '0');
+    final m = ((seconds.value % 3600) ~/ 60).toString().padLeft(2, '0');
+    final s = (seconds.value % 60).toString().padLeft(2, '0');
+    return "$h:$m:$s";
+  }
+
+  @override
+  void onClose() {
+    _timer?.cancel();
+    super.onClose();
+  }
+
 
 }
