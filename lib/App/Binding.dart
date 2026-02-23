@@ -41,6 +41,7 @@ import '../Presentation/all_course/presentationPractice/Widgets/flowChain/Contro
 import '../Presentation/all_course/presentationPractice/Widgets/powerWordsPluse/Controller/Controller.dart';
 import '../Presentation/all_course/smart_writing/controller/smart_writing_controller.dart';
 import '../Presentation/bottom_navbar/controllers/bottom_navbar_controller.dart';
+import '../Presentation/family_member_add/controller/family_member_add_controller.dart';
 import '../Presentation/profile/controller/profile_controller.dart';
 import '../Presentation/progress/controllers/progress_controller.dart';
 
@@ -171,6 +172,7 @@ class InitialBinding extends Bindings {
     Get.lazyPut<wordPartsWorkshopController>(() => wordPartsWorkshopController(), fenix: true);
     Get.lazyPut<HandwritingPracticeController>(() => HandwritingPracticeController(), fenix: true);
     Get.lazyPut<AFHandwritingController>(() => AFHandwritingController(), fenix: true);
+    Get.lazyPut<FamilyMemberAddController>(() => FamilyMemberAddController(), fenix: true);
 
 
 

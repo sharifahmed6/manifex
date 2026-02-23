@@ -55,6 +55,17 @@ class ProfileScreen extends StatelessWidget {
                         Get.toNamed(routes.profile_edit_screen);
                       },
                     ),
+                    Divider(
+                      color: Color(0xffFFFFFF).withAlpha((2.56 * 22).toInt()),
+                    ),
+                    SizedBox(height: 8.h),
+                    _customItem(
+                      imagePath: 'assets/icons/settings_icon.png',
+                      title: 'Family Members Settings',
+                      onTap: () {
+                        Get.toNamed(routes.family_member_add);
+                      },
+                    ),
                     SizedBox(height: 8.h),
                     Divider(
                       color: Color(0xffFFFFFF).withAlpha((2.56 * 22).toInt()),

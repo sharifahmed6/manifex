@@ -27,10 +27,9 @@ class urls {
   static String profileInfo = "$baseUrl/auth/me";
   static String readingTaskComplete = "$baseUrl/reading-task/submit";
   static String smartWritingDataSend = "$baseUrl/writing-Task/submit";
+  static String getMemberId(String userId) => "$baseUrl/subscriptions/family-members/$userId";
 
-
-  static String getFlowChain(String userId) =>
-      "$baseUrl/presentation/flow-chain/get_flow_chain?user_id=$userId";
+  static String getFlowChain(String userId) => "$baseUrl/presentation/flow-chain/get_flow_chain?user_id=$userId";
   static String flowChainScore = "$baseUrl/presentation/flow-chain/flow_chain";
   static String getPowerWords =
       "https://ai.manifex.org/api/v1/presentation/power-words/get_power_words";
