@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:manifex/App/AppColors.dart';
 import 'package:manifex/App/routes.dart';
+import 'package:manifex/Presentation/Features/home/controller/home_controller.dart';
 import 'package:manifex/Presentation/Share/scafold_background.dart';
 import 'package:manifex/Presentation/Share/text_title_small.dart';
 import 'package:manifex/Presentation/app_bar/views/custom_app_bar.dart';
@@ -13,10 +14,12 @@ import '../../../Core/SharepreferenceHelper.dart';
 import '../../../Core/loading.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+   ProfileScreen({super.key});
+  final homeController = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
+    final isValid = homeController.profileInfo.value?.data?.isSubscribed == true && homeController.profileInfo.value?.data?.subscription?.plan?.planType == 'FAMILY';
     return scaffold_background(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
@@ -55,17 +58,20 @@ class ProfileScreen extends StatelessWidget {
                         Get.toNamed(routes.profile_edit_screen);
                       },
                     ),
+                    isValid ?
                     Divider(
                       color: Color(0xffFFFFFF).withAlpha((2.56 * 22).toInt()),
-                    ),
-                    SizedBox(height: 8.h),
+                    ) : SizedBox.shrink(),
+                    isValid?
+                    SizedBox(height: 8.h) : SizedBox.shrink(),
+                    isValid ?
                     _customItem(
                       imagePath: 'assets/icons/settings_icon.png',
                       title: 'Family Members Settings',
                       onTap: () {
                         Get.toNamed(routes.family_member_add);
                       },
-                    ),
+                    ): SizedBox.shrink(),
                     SizedBox(height: 8.h),
                     Divider(
                       color: Color(0xffFFFFFF).withAlpha((2.56 * 22).toInt()),

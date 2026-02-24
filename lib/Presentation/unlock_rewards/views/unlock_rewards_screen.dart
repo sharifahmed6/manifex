@@ -12,6 +12,8 @@ import 'package:video_player/video_player.dart';
 import '../../Share/text_title_small.dart';
 import '../../app_bar/views/custom_app_bar.dart';
 import '../widget/reward_video_card.dart';
+import '../model/rewards_model.dart';
+import '../model/more_video_rewards.dart';
 
 class UnlockRewardsScreen extends StatelessWidget {
   UnlockRewardsScreen({super.key});
@@ -80,30 +82,172 @@ class UnlockRewardsScreen extends StatelessWidget {
                             child: Text("No rewards available"),
                           );
                         }
+                        return Obx(() {
+                          final data = c.rewardModel.value?.data;
+                          if (data == null) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
 
-                        final data = reward.data;
-                        final video = data.unlockedVideo;
+                          // Use selectedVideo from controller if available, otherwise use default unlockedVideo
+                          final currentVideo = c.selectedVideo.value;
+                          final String title = currentVideo is RewardVideo
+                              ? currentVideo.title
+                              : (currentVideo is VideoModel
+                                    ? currentVideo.title
+                                    : (data.unlockedVideo?.title ??
+                                          "Daily Reward Video"));
+                          final String subtitle = currentVideo is RewardVideo
+                              ? currentVideo.description
+                              : (currentVideo is VideoModel
+                                    ? currentVideo.description
+                                    : (data.unlockedVideo?.description ??
+                                          "Complete tasks to unlock this exclusive content"));
+                          final String category = currentVideo is RewardVideo
+                              ? currentVideo.category
+                              : (currentVideo is VideoModel
+                                    ? currentVideo.category
+                                    : (data.unlockedVideo?.category ??
+                                          "Educational"));
+                          final int views = currentVideo is RewardVideo
+                              ? currentVideo.views
+                              : (currentVideo is VideoModel
+                                    ? currentVideo.views
+                                    : (data.unlockedVideo?.views ?? 0));
 
-                        return RewardVideoLockedCard(
-                          thumbnailUrl:
-                              "https://picsum.photos/900/500", // Fallback or from video data
-                          title: video?.title ?? "Daily Reward Video",
-                          subtitle:
-                              video?.description ??
-                              "Complete tasks to unlock this exclusive content",
-                          category: video?.category ?? "Educational",
-                          views: video?.views ?? 0,
-                          unlocked: data.alreadyUnlocked,
-                          remaining: data.progress.remainingCount,
-                          taskStatus: data.progress.taskStatus,
-                          onPlayToggle: () => c.togglePlayPause(),
-                          isPlaying: c.isPlaying.value,
-                          isVideoInitialized: c.isVideoInitialized.value,
-                          currentTime: c.formatDuration(c.videoPosition.value),
-                          totalTime: c.formatDuration(c.videoDuration.value),
-                          chewieController: c.chewieController,
+                          return RewardVideoLockedCard(
+                            thumbnailUrl: "https://picsum.photos/900/500",
+                            title: title,
+                            subtitle: subtitle,
+                            category: category,
+                            views: views,
+                            unlocked: data.alreadyUnlocked,
+                            remaining: data.progress.remainingCount,
+                            taskStatus: data.progress.taskStatus,
+                            onPlayToggle: () => c.togglePlayPause(),
+                            isPlaying: c.isPlaying.value,
+                            isVideoInitialized: c.isVideoInitialized.value,
+                            currentTime: c.formatDuration(
+                              c.videoPosition.value,
+                            ),
+                            totalTime: c.formatDuration(c.videoDuration.value),
+                            chewieController: c.chewieController,
+                            onSeeAll: () {
+                              c.toggleMoreRewards();
+                            },
+                          );
+                        });
+                      }),
+
+                      Obx(() {
+                        if (!c.isMoreRewardsVisible.value) {
+                          return const SizedBox.shrink();
+                        }
+
+                        final moreRewards = c.moreVideoRewards.value;
+                        if (moreRewards == null ||
+                            moreRewards.data.rewards.isEmpty) {
+                          return Padding(
+                            padding: EdgeInsets.only(top: 24.h),
+                            child: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        }
+
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 24.h),
+                            CustomText(
+                              text: 'Other Rewards',
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            SizedBox(height: 12.h),
+                            ListView.separated(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: moreRewards.data.rewards.length,
+                              separatorBuilder: (context, index) =>
+                                  SizedBox(height: 12.h),
+                              itemBuilder: (context, index) {
+                                final rewardItem =
+                                    moreRewards.data.rewards[index];
+                                final video = rewardItem.video;
+                                return InkWell(
+                                  onTap: () {
+                                    Get.dialog(
+                                      Dialog(
+                                        backgroundColor: Colors.transparent,
+                                        insetPadding: EdgeInsets.symmetric(
+                                          horizontal: 16.w,
+                                        ),
+                                        child: VideoPlayerSheet(
+                                          videoUrl: video.videoUrl,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  borderRadius: BorderRadius.circular(16.r),
+                                  child: Container(
+                                    padding: EdgeInsets.all(12.w),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(0.05),
+                                      borderRadius: BorderRadius.circular(16.r),
+                                      border: Border.all(
+                                        color: Colors.white.withOpacity(0.1),
+                                      ),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.circular(
+                                            8.r,
+                                          ),
+                                          child: Image.network(
+                                            "https://picsum.photos/200/120?random=$index",
+                                            width: 100.w,
+                                            height: 60.h,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                        SizedBox(width: 12.w),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              CustomText(
+                                                text: video.title,
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                              SizedBox(height: 4.h),
+                                              CustomText(
+                                                text: video.category,
+                                                fontSize: 12.sp,
+                                                color: Colors.white70,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Icon(
+                                          Icons.play_circle_fill_rounded,
+                                          color: Colors.white,
+                                          size: 32.sp,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
                         );
                       }),
+                      SizedBox(height: 20.h),
 
                       /*                  const SizedBox(height: 18),
 
@@ -251,26 +395,45 @@ class _VideoPlayerSheetState extends State<VideoPlayerSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
-        margin: const EdgeInsets.all(12),
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: const Color(0xFF0D1020).withOpacity(0.95),
-          borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: Colors.white.withOpacity(0.12)),
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(14),
-          child: AspectRatio(
-            aspectRatio: _vp.value.isInitialized
-                ? _vp.value.aspectRatio
-                : 16 / 9,
-            child: _chewie == null
-                ? const Center(child: CircularProgressIndicator())
-                : Chewie(controller: _chewie!),
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: const Color(0xFF0D1020),
+        borderRadius: BorderRadius.circular(18.r),
+        border: Border.all(color: Colors.white.withOpacity(0.12)),
+      ),
+      child: Stack(
+        children: [
+          Padding(
+            padding: EdgeInsets.all(12.r),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(14.r),
+              child: AspectRatio(
+                aspectRatio: _vp.value.isInitialized
+                    ? _vp.value.aspectRatio
+                    : 16 / 9,
+                child: _chewie == null
+                    ? const Center(child: CircularProgressIndicator())
+                    : Chewie(controller: _chewie!),
+              ),
+            ),
           ),
-        ),
+          Positioned(
+            top: 8.h,
+            right: 8.w,
+            child: GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: Container(
+                padding: EdgeInsets.all(4.r),
+                decoration: const BoxDecoration(
+                  color: Colors.black54,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(Icons.close, color: Colors.white, size: 20.sp),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

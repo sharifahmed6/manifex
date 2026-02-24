@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:manifex/Presentation/Features/Subcription/View/Subcription.dart';
 import 'package:manifex/Presentation/Share/scafold_background.dart';
 import 'package:manifex/Presentation/Share/text_title_small.dart';
 import 'package:manifex/Presentation/Share/welcome_card.dart';
+import 'package:manifex/Presentation/Share/show_dialog.dart';
 import 'package:manifex/Presentation/app_bar/views/custom_app_bar.dart';
 import 'package:manifex/Presentation/progress/controllers/progress_controller.dart';
 import '../../../Core/SharepreferenceHelper.dart';
@@ -39,6 +40,18 @@ class ProgressScreen extends StatelessWidget {
                   gradientText: "Can See",
                 ),
                 SizedBox(height: 8.h),
+                GradientButton(
+                  onPressed: () {
+                    Get.dialog(
+                      Dialog(
+                        backgroundColor: Colors.transparent,
+                        insetPadding: EdgeInsets.symmetric(horizontal: 20.w),
+                        child:  UnlockPracticeCard(),
+                      ),
+                    );
+                  },
+                  text: 'Show Alert',
+                ),
                 CustomText(
                   text:
                       'Track your learning journey with daily stats, streaks  and achievements — see how far you’ve come.',

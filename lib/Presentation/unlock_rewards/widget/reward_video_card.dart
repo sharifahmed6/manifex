@@ -21,6 +21,7 @@ class RewardVideoLockedCard extends StatelessWidget {
   final String currentTime;
   final String totalTime;
   final ChewieController? chewieController;
+  final VoidCallback? onSeeAll;
 
   const RewardVideoLockedCard({
     super.key,
@@ -38,6 +39,7 @@ class RewardVideoLockedCard extends StatelessWidget {
     required this.currentTime,
     required this.totalTime,
     this.chewieController,
+    this.onSeeAll,
   });
 
   @override
@@ -283,22 +285,12 @@ class RewardVideoLockedCard extends StatelessWidget {
         ),
         SizedBox(height: 14.h),
         ButtonGradient(
-          onTap: unlocked ? onPlayToggle : null,
+          onTap: onSeeAll ?? (unlocked ? onPlayToggle : null),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                unlocked
-                    ? (isPlaying
-                          ? Icons.pause_circle_filled_rounded
-                          : Icons.play_circle_fill_rounded)
-                    : Icons.lock_rounded,
-                color: Colors.white,
-                size: 18.sp,
-              ),
-              SizedBox(width: 8.w),
               Text(
-                "See Full Video",
+                "See All Video",
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w600,

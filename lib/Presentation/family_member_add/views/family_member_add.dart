@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:manifex/App/assets_path.dart';
+import 'package:manifex/Presentation/Features/Subcription/View/Subcription.dart';
+import 'package:manifex/Presentation/Share/custom_circle_progress_indicator.dart';
 import 'package:manifex/Presentation/Share/scafold_background.dart';
 import 'package:manifex/Presentation/Share/text_title_small.dart';
 import 'package:manifex/Presentation/app_bar/views/custom_app_bar.dart';
@@ -8,12 +11,10 @@ import 'package:manifex/Presentation/app_bar/views/custom_app_bar.dart';
 import '../controller/family_member_add_controller.dart';
 
 class FamilyMemberAdd extends StatelessWidget {
-  const FamilyMemberAdd({super.key});
-
+   FamilyMemberAdd({super.key});
+  final controller = Get.find<FamilyMemberAddController>();
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<FamilyMemberAddController>();
-
     return scaffold_background(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
@@ -24,20 +25,22 @@ class FamilyMemberAdd extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Obx(() => Row(
-              children: [
-                CustomText(
-                  text: 'Family Members',
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                ),
-                const Spacer(),
-                Text(
-                  controller.memberCountText,
-                  style: TextStyle(color: Colors.white60, fontSize: 12.sp),
-                ),
-              ],
-            )),
+            Obx(
+              () => Row(
+                children: [
+                  CustomText(
+                    text: 'Family Members',
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  const Spacer(),
+                  Text(
+                    controller.memberCountText,
+                    style: TextStyle(color: Colors.white60, fontSize: 12.sp),
+                  ),
+                ],
+              ),
+            ),
             SizedBox(height: 16.h),
 
             // --- Row: email + add ---
@@ -45,6 +48,7 @@ class FamilyMemberAdd extends StatelessWidget {
               children: [
                 Expanded(
                   child: TextFormField(
+                    controller: controller.emailController,
                     decoration: const InputDecoration(
                       hintText: 'Enter email Address',
                     ),
@@ -52,25 +56,39 @@ class FamilyMemberAdd extends StatelessWidget {
                 ),
                 SizedBox(width: 8.w),
 
-                Obx(() => Opacity(
-                  opacity: controller.canAddMore ? 1 : 0.5,
-                  child: IgnorePointer(
-                    ignoring: !controller.canAddMore,
-                    child: Container(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 25.w, vertical: 16.h),
-                      decoration: BoxDecoration(
-                        color: const Color(0xff432DD7),
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      child: CustomText(
-                        text: 'Add',
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
+                Obx(
+                  () => Opacity(
+                    opacity: controller.canAddMore ? 1 : 0.5,
+                    child: IgnorePointer(
+                      ignoring: !controller.canAddMore,
+                      child: GestureDetector(
+                        onTap: () {
+                          controller.memberAdd();
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 25.w,
+                            vertical: 16.h,
+                          ),
+                          decoration: BoxDecoration(
+                            color: const Color(0xff432DD7),
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                          child: Obx(() {
+                            if (controller.memberIsLoading.value) {
+                              return CustomCircleProgressIndicator();
+                            }
+                            return CustomText(
+                              text: 'Add',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                            );
+                          }),
+                        ),
                       ),
                     ),
                   ),
-                )),
+                ),
               ],
             ),
 
@@ -80,7 +98,7 @@ class FamilyMemberAdd extends StatelessWidget {
             Expanded(
               child: Obx(() {
                 if (controller.isLoading.value) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const Center(child: CustomCircleProgressIndicator());
                 }
 
                 if (controller.errorMessage.isNotEmpty) {
@@ -109,14 +127,16 @@ class FamilyMemberAdd extends StatelessWidget {
                     separatorBuilder: (_, __) => SizedBox(height: 10.h),
                     itemBuilder: (context, index) {
                       final m = controller.members[index];
-                      final name = '${m.user?.firstName ?? ''} ${m.user?.lastName ?? ''}'
-                          .trim();
+                      final name =
+                          '${m.user?.firstName ?? ''} ${m.user?.lastName ?? ''}'
+                              .trim();
                       final email = m.user?.email ?? '';
                       return _MemberTile(
                         name: name.isEmpty ? 'Unknown' : name,
                         email: email,
                         onDelete: () {
-                          // TODO: remove api call here
+                          controller.removeMember(id: m.userId, subscriptionId: m.subscriptionId);
+                          Get.back();
                         },
                       );
                     },
@@ -191,11 +211,53 @@ class _MemberTile extends StatelessWidget {
           ),
 
           IconButton(
-            onPressed: onDelete,
-            icon: Icon(Icons.delete_outline,
-                color: Colors.redAccent, size: 20.sp),
+            onPressed: () {
+              showDialog(
+                onTap: onDelete
+              );
+            },
+            icon: Icon(
+              Icons.delete_outline,
+              color: Colors.redAccent,
+              size: 20.sp,
+            ),
           ),
         ],
+      ),
+    );
+  }
+
+  Future<void> showDialog({required VoidCallback onTap}) {
+    return Get.dialog(
+      Dialog(
+        backgroundColor: Colors.transparent,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          spacing: 8.h,
+          children: [
+            CircleAvatar(
+              radius: 50,
+              backgroundImage: AssetImage(assets_path.splash_image),
+            ),
+            CustomText(text: 'Are you sure?',fontSize: 24,),
+            Row(
+              spacing: 8.w,
+              children: [
+                Expanded(
+                  child: GradientButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    text: 'No',
+                  ),
+                ),
+                Expanded(child: GradientButton(
+                  onPressed: onTap,
+                    text: 'Yes')),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
