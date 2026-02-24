@@ -49,7 +49,7 @@ class login_controller extends GetxController {
     } else {
       AppSnackbar.show(
         response.errorMessage,
-        title: "Login Failed",
+        title: "Login Failed".tr,
         backgroundColor: Colors.red,
       );
     }
