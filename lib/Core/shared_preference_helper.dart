@@ -1,3 +1,1 @@
-class SharedPreferenceHelper {
-
-}
+class SharedPreferenceHelper {}

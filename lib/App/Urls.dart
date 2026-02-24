@@ -27,7 +27,8 @@ class urls {
   static String profileInfo = "$baseUrl/auth/me";
   static String readingTaskComplete = "$baseUrl/reading-task/submit";
   static String smartWritingDataSend = "$baseUrl/writing-Task/submit";
-
+  static String getMemberId(String userId) =>
+      "$baseUrl/subscriptions/family-members/$userId";
 
   static String getFlowChain(String userId) =>
       "$baseUrl/presentation/flow-chain/get_flow_chain?user_id=$userId";
@@ -47,11 +48,15 @@ class urls {
   static String userProgress = "$baseUrl/progress";
   static String userBadges = "$baseUrl/badge/user-badges";
   static String rewardVideoCheck = "$baseUrl/reward-video/check/daily/rewards";
+  static String rewardVideoList = "$baseUrl/reward-video/my/rewards";
   static String updateProfile = "$baseUrl/users/update-profile";
   static String changePassword = "$baseUrl/auth/change-password";
-  static String powerWordsScore= "$baseUrl/presentation/power-words/power_words";
+  static String powerWordsScore =
+      "$baseUrl/presentation/power-words/power_words";
   static String presentationSubmit = "$baseUrl/presentation/submit";
   static String adultTaskSubmit = "$baseUrl/adult-task/submit";
   static String word_flash = "$baseUrl/adult/word-flash/word_flash";
-
+  static String familyMemberAdd = "$baseUrl/subscriptions/add-member";
+  static String removeMember(String id) =>
+      "$baseUrl/subscriptions/remove-member/$id";
 }

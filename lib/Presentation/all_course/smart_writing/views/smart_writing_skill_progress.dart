@@ -7,6 +7,7 @@ import '../../../../App/assets_path.dart';
 import '../../../Share/progress_card.dart';
 import '../../../progress/widget/gradient_linear_progress.dart';
 import '../../practices/widget/skill_welcome_card.dart';
+import '../../../Share/show_dialog.dart';
 
 class SmartWritingSkillProgress extends StatelessWidget {
   const SmartWritingSkillProgress({super.key});

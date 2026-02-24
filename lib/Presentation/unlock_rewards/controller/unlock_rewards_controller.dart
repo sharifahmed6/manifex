@@ -6,10 +6,14 @@ import 'package:video_player/video_player.dart';
 import '../../../App/Urls.dart';
 import '../../../App/network_caller.dart';
 import '../model/rewards_model.dart';
+import '../model/more_video_rewards.dart';
 
 class UnlockRewardsController extends GetxController {
   final isLoading = false.obs;
   final rewardModel = Rxn<RewardModel>();
+  final moreVideoRewards = Rxn<MoreVideoRewards>();
+  final isMoreRewardsVisible = false.obs;
+  final selectedVideo = Rxn<dynamic>(); // Can be RewardVideo or VideoModel
 
   // Video states
   late VideoPlayerController videoPlayerController;
@@ -23,6 +27,7 @@ class UnlockRewardsController extends GetxController {
   void onInit() {
     super.onInit();
     getRewardStatus();
+    getMoreRewards();
   }
 
   Future<void> getRewardStatus() async {
@@ -46,6 +51,23 @@ class UnlockRewardsController extends GetxController {
       debugPrint("Error fetching rewards: $e");
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  Future<void> getMoreRewards() async {
+    try {
+      NetworkResponse response = await NetworkCaller().getRequest(
+        url: urls.rewardVideoList,
+      );
+
+      if (response.isSuccess && response.responseData != null) {
+        final model = MoreVideoRewards.fromJson(
+          response.responseData as Map<String, dynamic>,
+        );
+        moreVideoRewards.value = model;
+      }
+    } catch (e) {
+      debugPrint("Error fetching more rewards: $e");
     }
   }
 
@@ -88,6 +110,25 @@ class UnlockRewardsController extends GetxController {
     final minutes = twoDigits(duration.inMinutes.remainder(60));
     final seconds = twoDigits(duration.inSeconds.remainder(60));
     return "$minutes:$seconds";
+  }
+
+  void selectVideo(dynamic video) {
+    if (video == null) return;
+    String url = '';
+    if (video is RewardVideo) {
+      url = video.videoUrl;
+    } else if (video is VideoModel) {
+      url = video.videoUrl;
+    }
+
+    if (url.isNotEmpty) {
+      selectedVideo.value = video;
+      _initializeVideo(url);
+    }
+  }
+
+  void toggleMoreRewards() {
+    isMoreRewardsVisible.value = !isMoreRewardsVisible.value;
   }
 
   void togglePlayPause() {

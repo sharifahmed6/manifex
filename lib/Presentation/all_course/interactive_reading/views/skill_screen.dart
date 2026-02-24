@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:manifex/App/routes.dart';
+import 'package:manifex/Presentation/Features/home/controller/home_controller.dart';
 import 'package:manifex/Presentation/Share/text_title_small.dart';
 import '../../../Share/gradient_title.dart';
 import '../../../Share/single_skill_card.dart';
@@ -12,6 +13,7 @@ import '../controller/interactive_reading_controller.dart';
 class SkillScreen extends StatelessWidget {
   SkillScreen({super.key});
   final controller = Get.find<InteractiveReadingController>();
+  final homeController = Get.find<HomeController>();
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -90,8 +92,9 @@ class SkillScreen extends StatelessWidget {
             SizedBox(height: 16.h),
             controller.allAnswerSubmit.value
                 ? GestureDetector(
-                    onTap: () {
-                      controller.interactiveReadingAnsSubmit();
+                    onTap: () async {
+                    await  controller.interactiveReadingAnsSubmit();
+                      homeController.fetchProfileInfo();
                     },
                     child: AchievmentGradientBorder(
                       child: Container(

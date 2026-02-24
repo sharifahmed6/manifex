@@ -48,10 +48,13 @@ class TaskThreeController extends GetxController {
 
       sessionName.value = parsed.data.sessionName;
 
-      final pairs = parsed.data.words.map((w) {
-        final img = parsed.data.imageUrlById(w.id) ?? "";
-        return ApiPair(word: w.text, image: img, answerKey: w.id);
-      }).where((p) => p.image.isNotEmpty).toList();
+      final pairs = parsed.data.words
+          .map((w) {
+            final img = parsed.data.imageUrlById(w.id) ?? "";
+            return ApiPair(word: w.text, image: img, answerKey: w.id);
+          })
+          .where((p) => p.image.isNotEmpty)
+          .toList();
 
       loadFromApi(pairs);
     } catch (e) {
@@ -64,17 +67,21 @@ class TaskThreeController extends GetxController {
   void loadFromApi(List<ApiPair> pairs) {
     final rnd = Random();
 
-    final w = pairs.map((p) => WordItemUI(key: p.answerKey, text: p.word)).toList()
-      ..shuffle(rnd);
+    final w =
+        pairs.map((p) => WordItemUI(key: p.answerKey, text: p.word)).toList()
+          ..shuffle(rnd);
 
-    final s = pairs
-        .map((p) => PictureSlot(
-      slotId: _uid(),
-      imageUrlOrAsset: p.image,
-      correctWordKey: p.answerKey,
-    ))
-        .toList()
-      ..shuffle(rnd);
+    final s =
+        pairs
+            .map(
+              (p) => PictureSlot(
+                slotId: _uid(),
+                imageUrlOrAsset: p.image,
+                correctWordKey: p.answerKey,
+              ),
+            )
+            .toList()
+          ..shuffle(rnd);
 
     words.assignAll(w);
     slots.assignAll(s);
@@ -97,7 +104,8 @@ class TaskThreeController extends GetxController {
 
   bool isWordUsed(String wordKey) => usedWordKeys.contains(wordKey);
   bool isSlotFilled(String slotId) => placedBySlotId.containsKey(slotId);
-  DropState slotState(String slotId) => stateBySlotId[slotId] ?? DropState.empty;
+  DropState slotState(String slotId) =>
+      stateBySlotId[slotId] ?? DropState.empty;
 
   bool canAccept({required String slotId, required String wordKey}) {
     if (isSlotFilled(slotId)) return false;
@@ -139,16 +147,18 @@ class TaskThreeController extends GetxController {
   }
 
   bool get allFilled =>
-      slots.isNotEmpty && slots.every((s) => placedBySlotId.containsKey(s.slotId));
+      slots.isNotEmpty &&
+      slots.every((s) => placedBySlotId.containsKey(s.slotId));
 
   bool get allCorrect =>
-      slots.isNotEmpty && slots.every((s) => stateBySlotId[s.slotId] == DropState.correct);
+      slots.isNotEmpty &&
+      slots.every((s) => stateBySlotId[s.slotId] == DropState.correct);
 
   int get totalSlots => slots.length;
 
   void finish() {
     if (!allFilled) return;
-   interactiveController.task3.value = percent.value;
+    interactiveController.task3.value = percent.value;
     Get.back();
   }
 
@@ -176,7 +186,11 @@ class ApiPair {
   final String word;
   final String image;
   final String answerKey; // id
-  const ApiPair({required this.word, required this.image, required this.answerKey});
+  const ApiPair({
+    required this.word,
+    required this.image,
+    required this.answerKey,
+  });
 }
 
 class WordItemUI {

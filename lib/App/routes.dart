@@ -6,6 +6,7 @@ import 'package:manifex/Presentation/all_course/interactive_reading/views/sight_
 import 'package:manifex/Presentation/all_course/interactive_reading/views/task_one.dart';
 import 'package:manifex/Presentation/all_course/smart_writing/views/smart_writing_screen.dart';
 import 'package:manifex/Presentation/bottom_navbar/views/bottom_navbar_view.dart';
+import 'package:manifex/Presentation/family_member_add/views/family_member_add.dart';
 import 'package:manifex/Presentation/language/views/language_screen.dart';
 import 'package:manifex/Presentation/privacy_policy/views/privacy_policy_screen.dart';
 import 'package:manifex/Presentation/profile/views/profile_screen.dart';
@@ -87,6 +88,7 @@ class routes {
   static const String nativeTwoScreen = '/native_two_screen';
   static const String nativeThreeScreen = '/native_three_screen';
   static const String nativeFourScreen = '/native_four_screen';
+  static const String family_member_add = '/family_member_add';
 
   static final pages = [
     GetPage(
@@ -289,6 +291,11 @@ class routes {
       name: nativeFourScreen,
       binding: InitialBinding(),
       page: () => NativeTaskFour(),
+    ),
+    GetPage(
+      name: family_member_add,
+      binding: InitialBinding(),
+      page: () => FamilyMemberAdd(),
     ),
   ];
 }

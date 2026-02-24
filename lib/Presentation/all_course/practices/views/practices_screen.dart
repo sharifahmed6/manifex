@@ -3,14 +3,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:manifex/App/AppColors.dart';
 import 'package:manifex/App/routes.dart';
+import 'package:manifex/Presentation/Features/home/controller/home_controller.dart';
 import 'package:manifex/Presentation/Share/button_gradient.dart';
 import 'package:manifex/Presentation/Share/scafold_background.dart';
 import 'package:manifex/Presentation/app_bar/views/custom_app_bar.dart';
+import '../../../Share/show_dialog.dart';
 import '../../../Share/text_title_small.dart';
 import '../controller/practices_controller.dart';
 import '../widget/transperent_gradient_border.dart';
 
 class PracticesScreen extends StatelessWidget {
+   PracticesScreen({super.key});
+  final homeController = Get.find<HomeController>();
   PracticesScreen({super.key});
   final controller = Get.find<PracticesController>();
 
@@ -115,6 +119,8 @@ class PracticesScreen extends StatelessWidget {
   }
 
   Widget _practicesCard({String? imagePath, String? title, String? subTitle,VoidCallback? onTap,String? buttonText}) {
+    final isFree = homeController.profileInfo.value?.data?.isSubscriptionFree ?? true;
+    final isSubscribed = homeController.profileInfo.value?.data?.isSubscribed ?? false;
     return TransparentGradientBorder(
       strokeWidth: 0.5,
       radius: 16.r,
@@ -157,7 +163,16 @@ class PracticesScreen extends StatelessWidget {
               textAlign: TextAlign.start,
             ),
             SizedBox(height: 16.h),
-            ButtonGradient(text: buttonText ?? 'Start Reading',onTap: onTap),
+            ButtonGradient(text: buttonText ?? 'Start Reading',
+                onTap: homeController.profileInfo.value?.data?.isSubscriptionFree == false && homeController.profileInfo.value?.data?.isSubscribed == false ? (){
+              Get.dialog(
+                Dialog(
+                  backgroundColor: Colors.transparent,
+                  insetPadding: EdgeInsets.symmetric(horizontal: 20.w),
+                  child:  UnlockPracticeCard(),
+                ),
+              );
+            }: onTap),
           ],
         ),
       ),
