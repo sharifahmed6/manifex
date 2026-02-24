@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:manifex/Core/SharepreferenceHelper.dart';
-import 'package:manifex/Core/responsive.dart';
-import 'package:manifex/Core/snakbar.dart';
 import 'package:manifex/Presentation/all_course/HandwritingPractice/Widgets/AFHandwriting/View/AFHandwriting.dart';
-import 'package:signature/signature.dart';
-import '../../../../App/AppColors.dart';
-import '../../../../App/routes.dart';
+import '../../../../Core/MusicService.dart';
 import '../../../Share/custom_back_button.dart';
 import '../../../Share/gradient_title.dart';
-import '../../../Share/gradient_toggle_tabs.dart';
 import '../../../Share/scafold_background.dart';
 import '../../../Share/single_skill_card.dart';
 import '../../../app_bar/views/custom_app_bar.dart';
@@ -37,7 +30,28 @@ class HandwritingPractice extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CustomBackButton(text: 'Handwriting Practice'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomBackButton(text: 'Handwriting Practice'),
+                Obx(() {
+                  final music = MusicService();
+                  return IconButton(
+                    onPressed: () {
+                      if (music.isPlaying) {
+                        music.stop();
+                      } else {
+                        music.play();
+                      }
+                    },
+                    icon: Icon(
+                      music.isPlaying ? Icons.volume_off : Icons.volume_up_sharp,
+                      color: Colors.white70,
+                    ),
+                  );
+                })
+              ],
+            ),
             SizedBox(height: 18.h),
 
             InteractiveBorderColor(

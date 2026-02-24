@@ -64,13 +64,6 @@ class TracingScreen extends StatelessWidget {
               ],
             ),
           ),
-
-          const SizedBox(height: 20),
-
-          // ✅ Check with AI button
-
-
-          const SizedBox(height: 20),
         ],
       ),
     );

@@ -13,7 +13,7 @@ import '../../TracingScreen/Controller/Controller.dart';
 import '../../TracingScreen/View/TracingScreen.dart';
 import '../Controller/Controller.dart';
 
-class AFHandwriting extends StatelessWidget {
+class AFHandwriting extends GetView<AFHandwritingController> {
   var latter = <String>[].obs;
   var currentIndex = 0.obs;
   String title;
@@ -58,10 +58,6 @@ class AFHandwriting extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
-              ElevatedButton(onPressed: (){
-                MusicService().stop();
-              }, child: Text("sdvsdv")),
               const SizedBox(height: 15),
               GestureDetector(
                 onTap: () => Get.back(),
@@ -80,10 +76,31 @@ class AFHandwriting extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
-              GradientTitle(
-                fontSize: 20,
-                normalText: title,
-                gradientText: ' Handwriting',
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GradientTitle(
+                    fontSize: 20,
+                    normalText: title,
+                    gradientText: ' Handwriting',
+                  ),
+                  Obx(() {
+                    final music = MusicService();
+                    return IconButton(
+                      onPressed: () {
+                        if (music.isPlaying) {
+                          music.stop();
+                        } else {
+                          music.play();
+                        }
+                      },
+                      icon: Icon(
+                        music.isPlaying ? Icons.volume_off : Icons.volume_up_sharp,
+                        color: Colors.white70,
+                      ),
+                    );
+                  })
+                ],
               ),
               const SizedBox(height: 10),
               Container(
