@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:manifex/App/Urls.dart';
 import '../../../../App/network_caller.dart';
+import '../../../../Core/MusicService.dart';
 import '../../../Features/home/controller/home_controller.dart';
 import '../model/sight_word_model.dart';
 import 'interactive_reading_controller.dart';
@@ -39,6 +40,12 @@ class SightWordController extends GetxController {
   void onInit() {
     super.onInit();
     loadSightWords();
+    MusicService().play();
+  }
+  @override
+  void onClose() {
+    MusicService().stop();
+    super.onClose();
   }
   Future<void> loadSightWords() async {
     try {
