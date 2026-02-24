@@ -15,7 +15,6 @@ import '../widget/transperent_gradient_border.dart';
 class PracticesScreen extends StatelessWidget {
    PracticesScreen({super.key});
   final homeController = Get.find<HomeController>();
-  PracticesScreen({super.key});
   final controller = Get.find<PracticesController>();
 
   @override
