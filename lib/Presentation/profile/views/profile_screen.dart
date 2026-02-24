@@ -203,12 +203,25 @@ class ProfileScreen extends StatelessWidget {
                                   Expanded(
                                     child: ElevatedButton(
                                       onPressed: () async {
-                                        Get.back();
-                                        AppLoader.show();
-                                        await PrefHelper.clear();
-                                        AppLoader.hide();
-                                        await Purchases.logOut();
-                                        Get.offAllNamed(routes.login_screen);
+                                        try {
+                                          Get.back();
+                                          AppLoader.show();
+                                          await PrefHelper.clear();
+                                          AppLoader.hide();
+
+                                          // Check current purchaser info
+                                          final info = await Purchases.getCustomerInfo();
+                                          if (!info.entitlements.all.isEmpty) {
+                                            // Not anonymous (has purchases), safe to logout
+                                            await Purchases.logOut();
+                                          }
+
+                                          Get.offAllNamed(routes.login_screen);
+                                        } catch (e) {
+                                          // Handle anonymous user case or any other error
+                                          print("Logout error: $e");
+                                          Get.offAllNamed(routes.login_screen);
+                                        }
                                       },
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.red,
