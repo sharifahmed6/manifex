@@ -171,7 +171,7 @@ class InitialBinding extends Bindings {
     );
     Get.lazyPut<wordPartsWorkshopController>(() => wordPartsWorkshopController(), fenix: true);
     Get.lazyPut<HandwritingPracticeController>(() => HandwritingPracticeController(), fenix: true);
-    Get.lazyPut<AFHandwritingController>(() => AFHandwritingController(), fenix: true);
+    Get.lazyPut<AFHandwritingController>(() => AFHandwritingController(),);
     Get.lazyPut<subscriptionController>(() => subscriptionController(), fenix: true);
 
 

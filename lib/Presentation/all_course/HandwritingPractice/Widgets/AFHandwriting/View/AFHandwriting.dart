@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:manifex/Core/MusicService.dart';
 import 'package:manifex/Presentation/Share/scafold_background.dart';
 import 'package:get/get.dart';
 import '../../../../../../App/AppColors.dart';
@@ -10,6 +11,7 @@ import '../../../../../app_bar/views/custom_app_bar.dart';
 import '../../../Controller/Controller.dart';
 import '../../TracingScreen/Controller/Controller.dart';
 import '../../TracingScreen/View/TracingScreen.dart';
+import '../Controller/Controller.dart';
 
 class AFHandwriting extends StatelessWidget {
   var latter = <String>[].obs;
@@ -17,6 +19,8 @@ class AFHandwriting extends StatelessWidget {
   String title;
   String description;
   int taskNumber;
+
+  final controller = Get.find<AFHandwritingController>();
 
   AFHandwriting({super.key, required List<String> latter, required int currentIndex, required this.title, required this.description, required this.taskNumber}) {
     this.latter.assignAll(latter);
@@ -54,6 +58,10 @@ class AFHandwriting extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+
+              ElevatedButton(onPressed: (){
+                MusicService().stop();
+              }, child: Text("sdvsdv")),
               const SizedBox(height: 15),
               GestureDetector(
                 onTap: () => Get.back(),

@@ -7,7 +7,7 @@ class PracticesController extends GetxController{
   @override
   void onInit() {
     // TODO: implement onInit
-    startOneMinutePrinter();
+    // startOneMinutePrinter();
     super.onInit();
   }
 
