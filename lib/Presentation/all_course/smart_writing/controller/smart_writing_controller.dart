@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:manifex/App/Urls.dart';
+import 'package:manifex/Core/MusicService.dart';
 import '../../../../App/network_caller.dart';
 import '../../../Features/home/controller/home_controller.dart';
 
@@ -51,6 +52,7 @@ class SmartWritingController extends GetxController {
     super.onInit();
     fetchCategories();
     start();
+    MusicService().play();
   }
 
   void start() {
@@ -86,6 +88,7 @@ class SmartWritingController extends GetxController {
   void onClose() {
     _timer?.cancel();
     writingController.dispose();
+    MusicService().stop();
     super.onClose();
   }
 
