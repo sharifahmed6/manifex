@@ -7,22 +7,17 @@ class AFHandwritingController extends GetxController {
 
   @override
   void onInit() {
-    // TODO: implement onInit
-    MusicService().play();
     super.onInit();
+    MusicService().play();  // 🎵 music starts when page opens
+    print("TracingController INIT");
   }
 
   @override
-  void onClose() async {
-    await MusicService().stop();
-    await MusicService().dispose();
-    print("On Close");
+  void onClose() {
+    MusicService().stop();  // ⛔ music stops when page closes
+    print("TracingController CLOSED");
     super.onClose();
   }
-
-  @override
-  // TODO: implement onDelete
-  InternalFinalCallback<void> get onDelete => super.onDelete;
 
 
 

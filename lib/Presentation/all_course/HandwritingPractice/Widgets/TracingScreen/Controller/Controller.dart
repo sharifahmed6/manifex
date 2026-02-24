@@ -110,15 +110,15 @@ class TracingController extends GetxController {
       // ✅ Add word normally
       request.fields['word'] = word;
 
-      Get.dialog(
-        barrierDismissible: false,
-        const CustomCircleProgressIndicator(),
-      );
+      // Get.dialog(
+      //   barrierDismissible: false,
+      //   const CustomCircleProgressIndicator(),
+      // );
 
       final streamedResponse = await request.send();
       final response = await http.Response.fromStream(streamedResponse);
 
-      Get.back();
+      // Get.back();
 
       print("Status Code: ${response.statusCode}");
       print("Response Body: ${response.body}");
