@@ -10,7 +10,6 @@ Future<void> main() async {
   await PrefHelper.init();
   await TTSService.init();
 
-  await Purchases.setDebugLogsEnabled(true);
   await Purchases.configure(PurchasesConfiguration("appl_XvgIfWcbeBNBrEwIEumbLJGlJhS"));
 
 

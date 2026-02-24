@@ -8,15 +8,15 @@ class AFHandwritingController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    MusicService().play();  // 🎵 music starts when page opens
+    MusicService().play();
     print("TracingController INIT");
   }
 
   @override
   void onClose() {
-    MusicService().stop();  // ⛔ music stops when page closes
-    print("TracingController CLOSED");
     super.onClose();
+    MusicService().stop();
+    print("TracingController CLOSED");
   }
 
 

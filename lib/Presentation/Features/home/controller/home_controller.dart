@@ -1,26 +1,28 @@
 import 'package:get/get.dart';
 import 'package:manifex/App/Urls.dart';
 import 'package:manifex/App/network_caller.dart';
+import 'package:manifex/Core/SharepreferenceHelper.dart';
 import 'package:manifex/Presentation/Features/home/model/user_model.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
 class HomeController extends GetxController {
   final profileInfo = Rxn<UserModel>();
   final isLoading = false.obs;
   final errorMessage = ''.obs;
 
+
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
+    String userId = PrefHelper.getUserId() ?? '';
+    if (userId.isEmpty) {
+      throw Exception("Backend user ID cannot be empty for RevenueCat login!");
+    }
+
+    final customerInfo = await Purchases.logIn(userId);
+    // print("${customerInfo.customerInfo}");
     fetchProfileInfo();
   }
-
-  // @override
-  // void onReady() {
-  //   // TODO: implement onReady
-  //   fetchProfileInfo();
-  //
-  //   super.onReady();
-  // }
 
   String get userId => profileInfo.value?.data?.id ?? '';
   String get ageRange => profileInfo.value?.data?.age ?? '';
@@ -45,6 +47,7 @@ class HomeController extends GetxController {
 
       if (response.isSuccess && response.responseData != null) {
         profileInfo.value = UserModel.fromJson(response.responseData!);
+        print("User Data: $profileInfo");
       } else {
         errorMessage.value = response.errorMessage;
       }
