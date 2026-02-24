@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:manifex/Core/snakbar.dart';
@@ -9,8 +7,11 @@ import 'package:path_provider/path_provider.dart';
 import 'package:signature/signature.dart';
 import 'dart:ui' as ui;
 
-class HandwritingPracticeController extends GetxController {
+import '../../../../App/Urls.dart';
+import '../../../../App/network_caller.dart';
+import '../../../../Core/loading.dart';
 
+class HandwritingPracticeController extends GetxController {
   var selectedIndex = 0.obs;
   void changeTab(int index) => selectedIndex.value = index;
 
@@ -24,8 +25,65 @@ class HandwritingPracticeController extends GetxController {
     AppSnackbar.show("Task $index Completed.");
   }
 
+  final result = [
+      {"taskName": "Task 1", "marks": 0, "isAnswer": true},
+      {"taskName": "Task 2", "marks": 0, "isAnswer": true},
+      {"taskName": "Task 3", "marks": 0, "isAnswer": true},
+      {"taskName": "Task 4", "marks": 0, "isAnswer": true},
+      {"taskName": "Task 5", "marks": 0, "isAnswer": true},
+      {"taskName": "Task 6", "marks": 0, "isAnswer": true},
+      {"taskName": "Task 7", "marks": 0, "isAnswer": true},
+      {"taskName": "Task 8", "marks": 0, "isAnswer": true},
+      {"taskName": "Task 9", "marks": 0, "isAnswer": true},
+    ];
 
-  Future<String?> saveSignaturePng(SignatureController controller, String fileName) async {
+
+
+
+  Future<void> FinalSubmission() async {
+    AppLoader.show();
+
+    try {
+      NetworkResponse response = await NetworkCaller().postRequest(
+        url: urls.adultTaskSubmit,
+        body: {"tasks": result, "timeSpent": seconds.value},
+      );
+      AppLoader.hide();
+
+      if (response.statusCode == 201 &&
+          response.responseData != null &&
+          response.responseData?['success'] == true) {
+        listComplete[8] = false;
+      } else {
+        print("Error submitting final answers ❌");
+        print("Server message: ${response.responseData?['message'] ?? response.errorMessage}");
+      }
+    } catch (e) {
+      AppLoader.hide();
+      print("HTTP Error: $e");
+    }
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  //==============================================================================================
+  Future<String?> saveSignaturePng(
+    SignatureController controller,
+    String fileName,
+  ) async {
     try {
       // 1️⃣ Convert signature to image
       final ui.Image? signatureImage = await controller.toImage();
@@ -60,7 +118,10 @@ class HandwritingPracticeController extends GetxController {
 
       // 3️⃣ Convert canvas to PNG bytes
       final picture = recorder.endRecording();
-      final img = await picture.toImage(signatureImage.width, signatureImage.height);
+      final img = await picture.toImage(
+        signatureImage.width,
+        signatureImage.height,
+      );
       final byteData = await img.toByteData(format: ui.ImageByteFormat.png);
 
       if (byteData == null) return null;
@@ -104,5 +165,4 @@ class HandwritingPracticeController extends GetxController {
     _timer?.cancel();
     super.onClose();
   }
-
 }

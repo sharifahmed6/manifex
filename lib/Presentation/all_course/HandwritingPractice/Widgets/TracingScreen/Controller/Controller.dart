@@ -11,6 +11,7 @@ import 'dart:ui' as ui;
 import '../../../../../../Core/SharepreferenceHelper.dart';
 import '../../../../../../Core/snakbar.dart';
 import '../../../../../Share/custom_circle_progress_indicator.dart';
+import '../../../Controller/Controller.dart';
 
 class TracingController extends GetxController {
   final SignatureController signatureController = SignatureController(
@@ -134,6 +135,31 @@ class TracingController extends GetxController {
 
 
         if(word ==  'F' || word ==  'L' || word ==  'R' || word ==  'Z' || word ==  'f' || word ==  'l' || word ==  'r' || word ==  'z' || word ==  '9') {
+
+          final total = correctWord + incorrectWord;
+          double percentage = 0;
+          if (total > 0) {
+            percentage = (correctWord / total) * 100;
+            correctWord = 0;
+            incorrectWord = 0;
+          }
+          final controller = Get.find<HandwritingPracticeController>();
+          word == 'F' ? controller.result[0]['marks'] = percentage :
+          word == 'L' ? controller.result[1]['marks'] = percentage :
+          word == 'R' ? controller.result[2]['marks'] = percentage :
+          word == 'Z' ? controller.result[3]['marks'] = percentage :
+          word == 'f' ? controller.result[4]['marks'] = percentage :
+          word == 'l' ? controller.result[5]['marks'] = percentage :
+          word == 'r' ? controller.result[6]['marks'] = percentage :
+          word == 'z' ? controller.result[7]['marks'] = percentage :
+          word == '9' ? {
+            controller.result[8]['marks'] = percentage,
+            controller.FinalSubmission()
+          } : null;
+
+          print("${controller.result}");
+
+
           print("Total words: ${correctWord+incorrectWord} Correct Words: $correctWord Incorrect Word: $incorrectWord");
         }
 
