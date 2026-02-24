@@ -14,6 +14,8 @@ import '../../../Share/gradient_toggle_tabs.dart';
 import '../../../Share/scafold_background.dart';
 import '../../../Share/single_skill_card.dart';
 import '../../../app_bar/views/custom_app_bar.dart';
+import '../../ShareProgress/View/ShareProgress.dart';
+import '../../ShareProgress/View/Tab.dart';
 import '../../interactive_reading/widget/interactive_border_color_gradient.dart';
 import 'package:get/get.dart';
 import '../../practices/widget/skill_welcome_card.dart';
@@ -39,20 +41,30 @@ class HandwritingPractice extends StatelessWidget {
             SizedBox(height: 18.h),
 
             InteractiveBorderColor(
-                child: GradientToggleTabs()
+                child: Obx(() => GradientToggle(
+                  selectedIndex: controller.selectedIndex.value,
+                  onTabChanged: (index) {
+                    controller.selectedIndex.value = index;
+                  },
+                )),
             ),
             SizedBox(height: 18.h),
             Expanded(
               child: Obx(() {
+                int falseCount = controller.listLock.where((e) => !e).length;
                 return IndexedStack(
                   index: controller.selectedIndex.value,
                   children: [
                     _skillScreen(),
-                    // TracingScreen(word: '5',)
+                    ShareProgress(
+                      timer: controller.formattedTime,
+                      currentTask: falseCount,
+                      totalTask: controller.listLock.length,
+                    ),
                   ],
                 );
               }),
-            ),
+            )
           ],
         ),
       ),

@@ -60,6 +60,13 @@ class EnglishAdultPracticeController extends GetxController {
   }
 
 
+  String get formattedTime {
+    final h = (seconds.value ~/ 3600).toString().padLeft(2, '0');
+    final m = ((seconds.value % 3600) ~/ 60).toString().padLeft(2, '0');
+    final s = (seconds.value % 60).toString().padLeft(2, '0');
+    return "$h:$m:$s";
+  }
+
 
 
 

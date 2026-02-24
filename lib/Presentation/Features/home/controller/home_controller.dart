@@ -14,6 +14,14 @@ class HomeController extends GetxController {
     fetchProfileInfo();
   }
 
+  // @override
+  // void onReady() {
+  //   // TODO: implement onReady
+  //   fetchProfileInfo();
+  //
+  //   super.onReady();
+  // }
+
   String get userId => profileInfo.value?.data?.id ?? '';
   String get ageRange => profileInfo.value?.data?.age ?? '';
   String get totalWords => profileInfo.value?.data?.userProgress?.totalWords.toString() ?? '0';

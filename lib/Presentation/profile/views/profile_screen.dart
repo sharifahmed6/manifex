@@ -7,6 +7,7 @@ import 'package:manifex/Presentation/Share/scafold_background.dart';
 import 'package:manifex/Presentation/Share/text_title_small.dart';
 import 'package:manifex/Presentation/app_bar/views/custom_app_bar.dart';
 import 'package:manifex/Presentation/progress/widget/gradient_border_avater.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
 import '../../../App/assets_path.dart';
 import '../../../Core/SharepreferenceHelper.dart';
@@ -189,6 +190,7 @@ class ProfileScreen extends StatelessWidget {
                                         AppLoader.show();
                                         await PrefHelper.clear();
                                         AppLoader.hide();
+                                        await Purchases.logOut();
                                         Get.offAllNamed(routes.login_screen);
                                       },
                                       style: ElevatedButton.styleFrom(
