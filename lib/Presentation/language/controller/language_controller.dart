@@ -42,5 +42,6 @@ class LanguageController extends GetxController{
 
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt(_langKey, index);
+    Get.back();
   }
 }
