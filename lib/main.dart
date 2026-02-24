@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
 import 'App/app.dart';
 import 'Core/SharepreferenceHelper.dart';
@@ -8,6 +9,9 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await PrefHelper.init();
   await TTSService.init();
+
+  await Purchases.setDebugLogsEnabled(true);
+  await Purchases.configure(PurchasesConfiguration("appl_XvgIfWcbeBNBrEwIEumbLJGlJhS"));
 
 
   runApp(const MyApp());

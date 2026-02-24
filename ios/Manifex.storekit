@@ -9,7 +9,7 @@
       }
     ]
   },
-  "identifier" : "7B2E748A",
+  "identifier" : "8757C2DF",
   "nonRenewingSubscriptions" : [
 
   ],
@@ -24,7 +24,7 @@
     "_developerTeamID" : "HH5BK4PGV7",
     "_disableDialogs" : false,
     "_failTransactionsEnabled" : false,
-    "_lastSynchronizedDate" : 793182832.401173,
+    "_lastSynchronizedDate" : 793519787.01317203,
     "_locale" : "en_US",
     "_renewalBillingIssuesEnabled" : false,
     "_storefront" : "USA",
@@ -52,7 +52,12 @@
           "familyShareable" : true,
           "groupNumber" : 2,
           "internalID" : "6759366945",
-          "introductoryOffer" : null,
+          "introductoryOffer" : {
+            "internalID" : "5EBD955F",
+            "numberOfPeriods" : 1,
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P1W"
+          },
           "localizations" : [
             {
               "description" : "This package allow share with family",
@@ -62,7 +67,7 @@
           ],
           "productID" : "family_monthly",
           "recurringSubscriptionPeriod" : "P1M",
-          "referenceName" : "family",
+          "referenceName" : "Family Plan",
           "subscriptionGroupID" : "21940366",
           "type" : "RecurringSubscription",
           "winbackOffers" : [
@@ -80,7 +85,12 @@
           "familyShareable" : false,
           "groupNumber" : 1,
           "internalID" : "6759366634",
-          "introductoryOffer" : null,
+          "introductoryOffer" : {
+            "internalID" : "50807C45",
+            "numberOfPeriods" : 1,
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P1W"
+          },
           "localizations" : [
             {
               "description" : "This is premium to access all features for single user",
@@ -90,7 +100,7 @@
           ],
           "productID" : "premium_monthly",
           "recurringSubscriptionPeriod" : "P1M",
-          "referenceName" : "Premium",
+          "referenceName" : "Premium Plan",
           "subscriptionGroupID" : "21940366",
           "type" : "RecurringSubscription",
           "winbackOffers" : [

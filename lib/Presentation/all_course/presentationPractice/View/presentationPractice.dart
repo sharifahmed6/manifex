@@ -10,6 +10,7 @@ import '../../../app_bar/views/custom_app_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../progress/widget/gradient_linear_progress.dart';
 import 'package:get/get.dart';
+import '../../ShareProgress/View/ShareProgress.dart';
 import '../../practices/widget/skill_welcome_card.dart';
 import '../Controller/Controller.dart';
 
@@ -36,10 +37,7 @@ class presentationPractice extends StatelessWidget {
               height: 55,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
-                border: Border.all(
-                  color: Colors.blue,
-                  width: 1,
-                ),
+                border: Border.all(color: Colors.blue, width: 1),
               ),
               child: _GradientToggleTabs(),
             ),
@@ -50,7 +48,16 @@ class presentationPractice extends StatelessWidget {
                   index: controller.selectedIndex.value,
                   children: [
                     _skillScreen(),
-                    _progress()
+                    Obx(() {
+                      int trueCount = controller.listLock.where((e) => !e).length;
+
+                      return ShareProgress(
+                        timer: controller.formattedTime,
+                        currentTask: trueCount,
+                        totalTask: controller.listLock.length,
+                      );
+                    }),
+
                   ],
                 );
               }),
@@ -62,8 +69,6 @@ class presentationPractice extends StatelessWidget {
   }
 }
 
-
-
 class _skillScreen extends StatelessWidget {
   _skillScreen({super.key});
   final controller = Get.find<presentationPracticeController>();
@@ -71,170 +76,85 @@ class _skillScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Obx(() => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SkillWelcomeCard(),
-          const SizedBox(height: 10,),
-          GradientTitle(
-            fontSize: 20,
-            normalText: 'Presentation ',
-            gradientText: 'Tasks',
-          ),
-          Text("Complete each task to improve your presentation skill".tr, style: TextStyle(color: Colors.grey),),
+      child: Obx(
+        () => Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SkillWelcomeCard(),
+            const SizedBox(height: 10),
+            GradientTitle(
+              fontSize: 20,
+              normalText: 'Presentation ',
+              gradientText: 'Tasks',
+            ),
+            Text(
+              "Complete each task to improve your presentation skill".tr,
+              style: TextStyle(color: Colors.grey),
+            ),
 
-          const SizedBox(height: 15,),
+            const SizedBox(height: 15),
 
-          SingleSkillCard(
-            title: 'Power Words Pulse'.tr,
-            subTitle: 'Helping children learn powerful words through games, sounds, and playful daily practice.'.tr,
-            buttonText: 'Task 1',
-            onTap: (){
-              Get.toNamed(routes.powerWordsPlus_screen);
-            },
-            isComplete: controller.listComplete[0],
-            lock: controller.listLock[0],
-          ),
-          const SizedBox(height: 15,),
-
-          SingleSkillCard(
-            title: 'Precision Drill'.tr,
-            subTitle: 'Focused practice drills designed to improve accuracy, speed, and skill through repetition.'.tr,
-            buttonText: 'Task 2',
-            onTap: (){
-              Get.toNamed(routes.PrecisionDrill_screen);
-            },
-            isComplete: controller.listComplete[1],
-            lock: controller.listLock[1],
-          ),
-          const SizedBox(height: 15,),
-
-          SingleSkillCard(
-            title: 'Context Spin'.tr,
-            subTitle: 'Engaging exercises that help learners understand context, meaning, and usage effectively.'.tr,
-            buttonText: 'Task 3',
-            onTap: (){
-              Get.toNamed(routes.ContextSpin_screen);
-            },
-            isComplete: controller.listComplete[2],
-            lock: controller.listLock[2],
-          ),
-          const SizedBox(height: 15,),
-
-          SingleSkillCard(
-            title: 'Flow Chain'.tr,
-            subTitle: 'Practice in sequence to strengthen skills, memory, and confident performance flow.'.tr,
-            buttonText: 'Task 4',
-            onTap: (){
-              Get.toNamed(routes.flowChain_screen);
-            },
-            isComplete: controller.listComplete[3],
-            lock: controller.listLock[3],
-          ),
-        ],
-      ),)
-    );
-  }
-}
-
-class _progress extends StatelessWidget {
-  const _progress({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          SkillWelcomeCard(),
-          SizedBox(height: 16.h,),
-          ProgressCard(
-            color1: Color(0xffFFD6B7),
-            color2: Color(0xffE07C2F),
-            imagePath: assets_path.fire,
-            leftTitle: 'Streak',
-            leftSubtitle: ShaderMask(
-              shaderCallback: (bounds) {
-                return const LinearGradient(
-                  colors: [Color(0xffFFD6B7), Color(0xffE07C2F)],
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                ).createShader(bounds);
+            SingleSkillCard(
+              title: 'Power Words Pulse'.tr,
+              subTitle:
+                  'Helping children learn powerful words through games, sounds, and playful daily practice.'
+                      .tr,
+              buttonText: 'Task 1',
+              onTap: () {
+                Get.toNamed(routes.powerWordsPlus_screen);
               },
-              child: Text(
-                "Keep it up!",
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
-                ),
-              ),
+              isComplete: controller.listComplete[0],
+              lock: controller.listLock[0],
             ),
-            rightTitle: '6',
-            rightSubtitle: 'Days Streak!',
-          ),
-          SizedBox(height: 10.h),
-          // Obx((){
-          //   controller.tick.value;
-          //   final elapsed = controller.currentTime;
-          //   return ProgressCard(
-          //     color1: Color(0xffFFA6C8),
-          //     color2: Color(0xffB920ED),
-          //     imagePath: 'assets/icons/watch_icon.png',
-          //     leftTitle: 'Session Timer',
-          //     rightTitle: controller.format(elapsed),
-          //     rightSubtitle: 'Remaining',
-          //   );
-          // }),
-          SizedBox(height: 10.h),
-          ProgressCard(
-            color1: Color(0xffB2DEFF),
-            color2: Color(0xff3BA3F2),
-            imagePath: 'assets/icons/progress.png',
-            leftTitle: 'Progress',
-            rightTitle: '2/4',
-            rightSubtitle: 'Remaining',
-            leftSubtitle: GradientLinearProgress(
-              value: 0.5,
-              height: 7.h,
-              backgroundColor: Color(0xffFFFFFF).withAlpha((2.56 * 15).toInt()),
-              gradient: const LinearGradient(
-                colors: [
-                  Color(0xffB2DEFF),
-                  Color(0xff3BA3F2),
-                ],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-              ),
+            const SizedBox(height: 15),
+
+            SingleSkillCard(
+              title: 'Precision Drill'.tr,
+              subTitle:
+                  'Focused practice drills designed to improve accuracy, speed, and skill through repetition.'
+                      .tr,
+              buttonText: 'Task 2',
+              onTap: () {
+                Get.toNamed(routes.PrecisionDrill_screen);
+              },
+              isComplete: controller.listComplete[1],
+              lock: controller.listLock[1],
             ),
-          ),
-          SizedBox(height: 10.h),
-          ProgressCard(
-            color1: Color(0xff11D067),
-            color2: Color(0xff01803A),
-            imagePath: 'assets/icons/champion.png',
-            leftTitle: 'Today’s Goal',
-            rightTitle: '75%',
-            rightSubtitle: 'Accuracy',
-            leftSubtitle: GradientLinearProgress(
-              value: 0.5,
-              height: 7.h,
-              backgroundColor: Color(0xffFFFFFF).withAlpha((2.56 * 15).toInt()),
-              gradient: const LinearGradient(
-                colors: [
-                  Color(0xff11D067),
-                  Color(0xff01803A),
-                ],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-              ),
+            const SizedBox(height: 15),
+
+            SingleSkillCard(
+              title: 'Context Spin'.tr,
+              subTitle:
+                  'Engaging exercises that help learners understand context, meaning, and usage effectively.'
+                      .tr,
+              buttonText: 'Task 3',
+              onTap: () {
+                Get.toNamed(routes.ContextSpin_screen);
+              },
+              isComplete: controller.listComplete[2],
+              lock: controller.listLock[2],
             ),
-          ),
-          SizedBox(height: 10.h),
-        ],
+            const SizedBox(height: 15),
+
+            SingleSkillCard(
+              title: 'Flow Chain'.tr,
+              subTitle:
+                  'Practice in sequence to strengthen skills, memory, and confident performance flow.'
+                      .tr,
+              buttonText: 'Task 4',
+              onTap: () {
+                Get.toNamed(routes.flowChain_screen);
+              },
+              isComplete: controller.listComplete[3],
+              lock: controller.listLock[3],
+            ),
+          ],
+        ),
       ),
     );
   }
 }
+
 
 class _GradientToggleTabs extends StatelessWidget {
   _GradientToggleTabs({super.key});

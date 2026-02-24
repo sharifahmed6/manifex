@@ -1,4 +1,6 @@
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -66,52 +68,7 @@ class TracingScreen extends StatelessWidget {
           const SizedBox(height: 20),
 
           // ✅ Check with AI button
-          GestureDetector(
-            onTap: () async {
-              String? pngPath = await controller.saveSignaturePng(controller: controller.signatureController, fileName: 'traced_word_$word', word: word);
 
-              if (pngPath != null) {
-                final HController = Get.find<HandwritingPracticeController>();
-                word == 'F' ? HController.unLockTask(1) : word == 'L' ? HController.unLockTask(2) : word == 'R' ? HController.unLockTask(3) : word == 'Z' ? HController.unLockTask(4) :
-                word == 'f' ? HController.unLockTask(5) : word == 'l' ? HController.unLockTask(6) : word == 'r' ? HController.unLockTask(7) : word == 'z' ? HController.unLockTask(8) :
-                word == '9' ? HController.unLockTask(10) : null;
-                print("PNG saved at: $pngPath");
-                controller.submit(imagePath: pngPath!, word: word);
-
-              } else {
-                AppSnackbar.show("Please draw something to check.");
-              }
-            },
-            child: Container(
-              height: 55,
-              margin: const EdgeInsets.symmetric(horizontal: 15),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                gradient: LinearGradient(
-                  colors: [AppColors.yellow, AppColors.pink, AppColors.sky],
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(width: 5),
-                  Text(
-                    "Check with AI".tr,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(width: 5),
-                  Image.asset(
-                    'assets/icons/ai_icon.png',
-                    width: 24,
-                    height: 24,
-                  ),
-                ],
-              ),
-            ),
-          ),
 
           const SizedBox(height: 20),
         ],

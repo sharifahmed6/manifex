@@ -9,11 +9,15 @@ import 'package:manifex/Presentation/Share/scafold_background.dart';
 import 'package:manifex/Presentation/app_bar/views/custom_app_bar.dart';
 import '../../../Share/show_dialog.dart';
 import '../../../Share/text_title_small.dart';
+import '../controller/practices_controller.dart';
 import '../widget/transperent_gradient_border.dart';
 
 class PracticesScreen extends StatelessWidget {
    PracticesScreen({super.key});
   final homeController = Get.find<HomeController>();
+  PracticesScreen({super.key});
+  final controller = Get.find<PracticesController>();
+
   @override
   Widget build(BuildContext context) {
     return scaffold_background(
