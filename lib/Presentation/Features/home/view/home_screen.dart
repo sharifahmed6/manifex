@@ -19,7 +19,6 @@ class HomeScreen extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(HomeController);
     return scaffold_background(
       child: Padding(
         padding: EdgeInsets.all(16),
@@ -41,7 +40,7 @@ class HomeScreen extends GetView<HomeController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   spacing: 5,
                   children: [
-                    SizedBox(width: double.infinity,),
+                    SizedBox(width: double.infinity),
                     Wrap(
                       alignment: WrapAlignment.start,
                       crossAxisAlignment: WrapCrossAlignment.center,
@@ -61,7 +60,7 @@ class HomeScreen extends GetView<HomeController> {
                           ),
                         ),
                         Text(
-                          "Welcome back",
+                          "Welcome back".tr,
                           style: TextStyle(
                             fontSize: ScreenResponsive.responsiveFont(
                               context,
@@ -125,16 +124,18 @@ class HomeScreen extends GetView<HomeController> {
                                     ),
                                   ),
                                 ),
-                                Text(
-                                  controller.totalWords,
-                                  style: TextStyle(
-                                    fontSize: ScreenResponsive.responsiveFont(
-                                      context,
-                                      12,
+                                Obx((){
+                                  return Text(
+                                    controller.totalWords,
+                                    style: TextStyle(
+                                      fontSize: ScreenResponsive.responsiveFont(
+                                        context,
+                                        12,
+                                      ),
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
+                                  );
+                                }),
                               ],
                             ),
                           ),
@@ -171,16 +172,18 @@ class HomeScreen extends GetView<HomeController> {
                                   ),
                                 ),
 
-                                Obx(() => Text(
-                                  "${controller.dayStreak} Days",
-                                  style: TextStyle(
-                                    fontSize: ScreenResponsive.responsiveFont(
-                                      context,
-                                      12,
+                                Obx(
+                                  () => Text(
+                                    "${controller.dayStreak} ${"Days".tr}",
+                                    style: TextStyle(
+                                      fontSize: ScreenResponsive.responsiveFont(
+                                        context,
+                                        12,
+                                      ),
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    fontWeight: FontWeight.bold,
                                   ),
-                                ),)
+                                ),
                               ],
                             ),
                           ),
@@ -222,16 +225,18 @@ class HomeScreen extends GetView<HomeController> {
                                     ),
                                   ),
                                 ),
-                                Text(
-                                  controller.dailyGoal,
-                                  style: TextStyle(
-                                    fontSize: ScreenResponsive.responsiveFont(
-                                      context,
-                                      12,
+                                Obx((){
+                                  return Text(
+                                    controller.dailyGoal,
+                                    style: TextStyle(
+                                      fontSize: ScreenResponsive.responsiveFont(
+                                        context,
+                                        12,
+                                      ),
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
+                                  );
+                                }),
                               ],
                             ),
                           ),
@@ -267,16 +272,18 @@ class HomeScreen extends GetView<HomeController> {
                                     ),
                                   ),
                                 ),
-                                Text(
-                                  "${controller.overallAccuracy}% Accuracy",
-                                  style: TextStyle(
-                                    fontSize: ScreenResponsive.responsiveFont(
-                                      context,
-                                      12,
+                                Obx((){
+                                  return Text(
+                                    "${controller.overallAccuracy}% ${" Accuracy".tr}",
+                                    style: TextStyle(
+                                      fontSize: ScreenResponsive.responsiveFont(
+                                        context,
+                                        12,
+                                      ),
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
+                                  );
+                                }),
                               ],
                             ),
                           ),
@@ -316,26 +323,37 @@ class HomeScreen extends GetView<HomeController> {
                   child: Column(
                     spacing: 5,
                     children: [
-                      SizedBox(width: double.infinity,),
+                      SizedBox(width: double.infinity),
                       Text(
                         "Phoneme Flashcards".tr,
                         style: TextStyle(
-                          fontSize: ScreenResponsive.responsiveFont(context, 18),
+                          fontSize: ScreenResponsive.responsiveFont(
+                            context,
+                            18,
+                          ),
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                       Text(
-                        "Complete each task to improve your English reading skill".tr,
+                        "Complete each task to improve your English reading skill"
+                            .tr,
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: ScreenResponsive.responsiveFont(context, 16),
+                          fontSize: ScreenResponsive.responsiveFont(
+                            context,
+                            16,
+                          ),
                         ),
                       ),
                       SizedBox(height: ScreenResponsive.h(context, 10)),
                       SizedBox(
                         width: ScreenResponsive.w(context, 200),
                         height: ScreenResponsive.h(context, 50),
-                        child: ButtonGradient(text: "Start Practices".tr, onTap: () => Get.toNamed(routes.interactive_reading_screen)),
+                        child: ButtonGradient(
+                          text: "Start Practices".tr,
+                          onTap: () =>
+                              Get.toNamed(routes.interactive_reading_screen),
+                        ),
                       ),
                     ],
                   ),
@@ -354,24 +372,23 @@ class HomeScreen extends GetView<HomeController> {
 
               _practicesCard(
                 imagePath: 'assets/images/book.png',
-                title: 'Interactive Reading',
+                title: 'Interactive Reading'.tr,
                 subTitle:
-                'Poneme recognition an word games with visual cues designed for dyslexic learners',
+                    'Poneme recognition an word games with visual cues designed for dyslexic learners'
+                        .tr,
                 context: context,
-                onTap: () => Get.toNamed(routes.interactive_reading_screen)
+                onTap: () => Get.toNamed(routes.interactive_reading_screen),
               ),
-              SizedBox(height: 16.h,),
+              SizedBox(height: 16.h),
               _practicesCard(
                 imagePath: 'assets/icons/smart_writing_icon.png',
-                title: 'Smart Writing',
+                title: 'Smart Writing'.tr,
                 subTitle:
-                'Write. Learn. Improve. AI checks your grammar, structure, and style instantly.',
+                    'Write. Learn. Improve. AI checks your grammar, structure, and style instantly.'
+                        .tr,
                 context: context,
-                onTap: () => Get.toNamed(routes.smart_writing_screen)
+                onTap: () => Get.toNamed(routes.smart_writing_screen),
               ),
-
-
-
             ],
           ),
         ),
@@ -380,9 +397,13 @@ class HomeScreen extends GetView<HomeController> {
   }
 }
 
-
-
-Widget _practicesCard({String? imagePath, String? title, String? subTitle, VoidCallback? onTap, required BuildContext context}) {
+Widget _practicesCard({
+  String? imagePath,
+  String? title,
+  String? subTitle,
+  VoidCallback? onTap,
+  required BuildContext context,
+}) {
   return TransparentGradientBorder(
     strokeWidth: 0.5,
     radius: ScreenResponsive.r(context, 16),
@@ -407,13 +428,19 @@ Widget _practicesCard({String? imagePath, String? title, String? subTitle, VoidC
           Container(
             padding: EdgeInsets.all(ScreenResponsive.r(context, 16)),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(ScreenResponsive.r(context, 12)),
+              borderRadius: BorderRadius.circular(
+                ScreenResponsive.r(context, 12),
+              ),
               color: AppColors.white.withAlpha((2.56 * 17).toInt()),
             ),
-            child: Image.asset(imagePath ?? '', width: ScreenResponsive.w(context, 35), height: ScreenResponsive.h(context, 32)),
+            child: Image.asset(
+              imagePath ?? '',
+              width: ScreenResponsive.w(context, 35),
+              height: ScreenResponsive.h(context, 32),
+            ),
           ),
           Text(
-              title ?? '',
+            title ?? '',
             style: TextStyle(
               fontSize: ScreenResponsive.responsiveFont(context, 16),
               fontWeight: FontWeight.w500,
@@ -426,7 +453,7 @@ Widget _practicesCard({String? imagePath, String? title, String? subTitle, VoidC
             ),
           ),
           SizedBox(height: 10.h),
-          ButtonGradient(text: 'Start Reading'.tr, onTap: onTap,),
+          ButtonGradient(text: 'Start Reading'.tr, onTap: onTap),
         ],
       ),
     ),

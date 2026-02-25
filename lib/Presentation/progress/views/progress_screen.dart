@@ -36,25 +36,14 @@ class ProgressScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _gradientTitle(
-                  normalText: "Learning You ",
-                  gradientText: "Can See",
+                  normalText: "Learning You ".tr,
+                  gradientText: "Can See".tr,
                 ),
                 SizedBox(height: 8.h),
-                GradientButton(
-                  onPressed: () {
-                    Get.dialog(
-                      Dialog(
-                        backgroundColor: Colors.transparent,
-                        insetPadding: EdgeInsets.symmetric(horizontal: 20.w),
-                        child:  UnlockPracticeCard(),
-                      ),
-                    );
-                  },
-                  text: 'Show Alert',
-                ),
                 CustomText(
                   text:
-                      'Track your learning journey with daily stats, streaks  and achievements — see how far you’ve come.',
+                      'Track your learning journey with daily stats, streaks  and achievements — see how far you’ve come.'
+                          .tr,
                   fontSize: 16,
                   color: Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
                   textAlign: TextAlign.start,
@@ -68,7 +57,8 @@ class ProgressScreen extends StatelessWidget {
                 WelcomeCard(
                   name: PrefHelper.getFirstName(),
                   describe:
-                      'I can see how much effort you’ve put in! Together, we’ll keep improving your reading, writing, and speaking skills.',
+                      'I can see how much effort you’ve put in! Together, we’ll keep improving your reading, writing, and speaking skills.'
+                          .tr,
                 ),
                 SizedBox(height: 10.h),
                 DailyAverageProgress(),
@@ -79,7 +69,8 @@ class ProgressScreen extends StatelessWidget {
                 SizedBox(height: 8.h),
                 CustomText(
                   text:
-                      'Track your 30-day, 60-day, and 90-day growth visually, designed for both learners and parents',
+                      'Track your 30-day, 60-day, and 90-day growth visually, designed for both learners and parents'
+                          .tr,
                   fontSize: 16,
                   color: Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
                 ),
@@ -88,7 +79,8 @@ class ProgressScreen extends StatelessWidget {
                 SizedBox(height: 16.h),
                 CustomText(
                   text:
-                      'Our advanced analytics dashboard provides real-time insights into learning progress, helping both students and parents understand achievements and areas for improvement.',
+                      'Our advanced analytics dashboard provides real-time insights into learning progress, helping both students and parents understand achievements and areas for improvement.'
+                          .tr,
                   fontSize: 16,
                   color: Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
                 ),
@@ -96,7 +88,7 @@ class ProgressScreen extends StatelessWidget {
                 MyStreakProgress(),
                 SizedBox(height: 16.h),
                 CustomText(
-                  text: 'My Achievements',
+                  text: 'My Achievements'.tr,
                   fontSize: 24,
                   fontWeight: FontWeight.w500,
                 ),

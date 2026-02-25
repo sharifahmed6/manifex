@@ -35,7 +35,7 @@ class LearningProgressCard extends StatelessWidget {
             Row(
               children: [
                 CustomText(
-                  text: 'Learning Progress',
+                  text: 'Learning Progress'.tr,
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
                 ),
@@ -113,7 +113,7 @@ class LearningProgressCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const CustomText(text: 'Reading Comprehension'),
+                      CustomText(text: 'Reading Comprehension'.tr),
                       CustomText(text: '${p.readingProgress}%'),
                     ],
                   ),
@@ -138,7 +138,7 @@ class LearningProgressCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const CustomText(text: 'Writing Skills'),
+                      CustomText(text: 'Writing Skills'.tr),
                       CustomText(text: '${p.writingProgress}%'),
                     ],
                   ),
@@ -163,7 +163,7 @@ class LearningProgressCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const CustomText(text: 'Pronunciation'),
+                      CustomText(text: 'Pronunciation'.tr),
                       CustomText(text: '${p.speakingProgress}%'),
                     ],
                   ),
@@ -188,7 +188,7 @@ class LearningProgressCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const CustomText(text: 'Vocabulary'),
+                      CustomText(text: 'Vocabulary'.tr),
                       CustomText(text: '${p.vocabularyProgress}%'),
                     ],
                   ),
@@ -213,8 +213,8 @@ class LearningProgressCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const CustomText(
-                        text: 'Today\'s Goal',
+                      CustomText(
+                        text: 'Today\'s Goal'.tr,
                         fontWeight: FontWeight.w500,
                       ),
                       CustomText(
@@ -230,7 +230,8 @@ class LearningProgressCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       CustomText(
-                        text: '${p.dailyGoalCompleted} Lessons Completed',
+                        text:
+                            '${p.dailyGoalCompleted}' + ' Lessons Completed'.tr,
                         fontWeight: FontWeight.w600,
                         fontSize: 18,
                       ),

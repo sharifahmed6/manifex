@@ -25,19 +25,20 @@ class SkillScreen extends StatelessWidget {
             SizedBox(height: 12.h),
             GradientTitle(
               fontSize: 20,
-              normalText: 'Reading ',
-              gradientText: 'Tasks',
+              normalText: 'Reading '.tr,
+              gradientText: 'Tasks'.tr,
             ),
             CustomText(
-              text: 'Complete each task to improve your English reading skill',
+              text:
+                  'Complete each task to improve your English reading skill'.tr,
               color: Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
             ),
             SizedBox(height: 8.h),
             SingleSkillCard(
               imagePath: 'assets/icons/phoneme_icon.png',
-              title: 'Phoneme Flashcards',
-              subTitle: 'Click the cards to hear the sound',
-              buttonText: 'Task 1',
+              title: 'Phoneme Flashcards'.tr,
+              subTitle: 'Click the cards to hear the sound'.tr,
+              buttonText: 'Task 1'.tr,
               onTap: () {
                 controller.currentTask.value = 1;
                 Get.toNamed(routes.interactive_reading_task1);
@@ -49,10 +50,11 @@ class SkillScreen extends StatelessWidget {
             SizedBox(height: 16.h),
             SingleSkillCard(
               imagePath: 'assets/icons/sight_words.png',
-              title: 'Sight Word Practice',
+              title: 'Sight Word Practice'.tr,
               subTitle:
-                  'Click on all the sight words you see. Some words may appear more than once.',
-              buttonText: 'Task 2',
+                  'Click on all the sight words you see. Some words may appear more than once.'
+                      .tr,
+              buttonText: 'Task 2'.tr,
               onTap: () {
                 controller.currentTask.value = 2;
                 Get.toNamed(routes.sight_word_scrren);
@@ -64,9 +66,9 @@ class SkillScreen extends StatelessWidget {
             SizedBox(height: 16.h),
             SingleSkillCard(
               imagePath: 'assets/icons/phoneme_icon.png',
-              title: 'Phoneme Flashcards',
-              subTitle: 'Drag words to their matching pictures',
-              buttonText: 'Task 3',
+              title: 'Phoneme Flashcards'.tr,
+              subTitle: 'Drag words to their matching pictures'.tr,
+              buttonText: 'Task 3'.tr,
               onTap: () {
                 controller.currentTask.value = 3;
                 Get.toNamed(routes.interactive_task3_screen);
@@ -78,9 +80,9 @@ class SkillScreen extends StatelessWidget {
             SizedBox(height: 16.h),
             SingleSkillCard(
               imagePath: 'assets/icons/reading_comprehension_icon.png',
-              title: 'Reading Comprehension',
-              subTitle: 'Read the passage and answer the questions',
-              buttonText: 'Task 4',
+              title: 'Reading Comprehension'.tr,
+              subTitle: 'Read the passage and answer the questions'.tr,
+              buttonText: 'Task 4'.tr,
               onTap: () {
                 controller.currentTask.value = 4;
                 print('Reading Comprehension');
@@ -93,7 +95,7 @@ class SkillScreen extends StatelessWidget {
             controller.allAnswerSubmit.value
                 ? GestureDetector(
                     onTap: () async {
-                    await  controller.interactiveReadingAnsSubmit();
+                      await controller.interactiveReadingAnsSubmit();
                       homeController.fetchProfileInfo();
                     },
                     child: AchievmentGradientBorder(
@@ -116,7 +118,7 @@ class SkillScreen extends StatelessWidget {
                             );
                           },
                           child: CustomText(
-                            text: 'Submit All Answers',
+                            text: 'Submit All Answers'.tr,
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                             color: Colors.white,

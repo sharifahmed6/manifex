@@ -32,7 +32,7 @@ class MyStreakProgress extends StatelessWidget {
         children: [
           _singleCard(
             progressCount: '${p.totalWords}',
-            title: 'Word Learned',
+            title: 'Word Learned'.tr,
             progress: 1.0, // Fixed or based on a goal if exists
             color1: const Color(0xffFFD6B7),
             color2: const Color(0xffE07C2F),
@@ -40,7 +40,7 @@ class MyStreakProgress extends StatelessWidget {
           SizedBox(height: 16.h),
           _singleCard(
             progressCount: '${p.dayStreak}',
-            title: 'Day Streak',
+            title: 'Day Streak'.tr,
             progress: 0.8, // Static indicator style or based on goal
             color1: const Color(0xffFFA6C8),
             color2: const Color(0xffB920ED),
@@ -48,7 +48,7 @@ class MyStreakProgress extends StatelessWidget {
           SizedBox(height: 16.h),
           _singleCard(
             progressCount: '${p.overallAccuracy}%',
-            title: 'Accuracy',
+            title: 'Accuracy'.tr,
             progress: (p.overallAccuracy / 100).clamp(0.0, 1.0),
             color1: const Color(0xffB2DEFF),
             color2: const Color(0xff3BA3F2),
@@ -81,7 +81,7 @@ class MyStreakProgress extends StatelessWidget {
                   ),
                   SizedBox(height: 8.h),
                   CustomText(
-                    text: 'Badge Earned',
+                    text: 'Badge Earned'.tr,
                     fontWeight: FontWeight.w500,
                     fontSize: 16,
                     color: const Color(
@@ -100,12 +100,12 @@ class MyStreakProgress extends StatelessWidget {
                         ),
                       if (p.badges.length > 1)
                         CustomText(
-                          text: '+${p.badges.length - 1} More',
+                          text: '+${p.badges.length - 1}' + ' More'.tr,
                           fontWeight: FontWeight.w600,
                         ),
                       if (p.badges.isEmpty)
-                        const CustomText(
-                          text: 'No badges yet',
+                        CustomText(
+                          text: 'No badges yet'.tr,
                           fontWeight: FontWeight.w500,
                         ),
                     ],

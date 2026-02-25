@@ -50,7 +50,7 @@ class UnlockRewardsScreen extends StatelessWidget {
                       ),
                     ),
                     CustomText(
-                      text: 'Unlock Rewards',
+                      text: 'Unlock Rewards'.tr,
                       fontSize: isLandscape ? 20.sp : 24.sp,
                       fontWeight: FontWeight.w500,
                     ),
@@ -59,8 +59,8 @@ class UnlockRewardsScreen extends StatelessWidget {
                 SizedBox(height: isLandscape ? 8.h : 16.h),
                 if (!isLandscape)
                   _gradientTitle(
-                    normalText: 'Learning Feels Better When',
-                    gradientText: 'You\'re Rewarded',
+                    normalText: 'Learning Feels Better When'.tr,
+                    gradientText: 'You\'re Rewarded'.tr,
                   ),
                 if (!isLandscape) SizedBox(height: 12.h),
                 Expanded(
@@ -78,9 +78,7 @@ class UnlockRewardsScreen extends StatelessWidget {
                         }
                         final reward = c.rewardModel.value;
                         if (reward == null) {
-                          return const Center(
-                            child: Text("No rewards available"),
-                          );
+                          return Center(child: Text("No rewards available".tr));
                         }
                         return Obx(() {
                           final data = c.rewardModel.value?.data;
@@ -97,19 +95,20 @@ class UnlockRewardsScreen extends StatelessWidget {
                               : (currentVideo is VideoModel
                                     ? currentVideo.title
                                     : (data.unlockedVideo?.title ??
-                                          "Daily Reward Video"));
+                                          "Daily Reward Video".tr));
                           final String subtitle = currentVideo is RewardVideo
                               ? currentVideo.description
                               : (currentVideo is VideoModel
                                     ? currentVideo.description
                                     : (data.unlockedVideo?.description ??
-                                          "Complete tasks to unlock this exclusive content"));
+                                          "Complete tasks to unlock this exclusive content"
+                                              .tr));
                           final String category = currentVideo is RewardVideo
                               ? currentVideo.category
                               : (currentVideo is VideoModel
                                     ? currentVideo.category
                                     : (data.unlockedVideo?.category ??
-                                          "Educational"));
+                                          "Educational".tr));
                           final int views = currentVideo is RewardVideo
                               ? currentVideo.views
                               : (currentVideo is VideoModel
@@ -161,7 +160,7 @@ class UnlockRewardsScreen extends StatelessWidget {
                           children: [
                             SizedBox(height: 24.h),
                             CustomText(
-                              text: 'Other Rewards',
+                              text: 'Other Rewards'.tr,
                               fontSize: 20.sp,
                               fontWeight: FontWeight.w600,
                             ),

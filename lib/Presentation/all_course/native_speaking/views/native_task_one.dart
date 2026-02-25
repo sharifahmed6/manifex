@@ -12,8 +12,8 @@ import 'package:manifex/Presentation/progress/views/achivement_screen.dart';
 import '../../../Share/custom_back_button.dart';
 import '../../../Share/gradient_title.dart';
 
-class NaviteTaskOne extends StatelessWidget {
-  NaviteTaskOne({super.key});
+class NativeTaskOne extends StatelessWidget {
+  NativeTaskOne({super.key});
 
   final controller = Get.find<NativeTaskOneController>();
 
@@ -46,16 +46,16 @@ class NaviteTaskOne extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CustomBackButton(text: 'Task 1'),
+        CustomBackButton(text: 'Task 1'.tr),
         SizedBox(height: 16.h),
         GradientTitle(
-          normalText: 'Pronunciation ',
-          gradientText: 'Practice',
+          normalText: 'Pronunciation '.tr,
+          gradientText: 'Practice'.tr,
           fontSize: 20,
         ),
         SizedBox(height: 16.h),
         CustomText(
-          text: 'Word Level Training',
+          text: 'Word Level Training'.tr,
           color: const Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
         ),
         SizedBox(height: 16.h),
@@ -127,7 +127,7 @@ class NaviteTaskOne extends StatelessWidget {
                         },
                         child: Text(
                           controller.currentWord.value.isEmpty
-                              ? 'Loading...'
+                              ? 'Loading...'.tr
                               : controller.currentWord.value,
                           style: TextStyle(
                             fontSize: 32.sp,
@@ -144,7 +144,7 @@ class NaviteTaskOne extends StatelessWidget {
 
                   // Instruction text
                   CustomText(
-                    text: 'Tap the microphone and say the word clearly',
+                    text: 'Tap the microphone and say the word clearly'.tr,
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
                     textAlign: TextAlign.center,
@@ -354,8 +354,8 @@ class NaviteTaskOne extends StatelessWidget {
                 ),
                 child: Text(
                   controller.isSuccess.value
-                      ? 'Perfect! Go to Next Challenge'
-                      : 'Go to Next Challenge',
+                      ? 'Perfect! Go to Next Challenge'.tr
+                      : 'Go to Next Challenge'.tr,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 15.sp,

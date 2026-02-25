@@ -45,11 +45,11 @@ class NativeTaskTwo extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CustomBackButton(text: 'Task 2'),
+        CustomBackButton(text: 'Task 2'.tr),
         SizedBox(height: 16.h),
         GradientTitle(
-          normalText: 'Phrase ',
-          gradientText: 'Repeat',
+          normalText: 'Phrase '.tr,
+          gradientText: 'Repeat'.tr,
           fontSize: 20,
         ),
         SizedBox(height: 16.h),
@@ -126,7 +126,7 @@ class NativeTaskTwo extends StatelessWidget {
                         },
                         child: Text(
                           controller.currentWord.value.isEmpty
-                              ? 'Loading...'
+                              ? 'Loading...'.tr
                               : '"${controller.currentWord.value}"',
                           style: TextStyle(
                             fontSize: 28.sp,
@@ -144,7 +144,7 @@ class NativeTaskTwo extends StatelessWidget {
 
                   // Instruction text
                   CustomText(
-                    text: 'Listen first, then repeat after Mercury',
+                    text: 'Listen first, then repeat after Mercury'.tr,
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
                     textAlign: TextAlign.center,
@@ -272,7 +272,7 @@ class NativeTaskTwo extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Fluency Score',
+                      'Fluency Score'.tr,
                       style: TextStyle(
                         fontSize: 15.sp,
                         fontWeight: FontWeight.w600,
@@ -401,7 +401,7 @@ class NativeTaskTwo extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12.r),
               ),
               child: Text(
-                'Go to Next Challenge',
+                'Go to Next Challenge'.tr,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 15.sp,

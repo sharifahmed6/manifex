@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:manifex/Presentation/Share/button_gradient.dart';
 import 'package:manifex/Presentation/Share/text_title_small.dart';
 import '../model/rewards_model.dart';
@@ -127,7 +128,7 @@ class RewardVideoLockedCard extends StatelessWidget {
                       border: Border.all(color: Colors.white.withOpacity(0.18)),
                     ),
                     child: Text(
-                      "LOCKED",
+                      "LOCKED".tr,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 14.sp,
@@ -222,12 +223,16 @@ class RewardVideoLockedCard extends StatelessWidget {
         CustomText(text: subtitle, fontSize: 14.sp),
         SizedBox(height: 4.h),
         CustomText(
-          text: "Category: $category",
+          text: "${'Category: '.tr}$category",
           fontSize: 12.sp,
           color: Colors.white,
         ),
         SizedBox(height: 2.h),
-        CustomText(text: "Views: $views", fontSize: 12.sp, color: Colors.white),
+        CustomText(
+          text: "${'Views: '.tr}$views",
+          fontSize: 12.sp,
+          color: Colors.white,
+        ),
         SizedBox(height: 12.h),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -250,7 +255,7 @@ class RewardVideoLockedCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    unlocked ? "Today's Session" : "Reward Locked",
+                    unlocked ? "Today's Session".tr : "Reward Locked".tr,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 13.5.sp,
@@ -261,8 +266,8 @@ class RewardVideoLockedCard extends StatelessWidget {
                   SizedBox(height: 3.h),
                   Text(
                     unlocked
-                        ? "You can watch the full video now"
-                        : "Complete the following activities",
+                        ? "You can watch the full video now".tr
+                        : "Complete the following activities".tr,
                     style: TextStyle(
                       color: Colors.white.withAlpha(204),
                       fontSize: 12.sp,
@@ -275,12 +280,15 @@ class RewardVideoLockedCard extends StatelessWidget {
           ],
         ),
         SizedBox(height: 12.h),
-        _TaskRow(title: "Daily reading practice", done: taskStatus.reading),
-        _TaskRow(title: "Daily adult practice", done: taskStatus.adult),
-        _TaskRow(title: "Daily writing exercise", done: taskStatus.writing),
-        _TaskRow(title: "Daily speaking practice", done: taskStatus.speaking),
+        _TaskRow(title: "Daily reading practice".tr, done: taskStatus.reading),
+        _TaskRow(title: "Daily adult practice".tr, done: taskStatus.adult),
+        _TaskRow(title: "Daily writing exercise".tr, done: taskStatus.writing),
         _TaskRow(
-          title: "Daily presentation practice",
+          title: "Daily speaking practice".tr,
+          done: taskStatus.speaking,
+        ),
+        _TaskRow(
+          title: "Daily presentation practice".tr,
           done: taskStatus.presentation,
         ),
         SizedBox(height: 14.h),
@@ -290,7 +298,7 @@ class RewardVideoLockedCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "See All Video",
+                "See All Video".tr,
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w600,

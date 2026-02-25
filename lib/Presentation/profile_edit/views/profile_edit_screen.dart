@@ -42,7 +42,7 @@ class ProfileEditScreen extends StatelessWidget {
                       ),
                     ),
                     CustomText(
-                      text: 'Account',
+                      text: 'Account'.tr,
                       fontSize: 24.sp,
                       fontWeight: FontWeight.w500,
                     ),
@@ -50,45 +50,44 @@ class ProfileEditScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 16.h),
                 _gradientTitle(
-                  normalText: 'Personal ',
-                  gradientText: 'Information',
+                  normalText: 'Personal '.tr,
+                  gradientText: 'Information'.tr,
                 ),
                 SizedBox(height: 8.h),
                 controller.isProfileLoading.value
-                    ? CustomCircleProgressIndicator(
-                  size: 24.sp,
-                ): _personalInfo(),
+                    ? CustomCircleProgressIndicator(size: 24.sp)
+                    : _personalInfo(),
                 SizedBox(height: 16.h),
                 ButtonGradient(
                   onTap: controller.isProfileLoading.value
                       ? null
                       : () => controller.updateProfile(),
                   child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              'assets/icons/edit_profile.png',
-                              width: 24,
-                              height: 24,
-                            ),
-                            CustomText(
-                              text: 'Edit Profile',
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                            ),
-                          ],
-                        ),
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/icons/edit_profile.png',
+                        width: 24,
+                        height: 24,
+                      ),
+                      CustomText(
+                        text: 'Edit Profile'.tr,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                      ),
+                    ],
+                  ),
                 ),
                 SizedBox(height: 24.h),
                 CustomText(
-                  text: 'Security',
+                  text: 'Security'.tr,
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
                 ),
                 SizedBox(height: 8.h),
                 CustomText(
-                  text: 'Change your password from here.',
+                  text: 'Change your password from here.'.tr,
                   fontSize: 16,
                 ),
                 SizedBox(height: 8.h),
@@ -114,7 +113,7 @@ class ProfileEditScreen extends StatelessWidget {
                             ),
                             SizedBox(width: 8.w),
                             CustomText(
-                              text: 'Update Password',
+                              text: 'Update Password'.tr,
                               fontWeight: FontWeight.w600,
                               fontSize: 16,
                             ),
@@ -163,7 +162,7 @@ class ProfileEditScreen extends StatelessWidget {
             controller: controller.oldPasswordController,
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
-              hintText: 'Enter you Old Password',
+              hintText: 'Enter you Old Password'.tr,
               hintStyle: TextStyle(
                 color: Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
               ),
@@ -183,7 +182,7 @@ class ProfileEditScreen extends StatelessWidget {
             controller: controller.newPasswordController,
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
-              hintText: 'Enter your New Password',
+              hintText: 'Enter your New Password'.tr,
               hintStyle: TextStyle(
                 color: Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
               ),
@@ -203,7 +202,7 @@ class ProfileEditScreen extends StatelessWidget {
             controller: controller.confirmPasswordController,
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
-              hintText: 'Enter your Confirm Password',
+              hintText: 'Enter your Confirm Password'.tr,
               hintStyle: TextStyle(
                 color: Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
               ),
@@ -248,7 +247,7 @@ class ProfileEditScreen extends StatelessWidget {
             controller: controller.firstNameController,
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
-              hintText: 'Enter you First Name',
+              hintText: 'Enter you First Name'.tr,
               hintStyle: TextStyle(
                 color: Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
               ),
@@ -268,7 +267,7 @@ class ProfileEditScreen extends StatelessWidget {
             controller: controller.lastNameController,
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
-              hintText: 'Enter your Last Name',
+              hintText: 'Enter your Last Name'.tr,
               hintStyle: TextStyle(
                 color: Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
               ),
@@ -288,7 +287,7 @@ class ProfileEditScreen extends StatelessWidget {
             controller: controller.hobbyController,
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
-              hintText: 'Enter your Hobby',
+              hintText: 'Enter your Hobby'.tr,
               hintStyle: TextStyle(
                 color: Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
               ),

@@ -18,7 +18,6 @@ class login extends StatelessWidget {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-
   @override
   Widget build(BuildContext context) {
     return scaffold_background(
@@ -37,7 +36,9 @@ class login extends StatelessWidget {
                   "Welcome to MANIFEX! Let’s start your language learning journey today"
                       .tr,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: ScreenResponsive.responsiveFont(context,12)),
+                  style: TextStyle(
+                    fontSize: ScreenResponsive.responsiveFont(context, 12),
+                  ),
                 ),
                 CircleAvatar(
                   radius: 100,
@@ -50,7 +51,7 @@ class login extends StatelessWidget {
                   child: Text(
                     "Email".tr,
                     style: TextStyle(
-                      fontSize: ScreenResponsive.responsiveFont(context,16),
+                      fontSize: ScreenResponsive.responsiveFont(context, 16),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -59,9 +60,9 @@ class login extends StatelessWidget {
                   controller: emailController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter some text';
+                      return 'Please enter some text'.tr;
                     } else if (GetUtils.isEmail(value) == false) {
-                      return 'Please enter a valid email address';
+                      return 'Please enter a valid email address'.tr;
                     }
                     return null;
                   },
@@ -72,7 +73,7 @@ class login extends StatelessWidget {
                   child: Text(
                     "Password".tr,
                     style: TextStyle(
-                      fontSize: ScreenResponsive.responsiveFont(context,16),
+                      fontSize: ScreenResponsive.responsiveFont(context, 16),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -83,9 +84,9 @@ class login extends StatelessWidget {
                     obscureText: controller.password.value,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter some text';
+                        return 'Please enter some text'.tr;
                       } else if (value.length < 6) {
-                        return 'Password must be at least 6 characters';
+                        return 'Password must be at least 6 characters'.tr;
                       }
                       return null;
                     },
@@ -118,14 +119,22 @@ class login extends StatelessWidget {
                         },
                       ),
                     ),
-                    Text("Remember me".tr, style: TextStyle(fontSize: ScreenResponsive.responsiveFont(context,16)),),
+                    Text(
+                      "Remember me".tr,
+                      style: TextStyle(
+                        fontSize: ScreenResponsive.responsiveFont(context, 16),
+                      ),
+                    ),
                     const Spacer(),
                     TextButton(
                       onPressed: () => controller.route_forget_password(),
                       child: Text(
-                        "Forgot password?".tr,
+                        "Forgot Password?".tr,
                         style: TextStyle(
-                          fontSize: ScreenResponsive.responsiveFont(context , 16),
+                          fontSize: ScreenResponsive.responsiveFont(
+                            context,
+                            16,
+                          ),
                           color: AppColors.sky,
                           fontWeight: FontWeight.bold,
                         ),
@@ -137,7 +146,10 @@ class login extends StatelessWidget {
                 ButtonGradient(
                   onTap: () {
                     if (_formKey.currentState!.validate()) {
-                      controller.Login(emailController.text, passwordController.text);
+                      controller.Login(
+                        emailController.text,
+                        passwordController.text,
+                      );
                     }
                   },
                   text: "Login".tr,
@@ -151,7 +163,10 @@ class login extends StatelessWidget {
                           TextSpan(
                             text: "New here? ",
                             style: TextStyle(
-                              fontSize: ScreenResponsive.responsiveFont(context, 16),
+                              fontSize: ScreenResponsive.responsiveFont(
+                                context,
+                                16,
+                              ),
                               color: Colors.white,
                             ),
                           ),
@@ -159,21 +174,28 @@ class login extends StatelessWidget {
                             alignment: PlaceholderAlignment.baseline,
                             baseline: TextBaseline.alphabetic,
                             child: GestureDetector(
-                              onTap: () => Get.toNamed(routes.signupGmail_screen),
+                              onTap: () =>
+                                  Get.toNamed(routes.signupGmail_screen),
                               child: Text(
                                 "Create your account",
                                 style: TextStyle(
                                   color: AppColors.sky,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: ScreenResponsive.responsiveFont(context, 16),
+                                  fontSize: ScreenResponsive.responsiveFont(
+                                    context,
+                                    16,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                           TextSpan(
-                            text: " to get started.",
+                            text: " to get started.".tr,
                             style: TextStyle(
-                              fontSize: ScreenResponsive.responsiveFont(context, 16),
+                              fontSize: ScreenResponsive.responsiveFont(
+                                context,
+                                16,
+                              ),
                               color: Colors.white,
                             ),
                           ),
@@ -183,9 +205,7 @@ class login extends StatelessWidget {
                       softWrap: true,
                     ),
                   ),
-                )
-
-
+                ),
               ],
             ),
           ),

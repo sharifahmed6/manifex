@@ -23,12 +23,12 @@ class AchivementScreen extends StatelessWidget {
       }
 
       if (controller.userBadges.isEmpty) {
-        return const Center(
+        return Center(
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 20),
+            padding: const EdgeInsets.symmetric(vertical: 20),
             child: Text(
-              "No achievements found",
-              style: TextStyle(color: Colors.white70),
+              "No achievements found".tr,
+              style: const TextStyle(color: Colors.white70),
             ),
           ),
         );

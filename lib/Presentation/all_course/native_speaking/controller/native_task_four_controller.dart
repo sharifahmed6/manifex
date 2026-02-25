@@ -79,8 +79,8 @@ class NativeTaskFourController extends GetxController {
           if (errorMsg.contains('error_no_match') ||
               errorMsg.contains('no_match')) {
             Get.snackbar(
-              "Couldn't hear you",
-              "No word matched. Please try again clearly.",
+              "Couldn't hear you".tr,
+              "No word matched. Please try again clearly.".tr,
               snackPosition: SnackPosition.TOP,
               backgroundColor: Colors.orange.withAlpha(220),
               colorText: Colors.white,
@@ -91,8 +91,8 @@ class NativeTaskFourController extends GetxController {
             // Silence timeout — no snackbar needed, mic just turned off
           } else if (error.permanent) {
             Get.snackbar(
-              'Mic Error',
-              'Speech recognition failed. Please try again.',
+              'Mic Error'.tr,
+              'Speech recognition failed. Please try again.'.tr,
               snackPosition: SnackPosition.TOP,
               backgroundColor: Colors.red.withAlpha(200),
               colorText: Colors.white,
@@ -112,8 +112,8 @@ class NativeTaskFourController extends GetxController {
 
       if (!speechAvailable.value) {
         Get.snackbar(
-          'Not Available',
-          'Speech recognition is not available on this device',
+          'Not Available'.tr,
+          'Speech recognition is not available on this device'.tr,
           snackPosition: SnackPosition.TOP,
           backgroundColor: Colors.orange.withAlpha(200),
           colorText: Colors.white,
@@ -170,14 +170,14 @@ class NativeTaskFourController extends GetxController {
           _pickFourWords();
         } else {
           Get.snackbar(
-            'No Words',
-            'No vocabulary data found',
+            'No Words'.tr,
+            'No vocabulary data found'.tr,
             snackPosition: SnackPosition.TOP,
           );
         }
       } else {
         Get.snackbar(
-          'Error',
+          'Error'.tr,
           response.errorMessage,
           snackPosition: SnackPosition.TOP,
           backgroundColor: Colors.red.withAlpha(200),
@@ -187,8 +187,8 @@ class NativeTaskFourController extends GetxController {
     } catch (e) {
       print('Error fetching vocabulary: $e');
       Get.snackbar(
-        'Error',
-        'Failed to load vocabulary',
+        'Error'.tr,
+        'Failed to load vocabulary'.tr,
         snackPosition: SnackPosition.TOP,
         backgroundColor: Colors.red.withAlpha(200),
         colorText: Colors.white,
@@ -236,8 +236,8 @@ class NativeTaskFourController extends GetxController {
 
     if (!speechAvailable.value) {
       Get.snackbar(
-        'Not Available',
-        'Speech recognition is not available',
+        'Not Available'.tr,
+        'Speech recognition is not available'.tr,
         snackPosition: SnackPosition.TOP,
         backgroundColor: Colors.orange.withAlpha(200),
         colorText: Colors.white,
@@ -274,8 +274,8 @@ class NativeTaskFourController extends GetxController {
       print('Listening error: $e');
       _stopListening();
       Get.snackbar(
-        'Error',
-        'Failed to start speech recognition',
+        'Error'.tr,
+        'Failed to start speech recognition'.tr,
         snackPosition: SnackPosition.TOP,
         backgroundColor: Colors.red.withAlpha(200),
         colorText: Colors.white,

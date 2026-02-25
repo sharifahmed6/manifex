@@ -30,16 +30,16 @@ class InteractiveTaskFourScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomBackButton(text: 'Task 4'),
+              CustomBackButton(text: 'Task 4'.tr),
               SizedBox(height: 16.h),
               GradientTitle(
-                normalText: 'Reading ',
-                gradientText: 'Quiz',
+                normalText: 'Reading '.tr,
+                gradientText: 'Quiz'.tr,
                 fontSize: 20,
               ),
               SizedBox(height: 10.h),
               CustomText(
-                text: 'Read the story and answer the questions',
+                text: 'Read the story and answer the questions'.tr,
                 color: const Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
               ),
               SizedBox(height: 16.h),
@@ -77,7 +77,7 @@ class InteractiveTaskFourScreen extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(12.r),
                                 ),
                                 child: Text(
-                                  "Retry",
+                                  "Retry".tr,
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 14.sp,
@@ -95,7 +95,7 @@ class InteractiveTaskFourScreen extends StatelessWidget {
 
                 final d = controller.data.value;
                 if (d == null) {
-                  return const Center(child: Text("No data"));
+                  return Center(child: Text("No data".tr));
                 }
 
                 final questions = d.questions;
@@ -194,7 +194,9 @@ class InteractiveTaskFourScreen extends StatelessWidget {
                                 Expanded(
                                   child: Center(
                                     child: CustomText(
-                                      text: "$selectedCount/$total selected",
+                                      text:
+                                          "$selectedCount/$total " +
+                                          "selected".tr,
                                       fontSize: 18,
                                       color: Colors.white.withAlpha(
                                         (2.56 * 85).toInt(),
@@ -233,8 +235,8 @@ class InteractiveTaskFourScreen extends StatelessWidget {
                                     ),
                                     child: CustomText(
                                       text: controller.isSubmitted.value
-                                          ? "Finish"
-                                          : "Next",
+                                          ? "Finish".tr
+                                          : "Next".tr,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700,
                                       color: Colors.white,
@@ -356,7 +358,7 @@ class _QuestionCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomText(
-            text: "Question $questionNo",
+            text: "Question ".tr + questionNo,
             fontSize: 20,
             fontWeight: FontWeight.w700,
             color: const Color(0xffFFFFFF).withAlpha((2.56 * 95).toInt()),

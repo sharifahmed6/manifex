@@ -15,12 +15,15 @@ import '../../../Core/SharepreferenceHelper.dart';
 import '../../../Core/loading.dart';
 
 class ProfileScreen extends StatelessWidget {
-   ProfileScreen({super.key});
+  ProfileScreen({super.key});
   final homeController = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
-    final isValid = homeController.profileInfo.value?.data?.isSubscribed == true && homeController.profileInfo.value?.data?.subscription?.plan?.planType == 'FAMILY';
+    final isValid =
+        homeController.profileInfo.value?.data?.isSubscribed == true &&
+        homeController.profileInfo.value?.data?.subscription?.plan?.planType ==
+            'FAMILY';
     return scaffold_background(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
@@ -54,25 +57,28 @@ class ProfileScreen extends StatelessWidget {
                   children: [
                     _customItem(
                       imagePath: 'assets/icons/account_icon.png',
-                      title: 'Account & Security',
+                      title: 'Account & Security'.tr,
                       onTap: () {
                         Get.toNamed(routes.profile_edit_screen);
                       },
                     ),
-                    isValid ?
-                    Divider(
-                      color: Color(0xffFFFFFF).withAlpha((2.56 * 22).toInt()),
-                    ) : SizedBox.shrink(),
-                    isValid?
-                    SizedBox(height: 8.h) : SizedBox.shrink(),
-                    isValid ?
-                    _customItem(
-                      imagePath: 'assets/icons/settings_icon.png',
-                      title: 'Family Members Settings',
-                      onTap: () {
-                        Get.toNamed(routes.family_member_add);
-                      },
-                    ): SizedBox.shrink(),
+                    isValid
+                        ? Divider(
+                            color: Color(
+                              0xffFFFFFF,
+                            ).withAlpha((2.56 * 22).toInt()),
+                          )
+                        : SizedBox.shrink(),
+                    isValid ? SizedBox(height: 8.h) : SizedBox.shrink(),
+                    isValid
+                        ? _customItem(
+                            imagePath: 'assets/icons/settings_icon.png',
+                            title: 'Family Members Settings'.tr,
+                            onTap: () {
+                              Get.toNamed(routes.family_member_add);
+                            },
+                          )
+                        : SizedBox.shrink(),
                     SizedBox(height: 8.h),
                     Divider(
                       color: Color(0xffFFFFFF).withAlpha((2.56 * 22).toInt()),
@@ -80,7 +86,7 @@ class ProfileScreen extends StatelessWidget {
                     SizedBox(height: 16.h),
                     _customItem(
                       imagePath: 'assets/icons/subscription_plan.png',
-                      title: 'Subscription Plan',
+                      title: 'Subscription Plan'.tr,
                       onTap: () {},
                     ),
                     SizedBox(height: 8.h),
@@ -90,7 +96,7 @@ class ProfileScreen extends StatelessWidget {
                     SizedBox(height: 16.h),
                     _customItem(
                       imagePath: 'assets/icons/language.png',
-                      title: 'Language',
+                      title: 'Language'.tr,
                       onTap: () {
                         Get.toNamed(routes.language_screen);
                       },
@@ -120,7 +126,7 @@ class ProfileScreen extends StatelessWidget {
                   children: [
                     _customItem(
                       imagePath: 'assets/icons/check_icon.png',
-                      title: 'About Us',
+                      title: 'About Us'.tr,
                       onTap: () {
                         Get.toNamed(routes.about_us_screen);
                       },
@@ -132,7 +138,7 @@ class ProfileScreen extends StatelessWidget {
                     SizedBox(height: 16.h),
                     _customItem(
                       imagePath: 'assets/icons/documents.png',
-                      title: 'Terms & Conditions',
+                      title: 'Terms & Conditions'.tr,
                       onTap: () {
                         Get.toNamed(routes.terms_conditon_screen);
                       },
@@ -144,7 +150,7 @@ class ProfileScreen extends StatelessWidget {
                     SizedBox(height: 16.h),
                     _customItem(
                       imagePath: 'assets/icons/lock.png',
-                      title: 'Privacy Policy',
+                      title: 'Privacy Policy'.tr,
                       onTap: () {
                         Get.toNamed(routes.privacy_policy_screen);
                       },
@@ -174,9 +180,9 @@ class ProfileScreen extends StatelessWidget {
                   children: [
                     _customItem(
                       imagePath: 'assets/icons/unlock_rewards.png',
-                      title: 'Unlock Rewards',
+                      title: 'Unlock Rewards'.tr,
                       onTap: () {
-                     Get.toNamed(routes.unlock_rewards_screen);
+                        Get.toNamed(routes.unlock_rewards_screen);
                       },
                     ),
                     SizedBox(height: 8.h),
@@ -189,15 +195,26 @@ class ProfileScreen extends StatelessWidget {
                         Get.dialog(
                           AlertDialog(
                             backgroundColor: AppColors.primary,
-                            title: const Text("Logout", style: TextStyle(color: Colors.red, fontWeight: FontWeight.w500),),
-                            content: const Text("Are you sure you want to logout?"),
+                            title: Text(
+                              "Logout".tr,
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            content: Text(
+                              "Are you sure you want to logout?".tr,
+                            ),
                             actions: [
                               Row(
                                 children: [
                                   Expanded(
                                     child: TextButton(
                                       onPressed: () => Get.back(),
-                                      child: const Text("Cancel", style: TextStyle(color: Colors.white),),
+                                      child: Text(
+                                        "Cancel".tr,
+                                        style: TextStyle(color: Colors.white),
+                                      ),
                                     ),
                                   ),
                                   Expanded(
@@ -210,7 +227,8 @@ class ProfileScreen extends StatelessWidget {
                                           AppLoader.hide();
 
                                           // Check current purchaser info
-                                          final info = await Purchases.getCustomerInfo();
+                                          final info =
+                                              await Purchases.getCustomerInfo();
                                           if (!info.entitlements.all.isEmpty) {
                                             // Not anonymous (has purchases), safe to logout
                                             await Purchases.logOut();
@@ -226,19 +244,18 @@ class ProfileScreen extends StatelessWidget {
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.red,
                                       ),
-                                      child: const Text(
-                                        "Logout",
+                                      child: Text(
+                                        "Logout".tr,
                                         style: TextStyle(color: Colors.white),
                                       ),
                                     ),
                                   ),
                                 ],
-                              )
+                              ),
                             ],
                           ),
                           barrierDismissible: false,
                         );
-
                       },
                       child: Row(
                         children: [
@@ -249,7 +266,7 @@ class ProfileScreen extends StatelessWidget {
                           ),
                           SizedBox(width: 8.w),
                           CustomText(
-                            text: 'Logout',
+                            text: 'Logout'.tr,
                             fontSize: 16,
                             color: Color(0xffFF5959),
                           ),
@@ -288,16 +305,18 @@ class ProfileScreen extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        GradientBorderAvatar(
-          image: AssetImage(assets_path.splash_image),
-        ),
+        GradientBorderAvatar(image: AssetImage(assets_path.splash_image)),
         SizedBox(width: 16.w),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             spacing: 6.h,
             children: [
-              CustomText(text: '${PrefHelper.getFirstName()} ${PrefHelper.getLastName()}', fontSize: 24),
+              CustomText(
+                text:
+                    '${PrefHelper.getFirstName()} ${PrefHelper.getLastName()}',
+                fontSize: 24,
+              ),
               CustomText(
                 text: PrefHelper.getEmail(),
                 fontSize: 16,
@@ -328,7 +347,7 @@ class ProfileScreen extends StatelessWidget {
                   width: 16,
                   height: 16,
                 ),
-                CustomText(text: 'Premium'),
+                CustomText(text: 'Premium'.tr),
               ],
             ),
           ),

@@ -74,7 +74,7 @@ class signup extends StatelessWidget {
                             controller: firstName,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please enter some text';
+                                return 'Please enter some text'.tr;
                               } else {
                                 return null;
                               }
@@ -104,7 +104,7 @@ class signup extends StatelessWidget {
                             controller: lastName,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please enter some text';
+                                return 'Please enter some text'.tr;
                               } else {
                                 return null;
                               }
@@ -130,8 +130,8 @@ class signup extends StatelessWidget {
 
                 DropdownButtonFormField<String>(
                   value: controller.selectedAgeGroup,
-                  hint: const Text(
-                    "Select your age group",
+                  hint: Text(
+                    "Select your age group".tr,
                     style: TextStyle(color: Colors.grey),
                   ),
 
@@ -172,8 +172,8 @@ class signup extends StatelessWidget {
 
                 DropdownButtonFormField<String>(
                   value: controller.selectedHobbies,
-                  hint: const Text(
-                    "Select hobbies and Interests",
+                  hint: Text(
+                    "Select hobbies and Interests".tr,
                     style: TextStyle(color: Colors.grey),
                   ),
 
@@ -214,8 +214,8 @@ class signup extends StatelessWidget {
 
                 DropdownButtonFormField<String>(
                   value: controller.selectedUserType,
-                  hint: const Text(
-                    "Select User Type",
+                  hint: Text(
+                    "Select User Type".tr,
                     style: TextStyle(color: Colors.grey),
                   ),
 
@@ -280,9 +280,9 @@ class signup extends StatelessWidget {
                     obscureText: controller.password.value,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter some text';
+                        return 'Please enter some text'.tr;
                       } else if (value.length < 6) {
-                        return 'Password must be at least 6 characters';
+                        return 'Password must be at least 6 characters'.tr;
                       }
                       return null;
                     },
@@ -320,11 +320,11 @@ class signup extends StatelessWidget {
                     obscureText: controller.confirm_password.value,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter some text';
+                        return 'Please enter some text'.tr;
                       } else if (value.length < 6) {
-                        return 'Password must be at least 6 characters';
+                        return 'Password must be at least 6 characters'.tr;
                       } else if (value != password.text) {
-                        return 'Passwords do not match';
+                        return 'Passwords do not match'.tr;
                       }
                       return null;
                     },
@@ -348,19 +348,17 @@ class signup extends StatelessWidget {
                 const SizedBox(height: 10),
                 ButtonGradient(
                   onTap: () {
-
                     if (_formKey.currentState!.validate()) {
-
-                      if(controller.selectedAgeGroup == "") {
-                        AppSnackbar.show("Please select your age group");
+                      if (controller.selectedAgeGroup == "") {
+                        AppSnackbar.show("Please select your age group".tr);
                         return;
-                      }else if(controller.selectedHobbies == "") {
-                        AppSnackbar.show("Please select your hobbies");
+                      } else if (controller.selectedHobbies == "") {
+                        AppSnackbar.show("Please select your hobbies".tr);
                         return;
-                      }else if(controller.selectedUserType == "") {
-                        AppSnackbar.show("Please select your user type");
+                      } else if (controller.selectedUserType == "") {
+                        AppSnackbar.show("Please select your user type".tr);
                         return;
-                      }else{
+                      } else {
                         signupModel model = signupModel(
                           firstName: firstName.text,
                           lastName: lastName.text,
@@ -381,7 +379,7 @@ class signup extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Already a member?  ",
+                      "Already a member? ".tr,
                       style: TextStyle(
                         fontSize: ScreenResponsive.responsiveFont(context, 14),
                       ),
@@ -389,7 +387,7 @@ class signup extends StatelessWidget {
                     GestureDetector(
                       onTap: () => Get.toNamed(routes.login_screen),
                       child: Text(
-                        "Log in",
+                        "Log in".tr,
                         style: TextStyle(
                           color: AppColors.sky,
                           fontWeight: FontWeight.bold,
@@ -401,7 +399,7 @@ class signup extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      " to your account",
+                      "to your account".tr,
                       style: TextStyle(
                         fontSize: ScreenResponsive.responsiveFont(context, 14),
                       ),
