@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:manifex/Presentation/Features/home/controller/home_controller.dart';
 
 import '../../../../App/Urls.dart';
 import '../../../../App/network_caller.dart';

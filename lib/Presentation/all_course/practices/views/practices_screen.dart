@@ -177,24 +177,26 @@ class PracticesScreen extends StatelessWidget {
               textAlign: TextAlign.start,
             ),
             SizedBox(height: 16.h),
-            ButtonGradient(
-              text: buttonText ?? 'Start Reading'.tr,
-              onTap:
-                  homeController.profileInfo.value?.data?.isSubscriptionFree ==
-                          false &&
-                      homeController.profileInfo.value?.data?.isSubscribed ==
-                          false
-                  ? () {
-                      Get.dialog(
-                        Dialog(
-                          backgroundColor: Colors.transparent,
-                          insetPadding: EdgeInsets.symmetric(horizontal: 20.w),
-                          child: UnlockPracticeCard(),
-                        ),
-                      );
-                    }
-                  : onTap,
-            ),
+            Obx((){
+              return ButtonGradient(
+                text: buttonText ?? 'Start Reading'.tr,
+                onTap:
+                homeController.profileInfo.value?.data?.isSubscriptionFree ==
+                    false &&
+                    homeController.profileInfo.value?.data?.isSubscribed ==
+                        false
+                    ? () {
+                  Get.dialog(
+                    Dialog(
+                      backgroundColor: Colors.transparent,
+                      insetPadding: EdgeInsets.symmetric(horizontal: 20.w),
+                      child: UnlockPracticeCard(),
+                    ),
+                  );
+                }
+                    : onTap,
+              );
+            }),
           ],
         ),
       ),

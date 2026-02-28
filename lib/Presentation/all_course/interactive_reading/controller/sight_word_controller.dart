@@ -40,12 +40,6 @@ class SightWordController extends GetxController {
   void onInit() {
     super.onInit();
     loadSightWords();
-    MusicService().play();
-  }
-  @override
-  void onClose() {
-    MusicService().stop();
-    super.onClose();
   }
   Future<void> loadSightWords() async {
     try {
