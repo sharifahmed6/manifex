@@ -275,7 +275,7 @@ class routes {
     GetPage(
       name: nativeOneScreen,
       binding: InitialBinding(),
-      page: () => NaviteTaskOne(),
+      page: () => NativeTaskOne(),
     ),
     GetPage(
       name: nativeTwoScreen,

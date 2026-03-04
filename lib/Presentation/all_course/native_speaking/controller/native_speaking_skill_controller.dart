@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:manifex/Presentation/Features/home/controller/home_controller.dart';
 
 import '../../../../App/Urls.dart';
 import '../../../../App/network_caller.dart';
@@ -89,24 +90,24 @@ class NativeSpeakingSkillController extends GetxController {
           "sessionName": "Speaking",
           "tasks": [
             {
-              "taskName": "Pronunciation Practice",
-              "score": taskOneScore.value.round(),
-              "isCorrect": true,
+              "taskName": "Task 1",
+              "marks": taskOneScore.value.round(),
+              "isAnswer": true,
             },
             {
               "taskName": "Task 2",
-              "score": taskTwoScore.value.round(),
-              "isCorrect": true,
+              "marks": taskTwoScore.value.round(),
+              "isAnswer": true,
             },
             {
               "taskName": "Task 3",
-              "score": taskThreeScore.value.round(),
-              "isCorrect": true,
+              "marks": taskThreeScore.value.round(),
+              "isAnswer": true,
             },
             {
               "taskName": "Task 4",
-              "score": taskFourScore.value.round(),
-              "isCorrect": true,
+              "marks": taskFourScore.value.round(),
+              "isAnswer": true,
             },
           ],
           "timeSpent": seconds,
@@ -117,7 +118,10 @@ class NativeSpeakingSkillController extends GetxController {
         Get.back();
         Get.showSnackbar(
           GetSnackBar(
-            title: "Success",
+            titleText: Text(
+              "Success".tr,
+              style: const TextStyle(color: Colors.white),
+            ),
             message: message,
             duration: Duration(seconds: 4),
             backgroundColor: Colors.green,
@@ -130,7 +134,10 @@ class NativeSpeakingSkillController extends GetxController {
         Get.back();
         Get.showSnackbar(
           GetSnackBar(
-            title: "Error",
+            titleText: Text(
+              "Error".tr,
+              style: const TextStyle(color: Colors.white),
+            ),
             message: message,
             duration: Duration(seconds: 4),
             backgroundColor: Colors.red,

@@ -25,11 +25,12 @@ class NativeSpeakingSkillScreen extends StatelessWidget {
             SizedBox(height: 12.h),
             GradientTitle(
               fontSize: 20,
-              normalText: 'Speaking ',
-              gradientText: 'Tasks',
+              normalText: 'Speaking '.tr,
+              gradientText: 'Tasks'.tr,
             ),
             CustomText(
-              text: 'Complete each task to improve your English speaking skill',
+              text: 'Complete each task to improve your English speaking skill'
+                  .tr,
               color: Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
             ),
             SizedBox(height: 8.h),
@@ -37,9 +38,9 @@ class NativeSpeakingSkillScreen extends StatelessWidget {
             // Task 1 — always unlocked
             SingleSkillCard(
               imagePath: 'assets/icons/pronunctation_icon.png',
-              title: 'Pronunciation Practice',
-              subTitle: 'Word Level Training',
-              buttonText: 'Task 1',
+              title: 'Pronunciation Practice'.tr,
+              subTitle: 'Word Level Training'.tr,
+              buttonText: 'Task 1'.tr,
               onTap: () {
                 Get.toNamed(routes.nativeOneScreen);
               },
@@ -51,9 +52,9 @@ class NativeSpeakingSkillScreen extends StatelessWidget {
             // Task 2 — locked until task 1 done
             SingleSkillCard(
               imagePath: 'assets/icons/microphone_icon.png',
-              title: 'Phrase Repeat',
-              subTitle: 'Follow Mercury\'s Lead',
-              buttonText: 'Task 2',
+              title: 'Phrase Repeat'.tr,
+              subTitle: 'Follow Mercury\'s Lead'.tr,
+              buttonText: 'Task 2'.tr,
               onTap: () {
                 Get.toNamed(routes.nativeTwoScreen);
               },
@@ -65,9 +66,9 @@ class NativeSpeakingSkillScreen extends StatelessWidget {
             // Task 3 — locked until task 2 done
             SingleSkillCard(
               imagePath: 'assets/icons/listen_&_speak_icon.png',
-              title: 'Listen & Speak',
-              subTitle: 'Sentence Repetition',
-              buttonText: 'Task 3',
+              title: 'Listen & Speak'.tr,
+              subTitle: 'Sentence Repetition'.tr,
+              buttonText: 'Task 3'.tr,
               onTap: () {
                 Get.toNamed(routes.nativeThreeScreen);
               },
@@ -79,9 +80,9 @@ class NativeSpeakingSkillScreen extends StatelessWidget {
             // Task 4 — locked until task 3 done
             SingleSkillCard(
               imagePath: 'assets/icons/vocabulary.png',
-              title: 'Vocabulary Challenge',
-              subTitle: 'Daily Word Practice',
-              buttonText: 'Task 4',
+              title: 'Vocabulary Challenge'.tr,
+              subTitle: 'Daily Word Practice'.tr,
+              buttonText: 'Task 4'.tr,
               onTap: () {
                 Get.toNamed(routes.nativeFourScreen);
               },
@@ -116,7 +117,7 @@ class NativeSpeakingSkillScreen extends StatelessWidget {
                             );
                           },
                           child: CustomText(
-                            text: 'Submit All Answers',
+                            text: 'Submit All Answers'.tr,
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                             color: Colors.white,

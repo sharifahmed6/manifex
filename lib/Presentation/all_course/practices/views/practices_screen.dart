@@ -13,7 +13,7 @@ import '../controller/practices_controller.dart';
 import '../widget/transperent_gradient_border.dart';
 
 class PracticesScreen extends StatelessWidget {
-   PracticesScreen({super.key});
+  PracticesScreen({super.key});
   final homeController = Get.find<HomeController>();
   final controller = Get.find<PracticesController>();
 
@@ -31,83 +31,90 @@ class PracticesScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomText(
-                text: 'Practices',
+                text: 'Practices'.tr,
                 fontSize: 24,
                 fontWeight: FontWeight.w500,
               ),
               SizedBox(height: 16.h),
               _practicesCard(
                 imagePath: 'assets/images/book.png',
-                title: 'Interactive Reading',
+                title: 'Interactive Reading'.tr,
                 subTitle:
-                    'Poneme recognition an word games with visual cues designed for dyslexic learners',
-                onTap: (){
+                    'Phoneme recognition and word games with visual cues designed for dyslexic learners'
+                        .tr,
+                onTap: () {
                   Get.toNamed(routes.interactive_reading_screen);
-                }
+                },
               ),
               SizedBox(height: 16.h),
               _practicesCard(
                 imagePath: 'assets/icons/smart_writing_icon.png',
-                title: 'Smart Writing',
+                title: 'Smart Writing'.tr,
                 subTitle:
-                    'Write. Learn. Improve. AI checks your grammar, structure, and style instantly.',
-                buttonText: 'Start Writing',
-                onTap: (){
+                    'Write. Learn. Improve. AI checks your grammar, structure, and style instantly.'
+                        .tr,
+                buttonText: 'Start Writing'.tr,
+                onTap: () {
                   Get.toNamed(routes.smart_writing_screen);
-                }
+                },
               ),
               SizedBox(height: 16.h),
               _practicesCard(
                 imagePath: 'assets/icons/native_speaking_icon.png',
-                title: 'Native Speaking',
+                title: 'Native Speaking'.tr,
                 subTitle:
-                    'Advanced Al pronunciation coaching with real-time feedback and accent training',
-                buttonText: 'Start Speaking',
-                onTap: (){
+                    'Advanced Al pronunciation coaching with real-time feedback and accent training'
+                        .tr,
+                buttonText: 'Start Speaking'.tr,
+                onTap: () {
                   Get.toNamed(routes.native_speaking_skill_screen);
-                }
+                },
               ),
               SizedBox(height: 16.h),
               _practicesCard(
                 imagePath: 'assets/icons/reward_icon.png',
-                title: 'Reward System',
+                title: 'Reward System'.tr,
                 subTitle:
-                    'oneme recognition an word games with visual cues designed for dyslexic learners',
-                buttonText: 'Start Reward',
-                onTap: (){
+                    'Phoneme recognition and word games with visual cues designed for dyslexic learners'
+                        .tr,
+                buttonText: 'Start Reward'.tr,
+                onTap: () {
                   Get.toNamed(routes.unlock_rewards_screen);
-                }
+                },
               ),
               SizedBox(height: 16.h),
               _practicesCard(
                 imagePath: 'assets/icons/presentation_icon.png',
-                title: 'Presentation Practice',
+                title: 'Presentation Practice'.tr,
                 subTitle:
-                    'Practice English made for adults. Improve speaking, listening, and vocabulary with easy, real-life lessons you can use every day.',
-                buttonText: 'Start Practice',
-                onTap: (){
+                    'Practice English made for adults. Improve speaking, listening, and vocabulary with easy, real-life lessons you can use every day.'
+                        .tr,
+                buttonText: 'Start Practice'.tr,
+                onTap: () {
                   Get.toNamed(routes.presentationPractice_screen);
-                }
+                },
               ),
               SizedBox(height: 16.h),
               _practicesCard(
                 imagePath: 'assets/icons/person.png',
-                title: 'English for Adult Practice',
-                subTitle: 'Improve your English with real-life practice made especially for adults. Build confidence in speaking, listening, and vocabulary.',
-                buttonText: 'Start Adult Practice',
-                onTap: (){
+                title: 'English for Adult Practice'.tr,
+                subTitle:
+                    'Improve your English with real-life practice made especially for adults. Build confidence in speaking, listening, and vocabulary.'
+                        .tr,
+                buttonText: 'Start Adult Practice'.tr,
+                onTap: () {
                   Get.toNamed(routes.EnglishAdultPractice_screen);
-                }
+                },
               ),
               SizedBox(height: 16.h),
               _practicesCard(
                 imagePath: 'assets/icons/person.png',
-                title: 'Handwriting Practice',
-                subTitle: 'Learn to write letters the fun way',
-                buttonText: 'Start Handwriting Practice',
-                onTap: (){
+                title: 'Handwriting Practice'.tr,
+                subTitle: 'Learn to write letters the fun way'.tr,
+                buttonText: 'Start Handwriting Practice'.tr,
+                onTap: () {
                   Get.toNamed(routes.HandwritingPractice_screen);
-                }
+                },
               ),
               SizedBox(height: 8.h),
             ],
@@ -117,9 +124,17 @@ class PracticesScreen extends StatelessWidget {
     );
   }
 
-  Widget _practicesCard({String? imagePath, String? title, String? subTitle,VoidCallback? onTap,String? buttonText}) {
-    final isFree = homeController.profileInfo.value?.data?.isSubscriptionFree ?? true;
-    final isSubscribed = homeController.profileInfo.value?.data?.isSubscribed ?? false;
+  Widget _practicesCard({
+    String? imagePath,
+    String? title,
+    String? subTitle,
+    VoidCallback? onTap,
+    String? buttonText,
+  }) {
+    final isFree =
+        homeController.profileInfo.value?.data?.isSubscriptionFree ?? true;
+    final isSubscribed =
+        homeController.profileInfo.value?.data?.isSubscribed ?? false;
     return TransparentGradientBorder(
       strokeWidth: 0.5,
       radius: 16.r,
@@ -162,16 +177,26 @@ class PracticesScreen extends StatelessWidget {
               textAlign: TextAlign.start,
             ),
             SizedBox(height: 16.h),
-            ButtonGradient(text: buttonText ?? 'Start Reading',
-                onTap: homeController.profileInfo.value?.data?.isSubscriptionFree == false && homeController.profileInfo.value?.data?.isSubscribed == false ? (){
-              Get.dialog(
-                Dialog(
-                  backgroundColor: Colors.transparent,
-                  insetPadding: EdgeInsets.symmetric(horizontal: 20.w),
-                  child:  UnlockPracticeCard(),
-                ),
+            Obx((){
+              return ButtonGradient(
+                text: buttonText ?? 'Start Reading'.tr,
+                onTap:
+                homeController.profileInfo.value?.data?.isSubscriptionFree ==
+                    false &&
+                    homeController.profileInfo.value?.data?.isSubscribed ==
+                        false
+                    ? () {
+                  Get.dialog(
+                    Dialog(
+                      backgroundColor: Colors.transparent,
+                      insetPadding: EdgeInsets.symmetric(horizontal: 20.w),
+                      child: UnlockPracticeCard(),
+                    ),
+                  );
+                }
+                    : onTap,
               );
-            }: onTap),
+            }),
           ],
         ),
       ),

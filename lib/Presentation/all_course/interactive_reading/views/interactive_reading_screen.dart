@@ -27,21 +27,16 @@ class InteractiveReadingScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CustomBackButton(text: 'Interactive Reading'),
+            CustomBackButton(text: 'Interactive Reading'.tr),
             SizedBox(height: 18.h),
 
-            InteractiveBorderColor(
-                child: GradientToggleTabs()
-            ),
+            InteractiveBorderColor(child: GradientToggleTabs()),
             SizedBox(height: 18.h),
             Expanded(
               child: Obx(() {
                 return IndexedStack(
                   index: c.selectedIndex.value,
-                  children: [
-                    SkillScreen(),
-                    SkillProgressScreen()
-                  ],
+                  children: [SkillScreen(), SkillProgressScreen()],
                 );
               }),
             ),
@@ -51,4 +46,3 @@ class InteractiveReadingScreen extends StatelessWidget {
     );
   }
 }
-

@@ -29,15 +29,16 @@ class TaskFourController extends GetxController {
     super.onInit();
     load();
   }
+
   Future<void> load() async {
     try {
       isLoading.value = true;
       error.value = '';
 
       final res = await networkCaller.getRequest(
-          url: urls.aiQuestion(homeController.apiAge.toString()),
+        url: urls.aiQuestion(homeController.apiAge.toString()),
         removeAuthorization: true,
-        extraHeaders: {'authtoken': '1'}
+        extraHeaders: {'authtoken': '1'},
       );
 
       if (!res.isSuccess || res.responseData == null) {
@@ -81,10 +82,11 @@ class TaskFourController extends GetxController {
     }
 
     correctCount.value = correct;
-    interactiveController.task4.value = total == 0 ? 0.0 : (correct / total) * 100.0;
+    interactiveController.task4.value = total == 0
+        ? 0.0
+        : (correct / total) * 100.0;
     isSubmitted.value = true;
   }
 
-  String get scoreText =>
-      "${correctCount.value} of ${total}";
+  String get scoreText => "${correctCount.value}" + " of ".tr + "$total";
 }

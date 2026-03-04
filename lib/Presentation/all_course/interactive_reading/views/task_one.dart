@@ -34,16 +34,16 @@ class TaskOne extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomBackButton(text: 'Task 1'),
+                CustomBackButton(text: 'Task 1'.tr),
                 SizedBox(height: 16.h),
                 GradientTitle(
-                  normalText: 'Phoneme ',
-                  gradientText: 'Flashcards',
+                  normalText: 'Phoneme '.tr,
+                  gradientText: 'Flashcards'.tr,
                   fontSize: 20,
                 ),
                 SizedBox(height: 16.h),
                 CustomText(
-                  text: 'Click the cards to hear the sound',
+                  text: 'Click the cards to hear the sound'.tr,
                   color: const Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
                 ),
                 SizedBox(height: 16.h),
@@ -73,7 +73,7 @@ class TaskOne extends StatelessWidget {
                                 GestureDetector(
                                   onTap: c.fetchWord,
                                   child: ButtonGradient(
-                                    text: 'Retry',
+                                    text: 'Retry'.tr,
                                     height: 50,
                                   ),
                                 ),
@@ -201,7 +201,7 @@ class TaskOne extends StatelessWidget {
       child: Column(
         children: [
           CustomText(
-            text: 'Now spell the word:',
+            text: 'Now spell the word:'.tr,
             fontSize: isLandscape ? 16 : 20,
             fontWeight: FontWeight.w600,
             color: Colors.white,
@@ -241,7 +241,7 @@ class TaskOne extends StatelessWidget {
                     onTap: c.canReset ? c.resetSelection : null,
                     child: Opacity(
                       opacity: c.canReset ? 1 : 0.5,
-                      child: ButtonGradient(text: 'Reset', height: 50),
+                      child: ButtonGradient(text: 'Reset'.tr, height: 50),
                     ),
                   ),
                 ),
@@ -258,7 +258,7 @@ class TaskOne extends StatelessWidget {
                         : null,
                     child: Opacity(
                       opacity: c.canSubmit ? 1 : 0.5,
-                      child: ButtonGradient(text: 'Submit', height: 50),
+                      child: ButtonGradient(text: 'Submit'.tr, height: 50),
                     ),
                   ),
                 ),

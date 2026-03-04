@@ -25,7 +25,7 @@ class SkillProgressScreen extends StatelessWidget {
               color1: Color(0xffFFD6B7),
               color2: Color(0xffE07C2F),
               imagePath: assets_path.fire,
-              leftTitle: 'Streak',
+              leftTitle: 'Streak'.tr,
               leftSubtitle: ShaderMask(
                 shaderCallback: (bounds) {
                   return const LinearGradient(
@@ -35,7 +35,7 @@ class SkillProgressScreen extends StatelessWidget {
                   ).createShader(bounds);
                 },
                 child: Text(
-                  "Keep it up!",
+                  "Keep it up!".tr,
                   style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w700,
@@ -45,7 +45,7 @@ class SkillProgressScreen extends StatelessWidget {
               ),
               rightTitle:
                   '${homeController.profileInfo.value?.data?.userProgress?.dayStreak ?? 0}',
-              rightSubtitle: 'Days Streak!',
+              rightSubtitle: 'Days Streak!'.tr,
             );
           }),
           SizedBox(height: 10.h),
@@ -56,9 +56,9 @@ class SkillProgressScreen extends StatelessWidget {
               color1: Color(0xffFFA6C8),
               color2: Color(0xffB920ED),
               imagePath: 'assets/icons/watch_icon.png',
-              leftTitle: 'Session Timer',
+              leftTitle: 'Session Timer'.tr,
               rightTitle: controller.format(elapsed),
-              rightSubtitle: 'Remaining',
+              rightSubtitle: 'Remaining'.tr,
             );
           }),
           SizedBox(height: 10.h),
@@ -70,9 +70,9 @@ class SkillProgressScreen extends StatelessWidget {
               color1: Color(0xffB2DEFF),
               color2: Color(0xff3BA3F2),
               imagePath: 'assets/icons/progress.png',
-              leftTitle: 'Progress',
+              leftTitle: 'Progress'.tr,
               rightTitle: '$current/$total',
-              rightSubtitle: 'Tasks',
+              rightSubtitle: 'Tasks'.tr,
               leftSubtitle: GradientLinearProgress(
                 value: fraction,
                 height: 7.h,
@@ -89,18 +89,25 @@ class SkillProgressScreen extends StatelessWidget {
           }),
           SizedBox(height: 10.h),
           Obx(() {
-            final accuracyPercent = (homeController.profileInfo.value?.data?.userProgress?.overallAccuracy ?? 0)
-                .toDouble();
+            final accuracyPercent =
+                (homeController
+                            .profileInfo
+                            .value
+                            ?.data
+                            ?.userProgress
+                            ?.overallAccuracy ??
+                        0)
+                    .toDouble();
 
             final progressValue = (accuracyPercent / 100).clamp(0.0, 1.0);
             return ProgressCard(
               color1: Color(0xff11D067),
               color2: Color(0xff01803A),
               imagePath: 'assets/icons/champion.png',
-              leftTitle: 'Today’s Goal',
+              leftTitle: 'Today’s Goal'.tr,
               rightTitle:
                   '${homeController.profileInfo.value?.data?.userProgress?.overallAccuracy.toInt() ?? 0}%',
-              rightSubtitle: 'Accuracy',
+              rightSubtitle: 'Accuracy'.tr,
               leftSubtitle: GradientLinearProgress(
                 value: progressValue,
                 height: 7.h,

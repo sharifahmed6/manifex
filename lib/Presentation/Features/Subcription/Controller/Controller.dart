@@ -22,7 +22,7 @@ class subscriptionController extends GetxController {
       "Priority AI support",
       "Parent dashboard",
       "Offline mode",
-      "7 days free trial"
+      "7 days free trial",
     ],
     "family_monthly": [
       "Up to 5 learner profiles",
@@ -31,7 +31,7 @@ class subscriptionController extends GetxController {
       "Shared reward library",
       "Priority support",
       "Educational resources",
-      "7 days free trial"
+      "7 days free trial",
     ],
   };
 
@@ -46,7 +46,6 @@ class subscriptionController extends GetxController {
     try {
       Purchases.setDebugLogsEnabled(true);
       String userId = PrefHelper.getUserId();
-
 
       if (userId != null) {
         await Purchases.logIn(userId);
@@ -64,7 +63,6 @@ class subscriptionController extends GetxController {
       // Initial check
       final info = await Purchases.getCustomerInfo();
       _updatePremiumStatus(info);
-
     } catch (e) {
       print("RevenueCat init error: $e");
     }
@@ -115,16 +113,18 @@ class subscriptionController extends GetxController {
       // Set next renewal date
       String nextRenew = "N/A";
       if (activeEntitlement.expirationDate != null) {
-        DateTime expDate = DateTime.parse(activeEntitlement.expirationDate!).toLocal();
+        DateTime expDate = DateTime.parse(
+          activeEntitlement.expirationDate!,
+        ).toLocal();
         nextRenew =
-        "${expDate.day.toString().padLeft(2, '0')}-${expDate.month.toString().padLeft(2, '0')}-${expDate.year}";
+            "${expDate.day.toString().padLeft(2, '0')}-${expDate.month.toString().padLeft(2, '0')}-${expDate.year}";
       }
 
       isPremium.value = true;
       activeSubscription.value = activeEntitlement.identifier; // entitlement ID
-      activePackageName.value = activeEntitlement.productIdentifier; // product ID
+      activePackageName.value =
+          activeEntitlement.productIdentifier; // product ID
       nextRenewDate.value = nextRenew;
-
     } else {
       // No active subscription yet
       isPremium.value = false;
@@ -164,15 +164,18 @@ class subscriptionController extends GetxController {
           : null;
 
       if (activeEntitlement != null) {
-        AppSnackbar.show("Subscription ${activeEntitlement.identifier} must be cancelled via App Store / Play Store");
+        AppSnackbar.show(
+          "Subscription ${activeEntitlement.identifier} must be cancelled via App Store / Play Store"
+              .tr,
+        );
       } else {
-        AppSnackbar.show("No active subscription to cancel.");
+        AppSnackbar.show("No active subscription to cancel.".tr);
       }
 
       // Update local state
       _updatePremiumStatus(info);
     } catch (e) {
-      AppSnackbar.show("Something went please try again later.");
+      AppSnackbar.show("Something went wrong, please try again later.".tr);
       print("Error cancelling subscription: $e");
     }
   }

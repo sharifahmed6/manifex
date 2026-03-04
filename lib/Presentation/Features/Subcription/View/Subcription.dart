@@ -196,27 +196,19 @@ import '../Controller/Controller.dart';
 //   }
 // }
 
-
 class GradientButton extends StatelessWidget {
   final String text;
   final VoidCallback? onPressed;
 
-  const GradientButton({
-    Key? key,
-    required this.text,
-    this.onPressed,
-  }) : super(key: key);
+  const GradientButton({Key? key, required this.text, this.onPressed})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [
-            AppColors.yellow,
-            AppColors.pink,
-            AppColors.sky
-          ],
+          colors: [AppColors.yellow, AppColors.pink, AppColors.sky],
           begin: Alignment.centerLeft,
           end: Alignment.centerRight,
         ),
@@ -264,8 +256,6 @@ class GradientButton extends StatelessWidget {
   }
 }
 
-
-
 class subscription extends StatelessWidget {
   subscription({super.key});
 
@@ -288,7 +278,7 @@ class subscription extends StatelessWidget {
                 runSpacing: 4,
                 children: [
                   Text(
-                    "Choose Your",
+                    "Choose Your".tr,
                     style: TextStyle(
                       fontSize: ScreenResponsive.responsiveFont(context, 20),
                       fontWeight: FontWeight.bold,
@@ -296,7 +286,7 @@ class subscription extends StatelessWidget {
                   ),
                   GradientMask(
                     child: Text(
-                      "Learning Path",
+                      "Learning Path".tr,
                       style: TextStyle(
                         fontSize: ScreenResponsive.responsiveFont(context, 20),
                         fontWeight: FontWeight.bold,
@@ -307,7 +297,8 @@ class subscription extends StatelessWidget {
               ),
               SizedBox(height: 10),
               Text(
-                "Start your journey with our free trial, then choose the plan that fits your learning goals",
+                "Start your journey with our free trial, then choose the plan that fits your learning goals"
+                    .tr,
                 style: TextStyle(
                   fontSize: ScreenResponsive.responsiveFont(context, 16),
                 ),
@@ -315,21 +306,32 @@ class subscription extends StatelessWidget {
               SizedBox(height: 20),
 
               /// Show Premium Status
-            Obx(() {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    controller.isPremium.value ? "Premium Active" : "Free Plan",
-                  ),
-                  if (controller.isPremium.value) ...[
-                    Text("Package: ${controller.activePackageName.value}"),
-                    Text("Auto-Renew: ${controller.autoRenew.value ? "On" : "Off"}"),
-                    Text("Next Renewal: ${controller.nextRenewDate.value}"),
+              Obx(() {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      controller.isPremium.value
+                          ? "Premium Active".tr
+                          : "Free Plan".tr,
+                    ),
+                    if (controller.isPremium.value) ...[
+                      Text(
+                        "Package: ".tr +
+                            "${controller.activePackageName.value}",
+                      ),
+                      Text(
+                        "Auto-Renew: ".tr +
+                            "${controller.autoRenew.value ? "On".tr : "Off".tr}",
+                      ),
+                      Text(
+                        "Next Renewal: ".tr +
+                            "${controller.nextRenewDate.value}",
+                      ),
+                    ],
                   ],
-                ],
-              );
-            }),
+                );
+              }),
               SizedBox(height: 20),
 
               /// List all subscription packages dynamically
@@ -337,7 +339,7 @@ class subscription extends StatelessWidget {
                 final packages = controller.getCurrentPackages();
                 if (packages.isEmpty) {
                   return Center(
-                    child: Text("No subscription packages available."),
+                    child: Text("No subscription packages available.".tr),
                   );
                 }
 
@@ -346,7 +348,8 @@ class subscription extends StatelessWidget {
                     final product = package.storeProduct;
 
                     /// Map product identifiers to feature list
-                    final features = controller.subscriptionFeatures[product.identifier] ??
+                    final features =
+                        controller.subscriptionFeatures[product.identifier] ??
                         ["No details available"];
 
                     return Container(
@@ -355,7 +358,7 @@ class subscription extends StatelessWidget {
                         gradient: LinearGradient(
                           colors: [
                             Colors.white.withOpacity(0.1),
-                            Colors.white.withOpacity(0.02)
+                            Colors.white.withOpacity(0.02),
                           ],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
@@ -374,59 +377,81 @@ class subscription extends StatelessWidget {
                             Text(
                               product.title,
                               style: TextStyle(
-                                fontSize:
-                                ScreenResponsive.responsiveFont(context, 20),
+                                fontSize: ScreenResponsive.responsiveFont(
+                                  context,
+                                  20,
+                                ),
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
                             Text(
                               product.priceString,
                               style: TextStyle(
-                                fontSize:
-                                ScreenResponsive.responsiveFont(context, 44),
+                                fontSize: ScreenResponsive.responsiveFont(
+                                  context,
+                                  44,
+                                ),
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             Text(
                               "Duration : One Month".tr,
                               style: TextStyle(
-                                fontSize:
-                                ScreenResponsive.responsiveFont(context, 16),
+                                fontSize: ScreenResponsive.responsiveFont(
+                                  context,
+                                  16,
+                                ),
                               ),
                             ),
                             SizedBox(height: 20),
 
                             /// Features List
-                            ...features.map((feature) => _buildList(text: feature)),
+                            ...features.map(
+                              (feature) => _buildList(text: feature),
+                            ),
 
                             SizedBox(height: 20),
                             GradientButton(
-                              text: "Subscribe",
+                              text: "Subscribe".tr,
                               onPressed: () async {
                                 try {
                                   // Initiate purchase
-                                  CustomerInfo customerInfo = await controller.purchasePackage(package);
+                                  CustomerInfo customerInfo = await controller
+                                      .purchasePackage(package);
 
                                   // Check if entitlement is active
-                                  final activeEntitlement = customerInfo.entitlements.active.entries.isNotEmpty
-                                      ? customerInfo.entitlements.active.entries.first.value
+                                  final activeEntitlement =
+                                      customerInfo
+                                          .entitlements
+                                          .active
+                                          .entries
+                                          .isNotEmpty
+                                      ? customerInfo
+                                            .entitlements
+                                            .active
+                                            .entries
+                                            .first
+                                            .value
                                       : null;
 
-                                  if (activeEntitlement != null && activeEntitlement.isActive) {
+                                  if (activeEntitlement != null &&
+                                      activeEntitlement.isActive) {
                                     Get.snackbar(
-                                      "Success",
-                                      "Subscription purchased!",
+                                      "Success".tr,
+                                      "Subscription purchased!".tr,
                                       snackPosition: SnackPosition.BOTTOM,
                                     );
                                   } else {
                                     // User cancelled or purchase failed
                                     Get.snackbar(
-                                      "Cancelled",
-                                      "Subscription not completed.",
+                                      "Cancelled".tr,
+                                      "Subscription not completed.".tr,
                                       snackPosition: SnackPosition.BOTTOM,
                                       backgroundColor: Colors.redAccent,
                                     );
-                                    AppSnackbar.show("Subscription not completed.");
+                                    AppSnackbar.show(
+                                      "Subscription not completed.".tr,
+                                    );
                                   }
                                 } catch (e) {
                                   // Handle network error, user cancel etc.
@@ -454,19 +479,20 @@ class subscription extends StatelessWidget {
                   children: [
                     SizedBox(height: 10),
                     GradientButton(
-                      text: "Unsubscribe",
+                      text: "Unsubscribe".tr,
                       onPressed: () async {
                         try {
-                          await controller.cancelAutoRenew(); // call your logout/unsubscribe method
+                          await controller
+                              .cancelAutoRenew(); // call your logout/unsubscribe method
                           Get.snackbar(
-                            "Success",
-                            "You have unsubscribed successfully!",
+                            "Success".tr,
+                            "You have unsubscribed successfully!".tr,
                             snackPosition: SnackPosition.BOTTOM,
                           );
                         } catch (e) {
                           Get.snackbar(
-                            "Error",
-                            "Failed to unsubscribe: $e",
+                            "Error".tr,
+                            "Failed to unsubscribe: $e".tr,
                             snackPosition: SnackPosition.BOTTOM,
                           );
                         }
@@ -496,7 +522,7 @@ class _buildList extends StatelessWidget {
         SizedBox(width: 10),
         Expanded(
           child: Text(
-            text,
+            text.tr,
             style: TextStyle(
               fontSize: ScreenResponsive.responsiveFont(context, 16),
               fontWeight: FontWeight.w500,

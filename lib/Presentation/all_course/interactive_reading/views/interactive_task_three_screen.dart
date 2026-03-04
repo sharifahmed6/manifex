@@ -54,12 +54,12 @@ class InteractiveTaskThreeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomBackButton(text: 'Task 3'),
+              CustomBackButton(text: 'Task 3'.tr),
               SizedBox(height: 16.h),
 
               Obx(() {
                 final title = c.sessionName.value.isEmpty
-                    ? 'Phoneme Flashcards'
+                    ? 'Phoneme Flashcards'.tr
                     : c.sessionName.value;
                 return GradientTitle(
                   normalText: '',
@@ -70,7 +70,7 @@ class InteractiveTaskThreeScreen extends StatelessWidget {
 
               SizedBox(height: 16.h),
               CustomText(
-                text: 'Drag words to their matching pictures',
+                text: 'Drag words to their matching pictures'.tr,
                 color: const Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
               ),
               SizedBox(height: 16.h),
@@ -106,7 +106,7 @@ class InteractiveTaskThreeScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(12.r),
                               ),
                               child: Text(
-                                "Retry",
+                                "Retry".tr,
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 14.sp,
@@ -125,7 +125,7 @@ class InteractiveTaskThreeScreen extends StatelessWidget {
                     child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 24.h),
                       child: Text(
-                        "No data",
+                        "No data".tr,
                         style: TextStyle(
                           color: Colors.white.withAlpha(220),
                           fontSize: 14.sp,
@@ -160,7 +160,7 @@ class InteractiveTaskThreeScreen extends StatelessWidget {
                               child: Column(
                                 children: [
                                   CustomText(
-                                    text: 'Words',
+                                    text: 'Words'.tr,
                                     fontSize: 18,
                                     fontWeight: FontWeight.w600,
                                   ),
@@ -196,7 +196,7 @@ class InteractiveTaskThreeScreen extends StatelessWidget {
                               child: Column(
                                 children: [
                                   CustomText(
-                                    text: 'Picture',
+                                    text: 'Picture'.tr,
                                     fontSize: 18,
                                     fontWeight: FontWeight.w600,
                                   ),
@@ -216,7 +216,7 @@ class InteractiveTaskThreeScreen extends StatelessWidget {
                                         return _DropSlot(
                                           slotId: slot.slotId,
                                           imageUrlOrAsset: slot.imageUrlOrAsset,
-                                          label: "Drop word here",
+                                          label: "Drop word here".tr,
                                           state: state,
                                           canAccept: (wordKey) => c.canAccept(
                                             slotId: slot.slotId,
@@ -250,7 +250,7 @@ class InteractiveTaskThreeScreen extends StatelessWidget {
                             children: [
                               if (!showNiceBanner)
                                 CustomText(
-                                  text: "Correct: $correct/$total",
+                                  text: "Correct: ".tr + "$correct/$total",
                                   fontSize: 18,
                                   color: const Color(
                                     0xffFFFFFF,
@@ -285,7 +285,11 @@ class InteractiveTaskThreeScreen extends StatelessWidget {
                                       },
                                       child: CustomText(
                                         text:
-                                            'Nice! You found $correct of $total sight words!',
+                                            'Nice! You found '.tr +
+                                            '$correct' +
+                                            ' of '.tr +
+                                            '$total' +
+                                            ' sight words!'.tr,
                                         fontSize: 16,
                                         fontWeight: FontWeight.w600,
                                         color: Colors.white,
@@ -306,10 +310,13 @@ class InteractiveTaskThreeScreen extends StatelessWidget {
                                         false;
                                     interactiveReading.checkAllComplete();
                                   },
-                                  text: 'Finish',
+                                  text: 'Finish'.tr,
                                 ),
                               SizedBox(height: 8.h),
-                              ButtonGradient(onTap: c.resetAll, text: 'Reset'),
+                              ButtonGradient(
+                                onTap: c.resetAll,
+                                text: 'Reset'.tr,
+                              ),
                               if (showFinish) SizedBox(height: 10.h),
                             ],
                           );

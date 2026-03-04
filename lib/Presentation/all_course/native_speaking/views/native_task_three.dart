@@ -45,16 +45,16 @@ class NativeTaskThree extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CustomBackButton(text: 'Task 3'),
+        CustomBackButton(text: 'Task 3'.tr),
         SizedBox(height: 16.h),
         GradientTitle(
-          normalText: 'Listen & ',
-          gradientText: 'Speak',
+          normalText: 'Listen & '.tr,
+          gradientText: 'Speak'.tr,
           fontSize: 20,
         ),
         SizedBox(height: 16.h),
         CustomText(
-          text: 'Word Level Training',
+          text: 'Word Level Training'.tr,
           color: const Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
         ),
         SizedBox(height: 16.h),
@@ -121,7 +121,7 @@ class NativeTaskThree extends StatelessWidget {
                         // Sentence text
                         Text(
                           controller.currentSentence.value.isEmpty
-                              ? 'Loading...'
+                              ? 'Loading...'.tr
                               : controller.currentSentence.value,
                           style: TextStyle(
                             fontSize: 26.sp,
@@ -139,13 +139,13 @@ class NativeTaskThree extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             _buildTextButton(
-                              label: 'Listen',
+                              label: 'Listen'.tr,
                               icon: Icons.volume_up_rounded,
                               onTap: controller.playSentence,
                             ),
                             SizedBox(width: 10.w),
                             _buildTextButton(
-                              label: 'Slow',
+                              label: 'Slow'.tr,
                               icon: null,
                               onTap: controller.playSentenceSlow,
                             ),
@@ -159,7 +159,7 @@ class NativeTaskThree extends StatelessWidget {
 
                   // Instruction text
                   CustomText(
-                    text: 'Now repeat the sentence',
+                    text: 'Now repeat the sentence'.tr,
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
                     textAlign: TextAlign.center,
@@ -318,7 +318,7 @@ class NativeTaskThree extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Fluency Score',
+                      'Fluency Score'.tr,
                       style: TextStyle(
                         fontSize: 15.sp,
                         fontWeight: FontWeight.w600,
@@ -485,8 +485,8 @@ class NativeTaskThree extends StatelessWidget {
               ),
               child: Text(
                 controller.isSuccess.value
-                    ? 'Perfect! Go to Next Challenge'
-                    : 'Go to Next Challenge',
+                    ? 'Perfect! Go to Next Challenge'.tr
+                    : 'Go to Next Challenge'.tr,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 15.sp,

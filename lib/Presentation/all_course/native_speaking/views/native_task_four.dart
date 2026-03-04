@@ -45,16 +45,16 @@ class NativeTaskFour extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CustomBackButton(text: 'Task 4'),
+        CustomBackButton(text: 'Task 4'.tr),
         SizedBox(height: 16.h),
         GradientTitle(
-          normalText: 'Vocabulary ',
-          gradientText: 'Challenge',
+          normalText: 'Vocabulary '.tr,
+          gradientText: 'Challenge'.tr,
           fontSize: 20,
         ),
         SizedBox(height: 8.h),
         CustomText(
-          text: 'Word Level Training',
+          text: 'Word Level Training'.tr,
           color: const Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
         ),
         SizedBox(height: 16.h),
@@ -97,7 +97,7 @@ class NativeTaskFour extends StatelessWidget {
           children: [
             // Instruction
             Text(
-              'Read each word aloud',
+              'Read each word aloud'.tr,
               style: TextStyle(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w600,
@@ -146,9 +146,9 @@ class NativeTaskFour extends StatelessWidget {
       if (words.isEmpty) {
         return SizedBox(
           height: 140.h,
-          child: const Center(
+          child: Center(
             child: Text(
-              'No words loaded',
+              'No words loaded'.tr,
               style: TextStyle(color: Colors.white54),
             ),
           ),
@@ -302,7 +302,7 @@ class NativeTaskFour extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Words target',
+                      'Words target'.tr,
                       style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
@@ -384,7 +384,7 @@ class NativeTaskFour extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12.r),
                 ),
                 child: Text(
-                  'Complete Task 4',
+                  'Complete Task 4'.tr,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 15.sp,

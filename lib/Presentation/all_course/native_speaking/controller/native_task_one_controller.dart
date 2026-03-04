@@ -71,8 +71,8 @@ class NativeTaskOneController extends GetxController {
 
       if (!speechAvailable.value) {
         Get.snackbar(
-          'Not Available',
-          'Speech recognition is not available on this device',
+          'Not Available'.tr,
+          'Speech recognition is not available on this device'.tr,
           snackPosition: SnackPosition.TOP,
           backgroundColor: Colors.orange.withAlpha(200),
           colorText: Colors.white,
@@ -123,14 +123,14 @@ class NativeTaskOneController extends GetxController {
           currentWord.value = words[0];
         } else {
           Get.snackbar(
-            'No Words',
-            'No pronunciation words found',
+            'No Words'.tr,
+            'No pronunciation words found'.tr,
             snackPosition: SnackPosition.TOP,
           );
         }
       } else {
         Get.snackbar(
-          'Error',
+          'Error'.tr,
           response.errorMessage,
           snackPosition: SnackPosition.TOP,
           backgroundColor: Colors.red.withAlpha(200),
@@ -140,8 +140,8 @@ class NativeTaskOneController extends GetxController {
     } catch (e) {
       print('Error fetching words: $e');
       Get.snackbar(
-        'Error',
-        'Failed to load words',
+        'Error'.tr,
+        'Failed to load words'.tr,
         snackPosition: SnackPosition.TOP,
         backgroundColor: Colors.red.withAlpha(200),
         colorText: Colors.white,
@@ -160,8 +160,8 @@ class NativeTaskOneController extends GetxController {
     } catch (e) {
       print('TTS error: $e');
       Get.snackbar(
-        'Error',
-        'Failed to play pronunciation',
+        'Error'.tr,
+        'Failed to play pronunciation'.tr,
         snackPosition: SnackPosition.TOP,
       );
     }
@@ -181,8 +181,8 @@ class NativeTaskOneController extends GetxController {
   Future<void> startListening() async {
     if (!speechAvailable.value) {
       Get.snackbar(
-        'Not Available',
-        'Speech recognition is not available',
+        'Not Available'.tr,
+        'Speech recognition is not available'.tr,
         snackPosition: SnackPosition.TOP,
         backgroundColor: Colors.orange.withAlpha(200),
         colorText: Colors.white,
@@ -216,8 +216,8 @@ class NativeTaskOneController extends GetxController {
       print('Listening error: $e');
       isListening.value = false;
       Get.snackbar(
-        'Error',
-        'Failed to start speech recognition',
+        'Error'.tr,
+        'Failed to start speech recognition'.tr,
         snackPosition: SnackPosition.TOP,
         backgroundColor: Colors.red.withAlpha(200),
         colorText: Colors.white,
@@ -241,9 +241,9 @@ class NativeTaskOneController extends GetxController {
     isSuccess.value = isMatch;
 
     if (isMatch) {
-      feedbackMessage.value = 'Perfect! Great Pronunciation!';
+      feedbackMessage.value = 'Perfect! Great Pronunciation!'.tr;
     } else {
-      feedbackMessage.value = 'Try again! You said: "$recognized"';
+      feedbackMessage.value = 'Try again! You said: '.tr + '"$recognized"';
     }
 
     showFeedback.value = true;

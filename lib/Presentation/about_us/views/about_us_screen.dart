@@ -38,7 +38,7 @@ class AboutUsScreen extends StatelessWidget {
                     ),
                   ),
                   CustomText(
-                    text: 'About Us',
+                    text: 'About Us'.tr,
                     fontSize: 24.sp,
                     fontWeight: FontWeight.w500,
                   ),
@@ -46,13 +46,14 @@ class AboutUsScreen extends StatelessWidget {
               ),
               SizedBox(height: screenHeight * 0.02),
               _gradientTitle(
-                normalText: 'We Created MANIFEX with \n',
-                gradientText: 'your language',
+                normalText: 'We Created MANIFEX with \n'.tr,
+                gradientText: 'your language'.tr,
               ),
               SizedBox(height: screenHeight * 0.02),
               CustomText(
                 text:
-                    'Our platform is designed to make practicing reading, writing, and speaking both effective and engaging. We draw on proven scientific research to create activities that strengthen the brain, build confidence, and support lifelong learning.',
+                    'Our platform is designed to make practicing reading, writing, and speaking both effective and engaging. We draw on proven scientific research to create activities that strengthen the brain, build confidence, and support lifelong learning.'
+                        .tr,
                 fontSize: 16,
                 fontWeight: FontWeight.w300,
                 textAlign: TextAlign.start,
@@ -60,57 +61,71 @@ class AboutUsScreen extends StatelessWidget {
               SizedBox(height: screenHeight * 0.02),
               _bulletPointCard(
                 imagePath: 'assets/icons/real_time_analytics.png',
-                title: 'Real-Time Analytics',
+                title: 'Real-Time Analytics'.tr,
                 subTitle:
-                    'Built with cognitive science principles and tested with dyslexia specialists',
+                    'Built with cognitive science principles and tested with dyslexia specialists'
+                        .tr,
               ),
               SizedBox(height: screenHeight * 0.02),
               _bulletPointCard(
                 imagePath: 'assets/icons/advanced_ai_technology.png',
-                title: 'Advanced AI Technology',
+                title: 'Advanced AI Technology'.tr,
                 subTitle:
-                    'Machine learning adapts to individual learning patterns and preferences',
+                    'Machine learning adapts to individual learning patterns and preferences'
+                        .tr,
               ),
               SizedBox(height: screenHeight * 0.02),
               _bulletPointCard(
                 imagePath: 'assets/icons/book.png',
-                title: 'Passion-Driven Learning',
+                title: 'Passion-Driven Learning'.tr,
                 subTitle:
-                    'Connect education with personal interests for maximum engagement',
+                    'Connect education with personal interests for maximum engagement'
+                        .tr,
               ),
               SizedBox(height: screenHeight * 0.02),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _progressCard(count: '100k+', smallTitle: '100,000+ Learners'),
-                  _progressCard(count: '98%', smallTitle: 'Positive Rating'),
-                  _progressCard(count: '24/7', smallTitle: 'AI Support'),
+                  _progressCard(
+                    count: '100k+',
+                    smallTitle: '100,000+ Learners'.tr,
+                  ),
+                  _progressCard(count: '98%', smallTitle: 'Positive Rating'.tr),
+                  _progressCard(count: '24/7', smallTitle: 'AI Support'.tr),
                 ],
               ),
               SizedBox(height: screenHeight * 0.08),
               _gradientTitle(
-                normalText: 'At the Core of Our Approach are',
-                gradientText: '4 Key Foundations',
+                normalText: 'At the Core of Our Approach are'.tr,
+                gradientText: '4 Key Foundations'.tr,
               ),
               SizedBox(height: screenHeight * 0.03),
               _foundationCard(
-                title: '1. Neuroplasticity',
-                subTitle: 'The brain has an incredible ability to reorganize itself by forming new neural connections throughout life. This process not only supports learning and problem-solving but also helps individuals adapt to new challenges. Our activities are designed to activate neuroplasticity, making practice more impactful over time.'
+                title: '1. Neuroplasticity'.tr,
+                subTitle:
+                    'The brain has an incredible ability to reorganize itself by forming new neural connections throughout life. This process not only supports learning and problem-solving but also helps individuals adapt to new challenges. Our activities are designed to activate neuroplasticity, making practice more impactful over time.'
+                        .tr,
               ),
               SizedBox(height: screenHeight * 0.03),
               _foundationCard(
-                  title: '2. Rhythmic Therapy',
-                  subTitle: 'Humans are naturally responsive to rhythm. By using rhythmic and repetitive patterns, we help regulate the brain and nervous system. Here, we use music to rhythmically influence the reshaping of neurons and their plasticity by creating new neuronic pathways when working on our activities.This fortifies retention and facilitates the application of newly learned behaviors when using cognitive processing. This approach can reduce stress, improve focus, and create a natural flow in reading, writing, and speaking.'
+                title: '2. Rhythmic Therapy'.tr,
+                subTitle:
+                    'Humans are naturally responsive to rhythm. By using rhythmic and repetitive patterns, we help regulate the brain and nervous system. Here, we use music to rhythmically influence the reshaping of neurons and their plasticity by creating new neuronic pathways when working on our activities.This fortifies retention and facilitates the application of newly learned behaviors when using cognitive processing. This approach can reduce stress, improve focus, and create a natural flow in reading, writing, and speaking.'
+                        .tr,
               ),
               SizedBox(height: screenHeight * 0.03),
               _foundationCard(
-                  title: '3. Dysgraphia Support',
-                  subTitle: 'Dysgraphia is a neurological condition that affects writing. Our tools offer structured practice to strengthen handwriting, written expression, and the motor skills that support the writing process.'
+                title: '3. Dysgraphia Support'.tr,
+                subTitle:
+                    'Dysgraphia is a neurological condition that affects writing. Our tools offer structured practice to strengthen handwriting, written expression, and the motor skills that support the writing process.'
+                        .tr,
               ),
               SizedBox(height: screenHeight * 0.03),
               _foundationCard(
-                  title: '4. Dyslexia Support',
-                  subTitle: 'Dyslexia, a neurobiological learning difference, can make reading, writing, and spelling difficult. We provide engaging activities that build fluency, comprehension, and language skills—helping learners overcome barriers with confidence.'
+                title: '4. Dyslexia Support'.tr,
+                subTitle:
+                    'Dyslexia, a neurobiological learning difference, can make reading, writing, and spelling difficult. We provide engaging activities that build fluency, comprehension, and language skills—helping learners overcome barriers with confidence.'
+                        .tr,
               ),
             ],
           ),

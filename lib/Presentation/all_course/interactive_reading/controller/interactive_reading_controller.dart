@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'dart:ffi';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:manifex/App/Urls.dart';
 import 'package:manifex/App/network_caller.dart';
@@ -98,7 +96,7 @@ class InteractiveReadingController extends GetxController {
       NetworkResponse response = await NetworkCaller().postRequest(
         url: urls.readingTaskComplete,
         body: {
-          "sessionName": "Reading",
+          "sessionName": "Reading".tr, // Modified
           "tasks": [
             {
               "taskName": "Task 1",
@@ -125,12 +123,11 @@ class InteractiveReadingController extends GetxController {
         },
       );
       if (response.isSuccess) {
-        final message = response.responseData?['message'];
         Get.back();
         Get.showSnackbar(
           GetSnackBar(
-            title: "Success",
-            message: message,
+            title: "Success".tr, // Modified
+            message: "Progress saved!".tr, // Modified
             duration: Duration(seconds: 4),
             backgroundColor: Colors.green,
             snackPosition: SnackPosition.TOP,
@@ -141,10 +138,10 @@ class InteractiveReadingController extends GetxController {
         Get.back();
         Get.showSnackbar(
           GetSnackBar(
-            title: "Error",
-            message: message,
-            duration: Duration(seconds: 4),
-            backgroundColor: Colors.green,
+            title: "Error".tr,
+            message: message ?? "An unknown error occurred".tr,
+            duration: const Duration(seconds: 4),
+            backgroundColor: Colors.red,
             snackPosition: SnackPosition.TOP,
           ),
         );

@@ -110,7 +110,7 @@ class InitialBinding extends Bindings {
     Get.lazyPut<SightWordController>(() => SightWordController(), fenix: true);
     Get.lazyPut<TaskThreeController>(() => TaskThreeController(), fenix: true);
     Get.lazyPut<TaskFourController>(() => TaskFourController(), fenix: true);
-    Get.put(HomeController());
+    Get.lazyPut<HomeController>(() => HomeController(), fenix: true);
     Get.lazyPut<presentationPracticeController>(
       () => presentationPracticeController(),
       fenix: true,

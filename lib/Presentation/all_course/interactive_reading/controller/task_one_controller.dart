@@ -12,7 +12,6 @@ class TaskOneController extends GetxController {
   final FlutterTts tts = FlutterTts();
   final NetworkCaller _network = NetworkCaller();
 
-
   // API state
   final isLoading = false.obs;
   final error = ''.obs;
@@ -57,7 +56,10 @@ class TaskOneController extends GetxController {
 
     try {
       final res = await _network.getRequest(
-        url: urls.phonemeFlashcard(homeController.apiAge.toString(), homeController.userId),
+        url: urls.phonemeFlashcard(
+          homeController.apiAge.toString(),
+          homeController.userId,
+        ),
         removeAuthorization: true,
         extraHeaders: const {"authtoken": "1"},
       );
@@ -70,7 +72,7 @@ class TaskOneController extends GetxController {
       final model = FlashCardModel.fromJson(res.responseData);
 
       if (!model.isValid) {
-        error.value = "Invalid data from API";
+        error.value = "Invalid data from API".tr;
         return;
       }
 
@@ -83,14 +85,16 @@ class TaskOneController extends GetxController {
       isPerfect.value = false;
       resultLabel.value = '';
     } catch (_) {
-      error.value = "Something went wrong";
+      error.value = "Something went wrong".tr;
     } finally {
       isLoading.value = false;
     }
   }
 
   void _loadFromModel(FlashCardModel model) {
-    final correctChars = model.characters.isNotEmpty ? model.characters : model.word.split('');
+    final correctChars = model.characters.isNotEmpty
+        ? model.characters
+        : model.word.split('');
 
     originalLetters.value = List<String>.from(correctChars);
 
@@ -180,11 +184,15 @@ class TaskOneController extends GetxController {
     if (answer == correct && correct.isNotEmpty) {
       isPerfect.value = true;
       interactiveController.task1.value = 100;
-      resultLabel.value = "Perfect! Go to Next Challenge (${interactiveController.task1.value}/100)";
+      resultLabel.value =
+          "Perfect! Go to Next Challenge (".tr +
+          "${interactiveController.task1.value}/100)";
     } else {
       isPerfect.value = false;
       interactiveController.task1.value = 0;
-      resultLabel.value = "The correct word was: $correct (${interactiveController.task1.value}/100)";
+      resultLabel.value =
+          "The correct word was: ".tr +
+          "$correct (${interactiveController.task1.value}/100)";
     }
   }
 
