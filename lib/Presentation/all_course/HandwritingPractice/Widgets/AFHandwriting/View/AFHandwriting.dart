@@ -22,7 +22,14 @@ class AFHandwriting extends GetView<AFHandwritingController> {
 
   final controller = Get.find<AFHandwritingController>();
 
-  AFHandwriting({super.key, required List<String> latter, required int currentIndex, required this.title, required this.description, required this.taskNumber}) {
+  AFHandwriting({
+    super.key,
+    required List<String> latter,
+    required int currentIndex,
+    required this.title,
+    required this.description,
+    required this.taskNumber,
+  }) {
     this.latter.assignAll(latter);
     this.currentIndex.value = currentIndex;
   }
@@ -95,11 +102,13 @@ class AFHandwriting extends GetView<AFHandwritingController> {
                         }
                       },
                       icon: Icon(
-                        music.isPlaying ? Icons.volume_off : Icons.volume_up_sharp,
+                        music.isPlaying
+                            ? Icons.volume_off
+                            : Icons.volume_up_sharp,
                         color: Colors.white70,
                       ),
                     );
-                  })
+                  }),
                 ],
               ),
               const SizedBox(height: 10),
@@ -113,15 +122,49 @@ class AFHandwriting extends GetView<AFHandwritingController> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Obx(() => GradientMask(
-                      child: Text(
-                        "Latter ${currentIndex.value + 1} of ${latter.length}",
-                        style: TextStyle(
-                          fontSize: ScreenResponsive.responsiveFont(context, 18),
-                          fontWeight: FontWeight.w600,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Obx(
+                          () => GradientMask(
+                            child: Text(
+                              "Latter ${currentIndex.value + 1} of ${latter.length}",
+                              style: TextStyle(
+                                fontSize: ScreenResponsive.responsiveFont(
+                                  context,
+                                  18,
+                                ),
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                    )),
+                        Obx(
+                          () => Row(
+                            children: [
+                              Text(
+                                controller.isCursive.value
+                                    ? "Normal"
+                                    : "Cursive",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                ),
+                              ),
+                              Transform.scale(
+                                scale: 0.7, // 👈 reduce size (try 0.6 - 0.8)
+                                child: Switch(
+                                  value: controller.isCursive.value,
+                                  onChanged: (val) =>
+                                  controller.isCursive.value = val,
+                                  activeColor: AppColors.sky,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                     const SizedBox(height: 10),
                     Text(
                       title.tr,
@@ -145,24 +188,37 @@ class AFHandwriting extends GetView<AFHandwritingController> {
                         GestureDetector(
                           onTap: previousLatter,
                           child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 15,
+                              vertical: 10,
+                            ),
                             decoration: BoxDecoration(
                               color: Colors.white.withAlpha(15),
                               borderRadius: BorderRadius.circular(50),
-                              border: Border.all(color: Colors.grey, width: 0.7),
+                              border: Border.all(
+                                color: Colors.grey,
+                                width: 0.7,
+                              ),
                             ),
                             child: Row(
                               children: [
-                                Icon(Icons.arrow_back, color: Colors.white, size: 18),
+                                Icon(
+                                  Icons.arrow_back,
+                                  color: Colors.white,
+                                  size: 18,
+                                ),
                                 const SizedBox(width: 5),
                                 Text(
                                   "Previous",
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: ScreenResponsive.responsiveFont(context, 16),
+                                    fontSize: ScreenResponsive.responsiveFont(
+                                      context,
+                                      16,
+                                    ),
                                     fontWeight: FontWeight.w600,
                                   ),
-                                )
+                                ),
                               ],
                             ),
                           ),
@@ -170,11 +226,17 @@ class AFHandwriting extends GetView<AFHandwritingController> {
                         GestureDetector(
                           onTap: nextLatter,
                           child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 15,
+                              vertical: 10,
+                            ),
                             decoration: BoxDecoration(
                               color: Colors.white.withAlpha(15),
                               borderRadius: BorderRadius.circular(50),
-                              border: Border.all(color: Colors.grey, width: 0.7),
+                              border: Border.all(
+                                color: Colors.grey,
+                                width: 0.7,
+                              ),
                             ),
                             child: Row(
                               children: [
@@ -182,16 +244,23 @@ class AFHandwriting extends GetView<AFHandwritingController> {
                                   "Next",
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: ScreenResponsive.responsiveFont(context, 16),
+                                    fontSize: ScreenResponsive.responsiveFont(
+                                      context,
+                                      16,
+                                    ),
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
                                 const SizedBox(width: 5),
-                                Icon(Icons.arrow_forward, color: Colors.white, size: 18),
+                                Icon(
+                                  Icons.arrow_forward,
+                                  color: Colors.white,
+                                  size: 18,
+                                ),
                               ],
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                     Padding(
@@ -199,28 +268,55 @@ class AFHandwriting extends GetView<AFHandwritingController> {
                       child: SizedBox(
                         height: 500,
                         child: Obx(
-                              () => TracingScreen(word: latter[currentIndex.value]),
+                          () => TracingScreen(word: latter[currentIndex.value]),
                         ),
                       ),
                     ),
 
                     GestureDetector(
                       onTap: () async {
+                        print("dsfvdfvd");
                         final controller = Get.put(TracingController());
                         final word = latter[currentIndex.value];
-                        String? pngPath = await controller.saveSignaturePng(controller: controller.signatureController, fileName: 'traced_word_$word', word: word);
-                        controller.imagePath.value = pngPath!;
+                        String? pngPath = await controller.saveSignaturePng(
+                          controller: controller.signatureController,
+                          fileName: 'traced_word_$word',
+                          word: word,
+                        );
 
-                        if (pngPath != null) {
-                          final HController = Get.find<HandwritingPracticeController>();
-                          word == 'F' ? HController.unLockTask(1) : word == 'L' ? HController.unLockTask(2) : word == 'R' ? HController.unLockTask(3) : word == 'Z' ? HController.unLockTask(4) :
-                          word == 'f' ? HController.unLockTask(5) : word == 'l' ? HController.unLockTask(6) : word == 'r' ? HController.unLockTask(7) : word == 'z' ? HController.unLockTask(8) :
-                          word == '9' ? HController.unLockTask(10) : currentIndex++;
-                          print("PNG saved at: $pngPath");
-                          controller.submit(imagePath: pngPath!, word: word);
-                          controller.clearCanvas();
-
+                        if (pngPath == null) {
+                          AppSnackbar.show(
+                            "Failed to save image. Please restart the app or your simulator.",
+                          );
+                          return;
                         }
+
+                        controller.imagePath.value = pngPath;
+
+                        final HController =
+                            Get.find<HandwritingPracticeController>();
+                        word == 'F'
+                            ? HController.unLockTask(1)
+                            : word == 'L'
+                            ? HController.unLockTask(2)
+                            : word == 'R'
+                            ? HController.unLockTask(3)
+                            : word == 'Z'
+                            ? HController.unLockTask(4)
+                            : word == 'f'
+                            ? HController.unLockTask(5)
+                            : word == 'l'
+                            ? HController.unLockTask(6)
+                            : word == 'r'
+                            ? HController.unLockTask(7)
+                            : word == 'z'
+                            ? HController.unLockTask(8)
+                            : word == '9'
+                            ? HController.unLockTask(10)
+                            : currentIndex++;
+                        print("PNG saved at: $pngPath");
+                        controller.submit(imagePath: pngPath, word: word);
+                        controller.clearCanvas();
                       },
                       child: Container(
                         height: 55,
@@ -228,7 +324,11 @@ class AFHandwriting extends GetView<AFHandwritingController> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
                           gradient: LinearGradient(
-                            colors: [AppColors.yellow, AppColors.pink, AppColors.sky],
+                            colors: [
+                              AppColors.yellow,
+                              AppColors.pink,
+                              AppColors.sky,
+                            ],
                           ),
                         ),
                         child: Row(
@@ -254,7 +354,7 @@ class AFHandwriting extends GetView<AFHandwritingController> {
                     ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),

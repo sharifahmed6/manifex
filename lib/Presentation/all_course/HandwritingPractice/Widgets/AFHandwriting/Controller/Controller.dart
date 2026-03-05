@@ -4,7 +4,7 @@ import 'package:manifex/Core/MusicService.dart';
 import '../../../../../../Core/snakbar.dart';
 
 class AFHandwritingController extends GetxController {
-
+  var isCursive = true.obs;
   @override
   void onInit() {
     super.onInit();
@@ -18,8 +18,4 @@ class AFHandwritingController extends GetxController {
     MusicService().stop();
     print("TracingController CLOSED");
   }
-
-
-
-
 }

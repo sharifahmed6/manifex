@@ -13,9 +13,9 @@ class SplashController extends GetxController {
       radius.value = 110;
       Future.delayed(const Duration(milliseconds: 1600), () {
         if(PrefHelper.isLoggedIn()){
-          Get.toNamed(routes.bottom_navbar);
+          Get.offAllNamed(routes.bottom_navbar);
         }else{
-          Get.toNamed(routes.on_borading_screen);
+          Get.offAllNamed(routes.on_borading_screen);
         }
       });
     });

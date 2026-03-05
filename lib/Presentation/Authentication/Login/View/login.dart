@@ -15,198 +15,245 @@ class login extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final controller = Get.find<login_controller>();
 
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return scaffold_background(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
-        child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              spacing: 10,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Image.asset(assets_path.logo, width: 62, height: 62),
-                logo_manifex(),
-                Text(
-                  "Welcome to MANIFEX! Let’s start your language learning journey today"
-                      .tr,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: ScreenResponsive.responsiveFont(context, 12),
-                  ),
-                ),
-                CircleAvatar(
-                  radius: 100,
-                  backgroundColor: Colors.transparent,
-                  backgroundImage: AssetImage(assets_path.splash_image),
-                ),
-                const SizedBox(height: 5),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Email".tr,
+        child: Center(
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 20),
+                  Image.asset(assets_path.logo, width: 62, height: 62),
+                  const SizedBox(height: 10),
+                  logo_manifex(),
+                  const SizedBox(height: 10),
+                  Text(
+                    "Welcome to MANIFEX! Let’s start your language learning journey today"
+                        .tr,
+                    textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: ScreenResponsive.responsiveFont(context, 16),
-                      fontWeight: FontWeight.bold,
+                      fontSize: ScreenResponsive.responsiveFont(context, 12),
                     ),
                   ),
-                ),
-                TextFormField(
-                  controller: emailController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter some text'.tr;
-                    } else if (GetUtils.isEmail(value) == false) {
-                      return 'Please enter a valid email address'.tr;
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(hintText: "Enter your email".tr),
-                ),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Password".tr,
-                    style: TextStyle(
-                      fontSize: ScreenResponsive.responsiveFont(context, 16),
-                      fontWeight: FontWeight.bold,
+                  const SizedBox(height: 10),
+                  // Responsive Avatar
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      double radius = constraints.maxWidth * 0.25;
+                      if (radius > 100) radius = 100;
+                      return CircleAvatar(
+                        radius: radius,
+                        backgroundColor: Colors.transparent,
+                        backgroundImage: AssetImage(assets_path.splash_image),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 15),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Email".tr,
+                      style: TextStyle(
+                        fontSize: ScreenResponsive.responsiveFont(context, 16),
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
-                Obx(
-                  () => TextFormField(
-                    controller: passwordController,
-                    obscureText: controller.password.value,
+                  const SizedBox(height: 10),
+                  TextFormField(
+                    controller: emailController,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter some text'.tr;
-                      } else if (value.length < 6) {
-                        return 'Password must be at least 6 characters'.tr;
+                      } else if (GetUtils.isEmail(value) == false) {
+                        return 'Please enter a valid email address'.tr;
                       }
                       return null;
                     },
-                    decoration: InputDecoration(
-                      hintText: "Enter your password".tr,
-                      suffixIcon: GestureDetector(
-                        onTap: () {
-                          controller.password.value =
-                              !controller.password.value;
-                        },
-                        child: Icon(
-                          controller.password.value
-                              ? Icons.visibility_off_outlined
-                              : Icons.visibility_outlined,
-                          color: Colors.grey,
+                    decoration: InputDecoration(hintText: "Enter your email".tr),
+                  ),
+                  const SizedBox(height: 10),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Password".tr,
+                      style: TextStyle(
+                        fontSize: ScreenResponsive.responsiveFont(context, 16),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Obx(
+                    () => TextFormField(
+                      controller: passwordController,
+                      obscureText: controller.password.value,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter some text'.tr;
+                        } else if (value.length < 6) {
+                          return 'Password must be at least 6 characters'.tr;
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        hintText: "Enter your password".tr,
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            controller.password.value =
+                                !controller.password.value;
+                          },
+                          icon: Icon(
+                            controller.password.value
+                                ? Icons.visibility_off_outlined
+                                : Icons.visibility_outlined,
+                            color: Colors.grey,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                Row(
-                  children: [
-                    Obx(
-                      () => Checkbox(
-                        value: controller.isRemeber.value,
-                        activeColor: AppColors.sky,
-                        onChanged: (value) {
-                          controller.isRemeber.value =
-                              !controller.isRemeber.value;
-                        },
-                      ),
-                    ),
-                    Text(
-                      "Remember me".tr,
-                      style: TextStyle(
-                        fontSize: ScreenResponsive.responsiveFont(context, 16),
-                      ),
-                    ),
-                    const Spacer(),
-                    TextButton(
-                      onPressed: () => controller.route_forget_password(),
-                      child: Text(
-                        "Forgot Password?".tr,
-                        style: TextStyle(
-                          fontSize: ScreenResponsive.responsiveFont(
-                            context,
-                            16,
-                          ),
-                          color: AppColors.sky,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                ButtonGradient(
-                  onTap: () {
-                    if (_formKey.currentState!.validate()) {
-                      controller.Login(
-                        emailController.text,
-                        passwordController.text,
-                      );
-                    }
-                  },
-                  text: "Login".tr,
-                ),
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                            text: "New here? ",
-                            style: TextStyle(
-                              fontSize: ScreenResponsive.responsiveFont(
-                                context,
-                                16,
+                  const SizedBox(height: 5),
+                  // Row with overflow handling
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Obx(
+                              () => SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: Checkbox(
+                                  value: controller.isRemeber.value,
+                                  activeColor: AppColors.sky,
+                                  onChanged: (value) {
+                                    controller.isRemeber.value =
+                                        !controller.isRemeber.value;
+                                  },
+                                ),
                               ),
-                              color: Colors.white,
                             ),
-                          ),
-                          WidgetSpan(
-                            alignment: PlaceholderAlignment.baseline,
-                            baseline: TextBaseline.alphabetic,
-                            child: GestureDetector(
-                              onTap: () =>
-                                  Get.toNamed(routes.signupGmail_screen),
+                            const SizedBox(width: 8),
+                            Flexible(
                               child: Text(
-                                "Create your account",
+                                "Remember me".tr,
+                                overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                  color: AppColors.sky,
-                                  fontWeight: FontWeight.bold,
                                   fontSize: ScreenResponsive.responsiveFont(
                                     context,
-                                    16,
+                                    14,
                                   ),
                                 ),
                               ),
                             ),
+                          ],
+                        ),
+                      ),
+                      Flexible(
+                        child: TextButton(
+                          onPressed: () => controller.route_forget_password(),
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.zero,
+                            minimumSize: const Size(50, 30),
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
-                          TextSpan(
-                            text: " to get started.".tr,
+                          child: Text(
+                            "Forgot Password?".tr,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               fontSize: ScreenResponsive.responsiveFont(
                                 context,
-                                16,
+                                14,
                               ),
-                              color: Colors.white,
+                              color: AppColors.sky,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                        ],
+                        ),
                       ),
-                      textAlign: TextAlign.center,
-                      softWrap: true,
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  ButtonGradient(
+                    onTap: () {
+                      if (_formKey.currentState!.validate()) {
+                        controller.Login(
+                          emailController.text,
+                          passwordController.text,
+                        );
+                      }
+                    },
+                    text: "Login".tr,
+                  ),
+                  const SizedBox(height: 20),
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Text.rich(
+                        TextSpan(
+                          children: [
+                            TextSpan(
+                              text: "New here? ".tr,
+                              style: TextStyle(
+                                fontSize: ScreenResponsive.responsiveFont(
+                                  context,
+                                  16,
+                                ),
+                                color: Colors.white,
+                              ),
+                            ),
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.baseline,
+                              baseline: TextBaseline.alphabetic,
+                              child: GestureDetector(
+                                onTap: () =>
+                                    Get.toNamed(routes.signupGmail_screen),
+                                child: Text(
+                                  "Create your account".tr,
+                                  style: TextStyle(
+                                    color: AppColors.sky,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: ScreenResponsive.responsiveFont(
+                                      context,
+                                      16,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            TextSpan(
+                              text: " to get started.".tr,
+                              style: TextStyle(
+                                fontSize: ScreenResponsive.responsiveFont(
+                                  context,
+                                  16,
+                                ),
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                        textAlign: TextAlign.center,
+                        softWrap: true,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 20),
+                ],
+              ),
             ),
           ),
         ),

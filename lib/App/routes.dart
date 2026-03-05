@@ -29,6 +29,7 @@ import '../Presentation/all_course/EnglishAdultPractice/Widgets/wordFlash/View/w
 import '../Presentation/all_course/EnglishAdultPractice/Widgets/wordPartsWorkshop/View/wordPartsWorkshop.dart';
 import '../Presentation/all_course/HandwritingPractice/View/HandwritingPractice.dart';
 import '../Presentation/all_course/HandwritingPractice/Widgets/AFHandwriting/View/AFHandwriting.dart';
+import '../Presentation/all_course/free_writing/views/free_writing.dart';
 import '../Presentation/all_course/interactive_reading/views/interactive_task_four_screen.dart';
 import '../Presentation/all_course/interactive_reading/views/interactive_task_three_screen.dart';
 import '../Presentation/all_course/native_speaking/views/native_speaking_screen.dart';
@@ -89,6 +90,7 @@ class routes {
   static const String nativeThreeScreen = '/native_three_screen';
   static const String nativeFourScreen = '/native_four_screen';
   static const String family_member_add = '/family_member_add';
+  static const String FreeWriting_screen = '/FreeWriting';
 
   static final pages = [
     GetPage(
@@ -296,6 +298,11 @@ class routes {
       name: family_member_add,
       binding: InitialBinding(),
       page: () => FamilyMemberAdd(),
+    ),
+    GetPage(
+      name: FreeWriting_screen,
+      binding: InitialBinding(),
+      page: () => FreeWriting(),
     ),
   ];
 }
