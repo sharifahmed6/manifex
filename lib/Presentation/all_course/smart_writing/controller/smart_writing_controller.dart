@@ -52,7 +52,7 @@ class SmartWritingController extends GetxController {
     super.onInit();
     fetchCategories();
     start();
-    homeController.apiAge > 13 ? null :MusicService().play();
+    homeController.apiAge <= 13 ? null :MusicService().play();
   }
 
   void start() {
