@@ -18,7 +18,7 @@ class signup_controller extends GetxController {
   var emailAddress = "".obs;
   var otp = "".obs;
   var selectedAgeGroup = "";
-  final List<String> ageGroups = ["6 - 9", "10 - 13", "14 - 17", "18 - 40"];
+  final List<String> ageGroups = ["6 - 9", "10 - 13", "14 - 17", "Adult"];
   var selectedHobbies = "";
   final List<String> hobbies = ["Dancing", "Gaming", "Sports"];
   var selectedUserType = "";
@@ -83,7 +83,7 @@ class signup_controller extends GetxController {
           "lastName": model.lastName,
           "email": model.email,
           "password": model.password,
-          "age": model.ageGroup,
+          "age": model.ageGroup == "Adult" ? "18 - 40" : model.ageGroup,
           "hobbies": model.hobbies,
           "profilePic":
               "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png",
