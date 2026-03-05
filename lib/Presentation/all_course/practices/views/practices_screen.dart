@@ -58,6 +58,35 @@ class PracticesScreen extends StatelessWidget {
                   Get.toNamed(routes.smart_writing_screen);
                 },
               ),
+              GestureDetector(
+                onTap: (){
+                  print("${Get.find<HomeController>().apiAge}");
+                },
+                child: Column(
+                  children: [
+                    SizedBox(height: 16.h),
+                    _practicesCard(
+                      imagePath: 'assets/icons/person.png',
+                      title: 'Handwriting Practice'.tr,
+                      subTitle: 'Learn to write letters the fun way'.tr,
+                      buttonText: 'Start Handwriting Practice'.tr,
+                      onTap: () {
+                        Get.toNamed(routes.HandwritingPractice_screen);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 16.h),
+              _practicesCard(
+                imagePath: 'assets/icons/smart_writing_icon.png',
+                title: 'Free Writing Practice'.tr,
+                subTitle: 'Learn to write letters the fun way'.tr,
+                buttonText: 'Start Free Writing Practice'.tr,
+                onTap: () {
+                  Get.toNamed(routes.FreeWriting_screen);
+                },
+              ),
               SizedBox(height: 16.h),
               _practicesCard(
                 imagePath: 'assets/icons/native_speaking_icon.png',
@@ -104,16 +133,6 @@ class PracticesScreen extends StatelessWidget {
                 buttonText: 'Start Adult Practice'.tr,
                 onTap: () {
                   Get.toNamed(routes.EnglishAdultPractice_screen);
-                },
-              ),
-              SizedBox(height: 16.h),
-              _practicesCard(
-                imagePath: 'assets/icons/person.png',
-                title: 'Handwriting Practice'.tr,
-                subTitle: 'Learn to write letters the fun way'.tr,
-                buttonText: 'Start Handwriting Practice'.tr,
-                onTap: () {
-                  Get.toNamed(routes.HandwritingPractice_screen);
                 },
               ),
               SizedBox(height: 8.h),

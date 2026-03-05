@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -11,6 +10,7 @@ import '../../../../../../Core/responsive.dart';
 import '../../../../../../Core/snakbar.dart';
 import '../../../Controller/Controller.dart';
 import '../Controller/Controller.dart';
+import '../../AFHandwriting/Controller/Controller.dart';
 
 class TracingScreen extends StatelessWidget {
   final String word;
@@ -32,17 +32,33 @@ class TracingScreen extends StatelessWidget {
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
-                      // Thin letter guide
-                      Text(
-                        word,
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.poppins(
-                          fontSize: ScreenResponsive.responsiveFont(context, 350),
-                          height: 1,
-                          fontWeight: FontWeight.w200,
-                          color: Colors.grey.withOpacity(0.3),
-                        ),
-                      ),
+                      Obx(() {
+                        final isCursive =
+                            Get.find<AFHandwritingController>().isCursive.value;
+                        return Text(
+                          word,
+                          textAlign: TextAlign.center,
+                          style: isCursive
+                              ? GoogleFonts.dancingScript(
+                                  fontSize: ScreenResponsive.responsiveFont(
+                                    context,
+                                    350,
+                                  ),
+                                  height: 1,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.grey.withOpacity(0.3),
+                                )
+                              : GoogleFonts.poppins(
+                                  fontSize: ScreenResponsive.responsiveFont(
+                                    context,
+                                    350,
+                                  ),
+                                  height: 1,
+                                  fontWeight: FontWeight.w200,
+                                  color: Colors.grey.withOpacity(0.3),
+                                ),
+                        );
+                      }),
                       // Drawing layer
                       Signature(
                         controller: controller.signatureController,
