@@ -1,10 +1,13 @@
 import 'dart:ui';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:manifex/Core/MusicService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../language/model/language_model.dart';
 
-class on_boarding_controller extends GetxController {
+class on_boarding_controller extends GetxController
+    with WidgetsBindingObserver {
+
   var page_index = 0.obs;
   var languageIndex = 0.obs;
   static const _langKey = 'lang_index';
@@ -24,49 +27,63 @@ class on_boarding_controller extends GetxController {
       flag: "assets/icons/poland_icon.png",
       locale: const Locale('pl', 'PL'),
     ),
-    LanguageModel(
-      title: "Bangla",
-      country: "Bangladesh",
-      flag: "assets/icons/bangladesh_icon.png",
-      locale: const Locale('bn', 'BD'),
-    ),
-    LanguageModel(
-      title: "Chinese",
-      country: "China",
-      flag: "assets/icons/chinese_icon.png",
-      locale: const Locale('zh', 'CN'),
-    ),
-    LanguageModel(
-      title: "Hindi",
-      country: "India",
-      flag: "assets/icons/india_icon.png",
-      locale: const Locale('hi', 'IN'),
-    ),
-    LanguageModel(
-      title: "Korean",
-      country: "Korea",
-      flag: "assets/icons/korean_icon.png",
-      locale: const Locale('ko', 'KR'),
-    ),
-    LanguageModel(
-      title: "Italian",
-      country: "Italia",
-      flag: "assets/icons/italian_icon.png",
-      locale: const Locale('it', 'IT'),
-    ),
+    // LanguageModel(
+    //   title: "Bangla",
+    //   country: "Bangladesh",
+    //   flag: "assets/icons/bangladesh_icon.png",
+    //   locale: const Locale('bn', 'BD'),
+    // ),
+    // LanguageModel(
+    //   title: "Chinese",
+    //   country: "China",
+    //   flag: "assets/icons/chinese_icon.png",
+    //   locale: const Locale('zh', 'CN'),
+    // ),
+    // LanguageModel(
+    //   title: "Hindi",
+    //   country: "India",
+    //   flag: "assets/icons/india_icon.png",
+    //   locale: const Locale('hi', 'IN'),
+    // ),
+    // LanguageModel(
+    //   title: "Korean",
+    //   country: "Korea",
+    //   flag: "assets/icons/korean_icon.png",
+    //   locale: const Locale('ko', 'KR'),
+    // ),
+    // LanguageModel(
+    //   title: "Italian",
+    //   country: "Italia",
+    //   flag: "assets/icons/italian_icon.png",
+    //   locale: const Locale('it', 'IT'),
+    // ),
   ];
 
   @override
   void onInit() {
     super.onInit();
+    WidgetsBinding.instance.addObserver(this);
     _loadLanguage();
     music.play();
   }
 
   @override
   void onClose() {
-    music.stop();
+    WidgetsBinding.instance.removeObserver(this);
+    music.stop(); // 👈 stop when leaving page
     super.onClose();
+  }
+
+  // 👇 Detect app minimize / resume
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+      music.stop(); // App minimized
+    }
+
+    if (state == AppLifecycleState.resumed) {
+      music.play(); // Optional: resume when back
+    }
   }
 
   Future<void> _loadLanguage() async {

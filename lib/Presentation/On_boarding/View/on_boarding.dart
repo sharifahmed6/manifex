@@ -12,7 +12,7 @@ import '../Controller/Controller.dart';
 
 class on_borading extends StatelessWidget {
   on_borading({super.key});
-  final controller = Get.find<on_boarding_controller>();
+  final controller = Get.put(on_boarding_controller());
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,7 @@ class on_borading extends StatelessWidget {
                   }
                 },
                 icon: Icon(
-                  music.isPlaying ? Icons.volume_off : Icons.volume_up_sharp,
+                  music.isPlaying ? Icons.volume_up_sharp : Icons.volume_off,
                   color: Colors.white70,
                 ),
               );
