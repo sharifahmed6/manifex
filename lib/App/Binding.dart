@@ -51,10 +51,10 @@ class InitialBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<SplashController>(() => SplashController(), fenix: true);
-    Get.lazyPut<on_boarding_controller>(
-      () => on_boarding_controller(),
-      fenix: true,
-    );
+    // Get.lazyPut<on_boarding_controller>(
+    //   () => on_boarding_controller(),
+    //   fenix: true,
+    // );
     Get.lazyPut<login_controller>(() => login_controller(), fenix: true);
     Get.lazyPut<signup_controller>(() => signup_controller(), fenix: true);
     Get.lazyPut<BottomNavbarController>(
