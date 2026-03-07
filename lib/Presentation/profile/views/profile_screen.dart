@@ -7,6 +7,7 @@ import 'package:manifex/Presentation/Features/home/controller/home_controller.da
 import 'package:manifex/Presentation/Share/scafold_background.dart';
 import 'package:manifex/Presentation/Share/text_title_small.dart';
 import 'package:manifex/Presentation/app_bar/views/custom_app_bar.dart';
+import 'package:manifex/Presentation/bottom_navbar/controllers/bottom_navbar_controller.dart';
 import 'package:manifex/Presentation/progress/widget/gradient_border_avater.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
@@ -17,6 +18,7 @@ import '../../../Core/loading.dart';
 class ProfileScreen extends StatelessWidget {
   ProfileScreen({super.key});
   final homeController = Get.find<HomeController>();
+  final bottomNavController = Get.find<BottomNavbarController>();
 
   @override
   Widget build(BuildContext context) {
@@ -329,7 +331,9 @@ class ProfileScreen extends StatelessWidget {
           ),
         ),
         GestureDetector(
-          onTap: () {},
+          onTap: () {
+            bottomNavController.changeIndex(3);
+          },
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
             decoration: BoxDecoration(
