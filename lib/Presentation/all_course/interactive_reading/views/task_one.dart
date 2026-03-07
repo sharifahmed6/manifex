@@ -31,158 +31,161 @@ class TaskOne extends StatelessWidget {
       child: LayoutBuilder(
         builder: (context, constraints) {
           return SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomBackButton(text: 'Task 1'.tr),
-                SizedBox(height: 16.h),
-                GradientTitle(
-                  normalText: 'Phoneme '.tr,
-                  gradientText: 'Flashcards'.tr,
-                  fontSize: 20,
-                ),
-                SizedBox(height: 16.h),
-                CustomText(
-                  text: 'Click the cards to hear the sound'.tr,
-                  color: const Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
-                ),
-                SizedBox(height: 16.h),
-                ConstrainedBox(
-                  constraints: BoxConstraints(minHeight: constraints.minHeight),
-                  child: Align(
-                    alignment: Alignment.topCenter,
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(maxWidth: 420.w),
-                      child: Obx(() {
-                        if (c.isLoading.value) {
-                          return const Center(
-                            child: CustomCircleProgressIndicator(),
-                          );
-                        }
+            child: Padding(
+              padding:  EdgeInsets.all(16.0.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomBackButton(text: 'Task 1'.tr),
+                  SizedBox(height: 16.h),
+                  GradientTitle(
+                    normalText: 'Phoneme '.tr,
+                    gradientText: 'Flashcards'.tr,
+                    fontSize: 20,
+                  ),
+                  SizedBox(height: 16.h),
+                  CustomText(
+                    text: 'Click the cards to hear the sound'.tr,
+                    color: const Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
+                  ),
+                  SizedBox(height: 16.h),
+                  ConstrainedBox(
+                    constraints: BoxConstraints(minHeight: constraints.minHeight),
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(maxWidth: 420.w),
+                        child: Obx(() {
+                          if (c.isLoading.value) {
+                            return const Center(
+                              child: CustomCircleProgressIndicator(),
+                            );
+                          }
 
-                        if (c.error.isNotEmpty) {
-                          return Center(
+                          if (c.error.isNotEmpty) {
+                            return Center(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  CustomText(
+                                    text: c.error.value,
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(height: 12.h),
+                                  GestureDetector(
+                                    onTap: c.fetchWord,
+                                    child: ButtonGradient(
+                                      text: 'Retry'.tr,
+                                      height: 50,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
+
+                          if (c.shuffledLetters.isEmpty || c.selected.isEmpty) {
+                            return const Center(
+                              child: CustomCircleProgressIndicator(),
+                            );
+                          }
+
+                          return Container(
+                            padding: EdgeInsets.all(16.w),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withAlpha((2.56 * 3).toInt()),
+                              borderRadius: BorderRadius.circular(18.r),
+                              border: Border.all(
+                                color: Colors.white.withAlpha(
+                                  (2.56 * 14).toInt(),
+                                ),
+                              ),
+                            ),
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                CustomText(
-                                  text: c.error.value,
-                                  color: Colors.white,
-                                ),
-                                SizedBox(height: 12.h),
-                                GestureDetector(
-                                  onTap: c.fetchWord,
-                                  child: ButtonGradient(
-                                    text: 'Retry'.tr,
-                                    height: 50,
+                                // ✅ shuffled letters show here
+                                Wrap(
+                                  alignment: WrapAlignment.center,
+                                  spacing: 30.w,
+                                  runSpacing: 10.h,
+                                  children: List.generate(
+                                    c.shuffledLetters.length,
+                                    (i) {
+                                      final letter = c.shuffledLetters[i];
+
+                                      final gradients = [
+                                        const LinearGradient(
+                                          colors: [
+                                            Color(0xffFFD6B7),
+                                            Color(0xffE07C2F),
+                                          ],
+                                        ),
+                                        const LinearGradient(
+                                          colors: [
+                                            Color(0xffFFA6C8),
+                                            Color(0xffB920ED),
+                                          ],
+                                        ),
+                                        const LinearGradient(
+                                          colors: [
+                                            Color(0xffB2DEFF),
+                                            Color(0xff3BA3F2),
+                                          ],
+                                        ),
+                                      ];
+
+                                      return GestureDetector(
+                                        onTap: () => c.toggleLetter(i),
+                                        child: AnimatedContainer(
+                                          duration: const Duration(
+                                            milliseconds: 160,
+                                          ),
+                                          width: tileSize,
+                                          height: tileSize,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(
+                                              16.r,
+                                            ),
+                                            gradient:
+                                                gradients[i % gradients.length],
+                                          ),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              CustomText(
+                                                text: letter,
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: isLandscape ? 24 : 32,
+                                                color: Colors.white,
+                                              ),
+                                              SizedBox(height: 6.h),
+                                              Icon(
+                                                Icons.volume_up_rounded,
+                                                color: Colors.white,
+                                                size: isLandscape ? 18.sp : 24.sp,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
                                   ),
                                 ),
+
+                                SizedBox(height: 16.h),
+
+                                _selectedPhonemeCard(isLandscape),
                               ],
                             ),
                           );
-                        }
-
-                        if (c.shuffledLetters.isEmpty || c.selected.isEmpty) {
-                          return const Center(
-                            child: CustomCircleProgressIndicator(),
-                          );
-                        }
-
-                        return Container(
-                          padding: EdgeInsets.all(16.w),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withAlpha((2.56 * 3).toInt()),
-                            borderRadius: BorderRadius.circular(18.r),
-                            border: Border.all(
-                              color: Colors.white.withAlpha(
-                                (2.56 * 14).toInt(),
-                              ),
-                            ),
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              // ✅ shuffled letters show here
-                              Wrap(
-                                alignment: WrapAlignment.center,
-                                spacing: 30.w,
-                                runSpacing: 10.h,
-                                children: List.generate(
-                                  c.shuffledLetters.length,
-                                  (i) {
-                                    final letter = c.shuffledLetters[i];
-
-                                    final gradients = [
-                                      const LinearGradient(
-                                        colors: [
-                                          Color(0xffFFD6B7),
-                                          Color(0xffE07C2F),
-                                        ],
-                                      ),
-                                      const LinearGradient(
-                                        colors: [
-                                          Color(0xffFFA6C8),
-                                          Color(0xffB920ED),
-                                        ],
-                                      ),
-                                      const LinearGradient(
-                                        colors: [
-                                          Color(0xffB2DEFF),
-                                          Color(0xff3BA3F2),
-                                        ],
-                                      ),
-                                    ];
-
-                                    return GestureDetector(
-                                      onTap: () => c.toggleLetter(i),
-                                      child: AnimatedContainer(
-                                        duration: const Duration(
-                                          milliseconds: 160,
-                                        ),
-                                        width: tileSize,
-                                        height: tileSize,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(
-                                            16.r,
-                                          ),
-                                          gradient:
-                                              gradients[i % gradients.length],
-                                        ),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            CustomText(
-                                              text: letter,
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: isLandscape ? 24 : 32,
-                                              color: Colors.white,
-                                            ),
-                                            SizedBox(height: 6.h),
-                                            Icon(
-                                              Icons.volume_up_rounded,
-                                              color: Colors.white,
-                                              size: isLandscape ? 18.sp : 24.sp,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-
-                              SizedBox(height: 16.h),
-
-                              _selectedPhonemeCard(isLandscape),
-                            ],
-                          ),
-                        );
-                      }),
+                        }),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },

@@ -24,7 +24,7 @@ class SightWordPracticeScreen extends StatelessWidget {
         child: CustomAppBar(),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(18),
+        padding:  EdgeInsets.all(16.w),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
