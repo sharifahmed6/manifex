@@ -20,14 +20,16 @@ class HomeScreen extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return scaffold_background(
+      appBar: PreferredSize(
+          preferredSize: Size.fromHeight(kToolbarHeight),
+          child: CustomAppBar(),
+      ),
       child: Padding(
         padding: EdgeInsets.all(16),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomAppBar(),
-              SizedBox(height: ScreenResponsive.h(context, 10)),
               Container(
                 padding: EdgeInsets.all(ScreenResponsive.r(context, 15)),
                 decoration: BoxDecoration(
