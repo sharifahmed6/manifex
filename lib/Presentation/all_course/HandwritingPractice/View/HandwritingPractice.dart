@@ -45,7 +45,7 @@ class HandwritingPractice extends StatelessWidget {
                       }
                     },
                     icon: Icon(
-                      music.isPlaying ? Icons.volume_off : Icons.volume_up_sharp,
+                      music.isPlaying ? Icons.volume_up_sharp : Icons.volume_off,
                       color: Colors.white70,
                     ),
                   );
