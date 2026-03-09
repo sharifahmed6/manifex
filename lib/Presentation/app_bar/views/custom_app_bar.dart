@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:manifex/Core/MusicService.dart';
 
 import '../../../App/AppColors.dart';
 import '../../../App/assets_path.dart';
@@ -18,6 +19,13 @@ class CustomAppBar extends StatelessWidget {
         children: [
           Image.asset(assets_path.logo, width: 48.w, height: 48.h),
           Spacer(),
+          Obx(() => IconButton(onPressed: (){
+            if(MusicService().isPlaying){
+              MusicService().stop();
+            }else{
+              MusicService().play();
+            }
+          }, icon: Icon(MusicService().isPlaying ? Icons.volume_up_sharp : Icons.volume_off ,color: Colors.white,size: 32.sp,)),),
           Container(
             padding: EdgeInsets.symmetric(
               horizontal: 20.w,

@@ -103,8 +103,8 @@ class AFHandwriting extends GetView<AFHandwritingController> {
                       },
                       icon: Icon(
                         music.isPlaying
-                            ? Icons.volume_off
-                            : Icons.volume_up_sharp,
+                            ? Icons.volume_up_sharp
+                            : Icons.volume_off,
                         color: Colors.white70,
                       ),
                     );

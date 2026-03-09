@@ -220,7 +220,11 @@ class auditoryDiscrimination extends StatelessWidget {
               const SizedBox(height: 20),
               GestureDetector(
                 onTap: (){
-                  if(controller.finalAnswer.value.isNotEmpty){
+                  if(controller.finalAnswer.value.isNotEmpty && controller.currentIndex.value == controller.word_pairs.length - 1){
+                    // Get.back();
+                    controller.submit();
+                    AppSnackbar.show("Auditory discrimination task completed.");
+                  } else if(controller.finalAnswer.value.isNotEmpty){
                     controller.submit();
                   }else{
                     AppSnackbar.show("Please select answer.");

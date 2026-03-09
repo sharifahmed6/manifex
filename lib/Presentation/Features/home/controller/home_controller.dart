@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:manifex/App/Urls.dart';
 import 'package:manifex/App/network_caller.dart';
@@ -5,15 +6,20 @@ import 'package:manifex/Core/SharepreferenceHelper.dart';
 import 'package:manifex/Presentation/Features/home/model/user_model.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
-class HomeController extends GetxController {
+import '../../../../Core/MusicService.dart';
+
+class HomeController extends GetxController with WidgetsBindingObserver  {
   final profileInfo = Rxn<UserModel>();
   final isLoading = false.obs;
   final errorMessage = ''.obs;
+  final music = MusicService();
 
 
   @override
   Future<void> onInit() async {
     super.onInit();
+    WidgetsBinding.instance.addObserver(this);
+    music.play();
     String userId = PrefHelper.getUserId() ?? '';
     if (userId.isEmpty) {
       throw Exception("Backend user ID cannot be empty for RevenueCat login!");
@@ -22,6 +28,25 @@ class HomeController extends GetxController {
     final customerInfo = await Purchases.logIn(userId);
     // print("${customerInfo.customerInfo}");
     fetchProfileInfo();
+  }
+
+  // 👇 Detect app minimize / resume
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+      music.stop(); // App minimized
+    }
+
+    if (state == AppLifecycleState.resumed) {
+      music.play(); // Optional: resume when back
+    }
+  }
+
+  @override
+  void onClose() {
+    WidgetsBinding.instance.removeObserver(this);
+    music.stop(); // 👈 stop when leaving page
+    super.onClose();
   }
 
   String get userId => profileInfo.value?.data?.id ?? '';
