@@ -1,14 +1,12 @@
 import 'dart:convert';
-
 import 'package:get/get.dart';
-
 import '../../../../../../Core/SharepreferenceHelper.dart';
 import '../../../../../../Core/snakbar.dart';
 import '../../../../../Share/custom_circle_progress_indicator.dart';
 import 'package:http/http.dart' as http;
-
 import '../../../Controller/Controller.dart';
 import '../Model/Model.dart';
+
 class wordPartsWorkshopController extends GetxController {
   var currentIndex = 0.obs;
 
@@ -19,6 +17,7 @@ class wordPartsWorkshopController extends GetxController {
 
     if (currentIndex.value < wp.suffix.length - 1) {
       currentIndex.value++;
+      return;
     } else {
       final practiceController =
       Get.find<EnglishAdultPracticeController>();
@@ -29,9 +28,10 @@ class wordPartsWorkshopController extends GetxController {
 
       AppSnackbar.show("Task 4 Completed");
 
-      Future.delayed(const Duration(milliseconds: 500), () {
+      Future.delayed(const Duration(milliseconds: 200), () {
         Get.back();
       });
+      return;
     }
   }
 

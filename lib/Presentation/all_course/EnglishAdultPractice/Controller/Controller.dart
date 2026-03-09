@@ -27,14 +27,14 @@ class EnglishAdultPracticeController extends GetxController {
 
 
   Future<void> FinalSubmission() async {
-    AppLoader.show();
+    // AppLoader.show();
 
     try {
       NetworkResponse response = await NetworkCaller().postRequest(
         url: urls.adultTaskSubmit,
         body: {"tasks": finalResult, "timeSpent": seconds.value},
       );
-      AppLoader.hide();
+      // AppLoader.hide();
 
       if (response.statusCode == 201 &&
           response.responseData != null &&

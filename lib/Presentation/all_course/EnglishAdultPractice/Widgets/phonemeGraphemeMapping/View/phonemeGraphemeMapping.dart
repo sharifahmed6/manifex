@@ -182,7 +182,11 @@ class phonemeGraphemeMapping extends StatelessWidget {
 
               GestureDetector(
                 onTap: (){
-                  if(controller.selectedWords.isEmpty){
+                  if(controller.selectedWords.isNotEmpty && controller.currentIndex.value == controller.exercises.length - 1){
+                    controller.nextWord();
+                    AppSnackbar.show("Phoneme-Grapheme Mapping task completed.");
+
+                  } else if(controller.selectedWords.isEmpty){
                     AppSnackbar.show("Please select answer.");
                   }else{
                     if (controller.combinedText == controller.exercises[controller.currentIndex.value].word) {

@@ -3,6 +3,7 @@ import 'package:manifex/App/AppColors.dart';
 import 'package:manifex/Core/snakbar.dart';
 import 'package:manifex/Presentation/Share/scafold_background.dart';
 import 'package:get/get.dart';
+import 'package:manifex/Presentation/app_bar/views/custom_app_bar.dart';
 import 'package:purchases_flutter/models/customer_info_wrapper.dart';
 import '../../../../Core/responsive.dart';
 import '../../../Share/GradientMask.dart';
@@ -264,6 +265,10 @@ class subscription extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return scaffold_background(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight),
+        child: CustomAppBar(),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(15.0),
         child: SingleChildScrollView(
