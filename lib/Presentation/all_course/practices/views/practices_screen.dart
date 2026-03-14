@@ -90,8 +90,7 @@ class PracticesScreen extends StatelessWidget {
                 imagePath: 'assets/icons/native_speaking_icon.png',
                 title: 'Native Speaking'.tr,
                 subTitle:
-                    'Advanced Al pronunciation coaching with real-time feedback and accent training'
-                        .tr,
+                    'Advanced Al pronunciation coaching with real-time feedback and accent training'.tr,
                 buttonText: 'Start Speaking'.tr,
                 onTap: () {
                   Get.toNamed(routes.native_speaking_skill_screen);

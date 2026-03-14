@@ -29,6 +29,30 @@ Future<void> main() async {
     case 3:
       initialLocale = const Locale('zh', 'CN');
       break;
+    case 4:
+      initialLocale = const Locale('fr', 'FR');
+      break;
+    case 5:
+      initialLocale = const Locale('hi', 'IN');
+      break;
+    case 6:
+      initialLocale = const Locale('de', 'DE');
+      break;
+    case 7:
+      initialLocale = const Locale('it', 'IT');
+      break;
+    case 8:
+      initialLocale = const Locale('ko', 'KR');
+      break;
+    case 9:
+      initialLocale = const Locale('es', 'ES');
+      break;
+    case 10:
+      initialLocale = const Locale('ru', 'RU');
+      break;
+    case 11:
+      initialLocale = const Locale('vi', 'VN');
+      break;
     default:
       initialLocale = const Locale('en', 'US');
   }
