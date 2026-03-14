@@ -7,7 +7,6 @@ import '../../language/model/language_model.dart';
 
 class on_boarding_controller extends GetxController
     with WidgetsBindingObserver {
-
   var page_index = 0.obs;
   var languageIndex = 0.obs;
   static const _langKey = 'lang_index';
@@ -27,18 +26,18 @@ class on_boarding_controller extends GetxController
       flag: "assets/icons/poland_icon.png",
       locale: const Locale('pl', 'PL'),
     ),
-    // LanguageModel(
-    //   title: "Bangla",
-    //   country: "Bangladesh",
-    //   flag: "assets/icons/bangladesh_icon.png",
-    //   locale: const Locale('bn', 'BD'),
-    // ),
-    // LanguageModel(
-    //   title: "Chinese",
-    //   country: "China",
-    //   flag: "assets/icons/chinese_icon.png",
-    //   locale: const Locale('zh', 'CN'),
-    // ),
+    LanguageModel(
+      title: "Bangla",
+      country: "Bangladesh",
+      flag: "assets/icons/bangladesh_icon.png",
+      locale: const Locale('bn', 'BD'),
+    ),
+    LanguageModel(
+      title: "Chinese",
+      country: "China",
+      flag: "assets/icons/chinese_icon.png",
+      locale: const Locale('zh', 'CN'),
+    ),
     // LanguageModel(
     //   title: "Hindi",
     //   country: "India",

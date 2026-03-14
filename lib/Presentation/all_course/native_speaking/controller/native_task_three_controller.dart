@@ -128,6 +128,10 @@ class NativeTaskThreeController extends GetxController {
           sentences.assignAll(list.map((e) => e.toString()).toList());
           currentIndex.value = 0;
           currentSentence.value = sentences[0];
+
+          Future.delayed(const Duration(milliseconds: 500), () {
+            playSentence();
+          });
         } else {
           Get.snackbar(
             'No Data'.tr,
@@ -162,10 +166,16 @@ class NativeTaskThreeController extends GetxController {
   Future<void> playSentence() async {
     if (currentSentence.value.isEmpty) return;
     try {
-      await flutterTts.setSpeechRate(0.5);
-      await flutterTts.speak(currentSentence.value);
+      if (isSpeaking.value) {
+        await flutterTts.stop();
+        isSpeaking.value = false;
+      } else {
+        await flutterTts.setSpeechRate(0.5);
+        await flutterTts.speak(currentSentence.value);
+      }
     } catch (e) {
       print('TTS error: $e');
+      isSpeaking.value = false;
     }
   }
 
@@ -173,10 +183,16 @@ class NativeTaskThreeController extends GetxController {
   Future<void> playSentenceSlow() async {
     if (currentSentence.value.isEmpty) return;
     try {
-      await flutterTts.setSpeechRate(0.25);
-      await flutterTts.speak(currentSentence.value);
+      if (isSpeaking.value) {
+        await flutterTts.stop();
+        isSpeaking.value = false;
+      } else {
+        await flutterTts.setSpeechRate(0.25);
+        await flutterTts.speak(currentSentence.value);
+      }
     } catch (e) {
       print('TTS slow error: $e');
+      isSpeaking.value = false;
     }
   }
 
@@ -294,7 +310,7 @@ class NativeTaskThreeController extends GetxController {
   }
 
   /// Load next sentence (refresh button)
-  void loadNextSentence() {
+  Future<void> loadNextSentence() async {
     if (sentences.isEmpty) return;
 
     showFeedback.value = false;
@@ -303,5 +319,10 @@ class NativeTaskThreeController extends GetxController {
 
     currentIndex.value = (currentIndex.value + 1) % sentences.length;
     currentSentence.value = sentences[currentIndex.value];
+
+    await flutterTts.stop();
+    isSpeaking.value = false;
+    await flutterTts.setSpeechRate(0.5);
+    await flutterTts.speak(currentSentence.value);
   }
 }

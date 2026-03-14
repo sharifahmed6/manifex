@@ -224,7 +224,9 @@ class NativeTaskFour extends StatelessWidget {
                       ),
                     )
                   : Icon(
-                      Icons.mic_none_rounded,
+                      controller.currentlySpeakingIndex.value == index
+                          ? Icons.pause
+                          : Icons.play_arrow,
                       color: Colors.white.withAlpha(150),
                       size: 20.sp,
                     ),

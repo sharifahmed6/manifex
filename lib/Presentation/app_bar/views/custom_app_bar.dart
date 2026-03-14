@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:manifex/Core/MusicService.dart';
 
 import '../../../App/AppColors.dart';
 import '../../../App/assets_path.dart';
@@ -13,42 +12,36 @@ class CustomAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<HomeController>();
-    return  Padding(
-      padding:  EdgeInsets.symmetric(horizontal: 12.w),
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 12.w),
       child: Row(
         children: [
           Image.asset(assets_path.logo, width: 48.w, height: 48.h),
           Spacer(),
-          Obx(() => IconButton(onPressed: (){
-            if(MusicService().isPlaying){
-              MusicService().stop();
-            }else{
-              MusicService().play();
-            }
-          }, icon: Icon(MusicService().isPlaying ? Icons.volume_up_sharp : Icons.volume_off ,color: Colors.white,size: 32.sp,)),),
+
           Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: 20.w,
-              vertical: 12.h,
-            ),
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
             decoration: BoxDecoration(
-              color: AppColors.white.withAlpha((2.56 * 12).toInt() ),
+              color: AppColors.white.withAlpha((2.56 * 12).toInt()),
               borderRadius: BorderRadius.circular(30),
-              border: Border.all(
-                color: const Color(0xFF4E505D),
-                width: 2,
+              border: Border.all(color: const Color(0xFF4E505D), width: 2),
+            ),
+            child: Obx(
+              () => Row(
+                mainAxisSize: MainAxisSize.min,
+                spacing: 6.w,
+                children: [
+                  Image.asset(assets_path.fire, width: 20.w, height: 20.h),
+                  CustomText(
+                    text:
+                        '${controller.profileInfo.value?.data?.userProgress?.dayStreak ?? 0}',
+                    fontWeight: FontWeight.w600,
+                  ),
+                ],
               ),
             ),
-            child: Obx(()=> Row(
-              mainAxisSize: MainAxisSize.min,
-              spacing: 6.w,
-              children: [
-                Image.asset(assets_path.fire,width: 20.w,height: 20.h,),
-                CustomText(text: '${controller.profileInfo.value?.data?.userProgress?.dayStreak ?? 0}',fontWeight: FontWeight.w600,)
-              ],
-            )),
           ),
-/*          SizedBox(width: 8.w,),
+          /*          SizedBox(width: 8.w,),
           Container(
             padding: EdgeInsets.symmetric(
               horizontal: 20.w,

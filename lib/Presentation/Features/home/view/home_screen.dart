@@ -353,8 +353,7 @@ class HomeScreen extends GetView<HomeController> {
                         height: ScreenResponsive.h(context, 50),
                         child: ButtonGradient(
                           text: "Start Practices".tr,
-                          onTap: () =>
-                              Get.to(TaskOne()),
+                          onTap: () => Get.to(TaskOne()),
                         ),
                       ),
                     ],
@@ -376,7 +375,7 @@ class HomeScreen extends GetView<HomeController> {
                 imagePath: 'assets/images/book.png',
                 title: 'Interactive Reading'.tr,
                 subTitle:
-                    'Poneme recognition an word games with visual cues designed for dyslexic learners'
+                    'Phoneme recognition and word games with visual cues designed for dyslexic learners'
                         .tr,
                 context: context,
                 onTap: () => Get.toNamed(routes.interactive_reading_screen),

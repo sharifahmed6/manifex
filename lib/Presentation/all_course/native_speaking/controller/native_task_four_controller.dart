@@ -29,7 +29,9 @@ class NativeTaskFourController extends GetxController {
   final wordCheckState = <int, bool>{}.obs;
 
   // Is main mic actively listening
-  final isSpeaking = false.obs; // TTS playing indicator
+  final currentlySpeakingIndex =
+      (-1).obs; // TTS playing indicator, tracked by index
+  int _playGeneration = 0; // Prevent overlapping playbacks when shuffling
 
   // Words target score (out of 100, split into 4 slots = 25 each)
   final wordsTarget = 0.obs; // e.g. 20 out of 100
@@ -63,6 +65,17 @@ class NativeTaskFourController extends GetxController {
     await flutterTts.setSpeechRate(0.5);
     await flutterTts.setVolume(1.0);
     await flutterTts.setPitch(1.0);
+    await flutterTts.awaitSpeakCompletion(true);
+
+    flutterTts.setCompletionHandler(() {
+      currentlySpeakingIndex.value = -1;
+    });
+    flutterTts.setCancelHandler(() {
+      currentlySpeakingIndex.value = -1;
+    });
+    flutterTts.setErrorHandler((msg) {
+      currentlySpeakingIndex.value = -1;
+    });
   }
 
   /// Initialize Speech Recognition
@@ -204,6 +217,33 @@ class NativeTaskFourController extends GetxController {
     final shuffled = List<String>.from(allWords)..shuffle(Random());
     displayedWords.assignAll(shuffled.take(4).toList());
     wordCheckState.clear();
+
+    _playGeneration++;
+    final currentGen = _playGeneration;
+
+    Future.delayed(const Duration(milliseconds: 500), () {
+      if (_playGeneration == currentGen) {
+        _playAllWords(currentGen);
+      }
+    });
+  }
+
+  /// Automatically play the 4 words sequentially
+  Future<void> _playAllWords(int generation) async {
+    for (int i = 0; i < displayedWords.length; i++) {
+      if (displayedWords.isEmpty || _playGeneration != generation)
+        break; // User left screen or shuffled again
+
+      await flutterTts.stop();
+      currentlySpeakingIndex.value = i;
+      await flutterTts.speak(displayedWords[i]);
+      currentlySpeakingIndex.value = -1;
+
+      // Small pause between words
+      if (_playGeneration == generation && i < displayedWords.length - 1) {
+        await Future.delayed(const Duration(milliseconds: 400));
+      }
+    }
   }
 
   /// Shuffle / reset: pick new 4 words
@@ -217,11 +257,17 @@ class NativeTaskFourController extends GetxController {
   Future<void> playWord(int wordIndex) async {
     if (wordIndex >= displayedWords.length) return;
     try {
-      isSpeaking.value = true;
-      await flutterTts.speak(displayedWords[wordIndex]);
-      isSpeaking.value = false;
+      if (currentlySpeakingIndex.value == wordIndex) {
+        await flutterTts.stop();
+        currentlySpeakingIndex.value = -1;
+      } else {
+        await flutterTts.stop(); // Stop any other playing word
+        currentlySpeakingIndex.value = wordIndex;
+        await flutterTts.speak(displayedWords[wordIndex]);
+        currentlySpeakingIndex.value = -1;
+      }
     } catch (e) {
-      isSpeaking.value = false;
+      currentlySpeakingIndex.value = -1;
       print('TTS error: $e');
     }
   }

@@ -87,16 +87,6 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 16.h),
                     _customItem(
-                      imagePath: 'assets/icons/subscription_plan.png',
-                      title: 'Subscription Plan'.tr,
-                      onTap: () {},
-                    ),
-                    SizedBox(height: 8.h),
-                    Divider(
-                      color: Color(0xffFFFFFF).withAlpha((2.56 * 22).toInt()),
-                    ),
-                    SizedBox(height: 16.h),
-                    _customItem(
                       imagePath: 'assets/icons/language.png',
                       title: 'Language'.tr,
                       onTap: () {

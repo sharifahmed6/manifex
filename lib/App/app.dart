@@ -6,8 +6,13 @@ import 'Binding.dart';
 import 'CustomTheme.dart';
 import 'Translation.dart';
 
+final RouteObserver<ModalRoute<void>> routeObserver =
+    RouteObserver<ModalRoute<void>>();
+
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final Locale initialLocale;
+
+  const MyApp({super.key, required this.initialLocale});
 
   @override
   Widget build(BuildContext context) {
@@ -18,12 +23,13 @@ class MyApp extends StatelessWidget {
       builder: (_, _) => GetMaterialApp(
         debugShowCheckedModeBanner: false,
         translations: AppTranslation(),
-        locale: const Locale('en', 'US'),
+        locale: initialLocale,
         fallbackLocale: const Locale('en', 'US'),
         // locale: Locale('pl', 'PL'),
         // fallbackLocale: Locale('pl', 'PL'),
         theme: customTheme,
         initialBinding: InitialBinding(),
+        navigatorObservers: [routeObserver],
         getPages: routes.pages,
         initialRoute: routes.splash_screen,
       ),
