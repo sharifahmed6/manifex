@@ -212,7 +212,7 @@ class PrecisionDrill extends StatelessWidget {
                     spacing: 5,
                     children: [
                       Text(
-                        "Check with AI".tr,
+                        "Check with Mercury".tr,
                         style: TextStyle(fontWeight: FontWeight.w600),
                       ),
                       Image.asset(

@@ -41,11 +41,7 @@ class flowChainController extends GetxController {
       selectedWords.remove(word);
     }
     else {
-      if (selectedWords.length < 3) {
-        selectedWords.add(word);
-      } else {
-        AppSnackbar.show("Limit Reached Max 3 Words".tr);
-      }
+      selectedWords.add(word);
     }
   }
 

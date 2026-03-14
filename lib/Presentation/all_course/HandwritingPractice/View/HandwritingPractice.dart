@@ -34,22 +34,22 @@ class HandwritingPractice extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomBackButton(text: 'Handwriting Practice'),
-                Obx(() {
-                  final music = MusicService();
-                  return IconButton(
-                    onPressed: () {
-                      if (music.isPlaying) {
-                        music.stop();
-                      } else {
-                        music.play();
-                      }
-                    },
-                    icon: Icon(
-                      music.isPlaying ? Icons.volume_up_sharp : Icons.volume_off,
-                      color: Colors.white70,
-                    ),
-                  );
-                })
+                // Obx(() {
+                //   final music = MusicService();
+                //   return IconButton(
+                //     onPressed: () {
+                //       if (music.isPlaying) {
+                //         music.stop();
+                //       } else {
+                //         music.play();
+                //       }
+                //     },
+                //     icon: Icon(
+                //       music.isPlaying ? Icons.volume_up_sharp : Icons.volume_off,
+                //       color: Colors.white70,
+                //     ),
+                //   );
+                // })
               ],
             ),
             SizedBox(height: 18.h),

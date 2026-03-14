@@ -8,6 +8,7 @@ import 'package:manifex/Presentation/Share/button_gradient.dart';
 import 'package:manifex/Presentation/Share/scafold_background.dart';
 import '../../../../App/AppColors.dart';
 import '../../../../App/routes.dart';
+import '../../../all_course/interactive_reading/views/task_one.dart';
 import '../../../all_course/practices/widget/transperent_gradient_border.dart';
 import '../../../app_bar/views/custom_app_bar.dart';
 import 'package:get/get.dart';
@@ -354,7 +355,7 @@ class HomeScreen extends GetView<HomeController> {
                         child: ButtonGradient(
                           text: "Start Practices".tr,
                           onTap: () =>
-                              Get.toNamed(routes.interactive_reading_screen),
+                              Get.to(TaskOne()),
                         ),
                       ),
                     ],
