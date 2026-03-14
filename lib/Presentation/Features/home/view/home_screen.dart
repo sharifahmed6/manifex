@@ -11,18 +11,17 @@ import '../../../../App/routes.dart';
 import '../../../all_course/practices/widget/transperent_gradient_border.dart';
 import '../../../app_bar/views/custom_app_bar.dart';
 import 'package:get/get.dart';
-
 import '../controller/home_controller.dart';
 
 class HomeScreen extends GetView<HomeController> {
-  HomeScreen({super.key});
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return scaffold_background(
       appBar: PreferredSize(
-          preferredSize: Size.fromHeight(kToolbarHeight),
-          child: CustomAppBar(),
+        preferredSize: Size.fromHeight(kToolbarHeight),
+        child: CustomAppBar(),
       ),
       child: Padding(
         padding: EdgeInsets.all(16),
@@ -126,7 +125,7 @@ class HomeScreen extends GetView<HomeController> {
                                     ),
                                   ),
                                 ),
-                                Obx((){
+                                Obx(() {
                                   return Text(
                                     controller.totalWords,
                                     style: TextStyle(
@@ -227,7 +226,7 @@ class HomeScreen extends GetView<HomeController> {
                                     ),
                                   ),
                                 ),
-                                Obx((){
+                                Obx(() {
                                   return Text(
                                     controller.dailyGoal,
                                     style: TextStyle(
@@ -274,7 +273,7 @@ class HomeScreen extends GetView<HomeController> {
                                     ),
                                   ),
                                 ),
-                                Obx((){
+                                Obx(() {
                                   return Text(
                                     "${controller.overallAccuracy}% ${" Accuracy".tr}",
                                     style: TextStyle(
