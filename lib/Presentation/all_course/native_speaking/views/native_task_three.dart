@@ -171,11 +171,15 @@ class NativeTaskThree extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Headphone button
-                      _buildControlButton(
-                        icon: Icons.headphones,
-                        onTap: controller.playSentence,
-                        isActive: false,
+                      // Headphone / Play Pause button
+                      Obx(
+                        () => _buildControlButton(
+                          icon: controller.isSpeaking.value
+                              ? Icons.pause
+                              : Icons.play_arrow,
+                          onTap: controller.playSentence,
+                          isActive: controller.isSpeaking.value,
+                        ),
                       ),
 
                       SizedBox(width: 32.w),
@@ -218,6 +222,7 @@ class NativeTaskThree extends StatelessWidget {
   }) {
     return GestureDetector(
       onTap: onTap,
+      behavior: HitTestBehavior.opaque,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
         decoration: BoxDecoration(

@@ -109,6 +109,7 @@ class _build_onBoarding4 extends StatelessWidget {
                             controller.languageIndex.value == index;
                         return GestureDetector(
                           onTap: () => controller.changeLanguage(index),
+                          behavior: HitTestBehavior.opaque,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 5.0),
                             child: Row(

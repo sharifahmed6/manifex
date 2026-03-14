@@ -92,9 +92,10 @@ class LanguageScreen extends StatelessWidget {
                       ),
                     ),
                   );
-                }, separatorBuilder: (BuildContext context, int index) {
-                  return SizedBox(height: 16.h,);
-              },
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return SizedBox(height: 16.h);
+                },
               ),
             ),
             ButtonGradient(text: 'Next'),

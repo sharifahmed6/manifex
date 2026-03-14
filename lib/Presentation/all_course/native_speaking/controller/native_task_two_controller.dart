@@ -18,6 +18,7 @@ class NativeTaskTwoController extends GetxController {
   final isListening = false.obs;
   final showFeedback = false.obs;
   final isSuccess = false.obs;
+  final isSpeaking = false.obs;
 
   // Data
   final phrases = <String>[].obs;
@@ -50,6 +51,19 @@ class NativeTaskTwoController extends GetxController {
     await flutterTts.setSpeechRate(0.5);
     await flutterTts.setVolume(1.0);
     await flutterTts.setPitch(1.0);
+
+    flutterTts.setStartHandler(() {
+      isSpeaking.value = true;
+    });
+    flutterTts.setCompletionHandler(() {
+      isSpeaking.value = false;
+    });
+    flutterTts.setCancelHandler(() {
+      isSpeaking.value = false;
+    });
+    flutterTts.setErrorHandler((msg) {
+      isSpeaking.value = false;
+    });
   }
 
   /// Initialize Speech Recognition
@@ -124,6 +138,10 @@ class NativeTaskTwoController extends GetxController {
           phrases.assignAll(phrasesList.map((e) => e.toString()).toList());
           currentPhraseIndex.value = 0;
           currentWord.value = phrases[0];
+
+          Future.delayed(const Duration(milliseconds: 500), () {
+            playWordPronunciation();
+          });
         } else {
           Get.snackbar(
             'No Phrases'.tr,
@@ -159,9 +177,15 @@ class NativeTaskTwoController extends GetxController {
     if (currentWord.value.isEmpty) return;
 
     try {
-      await flutterTts.speak(currentWord.value);
+      if (isSpeaking.value) {
+        await flutterTts.stop();
+        isSpeaking.value = false;
+      } else {
+        await flutterTts.speak(currentWord.value);
+      }
     } catch (e) {
       print('TTS error: $e');
+      isSpeaking.value = false;
       Get.snackbar(
         'Error'.tr,
         'Failed to play pronunciation'.tr,
@@ -288,7 +312,7 @@ class NativeTaskTwoController extends GetxController {
   }
 
   /// Load next phrase (reset button)
-  void loadNextWord() {
+  Future<void> loadNextWord() async {
     if (phrases.isEmpty) return;
 
     showFeedback.value = false;
@@ -296,5 +320,9 @@ class NativeTaskTwoController extends GetxController {
 
     currentPhraseIndex.value = (currentPhraseIndex.value + 1) % phrases.length;
     currentWord.value = phrases[currentPhraseIndex.value];
+
+    await flutterTts.stop();
+    isSpeaking.value = false;
+    await flutterTts.speak(currentWord.value);
   }
 }

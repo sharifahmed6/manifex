@@ -99,18 +99,6 @@ class PracticesScreen extends StatelessWidget {
               ),
               SizedBox(height: 16.h),
               _practicesCard(
-                imagePath: 'assets/icons/reward_icon.png',
-                title: 'Reward System'.tr,
-                subTitle:
-                    'Phoneme recognition and word games with visual cues designed for dyslexic learners'
-                        .tr,
-                buttonText: 'Start Reward'.tr,
-                onTap: () {
-                  Get.toNamed(routes.unlock_rewards_screen);
-                },
-              ),
-              SizedBox(height: 16.h),
-              _practicesCard(
                 imagePath: 'assets/icons/presentation_icon.png',
                 title: 'Presentation Practice'.tr,
                 subTitle:
@@ -131,6 +119,18 @@ class PracticesScreen extends StatelessWidget {
                 buttonText: 'Start Adult Practice'.tr,
                 onTap: () {
                   Get.toNamed(routes.EnglishAdultPractice_screen);
+                },
+              ),
+              SizedBox(height: 16.h),
+              _practicesCard(
+                imagePath: 'assets/icons/reward_icon.png',
+                title: 'Reward System'.tr,
+                subTitle:
+                'Phoneme recognition and word games with visual cues designed for dyslexic learners'
+                    .tr,
+                buttonText: 'Start Reward'.tr,
+                onTap: () {
+                  Get.toNamed(routes.unlock_rewards_screen);
                 },
               ),
               SizedBox(height: 8.h),

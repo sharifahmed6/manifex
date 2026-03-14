@@ -7,13 +7,13 @@ import 'package:manifex/Presentation/Features/home/model/user_model.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 import '../../../../Core/MusicService.dart';
+import '../../../bottom_navbar/controllers/bottom_navbar_controller.dart';
 
-class HomeController extends GetxController with WidgetsBindingObserver  {
+class HomeController extends GetxController with WidgetsBindingObserver {
   final profileInfo = Rxn<UserModel>();
   final isLoading = false.obs;
   final errorMessage = ''.obs;
   final music = MusicService();
-
 
   @override
   Future<void> onInit() async {
@@ -28,6 +28,32 @@ class HomeController extends GetxController with WidgetsBindingObserver  {
     final customerInfo = await Purchases.logIn(userId);
     // print("${customerInfo.customerInfo}");
     fetchProfileInfo();
+
+    // Monitor GetX routing changes globally
+    ever(Get.routing.current.obs, (String route) {
+      if (route == 'null' || route.isEmpty) return; // Initial setup
+
+      // Play music ONLY when exactly on HomeScreen (within BottomNavbar)
+      // Any other Push route that covers the home screen should stop it.
+      if (route == '/home_screen' ||
+          route == '/bottom_navbar' ||
+          route == '/') {
+        // Also ensure bottom navbar tab is actually the home tab
+        try {
+          final bottomController = Get.find<BottomNavbarController>();
+          if (bottomController.selectedIndex.value == 0) {
+            music.play();
+          } else {
+            music.stop();
+          }
+        } catch (_) {
+          // If BottomNavbarController isn't ready, default to playing since we are on the base route
+          music.play();
+        }
+      } else {
+        music.stop(); // We are pushed to a completely different screen
+      }
+    });
   }
 
   // 👇 Detect app minimize / resume
@@ -37,7 +63,8 @@ class HomeController extends GetxController with WidgetsBindingObserver  {
       music.stop(); // App minimized
     }
 
-    if (state == AppLifecycleState.resumed) {
+    if (state == AppLifecycleState.resumed &&
+        Get.currentRoute == '/HomeScreen') {
       music.play(); // Optional: resume when back
     }
   }
@@ -51,12 +78,16 @@ class HomeController extends GetxController with WidgetsBindingObserver  {
 
   String get userId => profileInfo.value?.data?.id ?? '';
   String get ageRange => profileInfo.value?.data?.age ?? '';
-  String get totalWords => profileInfo.value?.data?.userProgress?.totalWords.toString() ?? '0';
-  String get totalLessons => profileInfo.value?.data?.userProgress?.totalLessons.toString() ?? '0';
-  String get overallAccuracy => profileInfo.value?.data?.userProgress?.overallAccuracy.toString() ?? '0';
-  String get dailyGoal => profileInfo.value?.data?.userProgress?.dailyGoal.toString() ?? '0';
-  String get dayStreak => profileInfo.value?.data?.userProgress?.dayStreak.toString() ?? '0';
-
+  String get totalWords =>
+      profileInfo.value?.data?.userProgress?.totalWords.toString() ?? '0';
+  String get totalLessons =>
+      profileInfo.value?.data?.userProgress?.totalLessons.toString() ?? '0';
+  String get overallAccuracy =>
+      profileInfo.value?.data?.userProgress?.overallAccuracy.toString() ?? '0';
+  String get dailyGoal =>
+      profileInfo.value?.data?.userProgress?.dailyGoal.toString() ?? '0';
+  String get dayStreak =>
+      profileInfo.value?.data?.userProgress?.dayStreak.toString() ?? '0';
 
   int get apiAge => _mapAgeToApi(ageRange);
   bool get isReady => userId.isNotEmpty;
@@ -66,9 +97,7 @@ class HomeController extends GetxController with WidgetsBindingObserver  {
       isLoading.value = true;
       errorMessage.value = '';
 
-      final response = await NetworkCaller().getRequest(
-        url: urls.profileInfo,
-      );
+      final response = await NetworkCaller().getRequest(url: urls.profileInfo);
 
       if (response.isSuccess && response.responseData != null) {
         profileInfo.value = UserModel.fromJson(response.responseData!);

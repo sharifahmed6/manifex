@@ -156,11 +156,15 @@ class NativeTaskOne extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Headphone button (play pronunciation)
-                      _buildControlButton(
-                        icon: Icons.headphones,
-                        onTap: controller.playWordPronunciation,
-                        isActive: false,
+                      // Headphone / Play Pause button
+                      Obx(
+                        () => _buildControlButton(
+                          icon: controller.isSpeaking.value
+                              ? Icons.pause
+                              : Icons.play_arrow,
+                          onTap: controller.playWordPronunciation,
+                          isActive: controller.isSpeaking.value,
+                        ),
                       ),
 
                       SizedBox(width: 32.w),

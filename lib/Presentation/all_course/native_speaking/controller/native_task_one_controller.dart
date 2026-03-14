@@ -18,6 +18,7 @@ class NativeTaskOneController extends GetxController {
   final isListening = false.obs;
   final showFeedback = false.obs;
   final isSuccess = false.obs;
+  final isSpeaking = false.obs;
 
   // Data
   final words = <String>[].obs;
@@ -49,6 +50,19 @@ class NativeTaskOneController extends GetxController {
     await flutterTts.setSpeechRate(0.5);
     await flutterTts.setVolume(1.0);
     await flutterTts.setPitch(1.0);
+
+    flutterTts.setStartHandler(() {
+      isSpeaking.value = true;
+    });
+    flutterTts.setCompletionHandler(() {
+      isSpeaking.value = false;
+    });
+    flutterTts.setCancelHandler(() {
+      isSpeaking.value = false;
+    });
+    flutterTts.setErrorHandler((msg) {
+      isSpeaking.value = false;
+    });
   }
 
   /// Initialize Speech Recognition
@@ -121,6 +135,10 @@ class NativeTaskOneController extends GetxController {
           words.assignAll(wordsList.map((e) => e.toString()).toList());
           currentWordIndex.value = 0;
           currentWord.value = words[0];
+
+          Future.delayed(const Duration(milliseconds: 500), () {
+            playWordPronunciation();
+          });
         } else {
           Get.snackbar(
             'No Words'.tr,
@@ -156,9 +174,15 @@ class NativeTaskOneController extends GetxController {
     if (currentWord.value.isEmpty) return;
 
     try {
-      await flutterTts.speak(currentWord.value);
+      if (isSpeaking.value) {
+        await flutterTts.stop();
+        isSpeaking.value = false;
+      } else {
+        await flutterTts.speak(currentWord.value);
+      }
     } catch (e) {
       print('TTS error: $e');
+      isSpeaking.value = false;
       Get.snackbar(
         'Error'.tr,
         'Failed to play pronunciation'.tr,
@@ -250,7 +274,7 @@ class NativeTaskOneController extends GetxController {
   }
 
   /// Load next word (reset button)
-  void loadNextWord() {
+  Future<void> loadNextWord() async {
     if (words.isEmpty) return;
 
     showFeedback.value = false;
@@ -258,5 +282,9 @@ class NativeTaskOneController extends GetxController {
 
     currentWordIndex.value = (currentWordIndex.value + 1) % words.length;
     currentWord.value = words[currentWordIndex.value];
+
+    await flutterTts.stop();
+    isSpeaking.value = false;
+    await flutterTts.speak(currentWord.value);
   }
 }
