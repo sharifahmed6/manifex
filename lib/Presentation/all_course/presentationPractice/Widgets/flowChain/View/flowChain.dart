@@ -67,7 +67,7 @@ class flowChain extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    GradientMask(child: Text("Select scenarios to connect (1-3):", style: TextStyle(fontSize: ScreenResponsive.responsiveFont(context, 15)),),),
+                    GradientMask(child: Text("Select scenarios to connect:", style: TextStyle(fontSize: ScreenResponsive.responsiveFont(context, 15)),),),
                     SizedBox(height: 10),
                     Obx(() => Wrap(
                       spacing: 12,

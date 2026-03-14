@@ -91,24 +91,24 @@ class AFHandwriting extends GetView<AFHandwritingController> {
                     normalText: title,
                     gradientText: ' Handwriting',
                   ),
-                  Obx(() {
-                    final music = MusicService();
-                    return IconButton(
-                      onPressed: () {
-                        if (music.isPlaying) {
-                          music.stop();
-                        } else {
-                          music.play();
-                        }
-                      },
-                      icon: Icon(
-                        music.isPlaying
-                            ? Icons.volume_up_sharp
-                            : Icons.volume_off,
-                        color: Colors.white70,
-                      ),
-                    );
-                  }),
+                  // Obx(() {
+                  //   final music = MusicService();
+                  //   return IconButton(
+                  //     onPressed: () {
+                  //       if (music.isPlaying) {
+                  //         music.stop();
+                  //       } else {
+                  //         music.play();
+                  //       }
+                  //     },
+                  //     icon: Icon(
+                  //       music.isPlaying
+                  //           ? Icons.volume_up_sharp
+                  //           : Icons.volume_off,
+                  //       color: Colors.white70,
+                  //     ),
+                  //   );
+                  // }),
                 ],
               ),
               const SizedBox(height: 10),
