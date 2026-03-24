@@ -13,7 +13,7 @@ class BottomNavbarController extends GetxController {
       final homeController = Get.find<HomeController>();
       if (index == 0) {
         // Tab 0 is Home Screen
-        homeController.music.play(assets_path.home_music);
+        homeController.music.play(AssetsPath.homeMusic);
       } else {
         homeController.music.stop();
       }

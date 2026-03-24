@@ -16,7 +16,7 @@ class CustomAppBar extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 12.w),
       child: Row(
         children: [
-          Image.asset(assets_path.logo, width: 48.w, height: 48.h),
+          Image.asset(AssetsPath.logo, width: 48.w, height: 48.h),
           Spacer(),
 
           Container(
@@ -31,7 +31,7 @@ class CustomAppBar extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 spacing: 6.w,
                 children: [
-                  Image.asset(assets_path.fire, width: 20.w, height: 20.h),
+                  Image.asset(AssetsPath.fire, width: 20.w, height: 20.h),
                   CustomText(
                     text:
                         '${controller.profileInfo.value?.data?.userProgress?.dayStreak ?? 0}',
@@ -59,7 +59,7 @@ class CustomAppBar extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               spacing: 6.w,
               children: [
-                Image.asset(assets_path.star,width: 20.w,height: 20.h,),
+                Image.asset(AssetsPath.star,width: 20.w,height: 20.h,),
                 CustomText(text: '777',fontWeight: FontWeight.w600,)
               ],
             ),

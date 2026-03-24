@@ -26,7 +26,7 @@ class scaffold_background extends StatelessWidget {
         body: Stack(
           children: [
             Image.asset(
-              assets_path.scafold_back,
+              AssetsPath.scaffoldBack,
               fit: BoxFit.cover,
               width: double.infinity,
               height: double.infinity,

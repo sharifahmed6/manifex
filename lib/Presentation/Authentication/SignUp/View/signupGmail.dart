@@ -24,7 +24,7 @@ class signupGmail extends StatelessWidget {
           key: _formKey,
           child: Column(
             children: [
-              Image.asset(assets_path.logo, width: 62, height: 62),
+              Image.asset(AssetsPath.logo, width: 62, height: 62),
               logo_manifex(),
               Text(
                 "Welcome to MANIFEX! Let’s start your language learning journey today"
@@ -37,7 +37,7 @@ class signupGmail extends StatelessWidget {
               CircleAvatar(
                 radius: 80,
                 backgroundColor: Colors.transparent,
-                backgroundImage: AssetImage(assets_path.splash_image),
+                backgroundImage: AssetImage(AssetsPath.splashImage),
               ),
               const SizedBox(height: 5),
               Align(

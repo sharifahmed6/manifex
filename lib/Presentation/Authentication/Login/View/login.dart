@@ -32,7 +32,7 @@ class login extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   const SizedBox(height: 20),
-                  Image.asset(assets_path.logo, width: 62, height: 62),
+                  Image.asset(AssetsPath.logo, width: 62, height: 62),
                   const SizedBox(height: 10),
                   logo_manifex(),
                   const SizedBox(height: 10),
@@ -53,7 +53,7 @@ class login extends StatelessWidget {
                       return CircleAvatar(
                         radius: radius,
                         backgroundColor: Colors.transparent,
-                        backgroundImage: AssetImage(assets_path.splash_image),
+                        backgroundImage: AssetImage(AssetsPath.splashImage),
                       );
                     },
                   ),

@@ -22,7 +22,7 @@ class splash extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(width: double.infinity),
-              Image.asset(assets_path.logo, width: 62, height: 62),
+              Image.asset(AssetsPath.logo, width: 62, height: 62),
               logo_manifex(),
               Text(
                 "Welcome to MANIFEX! Let’s start your language learning journey today"
@@ -44,7 +44,7 @@ class splash extends StatelessWidget {
                   child: CircleAvatar(
                     radius: r,
                     backgroundColor: Colors.transparent,
-                    backgroundImage: AssetImage(assets_path.splash_image),
+                    backgroundImage: AssetImage(AssetsPath.splashImage),
                   ),
                 );
               }),

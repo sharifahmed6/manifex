@@ -1,6 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:get/get.dart';
-import '../App/assets_path.dart';
+
 
 class MusicService {
   static final MusicService _instance = MusicService._internal();

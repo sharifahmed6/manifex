@@ -31,7 +31,7 @@ class DailyAverageProgress extends StatelessWidget {
           ProgressCard(
             color1: const Color(0xffFFD6B7),
             color2: const Color(0xffE07C2F),
-            imagePath: assets_path.fire,
+            imagePath: AssetsPath.fire,
             leftTitle: 'Streak',
             leftSubtitle: ShaderMask(
               shaderCallback: (bounds) {
@@ -57,7 +57,7 @@ class DailyAverageProgress extends StatelessWidget {
           ProgressCard(
             color1: const Color(0xffFFA6C8),
             color2: const Color(0xffB920ED),
-            imagePath: assets_path.time_file,
+            imagePath: AssetsPath.timeFile,
             leftTitle: 'Session Timer',
             rightTitle: controller.formatSeconds(p.todaySessionTime),
             rightSubtitle: 'Total Spent',

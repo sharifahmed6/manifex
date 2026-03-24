@@ -233,7 +233,7 @@ class _buildProgress extends StatelessWidget {
             _progressCard(
               color1: Color(0xffFFD6B7),
               color2: Color(0xffE07C2F),
-              imagePath: assets_path.fire,
+              imagePath: AssetsPath.fire,
               leftTitle: 'Streak'.tr,
               context: context,
               leftSubtitle: ShaderMask(

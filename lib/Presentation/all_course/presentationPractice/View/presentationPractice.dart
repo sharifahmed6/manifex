@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:manifex/App/routes.dart';
-import '../../../../App/assets_path.dart';
+
 import '../../../Share/custom_back_button.dart';
 import '../../../Share/gradient_title.dart';
 import '../../../Share/progress_card.dart';

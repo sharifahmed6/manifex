@@ -12,11 +12,9 @@ import '../../../../App/routes.dart';
 import '../../../all_course/interactive_reading/views/task_one.dart';
 import '../../../all_course/practices/widget/transperent_gradient_border.dart';
 import '../../../app_bar/views/custom_app_bar.dart';
-import 'package:chewie/chewie.dart';
-import 'package:manifex/Presentation/Share/custom_circle_progress_indicator.dart';
-import 'package:video_player/video_player.dart';
 import 'package:get/get.dart';
 import '../controller/home_controller.dart';
+import '../../../Share/intro_video_dialog.dart';
 
 class HomeScreen extends GetView<HomeController> {
   const HomeScreen({super.key});
@@ -93,7 +91,7 @@ class HomeScreen extends GetView<HomeController> {
                             if (controller.music.isPlaying) {
                               controller.music.stop();
                             } else {
-                              controller.music.play(assets_path.home_music);
+                              controller.music.play(AssetsPath.homeMusic);
                             }
                           },
                           child: Icon(
@@ -137,7 +135,7 @@ class HomeScreen extends GetView<HomeController> {
                               widthFactor: 0.7,
                               heightFactor: 0.6,
                               child: Image.asset(
-                                assets_path.time_file,
+                                AssetsPath.timeFile,
                                 width: ScreenResponsive.w(context, 200),
                                 height: ScreenResponsive.h(context, 200),
                                 fit: BoxFit.contain,
@@ -184,7 +182,7 @@ class HomeScreen extends GetView<HomeController> {
                               widthFactor: 0.7,
                               heightFactor: 0.6,
                               child: Image.asset(
-                                assets_path.streak_file,
+                                AssetsPath.streakFile,
                                 width: ScreenResponsive.w(context, 200),
                                 height: ScreenResponsive.h(context, 200),
                                 fit: BoxFit.contain,
@@ -238,7 +236,7 @@ class HomeScreen extends GetView<HomeController> {
                               widthFactor: 0.7,
                               heightFactor: 0.6,
                               child: Image.asset(
-                                assets_path.progress_file,
+                                AssetsPath.progressFile,
                                 width: ScreenResponsive.w(context, 200),
                                 height: ScreenResponsive.h(context, 200),
                                 fit: BoxFit.contain,
@@ -285,7 +283,7 @@ class HomeScreen extends GetView<HomeController> {
                               widthFactor: 0.7,
                               heightFactor: 0.6,
                               child: Image.asset(
-                                assets_path.goal_file,
+                                AssetsPath.goalFile,
                                 width: ScreenResponsive.w(context, 200),
                                 height: ScreenResponsive.h(context, 200),
                                 fit: BoxFit.contain,
@@ -332,7 +330,25 @@ class HomeScreen extends GetView<HomeController> {
               SizedBox(height: ScreenResponsive.h(context, 10)),
               GradientButton(
                 text: "Intro Video".tr,
-                onPressed: () => _showIntroVideo(context),
+                onPressed: () {
+                  controller.music.stop();
+                  String videoPath = controller.getIntroVideoPath();
+                  Get.dialog(
+                    IntroVideoDialog(
+                      videoPath: videoPath,
+                      onComplete: () {
+                        if (Get.isDialogOpen ?? false) Get.back();
+                        controller.music.play(AssetsPath.homeMusic);
+                      },
+                    ),
+                    barrierDismissible: true,
+                  ).then((_) {
+                    // Ensure music resumes if dialog was closed via back button or barrier
+                    if (!controller.music.isPlaying) {
+                      controller.music.play(AssetsPath.homeMusic);
+                    }
+                  });
+                },
               ),
               Text(
                 "Running Practices".tr,
@@ -496,135 +512,4 @@ Widget _practicesCard({
       ),
     ),
   );
-}
-
-void _showIntroVideo(BuildContext context) {
-  String videoPath = _getIntroVideoPath();
-  Get.dialog(
-    IntroVideoDialog(videoPath: videoPath),
-    barrierDismissible: true,
-  );
-}
-
-String _getIntroVideoPath() {
-  String language = PrefHelper.getLanguage().toLowerCase();
-
-  print("Language : $language");
-
-  if (language.contains("french")) return assets_path.intro_French;
-  if (language.contains("bangla")) return assets_path.intro_Bangla;
-  if (language.contains("chinese")) return assets_path.intro_Chinese;
-  if (language.contains("german")) return assets_path.intro_German;
-  if (language.contains("hindi")) return assets_path.intro_Hindi;
-  if (language.contains("nigeria") || language.contains("igbo"))
-    return assets_path.intro_Nigeria;
-  if (language.contains("italian")) return assets_path.intro_Italian;
-  if (language.contains("korean")) return assets_path.intro_Korean;
-  if (language.contains("portugese")) return assets_path.intro_Portugese;
-  if (language.contains("russian")) return assets_path.intro_Russian;
-  if (language.contains("spanish")) return assets_path.intro_Spanish;
-  if (language.contains("vietnamese")) return assets_path.intro_Vietnamese;
-  if (language.contains("japanese")) return assets_path.intro_Japanese;
-
-  return assets_path.intro_English; // Default
-}
-
-class IntroVideoDialog extends StatefulWidget {
-  final String videoPath;
-  const IntroVideoDialog({super.key, required this.videoPath});
-
-  @override
-  State<IntroVideoDialog> createState() => _IntroVideoDialogState();
-}
-
-class _IntroVideoDialogState extends State<IntroVideoDialog> {
-  late VideoPlayerController _videoPlayerController;
-  ChewieController? _chewieController;
-
-  @override
-  void initState() {
-    super.initState();
-    _initializePlayer();
-  }
-
-  Future<void> _initializePlayer() async {
-    _videoPlayerController = VideoPlayerController.asset(widget.videoPath);
-    await _videoPlayerController.initialize();
-    _chewieController = ChewieController(
-      videoPlayerController: _videoPlayerController,
-      autoPlay: true,
-      looping: false,
-      aspectRatio: _videoPlayerController.value.aspectRatio,
-      materialProgressColors: ChewieProgressColors(
-        playedColor: Colors.white,
-        bufferedColor: Colors.white24,
-        handleColor: Colors.white,
-        backgroundColor: Colors.white12,
-      ),
-    );
-    if (mounted) setState(() {});
-  }
-
-  @override
-  void dispose() {
-    _chewieController?.dispose();
-    _videoPlayerController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Dialog(
-      backgroundColor: Colors.transparent,
-      insetPadding: EdgeInsets.symmetric(horizontal: 16.w),
-      child: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: const Color(0xFF0D1020),
-          borderRadius: BorderRadius.circular(18.r),
-          border: Border.all(color: Colors.white.withOpacity(0.12)),
-        ),
-        child: Stack(
-          children: [
-            Padding(
-              padding: EdgeInsets.all(12.r),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(14.r),
-                child: AspectRatio(
-                  aspectRatio:
-                      _videoPlayerController.value.isInitialized
-                          ? _videoPlayerController.value.aspectRatio
-                          : 16 / 9,
-                  child:
-                      _chewieController == null
-                          ? const Center(
-                              child: CustomCircleProgressIndicator(
-                                size: 30,
-                                color: Colors.blue,
-                              ),
-                            )
-                          : Chewie(controller: _chewieController!),
-                ),
-              ),
-            ),
-            Positioned(
-              top: 8.h,
-              right: 8.w,
-              child: GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: Container(
-                  padding: EdgeInsets.all(4.r),
-                  decoration: const BoxDecoration(
-                    color: Colors.black54,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(Icons.close, color: Colors.white, size: 20.sp),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }
