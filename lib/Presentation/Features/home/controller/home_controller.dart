@@ -7,6 +7,7 @@ import 'package:manifex/Presentation/Features/home/model/user_model.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 import '../../../../Core/MusicService.dart';
+import '../../../../App/assets_path.dart';
 import '../../../bottom_navbar/controllers/bottom_navbar_controller.dart';
 
 class HomeController extends GetxController with WidgetsBindingObserver {
@@ -19,7 +20,7 @@ class HomeController extends GetxController with WidgetsBindingObserver {
   Future<void> onInit() async {
     super.onInit();
     WidgetsBinding.instance.addObserver(this);
-    music.play();
+    music.play(assets_path.home_music);
     String userId = PrefHelper.getUserId() ?? '';
     if (userId.isEmpty) {
       throw Exception("Backend user ID cannot be empty for RevenueCat login!");
@@ -42,13 +43,17 @@ class HomeController extends GetxController with WidgetsBindingObserver {
         try {
           final bottomController = Get.find<BottomNavbarController>();
           if (bottomController.selectedIndex.value == 0) {
-            music.play();
+            if (music.isPlaying) {
+              music.stop();
+            } else {
+              music.play(assets_path.home_music);
+            }
           } else {
             music.stop();
           }
         } catch (_) {
           // If BottomNavbarController isn't ready, default to playing since we are on the base route
-          music.play();
+          music.play(assets_path.home_music);
         }
       } else {
         music.stop(); // We are pushed to a completely different screen
@@ -65,7 +70,7 @@ class HomeController extends GetxController with WidgetsBindingObserver {
 
     if (state == AppLifecycleState.resumed &&
         Get.currentRoute == '/HomeScreen') {
-      music.play(); // Optional: resume when back
+      music.play(assets_path.home_music); // Optional: resume when back
     }
   }
 
