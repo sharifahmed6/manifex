@@ -40,7 +40,7 @@ class on_borading extends StatelessWidget {
                   if (music.isPlaying) {
                     music.stop();
                   } else {
-                    music.play();
+                    music.play(assets_path.home_music);
                   }
                 },
                 icon: Icon(

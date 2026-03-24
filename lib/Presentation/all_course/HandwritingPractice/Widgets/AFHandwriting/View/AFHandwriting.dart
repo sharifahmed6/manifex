@@ -39,7 +39,7 @@ class AFHandwriting extends GetView<AFHandwritingController> {
       currentIndex.value++;
       Get.put(TracingController()).clearCanvas();
     } else {
-      AppSnackbar.show("No more latter left.");
+      AppSnackbar.show("No more letters left.");
     }
   }
 
@@ -48,7 +48,7 @@ class AFHandwriting extends GetView<AFHandwritingController> {
       currentIndex.value--;
       Get.put(TracingController()).clearCanvas();
     } else {
-      AppSnackbar.show("No more latter left.");
+      AppSnackbar.show("No more letters left.");
     }
   }
 
@@ -91,24 +91,6 @@ class AFHandwriting extends GetView<AFHandwritingController> {
                     normalText: title,
                     gradientText: ' Handwriting',
                   ),
-                  // Obx(() {
-                  //   final music = MusicService();
-                  //   return IconButton(
-                  //     onPressed: () {
-                  //       if (music.isPlaying) {
-                  //         music.stop();
-                  //       } else {
-                  //         music.play();
-                  //       }
-                  //     },
-                  //     icon: Icon(
-                  //       music.isPlaying
-                  //           ? Icons.volume_up_sharp
-                  //           : Icons.volume_off,
-                  //       color: Colors.white70,
-                  //     ),
-                  //   );
-                  // }),
                 ],
               ),
               const SizedBox(height: 10),
@@ -128,7 +110,7 @@ class AFHandwriting extends GetView<AFHandwritingController> {
                         Obx(
                           () => GradientMask(
                             child: Text(
-                              "Latter ${currentIndex.value + 1} of ${latter.length}",
+                              "Letter ${currentIndex.value + 1} of ${latter.length}",
                               style: TextStyle(
                                 fontSize: ScreenResponsive.responsiveFont(
                                   context,
@@ -137,30 +119,6 @@ class AFHandwriting extends GetView<AFHandwritingController> {
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                          ),
-                        ),
-                        Obx(
-                          () => Row(
-                            children: [
-                              Text(
-                                controller.isCursive.value
-                                    ? "Normal"
-                                    : "Cursive",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                ),
-                              ),
-                              Transform.scale(
-                                scale: 0.7, // 👈 reduce size (try 0.6 - 0.8)
-                                child: Switch(
-                                  value: controller.isCursive.value,
-                                  onChanged: (val) =>
-                                  controller.isCursive.value = val,
-                                  activeColor: AppColors.sky,
-                                ),
-                              ),
-                            ],
                           ),
                         ),
                       ],
@@ -275,48 +233,39 @@ class AFHandwriting extends GetView<AFHandwritingController> {
 
                     GestureDetector(
                       onTap: () async {
-                        print("dsfvdfvd");
-                        final controller = Get.put(TracingController());
+                        final tracingController = Get.put(TracingController());
                         final word = latter[currentIndex.value];
-                        String? pngPath = await controller.saveSignaturePng(
-                          controller: controller.signatureController,
+                        String? pngPath = await tracingController.saveSignaturePng(
+                          controller: tracingController.signatureController,
                           fileName: 'traced_word_$word',
                           word: word,
                         );
 
                         if (pngPath == null) {
                           AppSnackbar.show(
-                            "Failed to save image. Please restart the app or your simulator.",
+                            "Failed to save image. Please draw something.",
                           );
                           return;
                         }
 
-                        controller.imagePath.value = pngPath;
+                        tracingController.imagePath.value = pngPath;
 
-                        final HController =
+                        final handwritingController =
                             Get.find<HandwritingPracticeController>();
-                        word == 'F'
-                            ? HController.unLockTask(1)
-                            : word == 'L'
-                            ? HController.unLockTask(2)
-                            : word == 'R'
-                            ? HController.unLockTask(3)
-                            : word == 'Z'
-                            ? HController.unLockTask(4)
-                            : word == 'f'
-                            ? HController.unLockTask(5)
-                            : word == 'l'
-                            ? HController.unLockTask(6)
-                            : word == 'r'
-                            ? HController.unLockTask(7)
-                            : word == 'z'
-                            ? HController.unLockTask(8)
-                            : word == '9'
-                            ? HController.unLockTask(10)
-                            : currentIndex++;
+                        
+                        if (currentIndex.value < latter.length - 1) {
+                          currentIndex.value++;
+                        } else {
+                          // When task is completed
+                          handwritingController.unLockTask(taskNumber);
+                          if (taskNumber == 1) {
+                            MusicService().stop();
+                          }
+                        }
+
                         print("PNG saved at: $pngPath");
-                        controller.submit(imagePath: pngPath, word: word);
-                        controller.clearCanvas();
+                        tracingController.submit(imagePath: pngPath, word: word);
+                        tracingController.clearCanvas();
                       },
                       child: Container(
                         height: 55,
@@ -336,7 +285,7 @@ class AFHandwriting extends GetView<AFHandwritingController> {
                           children: [
                             const SizedBox(width: 5),
                             Text(
-                              "Check with AI".tr,
+                              "Check with Mercury".tr,
                               style: const TextStyle(
                                 fontWeight: FontWeight.w600,
                                 color: Colors.white,

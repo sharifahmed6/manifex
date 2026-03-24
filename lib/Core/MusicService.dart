@@ -1,5 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:get/get.dart';
+import '../App/assets_path.dart';
 
 class MusicService {
   static final MusicService _instance = MusicService._internal();
@@ -8,8 +9,8 @@ class MusicService {
 
   AudioPlayer? _player;
 
-  final String _assetPath =
-      'Music/K FRESH MUSIC - BOUNCE WIT IT -MOD-.mp3';
+  static const String _defaultPath = 'Music/K FRESH MUSIC - BOUNCE WIT IT -MOD-.mp3';
+  String _currentPath = _defaultPath;
 
   // Reactive boolean
   final RxBool _isPlaying = false.obs;
@@ -21,21 +22,26 @@ class MusicService {
   RxBool get isPlayingRx => _isPlaying;
 
   /// Initialize player safely
-  Future<void> _init() async {
+  Future<void> _init(String? path) async {
+    final newPath = (path ?? _defaultPath).replaceFirst('assets/', '');
     if (_player == null) {
       _player = AudioPlayer();
       await _player!.setReleaseMode(ReleaseMode.loop);
-      await _player!.setSource(AssetSource(_assetPath));
+      _currentPath = newPath;
+      await _player!.setSource(AssetSource(_currentPath));
 
       _player!.onPlayerStateChanged.listen((state) {
         _isPlaying.value = state == PlayerState.playing;
       });
+    } else if (_currentPath != newPath) {
+      _currentPath = newPath;
+      await _player!.setSource(AssetSource(_currentPath));
     }
   }
 
   /// Play music
-  Future<void> play() async {
-    await _init();
+  Future<void> play([String? path]) async {
+    await _init(path);
     await _player!.resume();
     _isPlaying.value = true;
   }
