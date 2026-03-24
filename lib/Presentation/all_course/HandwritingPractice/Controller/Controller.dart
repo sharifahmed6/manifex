@@ -15,30 +15,30 @@ class HandwritingPracticeController extends GetxController {
   var selectedIndex = 0.obs;
   void changeTab(int index) => selectedIndex.value = index;
 
-  var listLock = [false, true, true, true, true, true, true, true, true].obs;
-  var listComplete = [true, true, true, true, true, true, true, true, true].obs;
+  var listLock = [false, true, true, true, true, true, true, true, true, true].obs;
+  var listComplete = [true, true, true, true, true, true, true, true, true, true].obs;
 
   Future<void> unLockTask(int index) async {
-    listLock[index] = false;
-    listComplete[index - 1] = false;
-    Get.back();
-    AppSnackbar.show("Task $index Completed.");
+    if (index < listLock.length) {
+      listLock[index] = false;
+      listComplete[index - 1] = false;
+      Get.back();
+      AppSnackbar.show("Task $index Completed.");
+    }
   }
 
   final result = [
-      {"taskName": "Task 1", "marks": 0, "isAnswer": true},
-      {"taskName": "Task 2", "marks": 0, "isAnswer": true},
-      {"taskName": "Task 3", "marks": 0, "isAnswer": true},
-      {"taskName": "Task 4", "marks": 0, "isAnswer": true},
-      {"taskName": "Task 5", "marks": 0, "isAnswer": true},
-      {"taskName": "Task 6", "marks": 0, "isAnswer": true},
-      {"taskName": "Task 7", "marks": 0, "isAnswer": true},
-      {"taskName": "Task 8", "marks": 0, "isAnswer": true},
-      {"taskName": "Task 9", "marks": 0, "isAnswer": true},
-    ];
-
-
-
+    {"taskName": "Task 1", "marks": 0, "isAnswer": true},
+    {"taskName": "Task 2", "marks": 0, "isAnswer": true},
+    {"taskName": "Task 3", "marks": 0, "isAnswer": true},
+    {"taskName": "Task 4", "marks": 0, "isAnswer": true},
+    {"taskName": "Task 5", "marks": 0, "isAnswer": true},
+    {"taskName": "Task 6", "marks": 0, "isAnswer": true},
+    {"taskName": "Task 7", "marks": 0, "isAnswer": true},
+    {"taskName": "Task 8", "marks": 0, "isAnswer": true},
+    {"taskName": "Task 9", "marks": 0, "isAnswer": true},
+    {"taskName": "Task 10", "marks": 0, "isAnswer": true},
+  ];
 
   Future<void> FinalSubmission() async {
     AppLoader.show();
@@ -53,7 +53,7 @@ class HandwritingPracticeController extends GetxController {
       if (response.statusCode == 201 &&
           response.responseData != null &&
           response.responseData?['success'] == true) {
-        listComplete[8] = false;
+        listComplete[9] = false;
       } else {
         print("Error submitting final answers ❌");
         print("Server message: ${response.responseData?['message'] ?? response.errorMessage}");
@@ -62,22 +62,7 @@ class HandwritingPracticeController extends GetxController {
       AppLoader.hide();
       print("HTTP Error: $e");
     }
-
-
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   //==============================================================================================
   Future<String?> saveSignaturePng(

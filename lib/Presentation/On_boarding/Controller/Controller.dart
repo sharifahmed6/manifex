@@ -1,7 +1,7 @@
-import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:manifex/Core/MusicService.dart';
+import '../../../../App/assets_path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../language/model/language_model.dart';
 
@@ -93,7 +93,7 @@ class on_boarding_controller extends GetxController
     super.onInit();
     WidgetsBinding.instance.addObserver(this);
     _loadLanguage();
-    music.play();
+    music.play(assets_path.home_music);
   }
 
   @override
@@ -111,7 +111,7 @@ class on_boarding_controller extends GetxController
     }
 
     if (state == AppLifecycleState.resumed) {
-      music.play(); // Optional: resume when back
+      music.play(assets_path.home_music); // Optional: resume when back
     }
   }
 
