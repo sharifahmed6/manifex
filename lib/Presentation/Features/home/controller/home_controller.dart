@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:manifex/App/Urls.dart';
 import 'package:manifex/App/network_caller.dart';
@@ -9,6 +9,7 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 import '../../../../Core/MusicService.dart';
 import '../../../../App/assets_path.dart';
 import '../../../bottom_navbar/controllers/bottom_navbar_controller.dart';
+import '../../../../Core/AssetHelper.dart';
 
 class HomeController extends GetxController with WidgetsBindingObserver {
   final profileInfo = Rxn<UserModel>();
@@ -20,14 +21,13 @@ class HomeController extends GetxController with WidgetsBindingObserver {
   Future<void> onInit() async {
     super.onInit();
     WidgetsBinding.instance.addObserver(this);
-    music.play(assets_path.home_music);
-    String userId = PrefHelper.getUserId() ?? '';
+    music.play(AssetsPath.homeMusic);
+    String userId = PrefHelper.getUserId();
     if (userId.isEmpty) {
       throw Exception("Backend user ID cannot be empty for RevenueCat login!");
     }
 
-    final customerInfo = await Purchases.logIn(userId);
-    // print("${customerInfo.customerInfo}");
+    await Purchases.logIn(userId);
     fetchProfileInfo();
 
     // Monitor GetX routing changes globally
@@ -46,14 +46,14 @@ class HomeController extends GetxController with WidgetsBindingObserver {
             if (music.isPlaying) {
               music.stop();
             } else {
-              music.play(assets_path.home_music);
+              music.play(AssetsPath.homeMusic);
             }
           } else {
             music.stop();
           }
         } catch (_) {
           // If BottomNavbarController isn't ready, default to playing since we are on the base route
-          music.play(assets_path.home_music);
+          music.play(AssetsPath.homeMusic);
         }
       } else {
         music.stop(); // We are pushed to a completely different screen
@@ -70,7 +70,7 @@ class HomeController extends GetxController with WidgetsBindingObserver {
 
     if (state == AppLifecycleState.resumed &&
         Get.currentRoute == '/HomeScreen') {
-      music.play(assets_path.home_music); // Optional: resume when back
+      music.play(AssetsPath.homeMusic); // Optional: resume when back
     }
   }
 
@@ -115,6 +115,17 @@ class HomeController extends GetxController with WidgetsBindingObserver {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  void playIntroVideo(BuildContext context, Widget dialog) {
+    Get.dialog(
+      dialog,
+      barrierDismissible: true,
+    );
+  }
+
+  String getIntroVideoPath() {
+    return AssetHelper.getIntroVideoPath();
   }
 
   int _mapAgeToApi(String? range) {

@@ -237,7 +237,7 @@ class _MemberTile extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 50,
-              backgroundImage: AssetImage(assets_path.splash_image),
+              backgroundImage: AssetImage(AssetsPath.splashImage),
             ),
             CustomText(text: 'Are you sure?',fontSize: 24,),
             Row(

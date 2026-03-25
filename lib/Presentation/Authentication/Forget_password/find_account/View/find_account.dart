@@ -23,7 +23,7 @@ class find_account extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(assets_path.logo, width: 62, height: 62),
+            Image.asset(AssetsPath.logo, width: 62, height: 62),
             logo_manifex(),
             Text(
               "Forgot Password?"

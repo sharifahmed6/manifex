@@ -93,7 +93,7 @@ class on_boarding_controller extends GetxController
     super.onInit();
     WidgetsBinding.instance.addObserver(this);
     _loadLanguage();
-    music.play(assets_path.home_music);
+    music.play(AssetsPath.homeMusic);
   }
 
   @override
@@ -111,7 +111,7 @@ class on_boarding_controller extends GetxController
     }
 
     if (state == AppLifecycleState.resumed) {
-      music.play(assets_path.home_music); // Optional: resume when back
+      music.play(AssetsPath.homeMusic); // Optional: resume when back
     }
   }
 

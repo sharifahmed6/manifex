@@ -5,6 +5,8 @@ import 'package:manifex/Core/responsive.dart';
 import 'package:manifex/Presentation/Share/button_gradient.dart';
 import 'package:manifex/Presentation/Share/scafold_background.dart';
 import 'package:get/get.dart';
+import '../../../Core/AssetHelper.dart';
+import '../../Share/intro_video_dialog.dart';
 import '../../../App/assets_path.dart';
 import '../../Share/manifex_logo.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -40,7 +42,7 @@ class on_borading extends StatelessWidget {
                   if (music.isPlaying) {
                     music.stop();
                   } else {
-                    music.play(assets_path.home_music);
+                    music.play(AssetsPath.homeMusic);
                   }
                 },
                 icon: Icon(
@@ -71,7 +73,7 @@ class _build_onBoarding4 extends StatelessWidget {
               spacing: 10,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Image.asset(assets_path.logo, width: 62, height: 62),
+                Image.asset(AssetsPath.logo, width: 62, height: 62),
                 logo_manifex(),
                 Text(
                   "Welcome to MANIFEX! Let’s start your language learning journey today"
@@ -84,7 +86,7 @@ class _build_onBoarding4 extends StatelessWidget {
                 CircleAvatar(
                   radius: 110,
                   backgroundColor: Colors.transparent,
-                  backgroundImage: AssetImage(assets_path.splash_image),
+                  backgroundImage: AssetImage(AssetsPath.splashImage),
                 ),
                 const SizedBox(height: 5),
                 Align(
@@ -160,7 +162,15 @@ class _build_onBoarding4 extends StatelessWidget {
         ButtonGradient(
           onTap: () {
             MusicService().stop();
-            Get.offAllNamed(routes.login_screen);
+            final videoPath = AssetHelper.getIntroVideoPath();
+            Get.dialog(
+              IntroVideoDialog(
+                videoPath: videoPath,
+                showSkip: true,
+                onComplete: () => Get.offAllNamed(routes.login_screen),
+              ),
+              barrierDismissible: true,
+            );
           },
           text: "Next".tr,
         ),
@@ -183,7 +193,7 @@ class _build_onBoarding3 extends StatelessWidget {
             spacing: 10,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(assets_path.logo, width: 62, height: 62),
+              Image.asset(AssetsPath.logo, width: 62, height: 62),
               logo_manifex(),
               Text(
                 "Track your growth".tr,
@@ -226,7 +236,7 @@ class _build_onBoarding2 extends StatelessWidget {
             spacing: 10,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(assets_path.logo, width: 62, height: 62),
+              Image.asset(AssetsPath.logo, width: 62, height: 62),
               logo_manifex(),
               Text(
                 "Train your mindset".tr,
@@ -266,7 +276,7 @@ class _build_onBoarding1 extends StatelessWidget {
             spacing: 10,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(assets_path.logo, width: 62, height: 62),
+              Image.asset(AssetsPath.logo, width: 62, height: 62),
               logo_manifex(),
               Text(
                 "Set your intention".tr,

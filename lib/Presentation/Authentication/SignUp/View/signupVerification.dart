@@ -27,7 +27,7 @@ class signupVerification extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           spacing: 10,
           children: [
-            Image.asset(assets_path.logo, width: 62, height: 62),
+            Image.asset(AssetsPath.logo, width: 62, height: 62),
             logo_manifex(),
             Text(
               "We’ve sent a verification code to your email. Please enter it below."
@@ -40,7 +40,7 @@ class signupVerification extends StatelessWidget {
             // CircleAvatar(
             //   radius: 80,
             //   backgroundColor: Colors.transparent,
-            //   backgroundImage: AssetImage(assets_path.splash_image),
+            //   backgroundImage: AssetImage(AssetsPath.splashImage),
             // ),
             const SizedBox(height: 5),
             Pinput(

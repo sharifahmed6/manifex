@@ -17,7 +17,7 @@ class SkillWelcomeCard extends StatelessWidget {
       children: [
         Center(
           child: GradientBorderAvatar(
-            image: AssetImage(assets_path.splash_image),
+            image: AssetImage(AssetsPath.splashImage),
           ),
         ),
         SizedBox(height: 8.h),
