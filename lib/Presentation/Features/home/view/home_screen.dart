@@ -7,6 +7,7 @@ import 'package:manifex/Presentation/Features/Subcription/View/Subcription.dart'
 import 'package:manifex/Presentation/Share/GradientMask.dart';
 import 'package:manifex/Presentation/Share/button_gradient.dart';
 import 'package:manifex/Presentation/Share/scafold_background.dart';
+import 'package:manifex/Presentation/Share/text_title_small.dart';
 import '../../../../App/AppColors.dart';
 import '../../../../App/routes.dart';
 import '../../../all_course/interactive_reading/views/task_one.dart';
@@ -86,22 +87,24 @@ class HomeScreen extends GetView<HomeController> {
                           ),
                         ),
                         SizedBox(width: 7),
-                        Obx(() => GestureDetector(
-                          onTap: () {
-                            if (controller.music.isPlaying) {
-                              controller.music.stop();
-                            } else {
-                              controller.music.play(AssetsPath.homeMusic);
-                            }
-                          },
-                          child: Icon(
-                            controller.music.isPlayingRx.value
-                                ? Icons.volume_up_sharp
-                                : Icons.volume_off,
-                            color: Colors.white70,
-                            size: 24.sp,
+                        Obx(
+                          () => GestureDetector(
+                            onTap: () {
+                              if (controller.music.isPlaying) {
+                                controller.music.stop();
+                              } else {
+                                controller.music.play(AssetsPath.homeMusic);
+                              }
+                            },
+                            child: Icon(
+                              controller.music.isPlayingRx.value
+                                  ? Icons.volume_up_sharp
+                                  : Icons.volume_off,
+                              color: Colors.white70,
+                              size: 24.sp,
+                            ),
                           ),
-                        )),
+                        ),
                       ],
                     ),
                     Text(
@@ -206,7 +209,7 @@ class HomeScreen extends GetView<HomeController> {
                                 ),
 
                                 Obx(
-                                      () => Text(
+                                  () => Text(
                                     "${controller.dayStreak} ${"Days".tr}",
                                     style: TextStyle(
                                       fontSize: ScreenResponsive.responsiveFont(
@@ -328,28 +331,77 @@ class HomeScreen extends GetView<HomeController> {
               ),
 
               SizedBox(height: ScreenResponsive.h(context, 10)),
-              GradientButton(
-                text: "Intro Video".tr,
-                onPressed: () {
-                  controller.music.stop();
-                  String videoPath = controller.getIntroVideoPath();
-                  Get.dialog(
-                    IntroVideoDialog(
-                      videoPath: videoPath,
-                      onComplete: () {
-                        if (Get.isDialogOpen ?? false) Get.back();
-                        controller.music.play(AssetsPath.homeMusic);
-                      },
+
+              TransparentGradientBorder(
+                strokeWidth: 0.5,
+                radius: 16.r,
+                child: Container(
+                  padding: EdgeInsets.all(16.w),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16.r),
+                    gradient: LinearGradient(
+                      colors: [
+                        Color(0xff111217).withAlpha(50),
+                        Color(0xffCFDBFF).withAlpha(30),
+                      ],
+                      begin: Alignment.bottomRight,
+                      end: Alignment.topLeft,
                     ),
-                    barrierDismissible: true,
-                  ).then((_) {
-                    // Ensure music resumes if dialog was closed via back button or barrier
-                    if (!controller.music.isPlaying) {
-                      controller.music.play(AssetsPath.homeMusic);
-                    }
-                  });
-                },
+                  ),
+                  child: Column(
+                    children: [
+                      CustomText(
+                        text: 'Welcome to Mercury AI English Tutor'.tr,
+                        fontSize: 20.sp,
+                        textAlign: TextAlign.start,
+                      ),
+                      SizedBox(height: 8.h,),
+                      CustomText(
+                        text:
+                            'Watch our introduction to discover how Mercury makes learning English fun and effective with AI-powered personalized lessons.'
+                                .tr,
+                        fontSize: 16.sp,
+                        textAlign: TextAlign.start,
+                      ),
+                      SizedBox(height: 16.h,),
+                      ButtonGradient(
+                        onTap: () {
+                          controller.music.stop();
+                          String videoPath = controller.getIntroVideoPath();
+                          Get.dialog(
+                            IntroVideoDialog(
+                              videoPath: videoPath,
+                              onComplete: () {
+                                if (Get.isDialogOpen ?? false) Get.back();
+                                controller.music.play(AssetsPath.homeMusic);
+                              },
+                            ),
+                            barrierDismissible: true,
+                          ).then((_) {
+                            // Ensure music resumes if dialog was closed via back button or barrier
+                            if (!controller.music.isPlaying) {
+                              controller.music.play(AssetsPath.homeMusic);
+                            }
+                          });
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.play_arrow,color: Colors.white,),
+                            CustomText(
+                              text: 'Watch Introduction'.tr,
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.bold,
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
+              SizedBox(height: 8.h,),
               Text(
                 "Running Practices".tr,
                 style: TextStyle(
@@ -428,8 +480,8 @@ class HomeScreen extends GetView<HomeController> {
                 imagePath: 'assets/images/book.png',
                 title: 'Interactive Reading'.tr,
                 subTitle:
-                'Phoneme recognition and word games with visual cues designed for dyslexic learners'
-                    .tr,
+                    'Phoneme recognition and word games with visual cues designed for dyslexic learners'
+                        .tr,
                 context: context,
                 onTap: () => Get.toNamed(routes.interactive_reading_screen),
               ),
@@ -438,8 +490,8 @@ class HomeScreen extends GetView<HomeController> {
                 imagePath: 'assets/icons/smart_writing_icon.png',
                 title: 'Smart Writing'.tr,
                 subTitle:
-                'Write. Learn. Improve. AI checks your grammar, structure, and style instantly.'
-                    .tr,
+                    'Write. Learn. Improve. AI checks your grammar, structure, and style instantly.'
+                        .tr,
                 context: context,
                 onTap: () => Get.toNamed(routes.smart_writing_screen),
               ),
@@ -473,7 +525,7 @@ Widget _practicesCard({
           ],
           begin: Alignment.bottomRight,
           end: Alignment.topLeft,
-          ),
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -393,6 +393,11 @@ class AppTranslation extends Translations {
       "Streak": "Streak",
       "Advanced Al pronunciation coaching with real-time feedback and accent training":
           "Advanced Al pronunciation coaching with real-time feedback and accent training",
+      "Welcome to Mercury AI English Tutor":
+          "Welcome to Mercury AI English Tutor",
+      "Watch our introduction to discover how Mercury makes learning English fun and effective with AI-powered personalized lessons.":
+          "Watch our introduction to discover how Mercury makes learning English fun and effective with AI-powered personalized lessons.",
+      "Watch Introduction": "Watch Introduction",
     },
     'pl_PL': {
       "Welcome to MANIFEX! Let’s start your language learning journey today":
@@ -782,7 +787,11 @@ class AppTranslation extends Translations {
       "Read the story and answer the questions":
           "Przeczytaj historię i odpowiedz na pytania",
       "Retry": "Ponów",
-      "Streak": "Streak",
+      "Streak": "Seria",
+      "Welcome to Mercury AI English Tutor": "Witamy w Mercury AI English Tutor",
+      "Watch our introduction to discover how Mercury makes learning English fun and effective with AI-powered personalized lessons.":
+          "Obejrzyj nasze wprowadzenie, aby dowiedzieć się, jak Mercury sprawia, że nauka angielskiego jest zabawna i skuteczna dzięki spersonalizowanym lekcjom opartym na AI.",
+      "Watch Introduction": "Obejrzyj wprowadzenie",
     },
     'bn_BD': {
       "Welcome to MANIFEX! Let’s start your language learning journey today":
@@ -1166,9 +1175,14 @@ class AppTranslation extends Translations {
       "Quiz": "কুইজ",
       "Read the story and answer the questions": "গল্পটি পড়ুন এবং উত্তর দিন",
       "Retry": "পুনরায় চেষ্টা করুন",
-      "Streak": "Streak",
+      "Streak": "স্ট্রিক",
       "Advanced Al pronunciation coaching with real-time feedback and accent training":
           "Advanced Al pronunciation coaching with real-time feedback and accent training",
+      "Welcome to Mercury AI English Tutor":
+          "মার্কারি এআই ইংলিশ টিউটরে স্বাগতম",
+      "Watch our introduction to discover how Mercury makes learning English fun and effective with AI-powered personalized lessons.":
+          "মারকারি এআই-চালিত ব্যক্তিগতকৃত পাঠের মাধ্যমে ইংরেজি শেখাকে কীভাবে মজাদার এবং কার্যকর করে তোলে তা জানতে আমাদের পরিচিতি দেখুন।",
+      "Watch Introduction": "পরিচিতি দেখুন",
     },
     'zh_CN': {
       "Welcome to MANIFEX! Let’s start your language learning journey today":
@@ -1540,9 +1554,13 @@ class AppTranslation extends Translations {
       "Quiz": "测验",
       "Read the story and answer the questions": "阅读故事并回答问题",
       "Retry": "重试",
-      "Streak": "Streak",
+      "Streak": "连续",
       "Advanced Al pronunciation coaching with real-time feedback and accent training":
           "Advanced Al pronunciation coaching with real-time feedback and accent training",
+      "Welcome to Mercury AI English Tutor": "欢迎使用 Mercury AI 英语导师",
+      "Watch our introduction to discover how Mercury makes learning English fun and effective with AI-powered personalized lessons.":
+          "观看我们的介绍，了解 Mercury 如何通过 AI 驱动的个性化课程让英语学习变得有趣且有效。",
+      "Watch Introduction": "观看介绍",
     },
     'fr_FR': {
       "Welcome to MANIFEX! Let’s start your language learning journey today":
@@ -1938,9 +1956,14 @@ class AppTranslation extends Translations {
       "Read the story and answer the questions":
           "Lisez l'histoire et répondez aux questions",
       "Retry": "Réessayer",
-      "Streak": "Streak",
+      "Streak": "Série",
       "Advanced Al pronunciation coaching with real-time feedback and accent training":
           "Advanced Al pronunciation coaching with real-time feedback and accent training",
+      "Welcome to Mercury AI English Tutor":
+          "Bienvenue sur Mercury AI English Tutor",
+      "Watch our introduction to discover how Mercury makes learning English fun and effective with AI-powered personalized lessons.":
+          "Regardez notre introduction pour découvrir comment Mercury rend l'apprentissage de l'anglais amusant et efficace grâce à des leçons personnalisées propulsées par l'IA.",
+      "Watch Introduction": "Regarder l'introduction",
     },
     'hi_IN': {
       "Welcome to MANIFEX! Let’s start your language learning journey today":
@@ -2327,9 +2350,14 @@ class AppTranslation extends Translations {
       "Read the story and answer the questions":
           "कहानी पढ़ें और सवालों के जवाब दें",
       "Retry": "पुनः प्रयास करें",
-      "Streak": "Streak",
+      "Streak": "लगातार",
       "Advanced Al pronunciation coaching with real-time feedback and accent training":
           "Advanced Al pronunciation coaching with real-time feedback and accent training",
+      "Welcome to Mercury AI English Tutor":
+          "मरकरी एआई इंग्लिश ट्यूटर में आपका स्वागत है",
+      "Watch our introduction to discover how Mercury makes learning English fun and effective with AI-powered personalized lessons.":
+          "यह जानने के लिए हमारा परिचय देखें कि मरकरी एआई-संचालित व्यक्तिगत पाठों के साथ अंग्रेजी सीखने को मजेदार और प्रभावी कैसे बनाता है।",
+      "Watch Introduction": "परिचय देखें",
     },
     'de_DE': {
       "Welcome to MANIFEX! Let’s start your language learning journey today":
@@ -2719,9 +2747,14 @@ class AppTranslation extends Translations {
       "Read the story and answer the questions":
           "Read the story and answer the questions",
       "Retry": "Wiederholen",
-      "Streak": "Streak",
+      "Streak": "Serie",
       "Advanced Al pronunciation coaching with real-time feedback and accent training":
           "Advanced Al pronunciation coaching with real-time feedback and accent training",
+      "Welcome to Mercury AI English Tutor":
+          "Willkommen beim Mercury AI Englisch-Tutor",
+      "Watch our introduction to discover how Mercury makes learning English fun and effective with AI-powered personalized lessons.":
+          "Schauen Sie sich unsere Einführung an und entdecken Sie, wie Mercury das Englischlernen mit KI-gestützten personalisierten Lektionen unterhaltsam und effektiv macht.",
+      "Watch Introduction": "Einführung ansehen",
     },
     'it_IT': {
       "Welcome to MANIFEX! Let’s start your language learning journey today":
@@ -3109,9 +3142,14 @@ class AppTranslation extends Translations {
       "Read the story and answer the questions":
           "Read the story and answer the questions",
       "Retry": "Riprova",
-      "Streak": "Streak",
+      "Streak": "Serie",
       "Advanced Al pronunciation coaching with real-time feedback and accent training":
           "Advanced Al pronunciation coaching with real-time feedback and accent training",
+      "Welcome to Mercury AI English Tutor":
+          "Benvenuto in Mercury AI English Tutor",
+      "Watch our introduction to discover how Mercury makes learning English fun and effective with AI-powered personalized lessons.":
+          "Guarda la nostra introduzione per scoprire come Mercury rende l'apprendimento dell'inglese divertente ed efficace con lezioni personalizzate basate sull'IA.",
+      "Watch Introduction": "Guarda l'introduzione",
     },
     'ko_KR': {
       "Welcome to MANIFEX! Let’s start your language learning journey today":
@@ -3219,7 +3257,7 @@ class AppTranslation extends Translations {
       "No badges yet": "아직 배지가 없습니다",
       "No achievements found": "업적을 찾을 수 없습니다",
       "Keep it up!": "Keep it up!",
-      "Days Streak!": "Days Streak!",
+      "Days Streak!": "연속 기록!",
       "Remaining": "남음",
       "Presentation": "발표",
       " Tasks": " 작업",
@@ -3498,9 +3536,14 @@ class AppTranslation extends Translations {
       "Read the story and answer the questions":
           "Read the story and answer the questions",
       "Retry": "재시도",
-      "Streak": "Streak",
+      "Streak": "스트릭",
       "Advanced Al pronunciation coaching with real-time feedback and accent training":
           "Advanced Al pronunciation coaching with real-time feedback and accent training",
+      "Welcome to Mercury AI English Tutor":
+          "Mercury AI 영어 튜터에 오신 것을 환영합니다",
+      "Watch our introduction to discover how Mercury makes learning English fun and effective with AI-powered personalized lessons.":
+          "Mercury가 AI 기반 맞춤형 레슨을 통해 영어 학습을 어떻게 재미있고 효과적으로 만드는지 소개 영상을 통해 확인해 보세요.",
+      "Watch Introduction": "소개 보기",
     },
     'es_ES': {
       "Welcome to MANIFEX! Let’s start your language learning journey today":
@@ -3608,7 +3651,7 @@ class AppTranslation extends Translations {
       "No badges yet": "Aún no hay insignias",
       "No achievements found": "No se encontraron logros",
       "Keep it up!": "Keep it up!",
-      "Days Streak!": "Days Streak!",
+      "Days Streak!": "¡Racha de días!",
       "Remaining": "Restante",
       "Presentation": "Presentación",
       " Tasks": " Tareas",
@@ -3889,9 +3932,14 @@ class AppTranslation extends Translations {
       "Read the story and answer the questions":
           "Read the story and answer the questions",
       "Retry": "Reintentar",
-      "Streak": "Streak",
+      "Streak": "Racha",
       "Advanced Al pronunciation coaching with real-time feedback and accent training":
           "Advanced Al pronunciation coaching with real-time feedback and accent training",
+      "Welcome to Mercury AI English Tutor":
+          "Bienvenido a Mercury AI English Tutor",
+      "Watch our introduction to discover how Mercury makes learning English fun and effective with AI-powered personalized lessons.":
+          "Mira nuestra introducción para descubrir cómo Mercury hace que aprender inglés sea divertido y efectivo con lecciones personalizadas impulsadas por IA.",
+      "Watch Introduction": "Ver introducción",
     },
     'ru_RU': {
       "Welcome to MANIFEX! Let’s start your language learning journey today":
@@ -4278,9 +4326,14 @@ class AppTranslation extends Translations {
       "Read the story and answer the questions":
           "Read the story and answer the questions",
       "Retry": "Повторить",
-      "Streak": "Streak",
+      "Streak": "Серия",
       "Advanced Al pronunciation coaching with real-time feedback and accent training":
           "Advanced Al pronunciation coaching with real-time feedback and accent training",
+      "Welcome to Mercury AI English Tutor":
+          "Добро пожаловать в Mercury AI English Tutor",
+      "Watch our introduction to discover how Mercury makes learning English fun and effective with AI-powered personalized lessons.":
+          "Посмотрите наше введение, чтобы узнать, как Mercury делает изучение английского языка интересным и эффективным с помощью персонализированных уроков на базе ИИ.",
+      "Watch Introduction": "Посмотреть введение",
     },
     'vi_VN': {
       "Welcome to MANIFEX! Let’s start your language learning journey today":
@@ -4667,9 +4720,14 @@ class AppTranslation extends Translations {
       "Read the story and answer the questions":
           "Read the story and answer the questions",
       "Retry": "Thử lại",
-      "Streak": "Streak",
+      "Streak": "Chuỗi",
       "Advanced Al pronunciation coaching with real-time feedback and accent training":
           "Advanced Al pronunciation coaching with real-time feedback and accent training",
+      "Welcome to Mercury AI English Tutor":
+          "Chào mừng bạn đến với Mercury AI English Tutor",
+      "Watch our introduction to discover how Mercury makes learning English fun and effective with AI-powered personalized lessons.":
+          "Xem phần giới thiệu của chúng tôi để khám phá cách Mercury giúp việc học tiếng Anh trở nên thú vị và hiệu quả với các bài học cá nhân hóa được hỗ trợ bởi AI.",
+      "Watch Introduction": "Xem giới thiệu",
     },
   };
 }
