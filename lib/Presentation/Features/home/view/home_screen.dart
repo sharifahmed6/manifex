@@ -352,12 +352,6 @@ class HomeScreen extends GetView<HomeController> {
                   child: Column(
                     children: [
                       CustomText(
-                        text: 'Welcome to Mercury AI English Tutor'.tr,
-                        fontSize: 20.sp,
-                        textAlign: TextAlign.start,
-                      ),
-                      SizedBox(height: 8.h),
-                      CustomText(
                         text:
                             'Watch our introduction to discover how Mercury makes learning English fun and effective with AI-powered personalized lessons.'
                                 .tr,
