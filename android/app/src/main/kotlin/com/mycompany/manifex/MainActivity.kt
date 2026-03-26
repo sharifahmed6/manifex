@@ -1,4 +1,4 @@
-package com.example.manifex
+package com.mycompany.manifex
 
 import io.flutter.embedding.android.FlutterActivity
 

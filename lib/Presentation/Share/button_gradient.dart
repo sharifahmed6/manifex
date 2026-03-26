@@ -20,10 +20,11 @@ class ButtonGradient extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: height ?? 48.h,
+        height: isLandscape ? height ?? 100.h: height ?? 48.h,
         width: double.infinity,
         constraints: BoxConstraints(
           minHeight: 38.h.clamp(40, 60),

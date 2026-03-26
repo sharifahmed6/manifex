@@ -358,7 +358,7 @@ class HomeScreen extends GetView<HomeController> {
                         fontSize: 16.sp,
                         textAlign: TextAlign.start,
                       ),
-                      SizedBox(height: 16.h,),
+                      SizedBox(height: 16.h),
                       ButtonGradient(
                         onTap: () {
                           controller.music.stop();
@@ -382,12 +382,12 @@ class HomeScreen extends GetView<HomeController> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.play_arrow,color: Colors.white,),
+                            Icon(Icons.play_arrow, color: Colors.white),
                             CustomText(
                               text: 'Watch Introduction'.tr,
                               fontSize: 16.sp,
                               fontWeight: FontWeight.bold,
-                            )
+                            ),
                           ],
                         ),
                       ),
@@ -395,7 +395,7 @@ class HomeScreen extends GetView<HomeController> {
                   ),
                 ),
               ),
-              SizedBox(height: 8.h,),
+              SizedBox(height: 8.h),
               Text(
                 "Running Practices".tr,
                 style: TextStyle(
