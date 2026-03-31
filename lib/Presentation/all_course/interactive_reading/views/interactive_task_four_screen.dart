@@ -216,7 +216,7 @@ class InteractiveTaskFourScreen extends StatelessWidget {
                                         interactiveController
                                             .checkAllComplete();
                                         interactiveController.stop();
-                                        Get.back();
+                                        Get.back(result: true);
                                       }
                                     : (canNext ? controller.submitNext : null),
                                 child: Opacity(

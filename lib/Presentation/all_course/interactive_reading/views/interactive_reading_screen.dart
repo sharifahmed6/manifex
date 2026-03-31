@@ -6,7 +6,8 @@ import 'package:manifex/Presentation/Share/scafold_background.dart';
 import 'package:manifex/Presentation/all_course/interactive_reading/views/skill_progress_screen.dart';
 import 'package:manifex/Presentation/all_course/interactive_reading/views/skill_screen.dart';
 import 'package:manifex/Presentation/all_course/interactive_reading/widget/interactive_border_color_gradient.dart';
-import 'package:manifex/Presentation/all_course/practices/controller/toggle_tab_controller.dart';
+import '../controller/interactive_reading_controller.dart';
+import '../../practices/controller/toggle_tab_controller.dart';
 import 'package:manifex/Presentation/app_bar/views/custom_app_bar.dart';
 import '../../../Share/gradient_toggle_tabs.dart';
 
@@ -16,6 +17,7 @@ class InteractiveReadingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = Get.find<ToggleTabController>();
+    final controller = Get.find<InteractiveReadingController>();
 
     return scaffold_background(
       appBar: const PreferredSize(
@@ -27,7 +29,12 @@ class InteractiveReadingScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CustomBackButton(text: 'Interactive Reading'.tr),
+            CustomBackButton(
+              text: 'Interactive Reading'.tr,
+              onTap: () {
+                Get.back(result: controller.isAnyTaskCompleted.value);
+              },
+            ),
             SizedBox(height: 18.h),
 
             InteractiveBorderColor(child: GradientToggleTabs()),

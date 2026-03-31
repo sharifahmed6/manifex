@@ -16,6 +16,7 @@ import '../../../app_bar/views/custom_app_bar.dart';
 import 'package:get/get.dart';
 import '../controller/home_controller.dart';
 import '../../../Share/intro_video_dialog.dart';
+import '../../../bottom_navbar/controllers/bottom_navbar_controller.dart';
 
 class HomeScreen extends GetView<HomeController> {
   const HomeScreen({super.key});
@@ -396,13 +397,14 @@ class HomeScreen extends GetView<HomeController> {
                 ),
               ),
               SizedBox(height: 8.h),
-              Text(
+          /*    Text(
                 "Running Practices".tr,
                 style: TextStyle(
                   fontSize: ScreenResponsive.responsiveFont(context, 18),
                   fontWeight: FontWeight.bold,
                 ),
-              ),
+              ),*/
+/*
               SizedBox(height: ScreenResponsive.h(context, 10)),
               TransparentGradientBorder(
                 strokeWidth: 0.5,
@@ -459,6 +461,7 @@ class HomeScreen extends GetView<HomeController> {
                   ),
                 ),
               ),
+*/
 
               SizedBox(height: ScreenResponsive.h(context, 10)),
               Text(
@@ -477,7 +480,17 @@ class HomeScreen extends GetView<HomeController> {
                     'Phoneme recognition and word games with visual cues designed for dyslexic learners'
                         .tr,
                 context: context,
-                onTap: () => Get.toNamed(routes.interactive_reading_screen),
+                onTap: () {
+                  controller.music.stop();
+                  Get.toNamed(routes.interactive_reading_screen)?.then((result) {
+                    if (result == true) {
+                      Get.find<BottomNavbarController>().changeIndex(1);
+                    } else {
+                      controller.music.play(AssetsPath.homeMusic);
+                    }
+                  });
+                },
+                text: 'Start Reading'
               ),
               SizedBox(height: 16.h),
               _practicesCard(
@@ -487,7 +500,17 @@ class HomeScreen extends GetView<HomeController> {
                     'Write. Learn. Improve. AI checks your grammar, structure, and style instantly.'
                         .tr,
                 context: context,
-                onTap: () => Get.toNamed(routes.smart_writing_screen),
+                onTap: () {
+                  controller.music.stop();
+                  Get.toNamed(routes.smart_writing_screen)?.then((result) {
+                    if (result == true) {
+                      Get.find<BottomNavbarController>().changeIndex(1);
+                    } else {
+                      controller.music.play(AssetsPath.homeMusic);
+                    }
+                  });
+                },
+                text: 'Start Writing'
               ),
             ],
           ),
@@ -502,6 +525,7 @@ Widget _practicesCard({
   String? title,
   String? subTitle,
   VoidCallback? onTap,
+  String? text,
   required BuildContext context,
 }) {
   return TransparentGradientBorder(
@@ -553,7 +577,7 @@ Widget _practicesCard({
             ),
           ),
           SizedBox(height: 10.h),
-          ButtonGradient(text: 'Start Reading'.tr, onTap: onTap),
+          ButtonGradient(text: text!.tr, onTap: onTap),
         ],
       ),
     ),
