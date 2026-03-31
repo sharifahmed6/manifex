@@ -36,16 +36,12 @@ class HomeController extends GetxController with WidgetsBindingObserver {
 
       // Play music ONLY when exactly on HomeScreen (within BottomNavbar)
       // Any other Push route that covers the home screen should stop it.
-      if (route == '/home_screen' ||
-          route == '/bottom_navbar' ||
-          route == '/') {
+      if (route == '/home_screen' || route == '/bottom_navbar' || route == '/') {
         // Also ensure bottom navbar tab is actually the home tab
         try {
           final bottomController = Get.find<BottomNavbarController>();
           if (bottomController.selectedIndex.value == 0) {
-            if (music.isPlaying) {
-              music.stop();
-            } else {
+            if (!music.isPlaying) {
               music.play(AssetsPath.homeMusic);
             }
           } else {

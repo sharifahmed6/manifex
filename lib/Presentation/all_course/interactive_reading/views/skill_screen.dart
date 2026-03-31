@@ -36,7 +36,7 @@ class SkillScreen extends StatelessWidget {
             SizedBox(height: 8.h),
             SingleSkillCard(
               imagePath: 'assets/icons/phoneme_icon.png',
-              title: 'Phoneme Flashcards'.tr,
+              title: "${'Phoneme Flashcards'.tr} 1",
               subTitle: 'Click the cards to hear the sound'.tr,
               buttonText: 'Task 1'.tr,
               onTap: () {
@@ -66,7 +66,7 @@ class SkillScreen extends StatelessWidget {
             SizedBox(height: 16.h),
             SingleSkillCard(
               imagePath: 'assets/icons/phoneme_icon.png',
-              title: 'Phoneme Flashcards'.tr,
+              title: "${'Phoneme Flashcards'.tr} 2",
               subTitle: 'Drag words to their matching pictures'.tr,
               buttonText: 'Task 3'.tr,
               onTap: () {

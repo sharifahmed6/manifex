@@ -88,7 +88,6 @@ class SmartWritingController extends GetxController {
   void onClose() {
     _timer?.cancel();
     writingController.dispose();
-    MusicService().stop();
     super.onClose();
   }
 

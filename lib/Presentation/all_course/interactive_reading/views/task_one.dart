@@ -276,7 +276,7 @@ class TaskOne extends StatelessWidget {
               children: [
                 SizedBox(height: 14.h),
                 GestureDetector(
-                  onTap: () => Get.back(),
+                  onTap: () => Get.back(result: true),
                   child: AchievmentGradientBorder(
                     child: Container(
                       width: double.infinity,

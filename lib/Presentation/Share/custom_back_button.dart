@@ -4,9 +4,10 @@ import 'package:get/get.dart';
 import 'package:manifex/Presentation/Share/text_title_small.dart';
 
 class CustomBackButton extends StatelessWidget {
-  const CustomBackButton({super.key, this.text});
-
   final String? text;
+  final VoidCallback? onTap;
+
+  const CustomBackButton({super.key, this.text, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class CustomBackButton extends StatelessWidget {
       spacing: 8.w,
       children: [
         GestureDetector(
-          onTap: () {
+          onTap: onTap ?? () {
             Get.back();
           },
           child: Icon(

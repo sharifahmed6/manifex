@@ -36,6 +36,8 @@ class InteractiveReadingController extends GetxController {
   final t3SkillLock = true.obs;
   final t4SkillLock = true.obs;
 
+  final isAnyTaskCompleted = false.obs;
+
   /// Lock Skill end
 
   /// How many tasks are completed (0–4)
@@ -50,6 +52,7 @@ class InteractiveReadingController extends GetxController {
     if (!t2SkillLock.value) done++;
     if (!t3SkillLock.value) done++;
     if (!t4SkillLock.value) done++;
+    if (done > 0) isAnyTaskCompleted.value = true;
     if (done > 4) done = 4;
     currentTask.value = done;
     allAnswerSubmit.value = (done >= 4);
@@ -123,7 +126,7 @@ class InteractiveReadingController extends GetxController {
         },
       );
       if (response.isSuccess) {
-        Get.back();
+        Get.back(result: true);
         Get.showSnackbar(
           GetSnackBar(
             title: "Success".tr, // Modified
