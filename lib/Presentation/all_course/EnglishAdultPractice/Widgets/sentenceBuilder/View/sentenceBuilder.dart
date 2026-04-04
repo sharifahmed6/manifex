@@ -122,50 +122,50 @@ class sentenceBuilder extends StatelessWidget {
                       }
                     }),
 
-                    const SizedBox(height: 20),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GestureDetector(
-                          onTap: () => controller.previousSentence(),
-                          child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withAlpha(15),
-                              borderRadius: BorderRadius.circular(50),
-                              border: Border.all(color: Colors.grey, width: 0.7),
-                            ),
-                            child: Row(
-                              children: [
-                                Icon(Icons.arrow_back, color: Colors.white, size: 18,),
-                                const SizedBox(width: 5),
-                                Text("Previous", style: TextStyle(color: Colors.white, fontSize: ScreenResponsive.responsiveFont(context, 16), fontWeight: FontWeight.w600),)
-                              ],
-                            ),
-                          ),
-                        ),
-
-                        GestureDetector(
-                          onTap: () => controller.nextSentence(),
-                          child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withAlpha(15),
-                              borderRadius: BorderRadius.circular(50),
-                              border: Border.all(color: Colors.grey, width: 0.7),
-                            ),
-                            child: Row(
-                              children: [
-                                Text("Next", style: TextStyle(color: Colors.white, fontSize: ScreenResponsive.responsiveFont(context, 16), fontWeight: FontWeight.w600),),
-                                const SizedBox(width: 5),
-                                Icon(Icons.arrow_forward, color: Colors.white, size: 18,),
-                              ],
-                            ),
-                          ),
-                        )
-                      ],
-                    )
+                    // const SizedBox(height: 20),
+                    //
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     GestureDetector(
+                    //       onTap: () => controller.previousSentence(),
+                    //       child: Container(
+                    //         padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                    //         decoration: BoxDecoration(
+                    //           color: Colors.white.withAlpha(15),
+                    //           borderRadius: BorderRadius.circular(50),
+                    //           border: Border.all(color: Colors.grey, width: 0.7),
+                    //         ),
+                    //         child: Row(
+                    //           children: [
+                    //             Icon(Icons.arrow_back, color: Colors.white, size: 18,),
+                    //             const SizedBox(width: 5),
+                    //             Text("Previous", style: TextStyle(color: Colors.white, fontSize: ScreenResponsive.responsiveFont(context, 16), fontWeight: FontWeight.w600),)
+                    //           ],
+                    //         ),
+                    //       ),
+                    //     ),
+                    //
+                    //     GestureDetector(
+                    //       onTap: () => controller.nextSentence(),
+                    //       child: Container(
+                    //         padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                    //         decoration: BoxDecoration(
+                    //           color: Colors.white.withAlpha(15),
+                    //           borderRadius: BorderRadius.circular(50),
+                    //           border: Border.all(color: Colors.grey, width: 0.7),
+                    //         ),
+                    //         child: Row(
+                    //           children: [
+                    //             Text("Next", style: TextStyle(color: Colors.white, fontSize: ScreenResponsive.responsiveFont(context, 16), fontWeight: FontWeight.w600),),
+                    //             const SizedBox(width: 5),
+                    //             Icon(Icons.arrow_forward, color: Colors.white, size: 18,),
+                    //           ],
+                    //         ),
+                    //       ),
+                    //     )
+                    //   ],
+                    // )
                   ],
                 ),
 

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -21,7 +22,13 @@ class wordFlashController extends GetxController {
   RxInt countdown = 3.obs;
   RxBool isCounting = false.obs;
 
+  var recordDuration = 0.obs;
+  Timer? _recordTimer;
   Timer? _timer;
+
+  var showResult = false.obs;
+  var evaluationFeedback = "".obs;
+  var currentScore = 0.obs;
 
   @override
   void onInit() {
@@ -68,14 +75,36 @@ class wordFlashController extends GetxController {
     AudioFilePath.value = '';
     startCountdown();
     await recorder.startRecorder(toFile: 'contextSpin.aac');
+    _startRecordTimer();
   }
+
+  void _startRecordTimer() {
+    recordDuration.value = 0;
+    _recordTimer = Timer.periodic(Duration(seconds: 1), (timer) {
+      recordDuration.value++;
+    });
+  }
+
+  void _stopRecordTimer() {
+    _recordTimer?.cancel();
+    _recordTimer = null;
+  }
+
+  String formatDuration(int seconds) {
+    final minutes = (seconds / 60).floor();
+    final remainingSeconds = seconds % 60;
+    return '${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
+  }
+
 
   Future<void> stopRecording() async {
     String? path = await recorder.stopRecorder();
     isRunning.value = false;
     AudioFilePath.value = path!;
     stopTimer();
+    _stopRecordTimer();
   }
+
 
   @override
   void onClose() {
@@ -84,18 +113,17 @@ class wordFlashController extends GetxController {
   }
 
   void nextWord() {
+    showResult.value = false;
     if (currentIndex.value < words.length - 1) {
       currentIndex++;
       AudioFilePath.value = '';
-      stopRecording();
-      startCountdown();
+      // stopRecording(); // No need to stop here as it's stopped by timer or manually
+      // startCountdown(); // User should probably click record again or it starts automatically?
     } else {
       final practiceController = Get.find<EnglishAdultPracticeController>();
-      practiceController.finalResult[3]['marks'] =
+      practiceController.finalResult[2]['marks'] =
           (score.value / (words.length * 100)) * 100;
       practiceController.unLockTask(3);
-      Get.back();
-      AppSnackbar.show("Task 3 Completed.");
     }
   }
 
@@ -129,6 +157,8 @@ class wordFlashController extends GetxController {
       if (Get.isDialogOpen ?? false) {
         Get.back();
       }
+
+      debugPrint(response.body);
 
       if (response.statusCode == 200) {
         words.clear();
@@ -181,11 +211,11 @@ class wordFlashController extends GetxController {
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
         final Map<String, dynamic> data = jsonDecode(response.body);
-        score.value += (data['score'] as int?) ?? 0;
-        // print("Score: ${score.value}");
-        // print("Final Score: ${(score.value / (words.length * 100)) * 100}");
-
-        nextWord();
+        int s = (data['score'] as int?) ?? 0;
+        score.value += s;
+        currentScore.value = s;
+        evaluationFeedback.value = data['feedback'] ?? "";
+        showResult.value = true;
       } else {
         print("Error submitting word: ${response.body}");
       }

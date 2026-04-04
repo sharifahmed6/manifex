@@ -8,6 +8,7 @@ import '../../../../../Share/GradientMask.dart';
 import '../../../../../Share/gradient_title.dart';
 import '../../../../../Share/scafold_background.dart';
 import '../../../../../app_bar/views/custom_app_bar.dart';
+import '../../../../../Share/record_button.dart';
 import '../Controller/Controller.dart';
 
 class wordFlash extends StatelessWidget {
@@ -61,7 +62,7 @@ class wordFlash extends StatelessWidget {
                 child: Obx(() => Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Obx(() => GradientMask(child: Text("Word ${controller.currentIndex.value + 1} of ${controller.words.length}", style: TextStyle(fontSize: ScreenResponsive.responsiveFont(context, 18), fontWeight: FontWeight.w600),)),),
+                    GradientMask(child: Text("Word ${controller.currentIndex.value + 1} of ${controller.words.length}", style: TextStyle(fontSize: ScreenResponsive.responsiveFont(context, 18), fontWeight: FontWeight.w600),)),
                     const SizedBox(height: 10),
                     Text("Read the word aloud before it vanishes".tr, style: TextStyle(fontSize: ScreenResponsive.responsiveFont(context, 17), fontWeight: FontWeight.w600),),
                     const SizedBox(height: 10),
@@ -76,109 +77,63 @@ class wordFlash extends StatelessWidget {
                         ),
                       ),
                     const SizedBox(height: 20),
-                    Obx(() => Center(child: Text("\"${controller.words[controller.currentIndex.value]}\"", style: TextStyle(fontSize: ScreenResponsive.responsiveFont(context, 24), fontWeight: FontWeight.w600),)),),
-                    const SizedBox(height: 10),
-                    Obx(() => Center(
-                      child: GestureDetector(
-                        onTap: () {
-                          controller.isRunning.value ? controller.stopRecording() : controller.startRecording();
-                        },
-                        child: Container(
-                          height: ScreenResponsive.h(context, 70),
-                          width: ScreenResponsive.w(context, 70),
-                          decoration: BoxDecoration(
-                            color: controller.isRunning.value
-                                ?  Colors.red
-                                : controller.AudioFilePath.value.isNotEmpty ? Colors.green : null,
-                            gradient: controller.isRunning.value
-                                ? null
-                                : LinearGradient(
-                              colors: [
-                                AppColors.yellow,
-                                AppColors.pink,
-                                AppColors.sky,
+                    Center(child: Text("\"${controller.words[controller.currentIndex.value]}\"", style: TextStyle(fontSize: ScreenResponsive.responsiveFont(context, 24), fontWeight: FontWeight.w600),)),
+                    RecordButton(
+                      title: "Record a Word Flash".tr,
+                      isRecording: controller.isRunning,
+                      audioFile: controller.AudioFilePath,
+                      onTap: () {
+                        controller.isRunning.value
+                            ? controller.stopRecording()
+                            : controller.startRecording();
+                      },
+                      recordedText: "Word Flash recorded".tr,
+                      recordDuration: controller.recordDuration,
+                      formatDuration: controller.formatDuration,
+                    ),
+
+                    if (controller.showResult.value) ...[
+                      const SizedBox(height: 20),
+                      Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withAlpha(20),
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: AppColors.sky.withAlpha(100)),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Score:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                                Text("${controller.currentScore.value}", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: AppColors.yellow)),
                               ],
                             ),
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(
-                            controller.isRunning.value ? Icons.mic_off : Icons.mic,
-                            size: 40,
-                            color: Colors.white,
-                          ),
+                            const SizedBox(height: 10),
+                            Text("Feedback:", style: TextStyle(fontWeight: FontWeight.bold)),
+                            Text(controller.evaluationFeedback.value, style: TextStyle(fontSize: 14)),
+                          ],
                         ),
                       ),
-                    ),),
-                    const SizedBox(height: 10),
-
-                    if(controller.AudioFilePath.value.isNotEmpty)
-                      Center(child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        spacing: 5,
-                        children: [
-                          Icon(Icons.check, color: Colors.green, size: 18,),
-                          Text("Word Flash recorded", style: TextStyle(color: Colors.green),),
-                        ],
-                      )),
-
-                    const SizedBox(height: 10),
-
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GestureDetector(
-                          onTap: () => controller.previousWord(),
-                          child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withAlpha(15),
-                              borderRadius: BorderRadius.circular(50),
-                              border: Border.all(color: Colors.grey, width: 0.7),
-                            ),
-                            child: Row(
-                              children: [
-                                Icon(Icons.arrow_back, color: Colors.white, size: 18,),
-                                const SizedBox(width: 5),
-                                Text("Previous", style: TextStyle(color: Colors.white, fontSize: ScreenResponsive.responsiveFont(context, 16), fontWeight: FontWeight.w600),)
-                              ],
-                            ),
-                          ),
-                        ),
-
-                        GestureDetector(
-                          onTap: () => controller.nextWord(),
-                          child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withAlpha(15),
-                              borderRadius: BorderRadius.circular(50),
-                              border: Border.all(color: Colors.grey, width: 0.7),
-                            ),
-                            child: Row(
-                              children: [
-                                Text("Next", style: TextStyle(color: Colors.white, fontSize: ScreenResponsive.responsiveFont(context, 16), fontWeight: FontWeight.w600),),
-                                const SizedBox(width: 5),
-                                Icon(Icons.arrow_forward, color: Colors.white, size: 18,),
-                              ],
-                            ),
-                          ),
-                        )
-                      ],
-                    )
-
+                    ]
                   ],
                 ),)
               ),
               const SizedBox(height: 20),
 
-              
-              GestureDetector(
+              Obx(() => GestureDetector(
                 onTap: () {
-                  if(controller.AudioFilePath.value.isNotEmpty){
-                    controller.submit();
-                  }else{
-                    AppSnackbar.show("Please record the word flash");
+                  if (controller.showResult.value) {
+                    controller.nextWord();
+                  } else {
+                    if(controller.AudioFilePath.value.isNotEmpty){
+                      controller.submit();
+                    }else{
+                      AppSnackbar.show("Please record the word flash");
+                    }
                   }
                 },
                 child: Container(
@@ -194,18 +149,19 @@ class wordFlash extends StatelessWidget {
                     spacing: 5,
                     children: [
                       Text(
-                        "Check with Mercury".tr,
+                        controller.showResult.value ? "Continue".tr : "Check with Mercury".tr,
                         style: TextStyle(fontWeight: FontWeight.w600),
                       ),
-                      Image.asset(
-                        'assets/icons/ai_icon.png',
-                        width: 24.w,
-                        height: 24.h,
-                      ),
+                      if (!controller.showResult.value)
+                        Image.asset(
+                          'assets/icons/ai_icon.png',
+                          width: 24.w,
+                          height: 24.h,
+                        ),
                     ],
                   ),
                 ),
-              ),
+              ),),
             ],
           ),
         ),
@@ -213,6 +169,3 @@ class wordFlash extends StatelessWidget {
     );
   }
 }
-
-
-

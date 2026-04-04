@@ -8,8 +8,8 @@ import 'package:manifex/Core/snakbar.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../../../../Core/SharepreferenceHelper.dart';
-import '../../../../../Share/custom_circle_progress_indicator.dart';
 import '../../../Controller/Controller.dart';
+
 
 class PrecisionDrillController extends GetxController {
 
@@ -19,8 +19,11 @@ class PrecisionDrillController extends GetxController {
   var currentWord = "".obs;
   var score = 0.obs;
   var feedback = ''.obs;
+  var isLoading = false.obs;
+  var recordDuration = 0.obs;
 
-  Timer? _timer;
+  Timer? _drillTimer;
+  Timer? _recordTimer;
   int _currentIndex = 0;
   String _currentSection = "slow";
   var currentSpeed = "Slow".obs;
@@ -63,17 +66,13 @@ class PrecisionDrillController extends GetxController {
     );
 
     try {
-      Get.dialog(
-          barrierDismissible: false,
-          CustomCircleProgressIndicator()
-      );
+      isLoading.value = true;
       final response = await http.get(
         url,
         headers: {
           'authtoken': '1',
         },
       );
-      Get.back();
 
       print("Status Code: ${response.statusCode}");
       print("Raw Body: ${response.body}");
@@ -98,8 +97,11 @@ class PrecisionDrillController extends GetxController {
       }
     } catch (e) {
       print("HTTP Error: $e");
+    } finally {
+      isLoading.value = false;
     }
   }
+
 
 
   Future<void> initRecorder() async {
@@ -120,9 +122,10 @@ class PrecisionDrillController extends GetxController {
 
 
     await recorder.startRecorder(toFile: 'precision_drill.aac');
-
+    _startRecordTimer();
     _startSection();
   }
+
 
   void _startSection() {
     if (!isRunning.value) return;
@@ -138,11 +141,12 @@ class PrecisionDrillController extends GetxController {
 
     int seconds = _getDuration(_currentSection);
 
-    _timer = Timer(Duration(seconds: seconds), () {
+    _drillTimer = Timer(Duration(seconds: seconds), () {
       _currentIndex++;
       _startSection();
     });
   }
+
 
   int _getDuration(String section) {
     switch (section) {
@@ -176,10 +180,30 @@ class PrecisionDrillController extends GetxController {
 
   Future<void> stopDrill() async {
     isRunning.value = false;
-    _timer?.cancel();
+    _drillTimer?.cancel();
+    _stopRecordTimer();
     String? path = await recorder.stopRecorder();
     AudioFilePath.value = path!;
   }
+
+  void _startRecordTimer() {
+    recordDuration.value = 0;
+    _recordTimer = Timer.periodic(Duration(seconds: 1), (timer) {
+      recordDuration.value++;
+    });
+  }
+
+  void _stopRecordTimer() {
+    _recordTimer?.cancel();
+    _recordTimer = null;
+  }
+
+  String formatDuration(int seconds) {
+    final minutes = (seconds / 60).floor();
+    final remainingSeconds = seconds % 60;
+    return '${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
+  }
+
 
   List<String> getAllPrecisionWords(Map<String, List<String>> drill) {
     return [
@@ -217,13 +241,10 @@ class PrecisionDrillController extends GetxController {
         ));
       }
 
-      Get.dialog(
-          barrierDismissible: false,
-          CustomCircleProgressIndicator()
-      );
+      isLoading.value = true;
       final streamedResponse = await request.send();
       final response = await http.Response.fromStream(streamedResponse);
-      Get.back();
+
 
       print("Status Code: ${response.statusCode}");
       print("Response Body: ${response.body}");
@@ -240,8 +261,11 @@ class PrecisionDrillController extends GetxController {
       }
     } catch (e) {
       print("HTTP Error: $e");
+    } finally {
+      isLoading.value = false;
     }
   }
+
 
   @override
   void onClose() {

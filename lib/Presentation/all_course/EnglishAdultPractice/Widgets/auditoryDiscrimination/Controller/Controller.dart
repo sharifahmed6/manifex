@@ -135,10 +135,7 @@ class auditoryDiscriminationController extends GetxController {
         finalAnswer.value == word_pairs[currentIndex.value]['answer'];
 
     if (isCorrect) {
-      AppSnackbar.show("Correct");
       correctWord.value++;
-    } else {
-      AppSnackbar.show("Incorrect");
     }
 
     finalAnswer.value = "";
@@ -155,13 +152,13 @@ class auditoryDiscriminationController extends GetxController {
       practiceController.unLockTask(1);
       practiceController.finalResult[0]['marks'] = result;
 
-      AppSnackbar.show("Task 1 Completed.");
-
-      Future.delayed(const Duration(milliseconds: 300), () {
-        Get.back();
-      });
-
       return; // stop execution
+    }
+
+    if (isCorrect) {
+      AppSnackbar.show("Correct");
+    } else {
+      AppSnackbar.show("Incorrect");
     }
 
     nextWord();

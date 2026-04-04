@@ -23,14 +23,6 @@ class wordPartsWorkshopController extends GetxController {
       Get.find<EnglishAdultPracticeController>();
       practiceController.finalResult[3]['marks'] = 100;
       practiceController.unLockTask(4);
-
-      print("Final Result: ${practiceController.finalResult}");
-
-      AppSnackbar.show("Task 4 Completed");
-
-      Future.delayed(const Duration(milliseconds: 200), () {
-        Get.back();
-      });
       return;
     }
   }

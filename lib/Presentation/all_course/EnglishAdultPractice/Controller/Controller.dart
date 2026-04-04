@@ -1,15 +1,17 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:async';
 import '../../../../App/Urls.dart';
 import '../../../../App/network_caller.dart';
 import '../../../../Core/loading.dart';
+import '../../../../Core/snakbar.dart';
 
 class EnglishAdultPracticeController extends GetxController {
   var selectedIndex = 0.obs;
   void changeTab(int index) => selectedIndex.value = index;
 
-  var listLock = [false, true, true, true, true, true].obs;
-  var listComplete = [true, true, true, true, true, true].obs;
+  var listLock = [false, true, true, true, true].obs;
+  var listComplete = [true, true, true, true, true].obs;
 
   var finalResult = [
     {"taskName": "Task 1", "marks": 0, "isAnswer": true},
@@ -17,12 +19,23 @@ class EnglishAdultPracticeController extends GetxController {
     {"taskName": "Task 3", "marks": 0, "isAnswer": true},
     {"taskName": "Task 4", "marks": 0, "isAnswer": true},
     {"taskName": "Task 5", "marks": 0, "isAnswer": true},
-    {"taskName": "Task 6", "marks": 0, "isAnswer": true},
   ].obs;
 
   Future<void> unLockTask(int index) async {
-    listLock[index] = false;
-    listComplete[index - 1] = false;
+    if (index >= 0 && index < listLock.length) {
+      listLock[index] = false;
+    }
+    if (index > 0 && index <= listComplete.length) {
+      listComplete[index - 1] = false;
+    }
+    
+    // Using closeOverlays: true is a cleaner way to close snackbars/dialogs during navigation
+    Get.back(closeOverlays: true);
+    
+    // Show completion message after navigation starts
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      AppSnackbar.show("Task $index Completed.");
+    });
   }
 
 
@@ -39,7 +52,7 @@ class EnglishAdultPracticeController extends GetxController {
       if (response.statusCode == 201 &&
           response.responseData != null &&
           response.responseData?['success'] == true) {
-        listComplete[5] = false;
+        listComplete[4] = false;
       } else {
         print("Error submitting final answers ❌");
         print("Server message: ${response.responseData?['message'] ?? response.errorMessage}");
@@ -54,7 +67,6 @@ class EnglishAdultPracticeController extends GetxController {
 
   @override
   void onInit() {
-    // TODO: implement onInit
     startTimer();
     super.onInit();
   }

@@ -171,60 +171,13 @@ class auditoryDiscrimination extends StatelessWidget {
                         child: Text("You have selected : ${controller.finalAnswer.value}".tr, style: TextStyle(color: Colors.green),),
                       ),
                     ) : SizedBox.shrink(),),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GestureDetector(
-                          onTap: () => controller.previousWord(),
-                          child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withAlpha(15),
-                              borderRadius: BorderRadius.circular(50),
-                              border: Border.all(color: Colors.grey, width: 0.7),
-                            ),
-                            child: Row(
-                              children: [
-                                Icon(Icons.arrow_back, color: Colors.white, size: 18,),
-                                const SizedBox(width: 5),
-                                Text("Previous", style: TextStyle(color: Colors.white, fontSize: ScreenResponsive.responsiveFont(context, 16), fontWeight: FontWeight.w600),)
-                              ],
-                            ),
-                          ),
-                        ),
-
-                        GestureDetector(
-                          onTap: () => controller.nextWord(),
-                          child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withAlpha(15),
-                              borderRadius: BorderRadius.circular(50),
-                              border: Border.all(color: Colors.grey, width: 0.7),
-                            ),
-                            child: Row(
-                              children: [
-                                Text("Next", style: TextStyle(color: Colors.white, fontSize: ScreenResponsive.responsiveFont(context, 16), fontWeight: FontWeight.w600),),
-                                const SizedBox(width: 5),
-                                Icon(Icons.arrow_forward, color: Colors.white, size: 18,),
-                              ],
-                            ),
-                          ),
-                        )
-                      ],
-                    )
                   ],
                 ),
               ),
               const SizedBox(height: 20),
               GestureDetector(
                 onTap: (){
-                  if(controller.finalAnswer.value.isNotEmpty && controller.currentIndex.value == controller.word_pairs.length - 1){
-                    // Get.back();
-                    controller.submit();
-                    AppSnackbar.show("Auditory discrimination task completed.");
-                  } else if(controller.finalAnswer.value.isNotEmpty){
+                  if(controller.finalAnswer.value.isNotEmpty){
                     controller.submit();
                   }else{
                     AppSnackbar.show("Please select answer.");

@@ -139,27 +139,14 @@ class _skillScreen extends StatelessWidget {
           const SizedBox(height: 15,),
 
           SingleSkillCard(
-            title: 'Phrase Maker'.tr,
+            title: 'Sentence Builder'.tr,
             subTitle: 'Practice in sequence to strengthen skills, memory, and confident performance flow.'.tr,
             buttonText: 'Task 5',
             onTap: (){
-              Get.toNamed(routes.phraseMaker_screen);
+              Get.toNamed(routes.sentenceBuilder_screen);
             },
             isComplete: controller.listComplete[4],
             lock: controller.listLock[4],
-          ),
-
-          const SizedBox(height: 15,),
-
-          SingleSkillCard(
-            title: 'Sentence Builder'.tr,
-            subTitle: 'Practice in sequence to strengthen skills, memory, and confident performance flow.'.tr,
-            buttonText: 'Task 6',
-            onTap: (){
-              Get.toNamed(routes.sentenceBuilder_screen);
-            },
-            isComplete: controller.listComplete[5],
-            lock: controller.listLock[5],
           ),
         ],
       ),)

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
@@ -9,15 +10,14 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../../Core/SharepreferenceHelper.dart';
-import '../../../../../Share/custom_circle_progress_indicator.dart';
 import '../../../Controller/Controller.dart';
+
 
 class powerWordsPluseController extends GetxController {
   final NetworkCaller networkCaller = NetworkCaller();
 
-  var powerWords = [
-    "Loading...",
-  ].obs;
+  var powerWords = <String>[].obs;
+  var isLoading = true.obs;
 
 
   var currentWord = 0.obs;
@@ -27,6 +27,9 @@ class powerWordsPluseController extends GetxController {
   var sentenceAudioFile = ''.obs;
   var score = 0.obs;
   var feedback = ''.obs;
+
+  var recordDuration = 0.obs;
+  Timer? _timer;
 
 
   Future<void> nextWord() async {
@@ -93,6 +96,8 @@ class powerWordsPluseController extends GetxController {
       }
     } catch (e) {
       print("HTTP Error: $e");
+    } finally {
+      isLoading.value = false;
     }
   }
 
@@ -133,16 +138,13 @@ class powerWordsPluseController extends GetxController {
         ));
       }
 
-      Get.dialog(
-        barrierDismissible: false,
-          CustomCircleProgressIndicator()
-      );
+      isLoading.value = true;
       // Send request
       final streamedResponse = await request.send();
 
       // Convert to Response
       final response = await http.Response.fromStream(streamedResponse);
-      Get.back();
+
 
       // print("Status Code: ${response.statusCode}");
       // print("Response Body: ${response.body}");
@@ -158,8 +160,11 @@ class powerWordsPluseController extends GetxController {
       }
     } catch (e) {
       print("HTTP Error: $e");
+    } finally {
+      isLoading.value = false;
     }
   }
+
 
 
   Future<void> startRecording() async {
@@ -174,9 +179,29 @@ class powerWordsPluseController extends GetxController {
         codec: Codec.aacMP4, // M4A recording
         audioSource: AudioSource.microphone,
       );
+
+      _startTimer();
     } catch (e) {
       debugPrint("Start recording error: $e");
     }
+  }
+
+  void _startTimer() {
+    recordDuration.value = 0;
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      recordDuration.value++;
+    });
+  }
+
+  void _stopTimer() {
+    _timer?.cancel();
+    _timer = null;
+  }
+
+  String formatDuration(int seconds) {
+    final minutes = (seconds / 60).floor();
+    final remainingSeconds = seconds % 60;
+    return '${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
   }
 
   /// Call this to stop recording
@@ -184,6 +209,8 @@ class powerWordsPluseController extends GetxController {
     try {
       String? path = await _recorder!.stopRecorder();
       recordPath = path;
+
+      _stopTimer();
 
       if (recordPath != null) {
         if(type == "define"){
@@ -195,5 +222,12 @@ class powerWordsPluseController extends GetxController {
     } catch (e) {
       debugPrint("Stop recording error: $e");
     }
+  }
+
+  @override
+  void onClose() {
+    _stopTimer();
+    _recorder?.closeRecorder();
+    super.onClose();
   }
 }

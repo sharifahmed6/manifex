@@ -44,11 +44,6 @@ class phonemeGraphemeMappingController extends GetxController {
       Get.find<EnglishAdultPracticeController>();
       practiceController.finalResult[1]['marks'] = result;
       practiceController.unLockTask(2);
-
-      AppSnackbar.show("Task 2 Completed");
-      Future.delayed(const Duration(milliseconds: 300), () {
-        Get.back();
-      });
     }
   }
 
