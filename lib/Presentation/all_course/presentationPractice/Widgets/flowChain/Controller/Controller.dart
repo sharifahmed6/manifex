@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:convert';
+
 
 import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 import 'package:get/get.dart';
@@ -6,15 +8,21 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../../Core/SharepreferenceHelper.dart';
 import '../../../../../../Core/snakbar.dart';
-import '../../../../../Share/custom_circle_progress_indicator.dart';
 import '../../../Controller/Controller.dart';
+
 
 class flowChainController extends GetxController {
   final FlutterSoundRecorder recorder = FlutterSoundRecorder();
   var isRunning = false.obs;
-  var AudioFilePath = ''.obs;
   var score = 0.obs;
   var feedback = ''.obs;
+  var AudioFilePath = ''.obs;
+  var isLoading = false.obs;
+
+  var recordDuration = 0.obs;
+
+  Timer? _recordTimer;
+
 
 
   var flowChain = [
@@ -62,13 +70,34 @@ class flowChainController extends GetxController {
     isRunning.value = true;
     AudioFilePath.value = '';
     await recorder.startRecorder(toFile: 'contextSpin.aac');
+    _startRecordTimer();
   }
 
   Future<void> stopRecording() async {
     String? path = await recorder.stopRecorder();
     isRunning.value = false;
+    _stopRecordTimer();
     AudioFilePath.value = path!;
   }
+
+  void _startRecordTimer() {
+    recordDuration.value = 0;
+    _recordTimer = Timer.periodic(Duration(seconds: 1), (timer) {
+      recordDuration.value++;
+    });
+  }
+
+  void _stopRecordTimer() {
+    _recordTimer?.cancel();
+    _recordTimer = null;
+  }
+
+  String formatDuration(int seconds) {
+    final minutes = (seconds / 60).floor();
+    final remainingSeconds = seconds % 60;
+    return '${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
+  }
+
 
   @override
   void onInit() {
@@ -96,10 +125,7 @@ class flowChainController extends GetxController {
     );
 
     try {
-      Get.dialog(
-        barrierDismissible: false,
-        CustomCircleProgressIndicator(),
-      );
+      isLoading.value = true;
 
       final response = await http.get(
         url,
@@ -107,8 +133,6 @@ class flowChainController extends GetxController {
           'authtoken': '1',
         },
       );
-
-      Get.back();
 
       print("Status Code: ${response.statusCode}");
       print("Raw Body: ${response.body}");
@@ -125,8 +149,11 @@ class flowChainController extends GetxController {
       }
     } catch (e) {
       print("HTTP Error: $e");
+    } finally {
+      isLoading.value = false;
     }
   }
+
 
   Future<void> submit() async {
     final url = Uri.parse(
@@ -134,12 +161,10 @@ class flowChainController extends GetxController {
 
     try {
       // Show loading
-      Get.dialog(
-        barrierDismissible: false,
-        const CustomCircleProgressIndicator(),
-      );
+      isLoading.value = true;
 
       final request = http.MultipartRequest('POST', url);
+
 
       // Headers
       request.headers.addAll({
@@ -175,10 +200,8 @@ class flowChainController extends GetxController {
       final streamedResponse = await request.send();
       final response = await http.Response.fromStream(streamedResponse);
 
-      // Close loading
-      Get.back();
-
       print("Status Code: ${response.statusCode}");
+
       print("Response Body: ${response.body}");
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
@@ -201,11 +224,13 @@ class flowChainController extends GetxController {
       }
 
     } catch (e) {
-      Get.back();
       print("HTTP Error: $e");
       Get.snackbar("Error", "Something went wrong");
+    } finally {
+      isLoading.value = false;
     }
   }
+
 
 
 

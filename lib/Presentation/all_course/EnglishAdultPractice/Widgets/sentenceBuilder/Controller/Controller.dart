@@ -89,13 +89,9 @@ class sentenceBuilderController extends GetxController {
       loadWords();
     } else {
       final practiceController = Get.find<EnglishAdultPracticeController>();
-      practiceController.finalResult[5]['marks'] = 100;
-      practiceController.unLockTask(6);
-      AppSnackbar.show("Task 6 Completed.");
+      practiceController.finalResult[4]['marks'] = 100;
+      await practiceController.unLockTask(5);
       await practiceController.FinalSubmission();
-      Future.delayed(const Duration(milliseconds: 300), () {
-        Get.back();
-      });
     }
   }
 

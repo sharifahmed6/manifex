@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 import 'package:get/get.dart';
@@ -6,8 +8,8 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../../Core/SharepreferenceHelper.dart';
 import '../../../../../../Core/snakbar.dart';
-import '../../../../../Share/custom_circle_progress_indicator.dart';
 import '../../../Controller/Controller.dart';
+
 
 class ContextSpinController extends GetxController {
   final FlutterSoundRecorder recorder = FlutterSoundRecorder();
@@ -15,6 +17,9 @@ class ContextSpinController extends GetxController {
   var AudioFilePath = ''.obs;
   var score = 0.obs;
   var feedback = ''.obs;
+  var isLoading = false.obs;
+  var recordDuration = 0.obs;
+  Timer? _timer;
 
   RxMap<String, dynamic> contextSpin = <String, dynamic>{
     "words": [
@@ -42,12 +47,32 @@ class ContextSpinController extends GetxController {
     isRunning.value = true;
     AudioFilePath.value = '';
     await recorder.startRecorder(toFile: 'contextSpin.aac');
+    _startTimer();
   }
 
   Future<void> stopRecording() async {
     String? path = await recorder.stopRecorder();
     isRunning.value = false;
     AudioFilePath.value = path!;
+    _stopTimer();
+  }
+
+  void _startTimer() {
+    recordDuration.value = 0;
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      recordDuration.value++;
+    });
+  }
+
+  void _stopTimer() {
+    _timer?.cancel();
+    _timer = null;
+  }
+
+  String formatDuration(int seconds) {
+    final minutes = (seconds / 60).floor();
+    final remainingSeconds = seconds % 60;
+    return '${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
   }
 
   Future<void> getContextSpin() async {
@@ -57,17 +82,13 @@ class ContextSpinController extends GetxController {
     );
 
     try {
-      Get.dialog(
-          barrierDismissible: false,
-          CustomCircleProgressIndicator()
-      );
+      isLoading.value = true;
       final response = await http.get(
         url,
         headers: {
           'authtoken': '1',
         },
       );
-      Get.back();
 
       print("Status Code: ${response.statusCode}");
       print("Raw Body: ${response.body}");
@@ -84,8 +105,11 @@ class ContextSpinController extends GetxController {
       }
     } catch (e) {
       print("HTTP Error: $e");
+    } finally {
+      isLoading.value = false;
     }
   }
+
 
   Future<void> submit() async {
     final url = Uri.parse("https://ai.manifex.org/api/v1/presentation/context-spin/context_spin");
@@ -117,13 +141,10 @@ class ContextSpinController extends GetxController {
         ));
       }
 
-      Get.dialog(
-          barrierDismissible: false,
-          CustomCircleProgressIndicator()
-      );
+      isLoading.value = true;
       final streamedResponse = await request.send();
       final response = await http.Response.fromStream(streamedResponse);
-      Get.back();
+
 
       print("Status Code: ${response.statusCode}");
       print("Response Body: ${response.body}");
@@ -140,8 +161,11 @@ class ContextSpinController extends GetxController {
       }
     } catch (e) {
       print("HTTP Error: $e");
+    } finally {
+      isLoading.value = false;
     }
   }
+
 
 
   @override

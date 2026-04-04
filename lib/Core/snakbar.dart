@@ -9,7 +9,15 @@ class AppSnackbar {
     SnackPosition snackPosition = SnackPosition.TOP,
     Color backgroundColor = Colors.black87,
   }) {
-    if (Get.isSnackbarOpen) Get.closeAllSnackbars();
+    // Using a try-catch and avoiding rapid close/open cycles helps prevent GetX disposed assertion errors
+    try {
+      if (Get.isSnackbarOpen) {
+        // Instead of closeAll, we can just let them stack or try to close current
+        // Get.closeAllSnackbars(); 
+      }
+    } catch (e) {
+      debugPrint("Error closing snackbar: $e");
+    }
 
     Get.snackbar(
       title,
