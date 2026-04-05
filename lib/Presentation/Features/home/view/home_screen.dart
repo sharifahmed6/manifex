@@ -90,13 +90,7 @@ class HomeScreen extends GetView<HomeController> {
                         SizedBox(width: 7),
                         Obx(
                           () => GestureDetector(
-                            onTap: () {
-                              if (controller.music.isPlaying) {
-                                controller.music.stop();
-                              } else {
-                                controller.music.play(AssetsPath.homeMusic);
-                              }
-                            },
+                            onTap: () => controller.music.toggleMusic(AssetsPath.homeMusic),
                             child: Icon(
                               controller.music.isPlayingRx.value
                                   ? Icons.volume_up_sharp
@@ -486,7 +480,11 @@ class HomeScreen extends GetView<HomeController> {
                     if (result == true) {
                       Get.find<BottomNavbarController>().changeIndex(1);
                     } else {
-                      controller.music.play(AssetsPath.homeMusic);
+                      Future.delayed(const Duration(milliseconds: 100), () {
+                        // Always reset preference to play when returning to Home
+                        controller.music.isPreferencePlayRx.value = true;
+                        controller.music.play(AssetsPath.homeMusic);
+                      });
                     }
                   });
                 },
@@ -506,7 +504,11 @@ class HomeScreen extends GetView<HomeController> {
                     if (result == true) {
                       Get.find<BottomNavbarController>().changeIndex(1);
                     } else {
-                      controller.music.play(AssetsPath.homeMusic);
+                      Future.delayed(const Duration(milliseconds: 100), () {
+                        // Always reset preference to play when returning to Home
+                        controller.music.isPreferencePlayRx.value = true;
+                        controller.music.play(AssetsPath.homeMusic);
+                      });
                     }
                   });
                 },

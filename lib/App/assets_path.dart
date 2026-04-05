@@ -13,6 +13,7 @@ class AssetsPath {
   static String timeFile = "assets/icons/time_file.png";
   static String homeBack = "assets/icons/home_back.png";
   static String homeMusic = "assets/Music/k_fresh_music_ferrari_red.wav";
+  static String smartWritingMusic = "assets/Music/K FRESH MUSIC - BOUNCE WIT IT -MOD-.mp3";
 
 
   static String introFrench = "assets/IntroVideos/manifex_intro_french.mp4";

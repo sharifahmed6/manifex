@@ -6,6 +6,7 @@ import '../controller/smart_writing_controller.dart';
 import 'package:manifex/Presentation/all_course/smart_writing/views/smart_writing_skill_progress.dart';
 import 'package:manifex/Presentation/all_course/smart_writing/views/smart_writing_skill_screen.dart';
 import 'package:manifex/Presentation/app_bar/views/custom_app_bar.dart';
+import 'package:manifex/Core/MusicService.dart';
 import '../../../Share/custom_back_button.dart';
 import '../../../Share/gradient_toggle_tabs.dart';
 import '../../interactive_reading/widget/interactive_border_color_gradient.dart';
@@ -32,6 +33,7 @@ class SmartWritingScreen extends StatelessWidget {
             CustomBackButton(
               text: 'Smart Writing',
               onTap: () {
+                MusicService().stop();
                 Get.back(result: controller.inProgress.value);
               },
             ),

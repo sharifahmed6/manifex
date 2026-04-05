@@ -32,41 +32,88 @@ class HomeController extends GetxController with WidgetsBindingObserver {
 
     // Monitor GetX routing changes globally
     ever(Get.routing.current.obs, (String route) {
-      if (route == 'null' || route.isEmpty) return; // Initial setup
+      if (route == 'null' || route.isEmpty) return;
 
-      // Play music ONLY when exactly on HomeScreen (within BottomNavbar)
-      // Any other Push route that covers the home screen should stop it.
+      // Ensure music only plays when precisely on the Bottom Navbar's Home Tab
       if (route == '/home_screen' || route == '/bottom_navbar' || route == '/') {
-        // Also ensure bottom navbar tab is actually the home tab
         try {
           final bottomController = Get.find<BottomNavbarController>();
           if (bottomController.selectedIndex.value == 0) {
-            if (!music.isPlaying) {
-              music.play(AssetsPath.homeMusic);
+            // Respect user manual pause preference
+            if (!music.isPlaying && music.isPreferencePlay) {
+              Future.delayed(const Duration(milliseconds: 100), () {
+                if (!music.isPlaying && music.isPreferencePlay) {
+                  music.play(AssetsPath.homeMusic);
+                }
+              });
             }
           } else {
             music.stop();
           }
         } catch (_) {
-          // If BottomNavbarController isn't ready, default to playing since we are on the base route
-          music.play(AssetsPath.homeMusic);
+          // Fallback if BottomNavbarController is not yet available
+          if (!music.isPlaying && music.isPreferencePlay) {
+            Future.delayed(const Duration(milliseconds: 100), () {
+              if (!music.isPlaying && music.isPreferencePlay) {
+                music.play(AssetsPath.homeMusic);
+              }
+            });
+          }
         }
       } else {
-        music.stop(); // We are pushed to a completely different screen
+        // Stop music when pushed to sub-screens like Task or Writing
+        music.stop();
       }
     });
   }
 
-  // 👇 Detect app minimize / resume
+  // Detect screen lock / unlock or minimizing (lifecycle changes)
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.paused) {
-      music.stop(); // App minimized
+    // Stop music when app is minimized or screen is locked (paused/inactive)
+    if (state == AppLifecycleState.paused || state == AppLifecycleState.inactive) {
+      music.stop();
     }
 
-    if (state == AppLifecycleState.resumed &&
-        Get.currentRoute == '/HomeScreen') {
-      music.play(AssetsPath.homeMusic); // Optional: resume when back
+    // Resume music when screen is unlocked and app returns to focus (resumed)
+    if (state == AppLifecycleState.resumed) {
+      final currentRoute = Get.currentRoute;
+
+      // Case 1: On Home Screen (Home Tab)
+      if (currentRoute == '/home_screen' || currentRoute == '/bottom_navbar' || currentRoute == '/') {
+        try {
+          final bottomController = Get.find<BottomNavbarController>();
+          if (bottomController.selectedIndex.value == 0) {
+            // Respect user manual pause preference
+            if (music.isPreferencePlay) {
+              Future.delayed(const Duration(milliseconds: 100), () {
+                if (!music.isPlaying && music.isPreferencePlay) {
+                  music.play(AssetsPath.homeMusic);
+                }
+              });
+            }
+          }
+        } catch (_) {
+          // Default play if controller look-up fails but we are on home route
+          if (music.isPreferencePlay) {
+            Future.delayed(const Duration(milliseconds: 100), () {
+              if (!music.isPlaying && music.isPreferencePlay) {
+                music.play(AssetsPath.homeMusic);
+              }
+            });
+          }
+        }
+      }
+      // Case 2: On Smart Writing Screen
+      else if (currentRoute == '/smart_writing_screen') {
+        if (music.isPreferencePlay) {
+          Future.delayed(const Duration(milliseconds: 100), () {
+            if (!music.isPlaying && music.isPreferencePlay) {
+              music.play(AssetsPath.smartWritingMusic);
+            }
+          });
+        }
+      }
     }
   }
 
