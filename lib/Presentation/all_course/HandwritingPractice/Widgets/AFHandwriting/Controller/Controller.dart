@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:manifex/App/assets_path.dart';
 import 'package:manifex/Core/MusicService.dart';
 
 class AFHandwritingController extends GetxController {
@@ -7,12 +8,12 @@ class AFHandwritingController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    MusicService().play();
+    MusicService().play(AssetsPath.homeMusic);
   }
 
   @override
   void onClose() {
     super.onClose();
-    MusicService().stop();
+    // Removed MusicService().stop() to allow smooth transition to Home Screen
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:manifex/App/assets_path.dart';
 import 'package:manifex/App/Urls.dart';
 import 'package:manifex/Core/MusicService.dart';
 import '../../../../App/network_caller.dart';
@@ -52,7 +53,7 @@ class SmartWritingController extends GetxController {
     super.onInit();
     fetchCategories();
     start();
-    homeController.apiAge <= 18 ? null : MusicService().play();
+    homeController.apiAge <= 18 ? null : MusicService().play(AssetsPath.smartWritingMusic);
   }
 
   void start() {

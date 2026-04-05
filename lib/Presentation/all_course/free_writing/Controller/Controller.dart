@@ -8,6 +8,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:signature/signature.dart';
 import 'dart:ui' as ui;
 
+import 'package:manifex/App/assets_path.dart';
 import '../../../../App/Urls.dart';
 import '../../../../App/network_caller.dart';
 import '../../../../Core/loading.dart';
@@ -75,7 +76,7 @@ class FreeWritingController extends GetxController {
     );
 
     if (age == '6-9' || age == '10-13') {
-      MusicService().play();
+      MusicService().play(AssetsPath.homeMusic);
     }
   }
 
@@ -182,7 +183,6 @@ class FreeWritingController extends GetxController {
 
   @override
   void onClose() {
-    MusicService().stop();
     _timer?.cancel();
     super.onClose();
   }
