@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:manifex/Presentation/all_course/HandwritingPractice/Widgets/AFHandwriting/Controller/Controller.dart';
 import '../../../../Core/MusicService.dart';
 import '../../../Share/custom_back_button.dart';
 import '../../../Share/gradient_title.dart';
@@ -38,16 +39,12 @@ class FreeWriting extends StatelessWidget {
                   final music = MusicService();
                   return IconButton(
                     onPressed: () {
-                      if (music.isPlaying) {
-                        music.stop();
-                      } else {
-                        music.play();
-                      }
+                      music.toggleMusic();
                     },
                     icon: Icon(
-                      music.isPlaying
-                          ? Icons.volume_off
-                          : Icons.volume_up_sharp,
+                      music.isPlayingRx.value
+                          ? Icons.volume_up_sharp
+                          : Icons.volume_off,
                       color: Colors.white70,
                     ),
                   );
@@ -98,21 +95,6 @@ class _skillScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Obx(() {
-        final age = controller.userAgeGroup.value;
-
-        if (age == '14-17' || age == '18-40') {
-          return Center(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 100),
-              child: Text(
-                "Free Writing is not available for your age category. Please use Smart Writing.",
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white, fontSize: 18),
-              ),
-            ),
-          );
-        }
-
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -124,109 +106,76 @@ class _skillScreen extends StatelessWidget {
               gradientText: 'Writing',
             ),
             Text(
-              "Express your thoughts and improve your writing.".tr,
+              "Practice writing letters and numbers independently.".tr,
               style: TextStyle(color: Colors.grey),
             ),
             const SizedBox(height: 15),
 
-            if (age == '6-9') ...[
-              SingleSkillCard(
-                title: 'Letters'.tr,
-                subTitle:
-                    'Practice writing uppercase and lowercase letters.'.tr,
-                buttonText: 'Task 1',
-                onTap: () {
-                  Get.to(
-                    WritingTask(
-                      words: [' '],
-                      currentIndex: 0,
-                      title: 'Letters',
-                      description:
-                          'Practice writing uppercase and lowercase letters.',
-                      taskNumber: 1,
-                    ),
-                  );
-                },
-                isComplete: controller.listComplete.isNotEmpty
-                    ? controller.listComplete[0]
-                    : false,
-                lock: controller.listLock.isNotEmpty
-                    ? controller.listLock[0]
-                    : false,
-              ),
-              const SizedBox(height: 15),
-              SingleSkillCard(
-                title: 'Words'.tr,
-                subTitle: 'Practice writing short words.'.tr,
-                buttonText: 'Task 2',
-                onTap: () {
-                  Get.to(
-                    WritingTask(
-                      words: controller.getRandomWords(controller.allWords),
-                      currentIndex: 0,
-                      title: 'Words',
-                      description: 'Practice writing short words.',
-                      taskNumber: 2,
-                    ),
-                  );
-                },
-                isComplete: controller.listComplete.length > 1
-                    ? controller.listComplete[1]
-                    : false,
-                lock: controller.listLock.length > 1
-                    ? controller.listLock[1]
-                    : false,
-              ),
-            ] else ...[
-              SingleSkillCard(
-                title: 'Write Independently'.tr,
-                subTitle: 'Write independently letters and short words.'.tr,
-                buttonText: 'Task 1',
-                onTap: () {
-                  Get.to(
-                    WritingTask(
-                      words: [' '],
-                      currentIndex: 0,
-                      title: 'Write Letters & Words',
-                      description: 'Write independently letters and short words.',
-                      taskNumber: 1,
-                      isCursive: false,
-                    ),
-                  );
-                },
-                isComplete: controller.listComplete.isNotEmpty
-                    ? controller.listComplete[0]
-                    : false,
-                lock: controller.listLock.isNotEmpty
-                    ? controller.listLock[0]
-                    : false,
-              ),
-              const SizedBox(height: 15),
-              SingleSkillCard(
-                title: 'Cursive Letters'.tr,
-                subTitle: 'Practice writing cursive letters.'.tr,
-                buttonText: 'Task 2',
-                onTap: () {
-                  Get.to(
-                    WritingTask(
-                      words: controller.getRandomWords(controller.allWords),
-                      currentIndex: 0,
-                      title: 'Cursive Words',
-                      description:
-                      'Practice writing complete words in cursive.',
-                      taskNumber: 2,
-                      isCursive: true,
-                    ),
-                  );
-                },
-                isComplete: controller.listComplete.length > 1
-                    ? controller.listComplete[1]
-                    : false,
-                lock: controller.listLock.length > 1
-                    ? controller.listLock[1]
-                    : false,
-              ),
-            ],
+            SingleSkillCard(
+              title: 'Cursive Letters'.tr,
+              subTitle: 'Practice writing cursive letters A to z independently.'.tr,
+              buttonText: 'Task 1',
+              onTap: () {
+                Get.to(
+                  WritingTask(
+                    words: [
+                      'A', 'a', 'B', 'b', 'C', 'c', 'D', 'd', 'E', 'e', 'F', 'f', 'G', 'g', 'H', 'h', 'I', 'i', 'J', 'j', 'K', 'k', 'L', 'l', 'M', 'm', 'N', 'n', 'O', 'o', 'P', 'p', 'Q', 'q', 'R', 'r', 'S', 's', 'T', 't', 'U', 'u', 'V', 'v', 'W', 'w', 'X', 'x', 'Y', 'y', 'Z', 'z'
+                    ],
+                    currentIndex: 0,
+                    title: 'Cursive Letters',
+                    description: 'Practice writing uppercase and lowercase cursive letters.',
+                    taskNumber: 1,
+                    isCursive: true,
+                  ),
+                );
+              },
+              isComplete: controller.listComplete[0],
+              lock: controller.listLock[0],
+            ),
+            const SizedBox(height: 15),
+
+            SingleSkillCard(
+              title: 'Print Letters'.tr,
+              subTitle: 'Practice writing print letters A to z independently.'.tr,
+              buttonText: 'Task 2',
+              onTap: () {
+                Get.to(
+                  WritingTask(
+                    words: [
+                      'A', 'a', 'B', 'b', 'C', 'c', 'D', 'd', 'E', 'e', 'F', 'f', 'G', 'g', 'H', 'h', 'I', 'i', 'J', 'j', 'K', 'k', 'L', 'l', 'M', 'm', 'N', 'n', 'O', 'o', 'P', 'p', 'Q', 'q', 'R', 'r', 'S', 's', 'T', 't', 'U', 'u', 'V', 'v', 'W', 'w', 'X', 'x', 'Y', 'y', 'Z', 'z'
+                    ],
+                    currentIndex: 0,
+                    title: 'Print Letters',
+                    description: 'Practice writing uppercase and lowercase print letters.',
+                    taskNumber: 2,
+                    isCursive: false,
+                  ),
+                );
+              },
+              isComplete: controller.listComplete[1],
+              lock: controller.listLock[1],
+            ),
+            const SizedBox(height: 15),
+
+            SingleSkillCard(
+              title: 'Numbers 0-9'.tr,
+              subTitle: 'Practice writing numbers 0 to 9 independently.'.tr,
+              buttonText: 'Task 3',
+              onTap: () {
+                Get.to(
+                  WritingTask(
+                    words: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
+                    currentIndex: 0,
+                    title: 'Numbers',
+                    description: 'Practice writing numbers 0 to 9 independently.',
+                    taskNumber: 3,
+                    isCursive: false,
+                  ),
+                );
+              },
+              isComplete: controller.listComplete[2],
+              lock: controller.listLock[2],
+            ),
           ],
         );
       }),

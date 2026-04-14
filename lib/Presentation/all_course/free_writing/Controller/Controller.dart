@@ -19,19 +19,26 @@ class FreeWritingController extends GetxController {
   var selectedIndex = 0.obs;
   void changeTab(int index) => selectedIndex.value = index;
 
-  var listLock = <bool>[].obs;
-  var listComplete = <bool>[].obs;
+  var listLock = [false, true, true].obs;
+  var listComplete = [true, true, true].obs;
   var result = <Map<String, dynamic>>[].obs;
   var userAgeGroup = "".obs;
 
   Future<void> unLockTask(int index) async {
-    if (index - 1 < listLock.length) {
+    if (index >= 0 && index < listLock.length) {
       listLock[index] = false;
-      listComplete[index] = false;
     }
-    Get.back();
-    AppSnackbar.show("Task $index Completed.");
+    if (index > 0 && index <= listComplete.length) {
+      listComplete[index - 1] = false;
+    }
+    
+    Get.back(closeOverlays: true);
+    
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      AppSnackbar.show("Task $index Completed.");
+    });
   }
+
   final List<String> allWords = [
     'Tree','Book','Fish','Moon','Star',
     'Milk','Ball','Duck','Frog','Ship',
@@ -51,22 +58,13 @@ class FreeWritingController extends GetxController {
     super.onInit();
     startTimer();
 
-    // Default to '10-13' behaviour if age empty or malformed
     String age = PrefHelper.getAge();
     if (age.isEmpty) age = '10-13';
     userAgeGroup.value = age;
 
-    int taskCount = 2;
-    if (age == '14-17' || age == '18-40') {
-      taskCount = 0; // No free writing assigned
-    }
-
-    listLock.assignAll(List.generate(taskCount, (index) => false));
-    listComplete.assignAll(List.generate(taskCount, (index) => true));
-
     result.assignAll(
       List.generate(
-        taskCount,
+        3,
         (index) => {
           "taskName": "Task ${index + 1}",
           "marks": 0,
@@ -75,9 +73,7 @@ class FreeWritingController extends GetxController {
       ),
     );
 
-    if (age == '6-9' || age == '10-13') {
-      MusicService().play(AssetsPath.homeMusic);
-    }
+    MusicService().play(AssetsPath.smartWritingMusic);
   }
 
   Future<void> FinalSubmission() async {
@@ -93,7 +89,7 @@ class FreeWritingController extends GetxController {
       if (response.statusCode == 201 &&
           response.responseData != null &&
           response.responseData?['success'] == true) {
-        listComplete[8] = false;
+        listComplete[2] = false;
       } else {
         print("Error submitting final answers ❌");
         print(
@@ -112,11 +108,9 @@ class FreeWritingController extends GetxController {
     String fileName,
   ) async {
     try {
-      // 1️⃣ Convert signature to image
       final ui.Image? signatureImage = await controller.toImage();
       if (signatureImage == null) return null;
 
-      // 2️⃣ Create a white background canvas
       final recorder = ui.PictureRecorder();
       final canvas = Canvas(
         recorder,
@@ -128,7 +122,6 @@ class FreeWritingController extends GetxController {
         ),
       );
 
-      // Paint white background
       final paint = Paint()..color = Colors.white;
       canvas.drawRect(
         Rect.fromLTWH(
@@ -140,10 +133,8 @@ class FreeWritingController extends GetxController {
         paint,
       );
 
-      // Draw the signature on top
       canvas.drawImage(signatureImage, Offset.zero, Paint());
 
-      // 3️⃣ Convert canvas to PNG bytes
       final picture = recorder.endRecording();
       final img = await picture.toImage(
         signatureImage.width,
@@ -153,9 +144,14 @@ class FreeWritingController extends GetxController {
 
       if (byteData == null) return null;
 
-      // 4️⃣ Save to file
       final directory = await getApplicationDocumentsDirectory();
-      final file = File('${directory.path}/$fileName.png');
+      final filePath = '${directory.path}/$fileName.png';
+      final file = File(filePath);
+      
+      if (await file.exists()) {
+        await file.delete();
+      }
+      
       await file.writeAsBytes(byteData.buffer.asUint8List());
 
       return file.path;
@@ -184,6 +180,7 @@ class FreeWritingController extends GetxController {
   @override
   void onClose() {
     _timer?.cancel();
+    MusicService().stop();
     super.onClose();
   }
 }

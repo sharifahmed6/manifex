@@ -22,6 +22,8 @@ class WritingAreaController extends GetxController {
   int correctWord = 0;
   int incorrectWord = 0;
 
+  var isLoading = false.obs;
+
   void clearCanvas() => signatureController.clear();
 
   Future<String?> saveSignaturePng({
@@ -67,8 +69,11 @@ class WritingAreaController extends GetxController {
       if (byteData == null) return null;
 
       final directory = await getApplicationDocumentsDirectory();
-      final file = File('${directory.path}/$fileName.png');
-      await file.writeAsBytes(byteData.buffer.asUint8List());
+      // Use unique filename to avoid path issues
+      final uniqueFileName = '${fileName}_${DateTime.now().millisecondsSinceEpoch}.png';
+      final file = File('${directory.path}/$uniqueFileName');
+      
+      await file.writeAsBytes(byteData.buffer.asUint8List(), flush: true);
 
       return file.path;
     } catch (e) {
@@ -77,27 +82,42 @@ class WritingAreaController extends GetxController {
     }
   }
 
-  Future<void> submit({
+  Future<bool> submit({
     required String imagePath,
     required String word,
     required int taskNumber,
   }) async {
+    print("Submitting Word: $word for Task: $taskNumber");
     final url = Uri.parse(
       "https://ai.manifex.org/api/v1/handwriting/check_handwriting",
     );
 
+    isLoading.value = true;
     try {
       final request = http.MultipartRequest('POST', url);
       request.headers['authtoken'] = PrefHelper.getAccessToken();
-      request.files.add(await http.MultipartFile.fromPath('image', imagePath));
+      
+      request.files.add(
+        await http.MultipartFile.fromPath(
+          'image', 
+          imagePath,
+          contentType: http.MediaType('image', 'png'),
+        )
+      );
+      
       request.fields['word'] = word;
 
       final streamedResponse = await request.send();
       final response = await http.Response.fromStream(streamedResponse);
+      
+      print("Status Code: ${response.statusCode}");
+      print("Response Body: ${response.body}");
+      
       final finalResponse = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
-        if (finalResponse['correct']) {
+        bool isCorrect = finalResponse['correct'] ?? false;
+        if (isCorrect) {
           correctWord++;
           AppSnackbar.show("Great job!");
         } else {
@@ -109,17 +129,31 @@ class WritingAreaController extends GetxController {
         double percentage = (total > 0) ? (correctWord / total) * 100 : 0;
 
         final controller = Get.find<FreeWritingController>();
-        if (taskNumber <= controller.result.length) {
+        if (taskNumber > 0 && taskNumber <= controller.result.length) {
           controller.result[taskNumber - 1]['marks'] = percentage;
-          if (taskNumber == 9) {
-            controller.FinalSubmission();
-          }
         }
+        
+        isLoading.value = false;
+        
+        // Cleanup
+        try {
+          final file = File(imagePath);
+          if (await file.exists()) await file.delete();
+        } catch (e) {
+          print("Cleanup error: $e");
+        }
+        
+        return isCorrect;
       } else {
         AppSnackbar.show("Something went wrong.");
+        isLoading.value = false;
+        return false;
       }
     } catch (e) {
       print("Error: $e");
+      AppSnackbar.show("Connection error.");
+      isLoading.value = false;
+      return false;
     }
   }
 }

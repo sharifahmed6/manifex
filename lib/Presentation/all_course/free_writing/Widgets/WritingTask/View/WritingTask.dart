@@ -98,16 +98,12 @@ class WritingTask extends GetView<WritingTaskController> {
                     final music = MusicService();
                     return IconButton(
                       onPressed: () {
-                        if (music.isPlaying) {
-                          music.stop();
-                        } else {
-                          music.play();
-                        }
+                        music.toggleMusic();
                       },
                       icon: Icon(
-                        music.isPlaying
-                            ? Icons.volume_off
-                            : Icons.volume_up_sharp,
+                        music.isPlayingRx.value
+                            ? Icons.volume_up_sharp
+                            : Icons.volume_off,
                         color: Colors.white70,
                       ),
                     );
@@ -156,89 +152,86 @@ class WritingTask extends GetView<WritingTaskController> {
                     ),
                     const SizedBox(height: 20),
 
-                    Visibility(
-                      visible: words.length != 1,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          GestureDetector(
-                            onTap: previousWord,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 15,
-                                vertical: 10,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.white.withAlpha(15),
-                                borderRadius: BorderRadius.circular(50),
-                                border: Border.all(
-                                  color: Colors.grey,
-                                  width: 0.7,
-                                ),
-                              ),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.arrow_back,
-                                    color: Colors.white,
-                                    size: 18,
-                                  ),
-                                  const SizedBox(width: 5),
-                                  Text(
-                                    "Previous",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: ScreenResponsive.responsiveFont(
-                                        context,
-                                        16,
-                                      ),
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ],
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                          onTap: previousWord,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 15,
+                              vertical: 10,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withAlpha(15),
+                              borderRadius: BorderRadius.circular(50),
+                              border: Border.all(
+                                color: Colors.grey,
+                                width: 0.7,
                               ),
                             ),
-                          ),
-                          GestureDetector(
-                            onTap: nextWord,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 15,
-                                vertical: 10,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.white.withAlpha(15),
-                                borderRadius: BorderRadius.circular(50),
-                                border: Border.all(
-                                  color: Colors.grey,
-                                  width: 0.7,
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.arrow_back,
+                                  color: Colors.white,
+                                  size: 18,
                                 ),
-                              ),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    "Next",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: ScreenResponsive.responsiveFont(
-                                        context,
-                                        16,
-                                      ),
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 5),
-                                  Icon(
-                                    Icons.arrow_forward,
+                                const SizedBox(width: 5),
+                                Text(
+                                  "Previous",
+                                  style: TextStyle(
                                     color: Colors.white,
-                                    size: 18,
+                                    fontSize: ScreenResponsive.responsiveFont(
+                                      context,
+                                      16,
+                                    ),
+                                    fontWeight: FontWeight.w600,
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                        GestureDetector(
+                          onTap: nextWord,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 15,
+                              vertical: 10,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withAlpha(15),
+                              borderRadius: BorderRadius.circular(50),
+                              border: Border.all(
+                                color: Colors.grey,
+                                width: 0.7,
+                              ),
+                            ),
+                            child: Row(
+                              children: [
+                                Text(
+                                  "Next",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: ScreenResponsive.responsiveFont(
+                                      context,
+                                      16,
+                                    ),
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                const SizedBox(width: 5),
+                                Icon(
+                                  Icons.arrow_forward,
+                                  color: Colors.white,
+                                  size: 18,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     Padding(
                       padding: const EdgeInsets.all(10.0),
@@ -265,17 +258,20 @@ class WritingTask extends GetView<WritingTaskController> {
                         );
 
                         if (pngPath != null) {
-                          await areaController.submit(
+                          bool isCorrect = await areaController.submit(
                             imagePath: pngPath,
                             word: word,
                             taskNumber: taskNumber,
                           );
-                          if (currentIndex.value < words.length - 1) {
-                            nextWord();
-                          } else {
-                            Get.find<FreeWritingController>().unLockTask(
-                              taskNumber,
-                            );
+                          
+                          if (isCorrect) {
+                            if (currentIndex.value < words.length - 1) {
+                              nextWord();
+                            } else {
+                              Get.find<FreeWritingController>().unLockTask(
+                                taskNumber,
+                              );
+                            }
                           }
                         } else {
                           AppSnackbar.show("Please write something first.");

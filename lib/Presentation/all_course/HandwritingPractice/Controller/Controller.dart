@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:manifex/App/assets_path.dart';
+import 'package:manifex/Core/MusicService.dart';
 import 'package:manifex/Core/snakbar.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
@@ -15,29 +17,28 @@ class HandwritingPracticeController extends GetxController {
   var selectedIndex = 0.obs;
   void changeTab(int index) => selectedIndex.value = index;
 
-  var listLock = [false, true, true, true, true, true, true, true, true, true].obs;
-  var listComplete = [true, true, true, true, true, true, true, true, true, true].obs;
+  var listLock = [false, true, true].obs;
+  var listComplete = [true, true, true].obs;
 
   Future<void> unLockTask(int index) async {
     if (index < listLock.length) {
       listLock[index] = false;
-      listComplete[index - 1] = false;
-      Get.back();
-      AppSnackbar.show("Task $index Completed.");
     }
+    if (index > 0 && index <= listComplete.length) {
+      listComplete[index - 1] = false;
+    }
+    
+    Get.back(closeOverlays: true);
+    
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      AppSnackbar.show("Task $index Completed.");
+    });
   }
 
   final result = [
     {"taskName": "Task 1", "marks": 0, "isAnswer": true},
     {"taskName": "Task 2", "marks": 0, "isAnswer": true},
     {"taskName": "Task 3", "marks": 0, "isAnswer": true},
-    {"taskName": "Task 4", "marks": 0, "isAnswer": true},
-    {"taskName": "Task 5", "marks": 0, "isAnswer": true},
-    {"taskName": "Task 6", "marks": 0, "isAnswer": true},
-    {"taskName": "Task 7", "marks": 0, "isAnswer": true},
-    {"taskName": "Task 8", "marks": 0, "isAnswer": true},
-    {"taskName": "Task 9", "marks": 0, "isAnswer": true},
-    {"taskName": "Task 10", "marks": 0, "isAnswer": true},
   ];
 
   Future<void> FinalSubmission() async {
@@ -53,7 +54,7 @@ class HandwritingPracticeController extends GetxController {
       if (response.statusCode == 201 &&
           response.responseData != null &&
           response.responseData?['success'] == true) {
-        listComplete[9] = false;
+        listComplete[2] = false;
       } else {
         print("Error submitting final answers ❌");
         print("Server message: ${response.responseData?['message'] ?? response.errorMessage}");
@@ -113,7 +114,13 @@ class HandwritingPracticeController extends GetxController {
 
       // 4️⃣ Save to file
       final directory = await getApplicationDocumentsDirectory();
-      final file = File('${directory.path}/$fileName.png');
+      final filePath = '${directory.path}/$fileName.png';
+      final file = File(filePath);
+      
+      if (await file.exists()) {
+        await file.delete();
+      }
+      
       await file.writeAsBytes(byteData.buffer.asUint8List());
 
       return file.path;
@@ -130,6 +137,7 @@ class HandwritingPracticeController extends GetxController {
   void onInit() {
     super.onInit();
     startTimer();
+    MusicService().play(AssetsPath.smartWritingMusic);
   }
 
   void startTimer() {
@@ -148,6 +156,7 @@ class HandwritingPracticeController extends GetxController {
   @override
   void onClose() {
     _timer?.cancel();
+    MusicService().stop();
     super.onClose();
   }
 }

@@ -54,7 +54,6 @@ class PrecisionDrillController extends GetxController {
 
   @override
   Future<void> onReady() async {
-    // TODO: implement onReady
     await getPrecisionDrill();
     super.onReady();
   }
@@ -81,7 +80,6 @@ class PrecisionDrillController extends GetxController {
         final Map<String, dynamic> decoded =
         jsonDecode(response.body);
 
-        // Convert safely to Map<String, List<String>>
         final Map<String, List<String>> converted = {};
 
         decoded.forEach((key, value) {
@@ -219,21 +217,17 @@ class PrecisionDrillController extends GetxController {
 
 
     try {
-      // Create Multipart request
       final request = http.MultipartRequest('POST', url);
 
-      // Headers
       request.headers.addAll({
         'Content-Type': 'application/json',
         'authtoken': '1',
       });
       final allWords = getAllPrecisionWords(precisionDrill);
 
-      // Add text field
       request.fields['wordlist'] = jsonEncode(allWords);
 
 
-      // Add audio files if provided
       if (AudioFilePath.isNotEmpty) {
         request.files.add(await http.MultipartFile.fromPath(
           'file',
@@ -251,16 +245,25 @@ class PrecisionDrillController extends GetxController {
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
         final Map<String, dynamic> data = jsonDecode(response.body);
-        score.value = data['score'] ?? 0;
-        feedback.value = data['feedback'] ?? '';
-        Get.find<presentationPracticeController>().finalResult.add(data);
-        Get.find<presentationPracticeController>().showFinalResult();
+        
+        if(data['success'] == true || (data['score'] != null && data['score'] >= 50)) {
+           score.value = data['score'] ?? 0;
+           feedback.value = data['feedback'] ?? '';
+           Get.find<presentationPracticeController>().finalResult.add(data);
+           // We don't call showFinalResult here anymore to allow "Continue" button
+        } else {
+           AppSnackbar.show("Please try again for better precision.");
+           feedback.value = ""; // Reset feedback to allow retry
+           score.value = 0;
+        }
 
       } else {
         print("Error submitting word: ${response.body}");
+        AppSnackbar.show("Evaluation failed. Please try again.");
       }
     } catch (e) {
       print("HTTP Error: $e");
+      AppSnackbar.show("Network error. Please check your connection.");
     } finally {
       isLoading.value = false;
     }
