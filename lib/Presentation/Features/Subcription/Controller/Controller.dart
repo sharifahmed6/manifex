@@ -15,25 +15,34 @@ class subscriptionController extends GetxController {
   var nextRenewDate = "".obs;
 
   final Map<String, List<String>> subscriptionFeatures = {
-    "premium_monthly": [
+    "premium": [
       "Unlimited lessons",
       "Advanced progress analytics",
       "Full reward library access",
       "Priority AI support",
       "Parent dashboard",
       "Offline mode",
-      "7 days free trial",
     ],
-    "family_monthly": [
+    "family": [
       "Up to 5 learner profiles",
       "All Premium features",
       "Family progress reports",
-      "Shared reward library",
       "Priority support",
       "Educational resources",
-      "7 days free trial",
+      "Shared reward library",
     ],
   };
+
+  /// Get feature list based on product ID (Flexible matching)
+  List<String> getFeatureList(String productId) {
+    String id = productId.toLowerCase();
+    if (id.contains("family")) {
+      return subscriptionFeatures["family"]!;
+    } else if (id.contains("premium")) {
+      return subscriptionFeatures["premium"]!;
+    }
+    return ["No details available"];
+  }
 
   @override
   void onInit() {
@@ -178,5 +187,16 @@ class subscriptionController extends GetxController {
       AppSnackbar.show("Something went wrong, please try again later.".tr);
       print("Error cancelling subscription: $e");
     }
+  }
+
+  /// Get display name for the active package
+  String getDisplayName(String productId) {
+    if (productId == "monthly_family_subscription" ||
+        productId == "family_monthly") {
+      return "Family Monthly".tr;
+    } else if (productId == "premium_monthly") {
+      return "Premium Monthly".tr;
+    }
+    return productId.tr;
   }
 }

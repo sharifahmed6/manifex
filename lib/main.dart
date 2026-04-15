@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,8 +13,15 @@ Future<void> main() async {
   await PrefHelper.init();
   await TTSService.init();
 
+  String apiKey = "";
+  if (Platform.isAndroid) {
+    apiKey = "goog_WpzJrbCNSFhCNAavDKxzmzWcLWk";
+  } else if (Platform.isIOS) {
+    apiKey = "appl_XvgIfWcbeBNBrEwIEumbLJGlJhS";
+  }
+
   await Purchases.configure(
-    PurchasesConfiguration("appl_XvgIfWcbeBNBrEwIEumbLJGlJhS"),
+    PurchasesConfiguration(apiKey),
   );
 
   final prefs = await SharedPreferences.getInstance();
