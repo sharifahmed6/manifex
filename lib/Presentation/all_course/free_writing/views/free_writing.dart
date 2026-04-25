@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:manifex/Presentation/all_course/HandwritingPractice/Widgets/AFHandwriting/Controller/Controller.dart';
 import '../../../../Core/MusicService.dart';
 import '../../../Share/custom_back_button.dart';
 import '../../../Share/gradient_title.dart';
@@ -106,75 +105,46 @@ class _skillScreen extends StatelessWidget {
               gradientText: 'Writing',
             ),
             Text(
-              "Practice writing letters and numbers independently.".tr,
+              "Practice writing words independently.".tr,
               style: TextStyle(color: Colors.grey),
             ),
             const SizedBox(height: 15),
 
             SingleSkillCard(
-              title: 'Cursive Letters'.tr,
-              subTitle: 'Practice writing cursive letters A to z independently.'.tr,
+              title: 'Cursive Writing'.tr,
+              subTitle: 'Practice writing words in cursive style.'.tr,
               buttonText: 'Task 1',
               onTap: () {
                 Get.to(
-                  WritingTask(
-                    words: [
-                      'A', 'a', 'B', 'b', 'C', 'c', 'D', 'd', 'E', 'e', 'F', 'f', 'G', 'g', 'H', 'h', 'I', 'i', 'J', 'j', 'K', 'k', 'L', 'l', 'M', 'm', 'N', 'n', 'O', 'o', 'P', 'p', 'Q', 'q', 'R', 'r', 'S', 's', 'T', 't', 'U', 'u', 'V', 'v', 'W', 'w', 'X', 'x', 'Y', 'y', 'Z', 'z'
-                    ],
-                    currentIndex: 0,
-                    title: 'Cursive Letters',
-                    description: 'Practice writing uppercase and lowercase cursive letters.',
+                  () => WritingTask(
+                    title: 'Cursive Writing',
+                    description: 'Practice writing words in cursive style.',
                     taskNumber: 1,
                     isCursive: true,
                   ),
                 );
               },
-              isComplete: controller.listComplete[0],
-              lock: controller.listLock[0],
+              isComplete: controller.listComplete.isNotEmpty ? controller.listComplete[0] : false,
+              lock: controller.listLock.isNotEmpty ? controller.listLock[0] : false,
             ),
             const SizedBox(height: 15),
 
             SingleSkillCard(
-              title: 'Print Letters'.tr,
-              subTitle: 'Practice writing print letters A to z independently.'.tr,
+              title: 'Print Writing'.tr,
+              subTitle: 'Practice writing words in print style.'.tr,
               buttonText: 'Task 2',
               onTap: () {
                 Get.to(
-                  WritingTask(
-                    words: [
-                      'A', 'a', 'B', 'b', 'C', 'c', 'D', 'd', 'E', 'e', 'F', 'f', 'G', 'g', 'H', 'h', 'I', 'i', 'J', 'j', 'K', 'k', 'L', 'l', 'M', 'm', 'N', 'n', 'O', 'o', 'P', 'p', 'Q', 'q', 'R', 'r', 'S', 's', 'T', 't', 'U', 'u', 'V', 'v', 'W', 'w', 'X', 'x', 'Y', 'y', 'Z', 'z'
-                    ],
-                    currentIndex: 0,
-                    title: 'Print Letters',
-                    description: 'Practice writing uppercase and lowercase print letters.',
+                  () => WritingTask(
+                    title: 'Print Writing',
+                    description: 'Practice writing words in print style.',
                     taskNumber: 2,
                     isCursive: false,
                   ),
                 );
               },
-              isComplete: controller.listComplete[1],
-              lock: controller.listLock[1],
-            ),
-            const SizedBox(height: 15),
-
-            SingleSkillCard(
-              title: 'Numbers 0-9'.tr,
-              subTitle: 'Practice writing numbers 0 to 9 independently.'.tr,
-              buttonText: 'Task 3',
-              onTap: () {
-                Get.to(
-                  WritingTask(
-                    words: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
-                    currentIndex: 0,
-                    title: 'Numbers',
-                    description: 'Practice writing numbers 0 to 9 independently.',
-                    taskNumber: 3,
-                    isCursive: false,
-                  ),
-                );
-              },
-              isComplete: controller.listComplete[2],
-              lock: controller.listLock[2],
+              isComplete: controller.listComplete.length > 1 ? controller.listComplete[1] : false,
+              lock: controller.listLock.length > 1 ? controller.listLock[1] : false,
             ),
           ],
         );

@@ -9,7 +9,6 @@ import 'package:http/http.dart' as http;
 import 'dart:ui' as ui;
 import '../../../../../../Core/SharepreferenceHelper.dart';
 import '../../../../../../Core/snakbar.dart';
-import '../../../../../../App/Urls.dart';
 import '../../../Controller/Controller.dart';
 
 class WritingAreaController extends GetxController {
@@ -18,21 +17,16 @@ class WritingAreaController extends GetxController {
     penColor: AppColors.sky,
     exportBackgroundColor: Colors.transparent,
   );
-  var imagePath = ''.obs;
-  int correctWord = 0;
-  int incorrectWord = 0;
-
+  
   var isLoading = false.obs;
 
   void clearCanvas() => signatureController.clear();
 
   Future<String?> saveSignaturePng({
-    required SignatureController controller,
     required String fileName,
-    required String word,
   }) async {
     try {
-      final ui.Image? signatureImage = await controller.toImage();
+      final ui.Image? signatureImage = await signatureController.toImage();
       if (signatureImage == null) return null;
 
       final recorder = ui.PictureRecorder();
@@ -69,7 +63,6 @@ class WritingAreaController extends GetxController {
       if (byteData == null) return null;
 
       final directory = await getApplicationDocumentsDirectory();
-      // Use unique filename to avoid path issues
       final uniqueFileName = '${fileName}_${DateTime.now().millisecondsSinceEpoch}.png';
       final file = File('${directory.path}/$uniqueFileName');
       
@@ -82,20 +75,16 @@ class WritingAreaController extends GetxController {
     }
   }
 
-  Future<bool> submit({
+  Future<bool> checkWriting({
     required String imagePath,
     required String word,
-    required int taskNumber,
   }) async {
-    print("Submitting Word: $word for Task: $taskNumber");
-    final url = Uri.parse(
-      "https://ai.manifex.org/api/v1/handwriting/check_handwriting",
-    );
+    final url = Uri.parse("https://ai.manifex.org/api/v1/handwriting/check_handwriting_words");
 
     isLoading.value = true;
     try {
       final request = http.MultipartRequest('POST', url);
-      request.headers['authtoken'] = PrefHelper.getAccessToken();
+      request.headers['authtoken'] = '1';
       
       request.files.add(
         await http.MultipartFile.fromPath(
@@ -116,24 +105,15 @@ class WritingAreaController extends GetxController {
       final finalResponse = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
-        bool isCorrect = finalResponse['correct'] ?? false;
-        if (isCorrect) {
-          correctWord++;
-          AppSnackbar.show("Great job!");
-        } else {
-          incorrectWord++;
-          AppSnackbar.show("Keep practicing!");
-        }
-
-        final total = correctWord + incorrectWord;
-        double percentage = (total > 0) ? (correctWord / total) * 100 : 0;
-
-        final controller = Get.find<FreeWritingController>();
-        if (taskNumber > 0 && taskNumber <= controller.result.length) {
-          controller.result[taskNumber - 1]['marks'] = percentage;
-        }
+        // Aligned with client feedback: check for score == 100
+        int score = finalResponse['score'] ?? 0;
+        bool isCorrect = score == 100;
         
-        isLoading.value = false;
+        if (isCorrect) {
+          AppSnackbar.show("Great job! Perfect score.");
+        } else {
+          AppSnackbar.show("Keep trying! Practice makes perfect.");
+        }
         
         // Cleanup
         try {
@@ -145,15 +125,15 @@ class WritingAreaController extends GetxController {
         
         return isCorrect;
       } else {
-        AppSnackbar.show("Something went wrong.");
-        isLoading.value = false;
+        AppSnackbar.show("Evaluation failed. Please try again.");
         return false;
       }
     } catch (e) {
       print("Error: $e");
       AppSnackbar.show("Connection error.");
-      isLoading.value = false;
       return false;
+    } finally {
+      isLoading.value = false;
     }
   }
 }
