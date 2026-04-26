@@ -8,9 +8,18 @@ import '../Controller/Controller.dart';
 class WritingArea extends StatelessWidget {
   final String word;
   final bool isCursive;
-  WritingArea({super.key, required this.word, this.isCursive = false});
+  final bool showWatermark;
+  final bool isTaskTwo;
+  
+  WritingArea({
+    super.key, 
+    required this.word, 
+    this.isCursive = false, 
+    this.showWatermark = true,
+    this.isTaskTwo = false,
+  });
 
-  final WritingAreaController controller = Get.put(WritingAreaController());
+  final WritingAreaController controller = Get.find<WritingAreaController>();
 
   @override
   Widget build(BuildContext context) {
@@ -25,29 +34,30 @@ class WritingArea extends StatelessWidget {
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
-                      Text(
-                        word,
-                        textAlign: TextAlign.center,
-                        style: isCursive
-                            ? GoogleFonts.dancingScript(
-                                fontSize: ScreenResponsive.responsiveFont(
-                                  context,
-                                  150,
+                      if (showWatermark)
+                        Text(
+                          word,
+                          textAlign: TextAlign.center,
+                          style: isCursive
+                              ? GoogleFonts.dancingScript(
+                                  fontSize: ScreenResponsive.responsiveFont(
+                                    context,
+                                    150,
+                                  ),
+                                  height: 1,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.grey.withOpacity(isTaskTwo ? 0.4 : 0.1),
+                                )
+                              : GoogleFonts.poppins(
+                                  fontSize: ScreenResponsive.responsiveFont(
+                                    context,
+                                    150,
+                                  ),
+                                  height: 1,
+                                  fontWeight: FontWeight.w200,
+                                  color: Colors.grey.withOpacity(isTaskTwo ? 0.4 : 0.1),
                                 ),
-                                height: 1,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.grey.withOpacity(0.1),
-                              )
-                            : GoogleFonts.poppins(
-                                fontSize: ScreenResponsive.responsiveFont(
-                                  context,
-                                  150,
-                                ),
-                                height: 1,
-                                fontWeight: FontWeight.w200,
-                                color: Colors.grey.withOpacity(0.1),
-                              ),
-                      ),
+                        ),
                       Signature(
                         controller: controller.signatureController,
                         backgroundColor: Colors.transparent,

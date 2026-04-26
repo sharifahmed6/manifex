@@ -24,6 +24,8 @@ class TracingController extends GetxController {
   int incorrectWord = 0;
 
 
+  var isLoading = false.obs;
+
   void clearCanvas() => signatureController.clear();
 
   Future<String?> saveSignaturePng({
@@ -75,8 +77,11 @@ class TracingController extends GetxController {
 
       // 4️⃣ Save to file
       final directory = await getApplicationDocumentsDirectory();
-      final file = File('${directory.path}/$fileName.png');
-      await file.writeAsBytes(byteData.buffer.asUint8List());
+      // Use a timestamp to avoid case-sensitivity issues (A vs a) and path conflicts
+      final uniqueFileName = '${fileName}_${DateTime.now().millisecondsSinceEpoch}.png';
+      final file = File('${directory.path}/$uniqueFileName');
+      
+      await file.writeAsBytes(byteData.buffer.asUint8List(), flush: true);
 
       return file.path;
     } catch (e) {
@@ -86,12 +91,13 @@ class TracingController extends GetxController {
 
   }
 
-  Future<void> submit({required String imagePath, required String word}) async {
+  Future<bool> submit({required String imagePath, required String word}) async {
     print("Word is $word");
     final url = Uri.parse(
       "https://ai.manifex.org/api/v1/handwriting/check_handwriting",
     );
 
+    isLoading.value = true;
     try {
       final request = http.MultipartRequest('POST', url);
 
@@ -110,15 +116,8 @@ class TracingController extends GetxController {
       // ✅ Add word normally
       request.fields['word'] = word;
 
-      // Get.dialog(
-      //   barrierDismissible: false,
-      //   const CustomCircleProgressIndicator(),
-      // );
-
       final streamedResponse = await request.send();
       final response = await http.Response.fromStream(streamedResponse);
-
-      // Get.back();
 
       print("Status Code: ${response.statusCode}");
       print("Response Body: ${response.body}");
@@ -127,10 +126,10 @@ class TracingController extends GetxController {
       if (response.statusCode == 200) {
         if(finalResponse['correct']){
           correctWord++;
-          AppSnackbar.show("Correct Word");
+          AppSnackbar.show("Correct! Great job.");
         }else{
           incorrectWord++;
-          AppSnackbar.show("Incorrect Word");
+          AppSnackbar.show("Please try again to perfect your stroke.");
         }
 
 
@@ -144,31 +143,49 @@ class TracingController extends GetxController {
             incorrectWord = 0;
           }
           final controller = Get.find<HandwritingPracticeController>();
-          word == 'F' ? controller.result[0]['marks'] = percentage :
-          word == 'L' ? controller.result[1]['marks'] = percentage :
-          word == 'R' ? controller.result[2]['marks'] = percentage :
-          word == 'Z' ? controller.result[3]['marks'] = percentage :
-          word == 'f' ? controller.result[4]['marks'] = percentage :
-          word == 'l' ? controller.result[5]['marks'] = percentage :
-          word == 'r' ? controller.result[6]['marks'] = percentage :
-          word == 'z' ? controller.result[7]['marks'] = percentage :
-          word == '9' ? {
-            controller.result[8]['marks'] = percentage,
-            controller.FinalSubmission()
-          } : null;
+          
+          // Use safe index access to avoid RangeError
+          int taskIndex = -1;
+          if (word == 'F' || word == 'L' || word == 'R' || word == 'Z') {
+            taskIndex = 0; // Cursive Task
+          } else if (word == 'f' || word == 'l' || word == 'r' || word == 'z') {
+            taskIndex = 1; // Print Task
+          } else if (word == '9') {
+            taskIndex = 2; // Numbers Task
+          }
 
-          print("${controller.result}");
-
-
-          print("Total words: ${correctWord+incorrectWord} Correct Words: $correctWord Incorrect Word: $incorrectWord");
+          if (taskIndex != -1 && taskIndex < controller.result.length) {
+            controller.result[taskIndex]['marks'] = percentage;
+            if (taskIndex == 2) {
+              controller.FinalSubmission();
+            }
+          }
         }
-
+        
+        isLoading.value = false;
+        
+        // Cleanup: delete the temporary image file after submission
+        try {
+          final file = File(imagePath);
+          if (await file.exists()) {
+            await file.delete();
+          }
+        } catch (e) {
+          print("Error deleting temporary file: $e");
+        }
+        
+        return finalResponse['correct'] ?? false;
       } else {
-        AppSnackbar.show("Something went wrong.");
+        AppSnackbar.show("Server error. Please try again.");
+        isLoading.value = false;
+        return false;
       }
     } catch (e) {
-      Get.back();
       print("Error: $e");
+      AppSnackbar.show("Connection error. Please try again.");
+      isLoading.value = false;
+      return false;
     }
   }
+
 }

@@ -21,6 +21,7 @@ class AFHandwriting extends GetView<AFHandwritingController> {
   int taskNumber;
 
   final controller = Get.find<AFHandwritingController>();
+  final tracingController = Get.put(TracingController());
 
   AFHandwriting({
     super.key,
@@ -37,7 +38,7 @@ class AFHandwriting extends GetView<AFHandwritingController> {
   void nextLatter() {
     if (currentIndex.value < latter.length - 1) {
       currentIndex.value++;
-      Get.put(TracingController()).clearCanvas();
+      tracingController.clearCanvas();
     } else {
       AppSnackbar.show("No more letters left.");
     }
@@ -46,7 +47,7 @@ class AFHandwriting extends GetView<AFHandwritingController> {
   void previousLatter() {
     if (currentIndex.value > 0) {
       currentIndex.value--;
-      Get.put(TracingController()).clearCanvas();
+      tracingController.clearCanvas();
     } else {
       AppSnackbar.show("No more letters left.");
     }
@@ -140,87 +141,8 @@ class AFHandwriting extends GetView<AFHandwritingController> {
                     ),
                     const SizedBox(height: 20),
 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GestureDetector(
-                          onTap: previousLatter,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 15,
-                              vertical: 10,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withAlpha(15),
-                              borderRadius: BorderRadius.circular(50),
-                              border: Border.all(
-                                color: Colors.grey,
-                                width: 0.7,
-                              ),
-                            ),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.arrow_back,
-                                  color: Colors.white,
-                                  size: 18,
-                                ),
-                                const SizedBox(width: 5),
-                                Text(
-                                  "Previous",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: ScreenResponsive.responsiveFont(
-                                      context,
-                                      16,
-                                    ),
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: nextLatter,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 15,
-                              vertical: 10,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withAlpha(15),
-                              borderRadius: BorderRadius.circular(50),
-                              border: Border.all(
-                                color: Colors.grey,
-                                width: 0.7,
-                              ),
-                            ),
-                            child: Row(
-                              children: [
-                                Text(
-                                  "Next",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: ScreenResponsive.responsiveFont(
-                                      context,
-                                      16,
-                                    ),
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                const SizedBox(width: 5),
-                                Icon(
-                                  Icons.arrow_forward,
-                                  color: Colors.white,
-                                  size: 18,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    const SizedBox(height: 20),
+
                     Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: SizedBox(
@@ -231,73 +153,100 @@ class AFHandwriting extends GetView<AFHandwritingController> {
                       ),
                     ),
 
-                    GestureDetector(
-                      onTap: () async {
-                        final tracingController = Get.put(TracingController());
-                        final word = latter[currentIndex.value];
-                        String? pngPath = await tracingController.saveSignaturePng(
-                          controller: tracingController.signatureController,
-                          fileName: 'traced_word_$word',
-                          word: word,
-                        );
+                    Obx(
+                      () => GestureDetector(
+                        onTap: tracingController.isLoading.value
+                            ? null
+                            : () async {
+                                final word = latter[currentIndex.value];
+                                String? pngPath = await tracingController
+                                    .saveSignaturePng(
+                                  controller:
+                                      tracingController.signatureController,
+                                  fileName: 'traced_word_$word',
+                                  word: word,
+                                );
 
-                        if (pngPath == null) {
-                          AppSnackbar.show(
-                            "Failed to save image. Please draw something.",
-                          );
-                          return;
-                        }
+                                if (pngPath == null) {
+                                  AppSnackbar.show(
+                                    "Failed to save image. Please draw something.",
+                                  );
+                                  return;
+                                }
 
-                        tracingController.imagePath.value = pngPath;
+                                tracingController.imagePath.value = pngPath;
 
-                        final handwritingController =
-                            Get.find<HandwritingPracticeController>();
-                        
-                        if (currentIndex.value < latter.length - 1) {
-                          currentIndex.value++;
-                        } else {
-                          // When task is completed
-                          handwritingController.unLockTask(taskNumber);
-                          if (taskNumber == 1) {
-                            MusicService().stop();
-                          }
-                        }
+                                final handwritingController =
+                                    Get.find<HandwritingPracticeController>();
 
-                        print("PNG saved at: $pngPath");
-                        tracingController.submit(imagePath: pngPath, word: word);
-                        tracingController.clearCanvas();
-                      },
-                      child: Container(
-                        height: 55,
-                        margin: const EdgeInsets.symmetric(horizontal: 15),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          gradient: LinearGradient(
-                            colors: [
-                              AppColors.yellow,
-                              AppColors.pink,
-                              AppColors.sky,
+                                print("PNG saved at: $pngPath");
+                                bool isCorrect = await tracingController.submit(
+                                    imagePath: pngPath, word: word);
+
+                                if (isCorrect) {
+                                  if (currentIndex.value < latter.length - 1) {
+                                    currentIndex.value++;
+                                  } else {
+                                    // When task is completed
+                                    handwritingController.unLockTask(taskNumber);
+                                    if (taskNumber == 1) {
+                                      MusicService().stop();
+                                    }
+                                  }
+                                  tracingController.clearCanvas();
+                                }
+                              },
+                        child: Container(
+                          height: 55,
+                          margin: const EdgeInsets.symmetric(horizontal: 15),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            gradient: LinearGradient(
+                              colors: [
+                                AppColors.yellow,
+                                AppColors.pink,
+                                AppColors.sky,
+                              ],
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              if (tracingController.isLoading.value) ...[
+                                const SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2,
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                Text(
+                                  "Checking...".tr,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ] else ...[
+                                const SizedBox(width: 5),
+                                Text(
+                                  "Check with Mercury".tr,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                const SizedBox(width: 5),
+                                Image.asset(
+                                  'assets/icons/ai_icon.png',
+                                  width: 24,
+                                  height: 24,
+                                ),
+                              ],
                             ],
                           ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const SizedBox(width: 5),
-                            Text(
-                              "Check with Mercury".tr,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,
-                              ),
-                            ),
-                            const SizedBox(width: 5),
-                            Image.asset(
-                              'assets/icons/ai_icon.png',
-                              width: 24,
-                              height: 24,
-                            ),
-                          ],
                         ),
                       ),
                     ),
