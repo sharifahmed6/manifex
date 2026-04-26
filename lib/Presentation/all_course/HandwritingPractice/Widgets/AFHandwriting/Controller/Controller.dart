@@ -8,7 +8,7 @@ class AFHandwritingController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    MusicService().play(AssetsPath.homeMusic);
+    MusicService().play();
   }
 
   @override
