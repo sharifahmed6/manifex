@@ -119,20 +119,20 @@ class _WritingTaskState extends State<WritingTask> {
                       normalText: widget.title,
                       gradientText: ' Writing',
                     ),
-                    Obx(() {
-                      final music = MusicService();
-                      return IconButton(
-                        onPressed: () {
-                          music.toggleMusic();
-                        },
-                        icon: Icon(
-                          music.isPlayingRx.value
-                              ? Icons.volume_up_sharp
-                              : Icons.volume_off,
-                          color: Colors.white70,
-                        ),
-                      );
-                    }),
+                    // Obx(() {
+                    //   final music = MusicService();
+                    //   return IconButton(
+                    //     onPressed: () {
+                    //       music.toggleMusic();
+                    //     },
+                    //     icon: Icon(
+                    //       music.isPlayingRx.value
+                    //           ? Icons.volume_up_sharp
+                    //           : Icons.volume_off,
+                    //       color: Colors.white70,
+                    //     ),
+                    //   );
+                    // }),
                   ],
                 ),
                 const SizedBox(height: 10),

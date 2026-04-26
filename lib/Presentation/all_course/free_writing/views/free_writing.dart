@@ -34,20 +34,20 @@ class FreeWriting extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomBackButton(text: 'Free Writing'),
-                Obx(() {
-                  final music = MusicService();
-                  return IconButton(
-                    onPressed: () {
-                      music.toggleMusic();
-                    },
-                    icon: Icon(
-                      music.isPlayingRx.value
-                          ? Icons.volume_up_sharp
-                          : Icons.volume_off,
-                      color: Colors.white70,
-                    ),
-                  );
-                }),
+                // Obx(() {
+                //   final music = MusicService();
+                //   return IconButton(
+                //     onPressed: () {
+                //       music.toggleMusic();
+                //     },
+                //     icon: Icon(
+                //       music.isPlayingRx.value
+                //           ? Icons.volume_up_sharp
+                //           : Icons.volume_off,
+                //       color: Colors.white70,
+                //     ),
+                //   );
+                // }),
               ],
             ),
             SizedBox(height: 18.h),
