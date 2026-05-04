@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_sound/public/flutter_sound_recorder.dart';
+import 'package:flutter_sound/flutter_sound.dart' hide PlayerState;
 import 'package:get/get.dart';
 import 'package:manifex/App/Urls.dart';
 import 'package:manifex/Core/snakbar.dart';
@@ -14,8 +15,10 @@ import '../../../Controller/Controller.dart';
 class PrecisionDrillController extends GetxController {
 
   final FlutterSoundRecorder recorder = FlutterSoundRecorder();
+  final AudioPlayer audioPlayer = AudioPlayer();
 
   var isRunning = false.obs;
+  var isPlaying = false.obs;
   var currentWord = "".obs;
   var score = 0.obs;
   var feedback = ''.obs;
@@ -49,6 +52,9 @@ class PrecisionDrillController extends GetxController {
   @override
   Future<void> onInit() async {
     initRecorder();
+    audioPlayer.onPlayerStateChanged.listen((state) {
+      isPlaying.value = state == PlayerState.playing;
+    });
     super.onInit();
   }
 
@@ -119,7 +125,10 @@ class PrecisionDrillController extends GetxController {
     feedback.value = '';
 
 
-    await recorder.startRecorder(toFile: 'precision_drill.aac');
+    await recorder.startRecorder(
+      toFile: 'precision_drill.m4a',
+      codec: Codec.aacMP4,
+    );
     _startRecordTimer();
     _startSection();
   }
@@ -211,6 +220,18 @@ class PrecisionDrillController extends GetxController {
     ];
   }
 
+  Future<void> playRecording() async {
+    if (AudioFilePath.value.isNotEmpty) {
+      if (isPlaying.value) {
+        await audioPlayer.stop();
+      } else {
+        await audioPlayer.play(DeviceFileSource(AudioFilePath.value));
+      }
+    } else {
+      AppSnackbar.show("No recording found to play.");
+    }
+  }
+
 
   Future<void> submit() async {
     final url = Uri.parse("https://ai.manifex.org/api/v1/presentation/precision-drill/precision_drill");
@@ -246,16 +267,20 @@ class PrecisionDrillController extends GetxController {
       if (response.statusCode >= 200 && response.statusCode < 300) {
         final Map<String, dynamic> data = jsonDecode(response.body);
         
-        if(data['success'] == true || (data['score'] != null && data['score'] >= 50)) {
-           score.value = data['score'] ?? 0;
-           feedback.value = data['feedback'] ?? '';
-           Get.find<presentationPracticeController>().finalResult.add(data);
-           // We don't call showFinalResult here anymore to allow "Continue" button
-        } else {
-           AppSnackbar.show("Please try again for better precision.");
-           feedback.value = ""; // Reset feedback to allow retry
-           score.value = 0;
-        }
+        // if(data['success'] == true || (data['score'] != null && data['score'] >= 50)) {
+        //    score.value = data['score'] ?? 0;
+        //    feedback.value = data['feedback'] ?? '';
+        //    Get.find<presentationPracticeController>().finalResult.add(data);
+        //    // We don't call showFinalResult here anymore to allow "Continue" button
+        // } else {
+        //    AppSnackbar.show("Please try again for better precision.");
+        //    feedback.value = ""; // Reset feedback to allow retry
+        //    score.value = 0;
+        // }
+
+        score.value = data['score'] ?? 0;
+        feedback.value = data['feedback'] ?? '';
+        Get.find<presentationPracticeController>().finalResult.add(data);
 
       } else {
         print("Error submitting word: ${response.body}");
@@ -273,6 +298,7 @@ class PrecisionDrillController extends GetxController {
   @override
   void onClose() {
     recorder.closeRecorder();
+    audioPlayer.dispose();
     super.onClose();
   }
 

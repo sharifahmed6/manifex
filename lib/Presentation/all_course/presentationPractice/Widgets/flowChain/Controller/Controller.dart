@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 
-import 'package:flutter_sound/public/flutter_sound_recorder.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
@@ -40,7 +40,7 @@ class flowChainController extends GetxController {
 
   List<String> get words => flowChain;
 
-  /// Selected words (max 3)
+  /// Selected words
   RxList<String> selectedWords = <String>[].obs;
 
   void toggleWord(String word) {
@@ -61,15 +61,18 @@ class flowChainController extends GetxController {
   }
 
   Future<void> startRecording() async {
-    if (selectedWords.isEmpty) {
-      AppSnackbar.show("Please select at least one word.".tr);
+    if (selectedWords.length < 5) {
+      AppSnackbar.show("Please select at least 5 words to record.".tr);
       return;
     }
     if (isRunning.value) return;
 
     isRunning.value = true;
     AudioFilePath.value = '';
-    await recorder.startRecorder(toFile: 'contextSpin.aac');
+    await recorder.startRecorder(
+      toFile: 'flow_chain.m4a',
+      codec: Codec.aacMP4,
+    );
     _startRecordTimer();
   }
 
@@ -215,7 +218,14 @@ class flowChainController extends GetxController {
         // ✅ Safe parsing
         score.value = data['score'] ?? 0;
         feedback.value = data['feedback'] ?? '';
-        Get.find<presentationPracticeController>().finalResult.add(data);
+        
+        // Ensure finalResult includes the score for overall result calculation
+        var resultData = {
+          "task": "Flow Chain",
+          "score": score.value,
+          "feedback": feedback.value,
+        };
+        Get.find<presentationPracticeController>().finalResult.add(resultData);
 
       } else {
         // Backend validation error

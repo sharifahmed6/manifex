@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_tts/flutter_tts.dart';
 
 class TTSService {
@@ -9,6 +11,18 @@ class TTSService {
     await _flutterTts.setSpeechRate(0.5);   // 0.0 - 1.0
     await _flutterTts.setVolume(1.0);       // 0.0 - 1.0
     await _flutterTts.setPitch(1.0);        // 0.5 - 2.0
+    
+    if (Platform.isIOS) {
+      await _flutterTts.setIosAudioCategory(
+        IosTextToSpeechAudioCategory.playback,
+        [
+          IosTextToSpeechAudioCategoryOptions.defaultToSpeaker,
+          IosTextToSpeechAudioCategoryOptions.allowBluetooth,
+          IosTextToSpeechAudioCategoryOptions.allowBluetoothA2DP,
+          IosTextToSpeechAudioCategoryOptions.mixWithOthers
+        ],
+      );
+    }
   }
 
   static Future<void> speak(String text) async {

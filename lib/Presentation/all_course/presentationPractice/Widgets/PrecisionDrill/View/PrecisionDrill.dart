@@ -128,7 +128,6 @@ class PrecisionDrill extends StatelessWidget {
                               recordDuration: controller.recordDuration,
                               formatDuration: controller.formatDuration,
                             ),
-                            const SizedBox(height: 10),
                           ],
                         ),
                       ),
