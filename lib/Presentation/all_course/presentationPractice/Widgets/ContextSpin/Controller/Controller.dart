@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter_sound/public/flutter_sound_recorder.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
@@ -46,7 +46,10 @@ class ContextSpinController extends GetxController {
 
     isRunning.value = true;
     AudioFilePath.value = '';
-    await recorder.startRecorder(toFile: 'contextSpin.aac');
+    await recorder.startRecorder(
+      toFile: 'contextSpin.m4a',
+      codec: Codec.aacMP4,
+    );
     _startTimer();
   }
 
