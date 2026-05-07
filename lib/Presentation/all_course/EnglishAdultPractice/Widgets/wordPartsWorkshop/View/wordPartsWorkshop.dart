@@ -226,7 +226,7 @@ class wordPartsWorkshop extends StatelessWidget {
             : Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Check with Mercy".tr, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 18)),
+                  Text("Check with Mercury".tr, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 18)),
                   const SizedBox(width: 8),
                   Image.asset('assets/icons/ai_icon.png', width: 24.w),
                 ],
@@ -244,7 +244,7 @@ class wordPartsWorkshop extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
         decoration: BoxDecoration(
           color: Colors.white.withAlpha(20),
-          border: Border.all(width: 1.5, color: controller.isSuccess.value ? AppColors.yellow : Colors.red),
+          border: Border.all(width: 1.5, color: controller.isSuccess.value ? AppColors.yellow : AppColors.sky),
           borderRadius: BorderRadius.circular(12.r),
         ),
         child: Row(
@@ -253,7 +253,7 @@ class wordPartsWorkshop extends StatelessWidget {
               width: 28.w,
               height: 28.w,
               decoration: BoxDecoration(
-                color: controller.isSuccess.value ? AppColors.yellow : Colors.red,
+                color: controller.isSuccess.value ? AppColors.yellow : AppColors.sky,
                 shape: BoxShape.circle,
               ),
               child: Icon(controller.isSuccess.value ? Icons.check : Icons.close, color: Colors.white, size: 18.sp),
@@ -267,7 +267,7 @@ class wordPartsWorkshop extends StatelessWidget {
                     text: controller.feedbackMessage.value,
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
-                    color: controller.isSuccess.value ? AppColors.yellow : Colors.red,
+                    color: controller.isSuccess.value ? AppColors.yellow : AppColors.sky,
                   ),
                   const SizedBox(height: 2),
                   Text(

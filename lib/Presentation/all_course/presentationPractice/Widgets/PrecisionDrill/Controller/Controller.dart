@@ -5,6 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_sound/flutter_sound.dart' hide PlayerState;
 import 'package:get/get.dart';
 import 'package:manifex/App/Urls.dart';
+import 'package:manifex/App/assets_path.dart';
+import 'package:manifex/Core/MusicService.dart';
 import 'package:manifex/Core/snakbar.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -55,6 +57,7 @@ class PrecisionDrillController extends GetxController {
     audioPlayer.onPlayerStateChanged.listen((state) {
       isPlaying.value = state == PlayerState.playing;
     });
+    MusicService().play(AssetsPath.smartWritingMusic);
     super.onInit();
   }
 
@@ -299,6 +302,7 @@ class PrecisionDrillController extends GetxController {
   void onClose() {
     recorder.closeRecorder();
     audioPlayer.dispose();
+    MusicService().stop();
     super.onClose();
   }
 
