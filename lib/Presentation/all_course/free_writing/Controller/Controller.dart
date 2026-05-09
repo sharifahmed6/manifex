@@ -15,7 +15,7 @@ class FreeWritingController extends GetxController {
   void changeTab(int index) => selectedIndex.value = index;
 
   // Task 1 is unlocked initially, Task 2 is locked
-  var listLock = [false, false].obs;
+  var listLock = [false, true].obs;
   // Both tasks are "available" (visible as buttons)
   var listComplete = [true, true].obs; 
   var result = <Map<String, dynamic>>[].obs;
