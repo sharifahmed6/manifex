@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_sound/public/flutter_sound_recorder.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 import 'package:get/get.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../../../../../Core/SharepreferenceHelper.dart';
 import '../../../../../../Core/snakbar.dart';
@@ -74,7 +76,10 @@ class wordFlashController extends GetxController {
     isRunning.value = true;
     AudioFilePath.value = '';
     startCountdown();
-    await recorder.startRecorder(toFile: 'contextSpin.aac');
+    Directory tempDir = await getTemporaryDirectory();
+    String recordPath =
+        '${tempDir.path}/word_flash_${DateTime.now().millisecondsSinceEpoch}.m4a';
+    await recorder.startRecorder(toFile: recordPath, codec: Codec.aacMP4);
     _startRecordTimer();
   }
 
@@ -100,7 +105,9 @@ class wordFlashController extends GetxController {
   Future<void> stopRecording() async {
     String? path = await recorder.stopRecorder();
     isRunning.value = false;
-    AudioFilePath.value = path!;
+    if (path != null) {
+      AudioFilePath.value = path;
+    }
     stopTimer();
     _stopRecordTimer();
   }
@@ -109,6 +116,7 @@ class wordFlashController extends GetxController {
   @override
   void onClose() {
     _timer?.cancel();
+    recorder.closeRecorder();
     super.onClose();
   }
 
@@ -117,8 +125,6 @@ class wordFlashController extends GetxController {
     if (currentIndex.value < words.length - 1) {
       currentIndex++;
       AudioFilePath.value = '';
-      // stopRecording(); // No need to stop here as it's stopped by timer or manually
-      // startCountdown(); // User should probably click record again or it starts automatically?
     } else {
       final practiceController = Get.find<EnglishAdultPracticeController>();
       practiceController.finalResult[2]['marks'] =
@@ -137,7 +143,6 @@ class wordFlashController extends GetxController {
 
   @override
   void onReady() {
-    // TODO: implement onReady
     getWordFlash();
     super.onReady();
   }
@@ -178,23 +183,18 @@ class wordFlashController extends GetxController {
 
   Future<void> submit() async {
     final url = Uri.parse(
-      "https://ai.manifex.org/api/v1/adult/word-flash/word_flash",
+      "https://ai.manifex.org/api/v1/speaking/pronunciation/pronunciation",
     );
 
     try {
-      // Create Multipart request
       final request = http.MultipartRequest('POST', url);
 
-      // Headers
       request.headers.addAll({
-        'Content-Type': 'application/json',
-        'authtoken': PrefHelper.getAccessToken(),
+        'authtoken': '1',
       });
 
-      // Add text field
-      request.fields['word'] = jsonEncode(words[currentIndex.value]);
+      request.fields['word'] = words[currentIndex.value];
 
-      // Add audio files if provided
       if (AudioFilePath.isNotEmpty) {
         request.files.add(
           await http.MultipartFile.fromPath('file', AudioFilePath.value),
@@ -211,16 +211,19 @@ class wordFlashController extends GetxController {
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
         final Map<String, dynamic> data = jsonDecode(response.body);
-        int s = (data['score'] as int?) ?? 0;
+        int s = (data['score'] as num).toInt();
         score.value += s;
         currentScore.value = s;
         evaluationFeedback.value = data['feedback'] ?? "";
         showResult.value = true;
       } else {
         print("Error submitting word: ${response.body}");
+        AppSnackbar.show("Error submitting word");
       }
     } catch (e) {
+      if (Get.isDialogOpen ?? false) Get.back();
       print("HTTP Error: $e");
+      AppSnackbar.show("Something went wrong");
     }
   }
 }
