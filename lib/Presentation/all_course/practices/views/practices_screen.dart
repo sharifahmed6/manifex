@@ -95,17 +95,24 @@ class PracticesScreen extends StatelessWidget {
                   Get.toNamed(routes.native_speaking_skill_screen);
                 },
               ),
-              SizedBox(height: 16.h),
-              _practicesCard(
-                imagePath: 'assets/icons/presentation_icon.png',
-                title: 'Presentation Practice'.tr,
-                subTitle:
-                    'Practice English made for adults. Improve speaking, listening, and vocabulary with easy, real-life lessons you can use every day.'
-                        .tr,
-                buttonText: 'Start Practice'.tr,
-                onTap: () {
-                  Get.toNamed(routes.presentationPractice_screen);
-                },
+              Visibility(
+                visible: Get.find<HomeController>().apiAge < 16,
+                child: Column(
+                  children: [
+                    SizedBox(height: 16.h),
+                    _practicesCard(
+                      imagePath: 'assets/icons/presentation_icon.png',
+                      title: 'Presentation Practice'.tr,
+                      subTitle:
+                          'Practice English made for adults. Improve speaking, listening, and vocabulary with easy, real-life lessons you can use every day.'
+                              .tr,
+                      buttonText: 'Start Practice'.tr,
+                      onTap: () {
+                        Get.toNamed(routes.presentationPractice_screen);
+                      },
+                    ),
+                  ],
+                ),
               ),
               SizedBox(height: 16.h),
               _practicesCard(

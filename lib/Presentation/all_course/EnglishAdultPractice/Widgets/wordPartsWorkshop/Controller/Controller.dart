@@ -107,8 +107,6 @@ class wordPartsWorkshopController extends GetxController {
       final practiceController = Get.find<EnglishAdultPracticeController>();
       practiceController.finalResult[3]['marks'] = 100;
       practiceController.unLockTask(4);
-      Get.back();
-      return;
     }
   }
 
@@ -141,7 +139,6 @@ class wordPartsWorkshopController extends GetxController {
     try {
       final request = http.MultipartRequest('POST', url);
       request.headers.addAll({
-        'Content-Type': 'application/json',
         'authtoken': '1',
       });
       request.fields['word'] = word;
