@@ -27,14 +27,14 @@ class CustomAppBar extends StatelessWidget {
               border: Border.all(color: const Color(0xFF4E505D), width: 2),
             ),
             child: Obx(
-              () => Row(
+                  () => Row(
                 mainAxisSize: MainAxisSize.min,
                 spacing: 6.w,
                 children: [
                   Image.asset(AssetsPath.fire, width: 20.w, height: 20.h),
                   CustomText(
                     text:
-                        '${controller.profileInfo.value?.data?.userProgress?.dayStreak ?? 0}',
+                    '${controller.profileInfo.value?.data?.userProgress?.dayStreak ?? 0}',
                     fontWeight: FontWeight.w600,
                   ),
                 ],
