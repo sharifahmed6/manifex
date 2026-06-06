@@ -3,6 +3,7 @@ import 'package:manifex/Presentation/all_course/interactive_reading/controller/t
 import 'package:manifex/Presentation/language/controller/language_controller.dart';
 import 'package:manifex/Presentation/privacy_policy/controller/privacy_policy_controller.dart';
 import 'package:manifex/Presentation/profile_edit/controller/profile_edit_controller.dart';
+import 'package:manifex/Presentation/support_chat/controllers/support_chat_controller.dart';
 import 'package:manifex/Presentation/terms_condition/controller/terms_conditon_controller.dart';
 import 'package:manifex/Presentation/unlock_rewards/controller/unlock_rewards_controller.dart';
 import '../Presentation/Authentication/Forget_password/Change_password/Controller/Controller.dart';
@@ -50,6 +51,7 @@ import '../Presentation/progress/controllers/progress_controller.dart';
 class InitialBinding extends Bindings {
   @override
   void dependencies() {
+    Get.put(SupportChatController(), permanent: true);
     Get.lazyPut<SplashController>(() => SplashController(), fenix: true);
     // Get.lazyPut<on_boarding_controller>(
     //   () => on_boarding_controller(),
@@ -178,8 +180,5 @@ class InitialBinding extends Bindings {
     Get.lazyPut<AFHandwritingController>(() => AFHandwritingController(),);
     Get.lazyPut<subscriptionController>(() => subscriptionController(), fenix: true);
     Get.lazyPut<FreeWritingController>(() => FreeWritingController(), fenix: true);
-
-
-
   }
 }
