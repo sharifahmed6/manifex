@@ -59,4 +59,5 @@ class urls {
   static String familyMemberAdd = "$baseUrl/subscriptions/add-member";
   static String removeMember(String id) =>
       "$baseUrl/subscriptions/remove-member/$id";
+  static String chatbot = "http://72.244.153.17:8061/api/v1/chatbot/";
 }
