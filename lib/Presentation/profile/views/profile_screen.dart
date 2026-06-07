@@ -159,6 +159,18 @@ class ProfileScreen extends StatelessWidget {
                         Get.toNamed(routes.support_chat_screen);
                       },
                     ),
+                    SizedBox(height: 8.h),
+                    Divider(
+                      color: Color(0xffFFFFFF).withAlpha((2.56 * 22).toInt()),
+                    ),
+                    SizedBox(height: 16.h),
+                    _customItem(
+                      imagePath: 'assets/icons/mail-validation-02-stroke-rounded.png', // You might need to add a chat icon
+                      title: 'Support Mail'.tr,
+                      onTap: () {
+                        Get.toNamed(routes.support_mail_screen);
+                      },
+                    ),
                   ],
                 ),
               ),

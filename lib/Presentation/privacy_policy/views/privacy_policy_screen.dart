@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:manifex/App/routes.dart';
+import 'package:manifex/Presentation/Share/button_gradient.dart';
 import 'package:manifex/Presentation/Share/scafold_background.dart';
 
 import '../../Share/text_title_small.dart';
@@ -15,7 +17,8 @@ class PrivacyPolicyScreen extends StatelessWidget {
     return scaffold_background(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
-        child: CustomAppBar(),
+        child: CustomAppBar(
+        ),
       ),
       child: SingleChildScrollView(
         child: Padding(
@@ -23,26 +26,6 @@ class PrivacyPolicyScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                spacing: 8.w,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Get.back();
-                    },
-                    child: Icon(
-                      Icons.arrow_back,
-                      color: Colors.white,
-                      size: 32.sp,
-                    ),
-                  ),
-                  CustomText(
-                    text: 'Privacy Policy'.tr,
-                    fontSize: 24.sp,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ],
-              ),
               SizedBox(height: screenHeight * 0.02),
               _textParagraph('Last Updated: January 21, 2026'.tr),
               SizedBox(height: screenHeight * 0.02),
@@ -105,7 +88,34 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 'By using MANIFEX, you acknowledge that you have read, understood, and agreed to this Privacy Policy.'
                     .tr,
               ),
-              SizedBox(height: screenHeight * 0.02),
+              SizedBox(height: screenHeight * 0.04),
+              ButtonGradient(
+                text: 'Contact Us'.tr,
+                onTap: () {
+                  Get.dialog(
+                    AlertDialog(
+                      title: Text('Contact Us'.tr),
+                      content: Text('How would you like to contact us?'.tr, style: TextStyle(color: Colors.black),),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Get.back();
+                            Get.toNamed(routes.support_chat_screen);
+                          },
+                          child: Text('Chat with Mercury'.tr),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Get.back();
+                            Get.toNamed(routes.support_mail_screen);
+                          },
+                          child: Text('Support Mail'.tr),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
             ],
           ),
         ),
