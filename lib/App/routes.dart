@@ -13,6 +13,7 @@ import 'package:manifex/Presentation/profile/views/profile_screen.dart';
 import 'package:manifex/Presentation/profile_edit/views/profile_edit_screen.dart';
 import 'package:manifex/Presentation/progress/views/progress_screen.dart';
 import 'package:manifex/Presentation/support_chat/views/support_chat_screen.dart';
+import 'package:manifex/Presentation/support_chat/views/support_mail_screen.dart';
 import 'package:manifex/Presentation/terms_condition/views/terms_condition_screen.dart';
 import 'package:manifex/Presentation/unlock_rewards/views/unlock_rewards_screen.dart';
 import '../Presentation/Authentication/Forget_password/find_account/View/find_account.dart';
@@ -93,6 +94,7 @@ class routes {
   static const String family_member_add = '/family_member_add';
   static const String FreeWriting_screen = '/FreeWriting';
   static const String support_chat_screen = '/support_chat_screen';
+  static const String support_mail_screen = '/support_mail_screen';
 
   static final pages = [
     GetPage(
@@ -310,6 +312,11 @@ class routes {
       name: support_chat_screen,
       binding: InitialBinding(),
       page: () => SupportChatScreen(),
+    ),
+    GetPage(
+      name: support_mail_screen,
+      binding: InitialBinding(),
+      page: () => SupportMailScreen(),
     ),
   ];
 }
