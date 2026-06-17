@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:manifex/App/AppColors.dart';
 import 'package:manifex/Core/snakbar.dart';
@@ -232,62 +234,87 @@ class subscription extends StatelessWidget {
                             Obx(() {
                               final isActive =
                                   controller.activePackageName.value ==
-                                  product.identifier;
+                                      product.identifier;
+
+                              void handlePurchase() async {
+                                try {
+                                  // Initiate purchase
+                                  CustomerInfo customerInfo =
+                                  await controller.purchasePackage(package);
+
+                                  // Check if entitlement is active
+                                  final activeEntitlement = customerInfo
+                                      .entitlements.active.entries.isNotEmpty
+                                      ? customerInfo
+                                      .entitlements.active.entries.first.value
+                                      : null;
+
+                                  if (activeEntitlement != null &&
+                                      activeEntitlement.isActive) {
+                                    Get.snackbar(
+                                      "Success".tr,
+                                      "Subscription purchased!".tr,
+                                      snackPosition: SnackPosition.BOTTOM,
+                                    );
+                                  } else {
+                                    // User cancelled or purchase failed
+                                    Get.snackbar(
+                                      "Cancelled".tr,
+                                      "Subscription not completed.".tr,
+                                      snackPosition: SnackPosition.BOTTOM,
+                                      backgroundColor: Colors.redAccent,
+                                    );
+                                    AppSnackbar.show(
+                                      "Subscription not completed.".tr,
+                                    );
+                                  }
+                                } catch (e) {
+                                  // Handle purchase error
+                                  // You might want to show a proper error message to the user
+                                  Get.snackbar(
+                                    "Error".tr,
+                                    "An error occurred during purchase: $e".tr,
+                                    snackPosition: SnackPosition.BOTTOM,
+                                  );
+                                }
+                              }
+
+                              final introPrice = product.introductoryPrice;
+                              final isIosWithTrial = Platform.isIOS &&
+                                  introPrice != null &&
+                                  introPrice.price == 0;
+
+                              if (isActive) {
+                                return GradientButton(
+                                  text: "Active".tr,
+                                  onPressed: null,
+                                );
+                              }
+
+                              if (isIosWithTrial) {
+                                return Column(
+                                  children: [
+                                    GradientButton(
+                                      text: "Start 7 days free trial".tr,
+                                      onPressed: handlePurchase,
+                                    ),
+                                    SizedBox(height: 8),
+                                    Text(
+                                      "After trial, pay ${product.priceString}".tr,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: ScreenResponsive.responsiveFont(
+                                            context, 14),
+                                        color: Colors.white70,
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }
+
                               return GradientButton(
-                                text: isActive ? "Active".tr : "Subscribe".tr,
-                                onPressed:
-                                    isActive
-                                        ? null
-                                        : () async {
-                                          try {
-                                            // Initiate purchase
-                                            CustomerInfo customerInfo =
-                                                await controller
-                                                    .purchasePackage(package);
-
-                                            // Check if entitlement is active
-                                            final activeEntitlement =
-                                                customerInfo
-                                                                .entitlements
-                                                                .active
-                                                                .entries
-                                                                .isNotEmpty
-                                                            ? customerInfo
-                                                                  .entitlements
-                                                                  .active
-                                                                  .entries
-                                                                  .first
-                                                                  .value
-                                                            : null;
-
-                                            if (activeEntitlement != null &&
-                                                activeEntitlement.isActive) {
-                                              Get.snackbar(
-                                                "Success".tr,
-                                                "Subscription purchased!".tr,
-                                                snackPosition:
-                                                    SnackPosition.BOTTOM,
-                                              );
-                                            } else {
-                                              // User cancelled or purchase failed
-                                              Get.snackbar(
-                                                "Cancelled".tr,
-                                                "Subscription not completed."
-                                                    .tr,
-                                                snackPosition:
-                                                    SnackPosition.BOTTOM,
-                                                backgroundColor:
-                                                    Colors.redAccent,
-                                              );
-                                              AppSnackbar.show(
-                                                "Subscription not completed."
-                                                    .tr,
-                                              );
-                                            }
-                                          } catch (e) {
-                                            // Handle purchase error
-                                          }
-                                        },
+                                text: "Subscribe".tr,
+                                onPressed: handlePurchase,
                               );
                             }),
                           ],
@@ -300,6 +327,8 @@ class subscription extends StatelessWidget {
               SizedBox(height: 20),
               Obx(() {
                 if (!controller.isPremium.value) return SizedBox.shrink();
+
+                if (Platform.isIOS) return SizedBox.shrink();
 
                 return Column(
                   children: [
