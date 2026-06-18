@@ -37,7 +37,7 @@ class login extends StatelessWidget {
                   logo_manifex(),
                   const SizedBox(height: 10),
                   Text(
-                    "Welcome to MANIFEX! Let’s start your language learning journey today"
+                    "Welcome to MANIFEX!\n Let’s start your language learning journey today"
                         .tr,
                     textAlign: TextAlign.center,
                     style: TextStyle(
