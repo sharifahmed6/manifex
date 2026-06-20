@@ -51,6 +51,7 @@ class urls {
   static String rewardVideoList = "$baseUrl/reward-video/my/rewards";
   static String updateProfile = "$baseUrl/users/update-profile";
   static String changePassword = "$baseUrl/auth/change-password";
+  static String deleteAccount = "$baseUrl/users/delete-me";
   static String powerWordsScore =
       "$baseUrl/presentation/power-words/power_words";
   static String presentationSubmit = "$baseUrl/presentation/submit";
