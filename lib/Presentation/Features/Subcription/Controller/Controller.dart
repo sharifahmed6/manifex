@@ -56,7 +56,7 @@ class subscriptionController extends GetxController {
       Purchases.setDebugLogsEnabled(true);
       String userId = PrefHelper.getUserId();
 
-      if (userId != null) {
+      if (userId != null && userId.isNotEmpty) {
         await Purchases.logIn(userId);
       } else {
         // Anonymous login if no userId
@@ -160,6 +160,17 @@ class subscriptionController extends GetxController {
     } catch (e) {
       print("Purchase failed: $e");
       rethrow; // UI can handle it
+    }
+  }
+
+  /// Restore purchases
+  Future<void> restorePurchases() async {
+    try {
+      CustomerInfo restoredInfo = await Purchases.restorePurchases();
+      _updatePremiumStatus(restoredInfo);
+    } catch (e) {
+      print("Restore failed: $e");
+      rethrow;
     }
   }
 
