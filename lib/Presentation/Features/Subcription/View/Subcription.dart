@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:manifex/App/AppColors.dart';
 import 'package:manifex/App/routes.dart';
 import 'package:manifex/Core/loading.dart';
@@ -8,7 +9,7 @@ import 'package:manifex/Core/snakbar.dart';
 import 'package:manifex/Presentation/Share/scafold_background.dart';
 import 'package:get/get.dart';
 import 'package:manifex/Presentation/app_bar/views/custom_app_bar.dart';
-import 'package:purchases_flutter/models/customer_info_wrapper.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import '../../../../Core/responsive.dart';
 import '../../../Share/GradientMask.dart';
 import '../Controller/Controller.dart';
@@ -258,20 +259,15 @@ class subscription extends StatelessWidget {
                                       "Subscription purchased!".tr,
                                       snackPosition: SnackPosition.BOTTOM,
                                     );
-                                  } else {
-                                    // User cancelled or purchase failed
-                                    Get.snackbar(
-                                      "Cancelled".tr,
-                                      "Subscription not completed.".tr,
-                                      snackPosition: SnackPosition.BOTTOM,
-                                      backgroundColor: Colors.redAccent,
-                                    );
-                                    AppSnackbar.show(
-                                      "Subscription not completed.".tr,
-                                    );
                                   }
                                 } catch (e) {
                                   // Handle purchase error
+                                  if (e is PlatformException &&
+                                      PurchasesErrorHelper.getErrorCode(e) ==
+                                          PurchasesErrorCode.purchaseCancelledError) {
+                                    return; // User cancelled, do nothing
+                                  }
+
                                   // You might want to show a proper error message to the user
                                   Get.snackbar(
                                     "Error".tr,
@@ -386,6 +382,26 @@ class subscription extends StatelessWidget {
                             _FooterLink(
                               text: "Privacy Policy".tr,
                               onTap: () => Get.toNamed(routes.privacy_policy_screen),
+                            ),
+                            _LinkDivider(),
+                            _FooterLink(
+                              text: "Restore Purchases".tr,
+                              onTap: () async {
+                                try {
+                                  await controller.restorePurchases();
+                                  Get.snackbar(
+                                    "Success".tr,
+                                    "Purchases restored successfully!".tr,
+                                    snackPosition: SnackPosition.BOTTOM,
+                                  );
+                                } catch (e) {
+                                  Get.snackbar(
+                                    "Error".tr,
+                                    "Failed to restore purchases: $e".tr,
+                                    snackPosition: SnackPosition.BOTTOM,
+                                  );
+                                }
+                              },
                             ),
                           ],
                         ),
