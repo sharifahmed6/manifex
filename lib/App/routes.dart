@@ -9,7 +9,9 @@ import 'package:manifex/Presentation/bottom_navbar/views/bottom_navbar_view.dart
 import 'package:manifex/Presentation/family_member_add/views/family_member_add.dart';
 import 'package:manifex/Presentation/language/views/language_screen.dart';
 import 'package:manifex/Presentation/privacy_policy/views/privacy_policy_screen.dart';
+import 'package:manifex/Presentation/profile/views/delete_account_screen.dart';
 import 'package:manifex/Presentation/profile/views/profile_screen.dart';
+import 'package:manifex/Presentation/profile/views/terms_of_use_screen.dart';
 import 'package:manifex/Presentation/profile_edit/views/profile_edit_screen.dart';
 import 'package:manifex/Presentation/progress/views/progress_screen.dart';
 import 'package:manifex/Presentation/support_chat/views/support_chat_screen.dart';
@@ -59,6 +61,8 @@ class routes {
   static const String find_account_screen = '/find_account';
   static const String profile_screen = '/profile_screen';
   static const String profile_edit_screen = '/profile_edit_screen';
+  static const String delete_account_screen = '/delete_account_screen';
+  static const String terms_of_use_screen = '/terms_of_use_screen';
   static const String language_screen = '/language_screen';
   static const String about_us_screen = '/about_us_screen';
   static const String terms_conditon_screen = '/terms_conditon_screen';
@@ -88,9 +92,9 @@ class routes {
   static const String wordFlash_screen = '/wordFlash';
   static const String wordPartsWorkshop_screen = '/wordPartsWorkshop';
   static const String nativeOneScreen = '/native_one_screen';
-  static const String nativeTwoScreen = '/native_two_screen';
-  static const String nativeThreeScreen = '/native_three_screen';
-  static const String nativeFourScreen = '/native_four_screen';
+  static const String nativeTwoScreen = '/native_task_two';
+  static const String nativeThreeScreen = '/native_task_three';
+  static const String nativeFourScreen = '/native_task_four';
   static const String family_member_add = '/family_member_add';
   static const String FreeWriting_screen = '/FreeWriting';
   static const String support_chat_screen = '/support_chat_screen';
@@ -137,6 +141,16 @@ class routes {
       name: profile_edit_screen,
       binding: InitialBinding(),
       page: () => ProfileEditScreen(),
+    ),
+    GetPage(
+      name: delete_account_screen,
+      binding: InitialBinding(),
+      page: () => DeleteAccountScreen(),
+    ),
+    GetPage(
+      name: terms_of_use_screen,
+      binding: InitialBinding(),
+      page: () => TermsOfUseScreen(),
     ),
     GetPage(
       name: find_account_screen,

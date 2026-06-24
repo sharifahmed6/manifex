@@ -153,6 +153,18 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 16.h),
                     _customItem(
+                      imagePath: 'assets/icons/lock.png',
+                      title: 'Terms of Use'.tr,
+                      onTap: () {
+                        Get.toNamed(routes.terms_of_use_screen);
+                      },
+                    ),
+                    SizedBox(height: 8.h),
+                    Divider(
+                      color: Color(0xffFFFFFF).withAlpha((2.56 * 22).toInt()),
+                    ),
+                    SizedBox(height: 16.h),
+                    _customItem(
                       imagePath: 'assets/icons/customer-service-01-stroke-rounded.png', // You might need to add a chat icon
                       title: 'Support Chat'.tr,
                       onTap: () {
@@ -199,6 +211,18 @@ class ProfileScreen extends StatelessWidget {
                       title: 'Unlock Rewards'.tr,
                       onTap: () {
                         Get.toNamed(routes.unlock_rewards_screen);
+                      },
+                    ),
+                    SizedBox(height: 8.h),
+                    Divider(
+                      color: Color(0xffFFFFFF).withAlpha((2.56 * 22).toInt()),
+                    ),
+                    SizedBox(height: 16.h),
+                    _customItem(
+                      imagePath: 'assets/icons/account_icon.png',
+                      title: 'Delete Account'.tr,
+                      onTap: () {
+                        Get.toNamed(routes.delete_account_screen);
                       },
                     ),
                     SizedBox(height: 8.h),

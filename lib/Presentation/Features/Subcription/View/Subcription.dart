@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:manifex/App/AppColors.dart';
+import 'package:manifex/App/routes.dart';
+import 'package:manifex/Core/loading.dart';
 import 'package:manifex/Core/snakbar.dart';
 import 'package:manifex/Presentation/Share/scafold_background.dart';
 import 'package:get/get.dart';
@@ -19,7 +21,7 @@ class GradientButton extends StatelessWidget {
   final VoidCallback? onPressed;
 
   const GradientButton({Key? key, required this.text, this.onPressed})
-    : super(key: key);
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -197,7 +199,7 @@ class subscription extends StatelessWidget {
 
                     /// Map product identifiers to feature list (using flexible matching)
                     final features =
-                        controller.getFeatureList(product.identifier);
+                    controller.getFeatureList(product.identifier);
 
                     return Container(
                       margin: EdgeInsets.only(bottom: 20),
@@ -254,7 +256,7 @@ class subscription extends StatelessWidget {
 
                             /// Features List
                             ...features.map(
-                              (feature) => _buildList(text: feature),
+                                  (feature) => _buildList(text: feature),
                             ),
 
                             SizedBox(height: 20),
@@ -461,10 +463,111 @@ class subscription extends StatelessWidget {
               }),
               SizedBox(height: 20),
 
+                if (Platform.isIOS) return SizedBox.shrink();
+
+                return Column(
+                  children: [
+                    SizedBox(height: 10),
+                    GradientButton(
+                      text: "Unsubscribe".tr,
+                      onPressed: () async {
+                        try {
+                          await controller
+                              .cancelAutoRenew(); // call your logout/unsubscribe method
+                          Get.snackbar(
+                            "Success".tr,
+                            "You have unsubscribed successfully!".tr,
+                            snackPosition: SnackPosition.BOTTOM,
+                          );
+                        } catch (e) {
+                          Get.snackbar(
+                            "Error".tr,
+                            "Failed to unsubscribe: $e".tr,
+                            snackPosition: SnackPosition.BOTTOM,
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                );
+              }),
+
+              /// Improved Footer Links: Terms, Privacy
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 24.0),
+                  child: Column(
+                    children: [
+                      Text(
+                        "Subscription will automatically renew unless canceled at least 24 hours before the end of the current period.".tr,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white54,
+                          fontSize: ScreenResponsive.responsiveFont(context, 10),
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      IntrinsicHeight(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            _FooterLink(
+                              text: "Terms of Use".tr,
+                              onTap: () => Get.toNamed(routes.terms_of_use_screen),
+                            ),
+                            _LinkDivider(),
+                            _FooterLink(
+                              text: "Privacy Policy".tr,
+                              onTap: () => Get.toNamed(routes.privacy_policy_screen),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+/// Helper for footer links
+class _FooterLink extends StatelessWidget {
+  final String text;
+  final VoidCallback onTap;
+
+  const _FooterLink({required this.text, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Text(
+        text,
+        style: TextStyle(
+          color: Colors.white70,
+          decoration: TextDecoration.underline,
+          fontSize: ScreenResponsive.responsiveFont(context, 12),
+        ),
+      ),
+    );
+  }
+}
+
+/// Helper for link dividers
+class _LinkDivider extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return VerticalDivider(
+      color: Colors.white30,
+      width: 20,
+      thickness: 1,
+      indent: 2,
+      endIndent: 2,
     );
   }
 }
