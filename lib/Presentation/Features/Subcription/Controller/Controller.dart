@@ -4,7 +4,9 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 
 import '../../../../Core/SharepreferenceHelper.dart';
 
-class subscriptionController extends GetxController {
+import 'package:flutter/widgets.dart';
+
+class subscriptionController extends GetxController with WidgetsBindingObserver {
   var offerings = Rxn<Offerings>();
   var isPremium = false.obs;
   var activeSubscription = "".obs;
@@ -21,7 +23,8 @@ class subscriptionController extends GetxController {
       "Full reward library access",
       "Priority AI support",
       "Parent dashboard",
-      "Offline mode",
+      "7-Day Free Trial",
+      "Cancel Anytime",
     ],
     "family": [
       "Up to 5 learner profiles",
@@ -30,6 +33,8 @@ class subscriptionController extends GetxController {
       "Priority support",
       "Educational resources",
       "Shared reward library",
+      "7-Day Free Trial",
+      "Cancel Anytime",
     ],
   };
 
@@ -47,7 +52,31 @@ class subscriptionController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    WidgetsBinding.instance.addObserver(this);
     initRevenueCat();
+  }
+
+  @override
+  void onClose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.onClose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _refreshCustomerInfo();
+    }
+  }
+
+  Future<void> _refreshCustomerInfo() async {
+    try {
+      await Purchases.invalidateCustomerInfoCache();
+      final info = await Purchases.getCustomerInfo();
+      _updatePremiumStatus(info);
+    } catch (e) {
+      print("Error refreshing customer info on resume: $e");
+    }
   }
 
   /// Initialize RevenueCat and login user
@@ -117,7 +146,7 @@ class subscriptionController extends GetxController {
 
     if (activeEntitlement != null) {
       // Set auto-renew
-      autoRenew.value = activeEntitlement.willRenew;
+      autoRenew.value = activeEntitlement.willRenew && activeEntitlement.unsubscribeDetectedAt == null;
 
       // Set next renewal date
       String nextRenew = "N/A";

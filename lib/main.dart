@@ -15,7 +15,7 @@ Future<void> main() async {
 
   String apiKey = "";
   if (Platform.isAndroid) {
-    apiKey = "goog_WpzJrbCNSFhCNAavDKxzmzWcLWk";
+    apiKey = "goog_ddPdIDBYehMXVmlxIqvSfzFskSf";
   } else if (Platform.isIOS) {
     apiKey = "appl_XvgIfWcbeBNBrEwIEumbLJGlJhS";
   }

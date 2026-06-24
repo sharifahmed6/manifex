@@ -8,10 +8,13 @@ import 'package:manifex/Core/snakbar.dart';
 import 'package:manifex/Presentation/Share/scafold_background.dart';
 import 'package:get/get.dart';
 import 'package:manifex/Presentation/app_bar/views/custom_app_bar.dart';
+import 'package:purchases_flutter/errors.dart';
 import 'package:purchases_flutter/models/customer_info_wrapper.dart';
+import 'package:flutter/services.dart';
 import '../../../../Core/responsive.dart';
 import '../../../Share/GradientMask.dart';
 import '../Controller/Controller.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class GradientButton extends StatelessWidget {
   final String text;
@@ -131,25 +134,49 @@ class subscription extends StatelessWidget {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      controller.isPremium.value
-                          ? "Premium Active".tr
-                          : "Free Plan".tr,
-                    ),
-                    if (controller.isPremium.value) ...[
-                      Text(
-                        "Package: ".tr +
-                            controller.getDisplayName(
-                              controller.activePackageName.value,
-                            ),
+                    if (!controller.isPremium.value)
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: Colors.green,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          "Free Plan".tr,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      )
+                    else
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: Colors.green,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          controller.activePackageName.value.toLowerCase().contains('family')
+                              ? "Family Active".tr
+                              : "Premium Active".tr,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
+                    if (controller.isPremium.value) ...[
+
                       Text(
                         "Auto-Renew: ".tr +
                             "${controller.autoRenew.value ? "On".tr : "Off".tr}",
                       ),
                       Text(
-                        "Next Renewal: ".tr +
-                            "${controller.nextRenewDate.value}",
+                        (controller.autoRenew.value
+                                ? "Next Renewal: ".tr
+                                : "Expire Date: ".tr) +
+                            " ${controller.nextRenewDate.value}",
                       ),
                     ],
                   ],
@@ -234,9 +261,11 @@ class subscription extends StatelessWidget {
 
                             SizedBox(height: 20),
                             Obx(() {
-                              final isActive =
-                                  controller.activePackageName.value ==
-                                      product.identifier;
+                              final activePkg = controller.activePackageName.value;
+                              final prodId = product.identifier;
+                              final isActive = activePkg == prodId ||
+                                  (activePkg.isNotEmpty && prodId.isNotEmpty && 
+                                   activePkg.split(':').first == prodId.split(':').first);
 
                               void handlePurchase() async {
                                 try {
@@ -253,30 +282,42 @@ class subscription extends StatelessWidget {
 
                                   if (activeEntitlement != null &&
                                       activeEntitlement.isActive) {
-                                    Get.snackbar(
-                                      "Success".tr,
+                                    AppSnackbar.show(
                                       "Subscription purchased!".tr,
-                                      snackPosition: SnackPosition.BOTTOM,
+                                      title: "Success".tr,
+                                      backgroundColor: Colors.green,
                                     );
                                   } else {
                                     // User cancelled or purchase failed
-                                    Get.snackbar(
-                                      "Cancelled".tr,
-                                      "Subscription not completed.".tr,
-                                      snackPosition: SnackPosition.BOTTOM,
-                                      backgroundColor: Colors.redAccent,
-                                    );
                                     AppSnackbar.show(
                                       "Subscription not completed.".tr,
+                                      title: "Cancelled".tr,
+                                      backgroundColor: Colors.redAccent,
                                     );
                                   }
+                                } on PlatformException catch (e) {
+                                  var strErr = e.toString().toLowerCase();
+                                  if (e.code == '1' ||
+                                      strErr.contains('cancelled') ||
+                                      strErr.contains('user_canceled')) {
+                                    return; // User cancelled, ignore completely
+                                  }
+                                  var errorCode = PurchasesErrorHelper.getErrorCode(e);
+                                  if (errorCode == PurchasesErrorCode.purchaseCancelledError) {
+                                    return; // User cancelled, ignore completely
+                                  }
+                                  
+                                  AppSnackbar.show(
+                                    "An error occurred during purchase: ${e.message ?? e.toString()}".tr,
+                                    title: "Error".tr,
+                                    backgroundColor: Colors.redAccent,
+                                  );
                                 } catch (e) {
-                                  // Handle purchase error
-                                  // You might want to show a proper error message to the user
-                                  Get.snackbar(
-                                    "Error".tr,
-                                    "An error occurred during purchase: $e".tr,
-                                    snackPosition: SnackPosition.BOTTOM,
+                                  // Handle other purchase errors
+                                  AppSnackbar.show(
+                                    "An error occurred: $e".tr,
+                                    title: "Error".tr,
+                                    backgroundColor: Colors.redAccent,
                                   );
                                 }
                               }
@@ -287,9 +328,103 @@ class subscription extends StatelessWidget {
                                   introPrice.price == 0;
 
                               if (isActive) {
+                                if (Platform.isIOS) {
+                                  return GradientButton(
+                                    text: "Active".tr,
+                                    onPressed: null,
+                                  );
+                                }
                                 return GradientButton(
-                                  text: "Active".tr,
-                                  onPressed: null,
+                                  text: "Unsubscribe".tr,
+                                  onPressed: () {
+                                    Get.dialog(
+                                      Dialog(
+                                        backgroundColor: const Color(0xFF1E1E2C), // Dark theme matching the app
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(20),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(24.0),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              const Icon(
+                                                Icons.warning_amber_rounded,
+                                                color: Colors.orangeAccent,
+                                                size: 48,
+                                              ),
+                                              const SizedBox(height: 16),
+                                              Text(
+                                                "Confirm Unsubscribe".tr,
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 12),
+                                              Text(
+                                                "Are you sure you want to unsubscribe? You will be redirected to the Play Store to manage your subscription.".tr,
+                                                textAlign: TextAlign.center,
+                                                style: const TextStyle(
+                                                  color: Colors.white70,
+                                                  fontSize: 14,
+                                                  height: 1.5,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 24),
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: TextButton(
+                                                      onPressed: () => Get.back(),
+                                                      style: TextButton.styleFrom(
+                                                        foregroundColor: Colors.white70,
+                                                        padding: const EdgeInsets.symmetric(vertical: 14),
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.circular(12),
+                                                          side: const BorderSide(color: Colors.white24),
+                                                        ),
+                                                      ),
+                                                      child: Text("No".tr, style: const TextStyle(fontSize: 16)),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(width: 16),
+                                                  Expanded(
+                                                    child: ElevatedButton(
+                                                      onPressed: () async {
+                                                        Get.back(); // Close the dialog
+                                                        final sku = product.identifier.split(':').first;
+                                                        final url = Uri.parse(
+                                                            "https://play.google.com/store/account/subscriptions?package=com.manifex.app&sku=$sku");
+
+                                                        try {
+                                                          await launchUrl(url, mode: LaunchMode.externalApplication);
+                                                        } catch (e) {
+                                                          Get.snackbar("Error".tr,
+                                                              "Could not open Google Play Store".tr,
+                                                              snackPosition: SnackPosition.BOTTOM);
+                                                        }
+                                                      },
+                                                      style: ElevatedButton.styleFrom(
+                                                        backgroundColor: Colors.redAccent,
+                                                        foregroundColor: Colors.white,
+                                                        padding: const EdgeInsets.symmetric(vertical: 14),
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.circular(12),
+                                                        ),
+                                                      ),
+                                                      child: Text("Yes".tr, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
                                 );
                               }
 
@@ -327,8 +462,6 @@ class subscription extends StatelessWidget {
                 );
               }),
               SizedBox(height: 20),
-              Obx(() {
-                if (!controller.isPremium.value) return SizedBox.shrink();
 
                 if (Platform.isIOS) return SizedBox.shrink();
 
