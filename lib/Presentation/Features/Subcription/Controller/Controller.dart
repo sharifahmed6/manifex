@@ -23,17 +23,15 @@ class subscriptionController extends GetxController with WidgetsBindingObserver 
       "Full reward library access",
       "Priority AI support",
       "Parent dashboard",
-      "7-Day Free Trial",
       "Cancel Anytime",
     ],
     "family": [
-      "Up to 5 learner profiles",
+      "Up to 3 learner profiles",
       "All Premium features",
       "Family progress reports",
       "Priority support",
       "Educational resources",
       "Shared reward library",
-      "7-Day Free Trial",
       "Cancel Anytime",
     ],
   };
