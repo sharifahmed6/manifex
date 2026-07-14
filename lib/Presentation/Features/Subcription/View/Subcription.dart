@@ -463,9 +463,8 @@ class subscription extends StatelessWidget {
               }),
               SizedBox(height: 20),
 
-                if (Platform.isIOS) return SizedBox.shrink();
-
-                return Column(
+              if (!Platform.isIOS)
+                Column(
                   children: [
                     SizedBox(height: 10),
                     GradientButton(
@@ -489,9 +488,7 @@ class subscription extends StatelessWidget {
                       },
                     ),
                   ],
-                );
-              }),
-
+                ),
               /// Improved Footer Links: Terms, Privacy
               Center(
                 child: Padding(
