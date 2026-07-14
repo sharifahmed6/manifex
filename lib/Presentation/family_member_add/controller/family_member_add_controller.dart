@@ -55,7 +55,18 @@ class FamilyMemberAddController extends GetxController {
       isLoading.value = false;
     }
   }
-  Future<void> memberAdd()async{
+  Future<void> memberAdd() async {
+    if (members.length >= 3) {
+      Get.snackbar(
+        'Notice'.tr,
+        'You cannot add more than 3 members.'.tr,
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.redAccent.withOpacity(0.8),
+        colorText: Colors.white,
+      );
+      return;
+    }
+
     memberIsLoading.value = true;
     NetworkResponse response = await NetworkCaller().postRequest(
         url: urls.familyMemberAdd,
