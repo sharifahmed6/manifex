@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -317,7 +318,24 @@ class _StoryCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(14.r),
               child: AspectRatio(
                 aspectRatio: 16 / 9,
-                child: Image.network(imagePath, fit: BoxFit.cover),
+                child: Builder(
+                  builder: (context) {
+                    try {
+                      final cleanBase64 = imagePath.contains(',')
+                          ? imagePath.split(',').last
+                          : imagePath;
+                      final bytes = base64Decode(cleanBase64.replaceAll(RegExp(r'\s+'), ''));
+                      return Image.memory(bytes, fit: BoxFit.cover);
+                    } catch (e) {
+                      return Container(
+                        color: Colors.grey[800],
+                        child: const Center(
+                          child: Icon(Icons.broken_image, color: Colors.white54, size: 50),
+                        ),
+                      );
+                    }
+                  },
+                ),
               ),
             ),
           ],
