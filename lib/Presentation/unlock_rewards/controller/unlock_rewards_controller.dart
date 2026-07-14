@@ -13,6 +13,7 @@ class UnlockRewardsController extends GetxController {
   final rewardModel = Rxn<RewardModel>();
   final moreVideoRewards = Rxn<MoreVideoRewards>();
   final isMoreRewardsVisible = false.obs;
+  final isMoreRewardsLoading = false.obs;
   final selectedVideo = Rxn<dynamic>(); // Can be RewardVideo or VideoModel
 
   // Video states
@@ -27,7 +28,6 @@ class UnlockRewardsController extends GetxController {
   void onInit() {
     super.onInit();
     getRewardStatus();
-    getMoreRewards();
   }
 
   Future<void> getRewardStatus() async {
@@ -56,6 +56,7 @@ class UnlockRewardsController extends GetxController {
 
   Future<void> getMoreRewards() async {
     try {
+      isMoreRewardsLoading.value = true;
       NetworkResponse response = await NetworkCaller().getRequest(
         url: urls.rewardVideoList,
       );
@@ -65,9 +66,24 @@ class UnlockRewardsController extends GetxController {
           response.responseData as Map<String, dynamic>,
         );
         moreVideoRewards.value = model;
+
+        if (model.data.rewards.isEmpty) {
+          Get.snackbar(
+            'Notice'.tr,
+            'No reward videos available at the moment.'.tr,
+            snackPosition: SnackPosition.TOP,
+            backgroundColor: Colors.redAccent.withOpacity(0.8),
+            colorText: Colors.white,
+            margin: EdgeInsets.all(12),
+          );
+          // Hide it back if empty
+          isMoreRewardsVisible.value = false;
+        }
       }
     } catch (e) {
       debugPrint("Error fetching more rewards: $e");
+    } finally {
+      isMoreRewardsLoading.value = false;
     }
   }
 
@@ -129,6 +145,11 @@ class UnlockRewardsController extends GetxController {
 
   void toggleMoreRewards() {
     isMoreRewardsVisible.value = !isMoreRewardsVisible.value;
+    if (isMoreRewardsVisible.value) {
+      if (moreVideoRewards.value == null || moreVideoRewards.value!.data.rewards.isEmpty) {
+        getMoreRewards();
+      }
+    }
   }
 
   void togglePlayPause() {

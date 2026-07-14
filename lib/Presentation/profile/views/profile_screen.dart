@@ -10,6 +10,7 @@ import 'package:manifex/Presentation/app_bar/views/custom_app_bar.dart';
 import 'package:manifex/Presentation/bottom_navbar/controllers/bottom_navbar_controller.dart';
 import 'package:manifex/Presentation/progress/widget/gradient_border_avater.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:manifex/Presentation/unlock_rewards/controller/unlock_rewards_controller.dart';
 
 import '../../../App/assets_path.dart';
 import '../../../Core/SharepreferenceHelper.dart';
@@ -210,6 +211,9 @@ class ProfileScreen extends StatelessWidget {
                       imagePath: 'assets/icons/unlock_rewards.png',
                       title: 'Unlock Rewards'.tr,
                       onTap: () {
+                        if (Get.isRegistered<UnlockRewardsController>()) {
+                          Get.delete<UnlockRewardsController>();
+                        }
                         Get.toNamed(routes.unlock_rewards_screen);
                       },
                     ),

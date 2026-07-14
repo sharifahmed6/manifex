@@ -137,6 +137,27 @@ class HomeController extends GetxController with WidgetsBindingObserver {
   String get dayStreak =>
       profileInfo.value?.data?.userProgress?.dayStreak.toString() ?? '0';
 
+  int get remainingFreeDays {
+    final createdAt = profileInfo.value?.data?.createdAt;
+    if (createdAt == null) return 0;
+    
+    final difference = DateTime.now().difference(createdAt).inDays;
+    final remaining = 7 - difference;
+    
+    return remaining > 0 ? remaining : 0;
+  }
+  
+  int get usedFreeDays {
+    final createdAt = profileInfo.value?.data?.createdAt;
+    if (createdAt == null) return 0;
+    
+    final difference = DateTime.now().difference(createdAt).inDays;
+    // Difference is 0 on the first day, so used days is difference + 1
+    return (difference + 1).clamp(1, 7);
+  }
+
+  bool get isFreeTrialActive => remainingFreeDays > 0;
+
   int get apiAge => _mapAgeToApi(ageRange);
   bool get isReady => userId.isNotEmpty;
 

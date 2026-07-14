@@ -11,6 +11,7 @@ import '../../../Share/show_dialog.dart';
 import '../../../Share/text_title_small.dart';
 import '../controller/practices_controller.dart';
 import '../widget/transperent_gradient_border.dart';
+import 'package:manifex/Presentation/unlock_rewards/controller/unlock_rewards_controller.dart';
 
 class PracticesScreen extends StatelessWidget {
   PracticesScreen({super.key});
@@ -135,6 +136,9 @@ class PracticesScreen extends StatelessWidget {
                     .tr,
                 buttonText: 'Start Reward'.tr,
                 onTap: () {
+                  if (Get.isRegistered<UnlockRewardsController>()) {
+                    Get.delete<UnlockRewardsController>();
+                  }
                   Get.toNamed(routes.unlock_rewards_screen);
                 },
               ),

@@ -322,7 +322,7 @@ class subscription extends StatelessWidget {
                                     return; // User cancelled, do nothing
                                   }
 
-                                  // You might want to show a proper error message to the user
+                                  /*// You might want to show a proper error message to the user
                                   Get.snackbar(
                                     "Error".tr,
                                     "An error occurred during purchase: $e".tr,
@@ -332,7 +332,7 @@ class subscription extends StatelessWidget {
                                     "An error occurred: $e".tr,
                                     title: "Error".tr,
                                     backgroundColor: Colors.redAccent,
-                                  );
+                                  );*/
                                 }
                               }
 
