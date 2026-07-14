@@ -311,14 +311,16 @@ class _StoryCard extends StatelessWidget {
             fontWeight: FontWeight.w600,
             color: const Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
           ),
-          SizedBox(height: 12.h),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(14.r),
-            child: AspectRatio(
-              aspectRatio: 16 / 9,
-              child: Image.network(imagePath, fit: BoxFit.cover),
+          if (imagePath.isNotEmpty) ...[
+            SizedBox(height: 12.h),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(14.r),
+              child: AspectRatio(
+                aspectRatio: 16 / 9,
+                child: Image.network(imagePath, fit: BoxFit.cover),
+              ),
             ),
-          ),
+          ],
         ],
       ),
     );
