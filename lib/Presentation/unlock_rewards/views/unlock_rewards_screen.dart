@@ -117,7 +117,7 @@ class UnlockRewardsScreen extends StatelessWidget {
                                 : (currentVideo is VideoModel
                                       ? currentVideo.category
                                       : (data.unlockedVideo?.category ??
-                                            "Educational".tr));
+                                            "".tr));
                             final int views = currentVideo is RewardVideo
                                 ? currentVideo.views
                                 : (currentVideo is VideoModel
@@ -132,7 +132,7 @@ class UnlockRewardsScreen extends StatelessWidget {
                               views: views,
                               unlocked: data.alreadyUnlocked,
                               remaining: data.progress.remainingCount,
-                              taskStatus: data.progress.taskStatus,
+                              tasks: data.progress.tasks,
                               onPlayToggle: () => c.togglePlayPause(),
                               isPlaying: c.isPlaying.value,
                               isVideoInitialized: c.isVideoInitialized.value,
@@ -146,6 +146,7 @@ class UnlockRewardsScreen extends StatelessWidget {
                               onSeeAll: () {
                                 c.toggleMoreRewards();
                               },
+                              isMoreRewardsVisible: c.isMoreRewardsVisible.value,
                             );
                           });
                         }),
@@ -154,16 +155,23 @@ class UnlockRewardsScreen extends StatelessWidget {
                           if (!c.isMoreRewardsVisible.value) {
                             return const SizedBox.shrink();
                           }
+                          
+                          if (c.isMoreRewardsLoading.value) {
+                            return Padding(
+                              padding: EdgeInsets.only(top: 24.h),
+                              child: const Center(
+                                child: CustomCircleProgressIndicator(
+                                  size: 30,
+                                  color: Colors.blue,
+                                ),
+                              ),
+                            );
+                          }
 
                           final moreRewards = c.moreVideoRewards.value;
                           if (moreRewards == null ||
                               moreRewards.data.rewards.isEmpty) {
-                            return Padding(
-                              padding: EdgeInsets.only(top: 24.h),
-                              child: const Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                            );
+                            return const SizedBox.shrink();
                           }
 
                           return Column(
@@ -236,12 +244,14 @@ class UnlockRewardsScreen extends StatelessWidget {
                                                   fontSize: 14.sp,
                                                   fontWeight: FontWeight.w600,
                                                 ),
-                                                SizedBox(height: 4.h),
-                                                CustomText(
-                                                  text: video.category,
-                                                  fontSize: 12.sp,
-                                                  color: Colors.white70,
-                                                ),
+                                                if (video.category.isNotEmpty) ...[
+                                                  SizedBox(height: 4.h),
+                                                  CustomText(
+                                                    text: "${'Category: '.tr}${video.category}",
+                                                    fontSize: 12.sp,
+                                                    color: Colors.white70,
+                                                  ),
+                                                ],
                                               ],
                                             ),
                                           ),

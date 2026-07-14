@@ -15,7 +15,7 @@ class RewardVideoLockedCard extends StatelessWidget {
   final int views;
   final bool unlocked;
   final int remaining;
-  final RewardTaskStatus taskStatus;
+  final List<RewardTaskItem> tasks;
   final VoidCallback onPlayToggle;
   final bool isPlaying;
   final bool isVideoInitialized;
@@ -23,6 +23,7 @@ class RewardVideoLockedCard extends StatelessWidget {
   final String totalTime;
   final ChewieController? chewieController;
   final VoidCallback? onSeeAll;
+  final bool isMoreRewardsVisible;
 
   const RewardVideoLockedCard({
     super.key,
@@ -33,7 +34,7 @@ class RewardVideoLockedCard extends StatelessWidget {
     required this.views,
     required this.unlocked,
     required this.remaining,
-    required this.taskStatus,
+    required this.tasks,
     required this.onPlayToggle,
     required this.isPlaying,
     required this.isVideoInitialized,
@@ -41,6 +42,7 @@ class RewardVideoLockedCard extends StatelessWidget {
     required this.totalTime,
     this.chewieController,
     this.onSeeAll,
+    this.isMoreRewardsVisible = false,
   });
 
   @override
@@ -114,26 +116,29 @@ class RewardVideoLockedCard extends StatelessWidget {
               Image.network(thumbnailUrl, fit: BoxFit.cover),
 
             if (!unlocked)
-              Container(
-                color: Colors.black.withOpacity(0.35),
-                child: Center(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 14.w,
-                      vertical: 10.h,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.35),
-                      borderRadius: BorderRadius.circular(14.r),
-                      border: Border.all(color: Colors.white.withOpacity(0.18)),
-                    ),
-                    child: Text(
-                      "LOCKED".tr,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: 1.4,
+              BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 6.0, sigmaY: 6.0),
+                child: Container(
+                  color: Colors.black.withOpacity(0.35),
+                  child: Center(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 14.w,
+                        vertical: 10.h,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.35),
+                        borderRadius: BorderRadius.circular(14.r),
+                        border: Border.all(color: Colors.white.withOpacity(0.18)),
+                      ),
+                      child: Text(
+                        "LOCKED".tr,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 1.4,
+                        ),
                       ),
                     ),
                   ),
@@ -221,18 +226,14 @@ class RewardVideoLockedCard extends StatelessWidget {
         CustomText(text: title, fontSize: 20.sp, fontWeight: FontWeight.w600),
         SizedBox(height: 6.h),
         CustomText(text: subtitle, fontSize: 14.sp),
-        SizedBox(height: 4.h),
-        CustomText(
-          text: "${'Category: '.tr}$category",
-          fontSize: 12.sp,
-          color: Colors.white,
-        ),
-        SizedBox(height: 2.h),
-        CustomText(
-          text: "${'Views: '.tr}$views",
-          fontSize: 12.sp,
-          color: Colors.white,
-        ),
+        if (category.isNotEmpty) ...[
+          SizedBox(height: 4.h),
+          CustomText(
+            text: "${'Category: '.tr}$category",
+            fontSize: 12.sp,
+            color: Colors.white,
+          ),
+        ],
         SizedBox(height: 12.h),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -280,17 +281,16 @@ class RewardVideoLockedCard extends StatelessWidget {
           ],
         ),
         SizedBox(height: 12.h),
-        _TaskRow(title: "Daily reading practice".tr, done: taskStatus.reading),
-        _TaskRow(title: "Daily adult practice".tr, done: taskStatus.adult),
-        _TaskRow(title: "Daily writing exercise".tr, done: taskStatus.writing),
-        _TaskRow(
-          title: "Daily speaking practice".tr,
-          done: taskStatus.speaking,
-        ),
-        _TaskRow(
-          title: "Daily presentation practice".tr,
-          done: taskStatus.presentation,
-        ),
+        if (tasks.isNotEmpty)
+          ...tasks.map(
+            (task) => _TaskRow(title: task.name.tr, done: task.completed),
+          )
+        else
+          CustomText(
+            text: "No tasks available".tr,
+            fontSize: 14.sp,
+            color: Colors.white70,
+          ),
         SizedBox(height: 14.h),
         ButtonGradient(
           onTap: onSeeAll ?? (unlocked ? onPlayToggle : null),
@@ -298,7 +298,7 @@ class RewardVideoLockedCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "See All Video".tr,
+                isMoreRewardsVisible ? "Hide All Video".tr : "See All Video".tr,
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w600,

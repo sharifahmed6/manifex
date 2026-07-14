@@ -113,6 +113,36 @@ class HomeScreen extends GetView<HomeController> {
                 ),
               ),
               SizedBox(height: ScreenResponsive.h(context, 10)),
+              Obx(() {
+                if (controller.isFreeTrialActive) {
+                  return Container(
+                    margin: EdgeInsets.only(bottom: 10.h),
+                    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                    decoration: BoxDecoration(
+                      color: const Color(0xff2ED47A).withOpacity(0.15),
+                      borderRadius: BorderRadius.circular(12.r),
+                      border: Border.all(color: const Color(0xff2ED47A).withOpacity(0.5)),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(Icons.card_giftcard_rounded, color: const Color(0xff2ED47A), size: 24.sp),
+                        SizedBox(width: 12.w),
+                        Expanded(
+                          child: Text(
+                            "${'Free Trial:'.tr} ${controller.usedFreeDays} ${'of 7 Days Used'.tr}",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+                return const SizedBox.shrink();
+              }),
               Text(
                 "Today Progress".tr,
                 style: TextStyle(

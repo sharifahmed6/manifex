@@ -107,6 +107,7 @@ class RewardProgress {
   final int remainingCount;
   final double percentage;
   final RewardTaskStatus taskStatus;
+  final List<RewardTaskItem> tasks;
 
   RewardProgress({
     required this.completedCount,
@@ -114,10 +115,19 @@ class RewardProgress {
     required this.remainingCount,
     required this.percentage,
     required this.taskStatus,
+    required this.tasks,
   });
 
   factory RewardProgress.fromJson(Map<String, dynamic>? json) {
     json ??= {};
+    
+    List<RewardTaskItem> parsedTasks = [];
+    if (json['tasks'] is List) {
+      parsedTasks = (json['tasks'] as List)
+          .map((e) => RewardTaskItem.fromJson(e as Map<String, dynamic>))
+          .toList();
+    }
+    
     return RewardProgress(
       completedCount: _asInt(json['completedCount'], defaultValue: 0),
       totalCount: _asInt(json['totalCount'], defaultValue: 0),
@@ -126,6 +136,7 @@ class RewardProgress {
       taskStatus: RewardTaskStatus.fromJson(
         json['taskStatus'] is Map<String, dynamic> ? json['taskStatus'] : null,
       ),
+      tasks: parsedTasks,
     );
   }
 
@@ -135,6 +146,7 @@ class RewardProgress {
     'remainingCount': remainingCount,
     'percentage': percentage,
     'taskStatus': taskStatus.toJson(),
+    'tasks': tasks.map((e) => e.toJson()).toList(),
   };
 }
 
@@ -170,6 +182,29 @@ class RewardTaskStatus {
     'writing': writing,
     'speaking': speaking,
     'presentation': presentation,
+  };
+}
+
+class RewardTaskItem {
+  final String name;
+  final bool completed;
+
+  RewardTaskItem({
+    required this.name,
+    required this.completed,
+  });
+
+  factory RewardTaskItem.fromJson(Map<String, dynamic>? json) {
+    json ??= {};
+    return RewardTaskItem(
+      name: _asString(json['name'], defaultValue: ''),
+      completed: _asBool(json['completed'], defaultValue: false),
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'name': name,
+    'completed': completed,
   };
 }
 
