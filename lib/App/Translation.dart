@@ -44,7 +44,7 @@ class AppTranslation extends Translations {
       "Running Practices": "Running Practices",
       "Phoneme Flashcards": "Phoneme Flashcards",
       "Complete each task to improve your English reading skill":
-          "Complete each task to improve your English reading skillZ",
+          "Complete each task to improve your English reading skill",
       "Start Practices": "Start Practices",
       "Trending Practices": "Trending Practices",
       "Interactive Reading": "Interactive Reading",
