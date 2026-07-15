@@ -1,9 +1,10 @@
 import 'package:get/get.dart';
 import 'package:manifex/Core/snakbar.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
-
 import '../../../../Core/SharepreferenceHelper.dart';
-
+import '../../home/controller/home_controller.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'dart:io';
 import 'package:flutter/widgets.dart';
 
 class subscriptionController extends GetxController with WidgetsBindingObserver {
@@ -137,6 +138,10 @@ class subscriptionController extends GetxController with WidgetsBindingObserver 
 
   /// Update premium status from CustomerInfo
   void _updatePremiumStatus(CustomerInfo info) {
+    bool wasPremium = isPremium.value;
+    String oldPackage = activePackageName.value;
+    bool oldAutoRenew = autoRenew.value;
+
     // Check first active entitlement
     final activeEntitlement = info.entitlements.active.entries.isNotEmpty
         ? info.entitlements.active.entries.first.value
@@ -168,6 +173,23 @@ class subscriptionController extends GetxController with WidgetsBindingObserver 
       activePackageName.value = "";
       autoRenew.value = false;
       nextRenewDate.value = "N/A";
+    }
+
+    // Call profileInfo API if subscription status, package, or renew status changed
+    if (wasPremium != isPremium.value || 
+        oldPackage != activePackageName.value || 
+        oldAutoRenew != autoRenew.value) {
+      _syncProfileInfo();
+    }
+  }
+
+  void _syncProfileInfo() {
+    try {
+      if (Get.isRegistered<HomeController>()) {
+        Get.find<HomeController>().fetchProfileInfo();
+      }
+    } catch (e) {
+      print("Error calling fetchProfileInfo: $e");
     }
   }
 
@@ -210,19 +232,25 @@ class subscriptionController extends GetxController with WidgetsBindingObserver 
           ? info.entitlements.active.entries.first.value
           : null;
 
-      if (activeEntitlement != null) {
-        AppSnackbar.show(
-          "Subscription ${activeEntitlement.identifier} must be cancelled via App Store / Play Store"
-              .tr,
-        );
+      if (Platform.isIOS) {
+        final url = Uri.parse("https://apps.apple.com/account/subscriptions");
+        await launchUrl(url, mode: LaunchMode.externalApplication);
       } else {
-        AppSnackbar.show("No active subscription to cancel.".tr);
+        if (activeEntitlement != null) {
+          final sku = activeEntitlement.productIdentifier.split(':').first;
+          final url = Uri.parse(
+              "https://play.google.com/store/account/subscriptions?package=com.manifex.app&sku=$sku");
+          await launchUrl(url, mode: LaunchMode.externalApplication);
+        } else {
+          final url = Uri.parse("https://play.google.com/store/account/subscriptions");
+          await launchUrl(url, mode: LaunchMode.externalApplication);
+        }
       }
 
       // Update local state
       _updatePremiumStatus(info);
     } catch (e) {
-      AppSnackbar.show("Something went wrong, please try again later.".tr);
+      AppSnackbar.show("Could not open store to manage subscription.".tr);
       print("Error cancelling subscription: $e");
     }
   }
