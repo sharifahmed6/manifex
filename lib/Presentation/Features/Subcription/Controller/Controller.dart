@@ -61,18 +61,30 @@ class subscriptionController extends GetxController with WidgetsBindingObserver 
     super.onClose();
   }
 
+  bool _isManagingSubscription = false;
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      _refreshCustomerInfo();
+      if (_isManagingSubscription) {
+        _isManagingSubscription = false;
+        restorePurchases();
+      } else {
+        _refreshCustomerInfo();
+      }
     }
   }
 
   Future<void> _refreshCustomerInfo() async {
     try {
-      await Purchases.invalidateCustomerInfoCache();
+      if (Platform.isAndroid) {
+        await Purchases.syncPurchases();
+      } else {
+        await Purchases.invalidateCustomerInfoCache();
+      }
       final info = await Purchases.getCustomerInfo();
       _updatePremiumStatus(info);
+      _syncProfileInfo(); // Explicitly sync profile on resume
     } catch (e) {
       print("Error refreshing customer info on resume: $e");
     }
@@ -175,12 +187,6 @@ class subscriptionController extends GetxController with WidgetsBindingObserver 
       nextRenewDate.value = "N/A";
     }
 
-    // Call profileInfo API if subscription status, package, or renew status changed
-    if (wasPremium != isPremium.value || 
-        oldPackage != activePackageName.value || 
-        oldAutoRenew != autoRenew.value) {
-      _syncProfileInfo();
-    }
   }
 
   void _syncProfileInfo() {
@@ -204,6 +210,7 @@ class subscriptionController extends GetxController with WidgetsBindingObserver 
 
       // Update UI reactive variables
       _updatePremiumStatus(customerInfo);
+      _syncProfileInfo(); // Explicitly sync profile after purchase
 
       return customerInfo;
     } catch (e) {
@@ -217,6 +224,7 @@ class subscriptionController extends GetxController with WidgetsBindingObserver 
     try {
       CustomerInfo restoredInfo = await Purchases.restorePurchases();
       _updatePremiumStatus(restoredInfo);
+      _syncProfileInfo(); // Explicitly sync profile after restore
     } catch (e) {
       print("Restore failed: $e");
       rethrow;
@@ -226,6 +234,7 @@ class subscriptionController extends GetxController with WidgetsBindingObserver 
   /// Unsubscribe / cancel subscription
   /// Note: actual auto-renew OFF must be done by user in App Store / Play Store.
   Future<void> cancelAutoRenew() async {
+    _isManagingSubscription = true;
     try {
       CustomerInfo info = await Purchases.getCustomerInfo();
       final activeEntitlement = info.entitlements.active.entries.isNotEmpty

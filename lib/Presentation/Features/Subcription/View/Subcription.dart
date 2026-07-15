@@ -408,17 +408,7 @@ class subscription extends StatelessWidget {
                                                     child: ElevatedButton(
                                                       onPressed: () async {
                                                         Get.back(); // Close the dialog
-                                                        final sku = product.identifier.split(':').first;
-                                                        final url = Uri.parse(
-                                                            "https://play.google.com/store/account/subscriptions?package=com.manifex.app&sku=$sku");
-
-                                                        try {
-                                                          await launchUrl(url, mode: LaunchMode.externalApplication);
-                                                        } catch (e) {
-                                                          Get.snackbar("Error".tr,
-                                                              "Could not open Google Play Store".tr,
-                                                              snackPosition: SnackPosition.BOTTOM);
-                                                        }
+                                                        await controller.cancelAutoRenew();
                                                       },
                                                       style: ElevatedButton.styleFrom(
                                                         backgroundColor: Colors.redAccent,
