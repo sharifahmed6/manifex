@@ -263,11 +263,14 @@ class subscription extends StatelessWidget {
 
                             SizedBox(height: 20),
                             Obx(() {
-                              final activePkg = controller.activePackageName.value;
-                              final prodId = product.identifier;
+                              final activePkg = controller.activePackageName.value.toLowerCase();
+                              final prodId = product.identifier.toLowerCase();
+                              final isFamily = activePkg.contains('family') && prodId.contains('family');
+                              final isPremium = activePkg.contains('premium') && prodId.contains('premium');
                               final isActive = activePkg == prodId ||
                                   (activePkg.isNotEmpty && prodId.isNotEmpty && 
-                                   activePkg.split(':').first == prodId.split(':').first);
+                                   activePkg.split(':').first == prodId.split(':').first) ||
+                                  isFamily || isPremium;
 
                               void handlePurchase() async {
                                 try {
@@ -342,12 +345,6 @@ class subscription extends StatelessWidget {
                                   introPrice.price == 0;
 
                               if (isActive) {
-                                if (Platform.isIOS) {
-                                  return GradientButton(
-                                    text: "Active".tr,
-                                    onPressed: null,
-                                  );
-                                }
                                 return GradientButton(
                                   text: "Unsubscribe".tr,
                                   onPressed: () {
@@ -467,11 +464,10 @@ class subscription extends StatelessWidget {
               }),
               SizedBox(height: 20),
 
-              if (!Platform.isIOS)
-                Column(
-                  children: [
-                    SizedBox(height: 10),
-                    GradientButton(
+              Column(
+                children: [
+                  SizedBox(height: 10),
+                  GradientButton(
                       text: "Unsubscribe".tr,
                       onPressed: () async {
                         try {
