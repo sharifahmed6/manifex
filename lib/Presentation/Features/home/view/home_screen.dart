@@ -495,55 +495,72 @@ class HomeScreen extends GetView<HomeController> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: ScreenResponsive.h(context, 10)),
-
-              _practicesCard(
-                imagePath: 'assets/images/book.png',
-                title: 'Interactive Reading'.tr,
-                subTitle:
-                    'Phoneme recognition and word games with visual cues designed for dyslexic learners'
-                        .tr,
-                context: context,
-                onTap: () {
-                  controller.music.stop();
-                  Get.toNamed(routes.interactive_reading_screen)?.then((result) {
-                    if (result == true) {
-                      Get.find<BottomNavbarController>().changeIndex(1);
-                    } else {
-                      Future.delayed(const Duration(milliseconds: 100), () {
-                        // Always reset preference to play when returning to Home
-                        controller.music.isPreferencePlayRx.value = true;
-                        controller.music.play(AssetsPath.homeMusic);
-                      });
-                    }
-                  });
-                },
-                text: 'Start Reading'
-              ),
-              SizedBox(height: 16.h),
-              _practicesCard(
-                imagePath: 'assets/icons/smart_writing_icon.png',
-                title: 'Smart Writing'.tr,
-                subTitle:
-                    'Write. Learn. Improve. AI checks your grammar, structure, and style instantly.'
-                        .tr,
-                context: context,
-                onTap: () {
-                  controller.music.stop();
-                  Get.toNamed(routes.smart_writing_screen)?.then((result) {
-                    if (result == true) {
-                      Get.find<BottomNavbarController>().changeIndex(1);
-                    } else {
-                      Future.delayed(const Duration(milliseconds: 100), () {
-                        // Always reset preference to play when returning to Home
-                        controller.music.isPreferencePlayRx.value = true;
-                        controller.music.play(AssetsPath.homeMusic);
-                      });
-                    }
-                  });
-                },
-                text: 'Start Writing'
-              ),
+              Obx(() {
+                return Column(
+                  children: [
+                    Visibility(
+                      visible: controller.apiAge <= 16,
+                      child: Column(
+                        children: [
+                          _practicesCard(
+                            imagePath: 'assets/images/book.png',
+                            title: 'Interactive Reading'.tr,
+                            subTitle:
+                                'Phoneme recognition and word games with visual cues designed for dyslexic learners'
+                                    .tr,
+                            context: context,
+                            onTap: () {
+                              controller.music.stop();
+                              Get.toNamed(routes.interactive_reading_screen)?.then((result) {
+                                if (result == true) {
+                                  Get.find<BottomNavbarController>().changeIndex(1);
+                                } else {
+                                  Future.delayed(const Duration(milliseconds: 100), () {
+                                    controller.music.isPreferencePlayRx.value = true;
+                                    controller.music.play(AssetsPath.homeMusic);
+                                  });
+                                }
+                              });
+                            },
+                            text: 'Start Reading'
+                          ),
+                          SizedBox(height: 16.h),
+                        ],
+                      ),
+                    ),
+                    Visibility(
+                      visible: controller.apiAge > 16,
+                      child: Column(
+                        children: [
+                          _practicesCard(
+                            imagePath: 'assets/icons/smart_writing_icon.png',
+                            title: 'Smart Writing'.tr,
+                            subTitle:
+                                'Write. Learn. Improve. AI checks your grammar, structure, and style instantly.'
+                                    .tr,
+                            context: context,
+                            onTap: () {
+                              controller.music.stop();
+                              Get.toNamed(routes.smart_writing_screen)?.then((result) {
+                                if (result == true) {
+                                  Get.find<BottomNavbarController>().changeIndex(1);
+                                } else {
+                                  Future.delayed(const Duration(milliseconds: 100), () {
+                                    // Always reset preference to play when returning to Home
+                                    controller.music.isPreferencePlayRx.value = true;
+                                    controller.music.play(AssetsPath.homeMusic);
+                                  });
+                                }
+                              });
+                            },
+                            text: 'Start Writing'
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              }),
             ],
           ),
         ),

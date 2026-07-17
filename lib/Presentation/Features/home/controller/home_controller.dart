@@ -5,6 +5,7 @@ import 'package:manifex/App/network_caller.dart';
 import 'package:manifex/Core/SharepreferenceHelper.dart';
 import 'package:manifex/Presentation/Features/home/model/user_model.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:manifex/Presentation/Features/Subcription/Controller/Controller.dart';
 
 import '../../../../Core/MusicService.dart';
 import '../../../../App/assets_path.dart';
@@ -156,7 +157,14 @@ class HomeController extends GetxController with WidgetsBindingObserver {
     return (difference + 1).clamp(1, 7);
   }
 
-  bool get isFreeTrialActive => remainingFreeDays > 0;
+  bool get isFreeTrialActive {
+    bool backendSubscribed = profileInfo.value?.data?.isSubscribed ?? false;
+    bool localPremium = false;
+    if (Get.isRegistered<subscriptionController>()) {
+      localPremium = Get.find<subscriptionController>().isPremium.value;
+    }
+    return remainingFreeDays > 0 && !backendSubscribed && !localPremium;
+  }
 
   int get apiAge => _mapAgeToApi(ageRange);
   bool get isReady => userId.isNotEmpty;

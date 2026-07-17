@@ -263,17 +263,25 @@ class subscription extends StatelessWidget {
 
                             SizedBox(height: 20),
                             Obx(() {
-                              final activePkg = controller.activePackageName.value;
-                              final prodId = product.identifier;
+                              final activePkg = controller.activePackageName.value.toLowerCase();
+                              final prodId = product.identifier.toLowerCase();
+                              final isFamily = activePkg.contains('family') && prodId.contains('family');
+                              final isPremium = activePkg.contains('premium') && prodId.contains('premium');
                               final isActive = activePkg == prodId ||
                                   (activePkg.isNotEmpty && prodId.isNotEmpty && 
-                                   activePkg.split(':').first == prodId.split(':').first);
+                                   activePkg.split(':').first == prodId.split(':').first) ||
+                                  isFamily || isPremium;
 
                               void handlePurchase() async {
+                                Get.dialog(
+                                  const Center(child: CircularProgressIndicator(color: Colors.white)),
+                                  barrierDismissible: false,
+                                );
                                 try {
                                   // Initiate purchase
                                   CustomerInfo customerInfo =
                                   await controller.purchasePackage(package);
+                                  Get.back(); // close loader
 
                                   // Check if entitlement is active
                                   final activeEntitlement = customerInfo
@@ -298,6 +306,7 @@ class subscription extends StatelessWidget {
                                     );
                                   }
                                 } on PlatformException catch (e) {
+                                  Get.back(); // close loader
                                   var strErr = e.toString().toLowerCase();
                                   if (e.code == '1' ||
                                       strErr.contains('cancelled') ||
@@ -315,6 +324,7 @@ class subscription extends StatelessWidget {
                                     backgroundColor: Colors.redAccent,
                                   );
                                 } catch (e) {
+                                  Get.back(); // close loader
                                   // Handle purchase error
                                   if (e is PlatformException &&
                                       PurchasesErrorHelper.getErrorCode(e) ==
@@ -342,12 +352,6 @@ class subscription extends StatelessWidget {
                                   introPrice.price == 0;
 
                               if (isActive) {
-                                if (Platform.isIOS) {
-                                  return GradientButton(
-                                    text: "Active".tr,
-                                    onPressed: null,
-                                  );
-                                }
                                 return GradientButton(
                                   text: "Unsubscribe".tr,
                                   onPressed: () {
@@ -408,17 +412,7 @@ class subscription extends StatelessWidget {
                                                     child: ElevatedButton(
                                                       onPressed: () async {
                                                         Get.back(); // Close the dialog
-                                                        final sku = product.identifier.split(':').first;
-                                                        final url = Uri.parse(
-                                                            "https://play.google.com/store/account/subscriptions?package=com.manifex.app&sku=$sku");
-
-                                                        try {
-                                                          await launchUrl(url, mode: LaunchMode.externalApplication);
-                                                        } catch (e) {
-                                                          Get.snackbar("Error".tr,
-                                                              "Could not open Google Play Store".tr,
-                                                              snackPosition: SnackPosition.BOTTOM);
-                                                        }
+                                                        await controller.cancelAutoRenew();
                                                       },
                                                       style: ElevatedButton.styleFrom(
                                                         backgroundColor: Colors.redAccent,
@@ -477,25 +471,19 @@ class subscription extends StatelessWidget {
               }),
               SizedBox(height: 20),
 
-              if (!Platform.isIOS)
-                Column(
-                  children: [
-                    SizedBox(height: 10),
-                    GradientButton(
-                      text: "Unsubscribe".tr,
+              Column(
+                children: [
+                  SizedBox(height: 10),
+                  GradientButton(
+                      text: "Manage Subscription".tr,
                       onPressed: () async {
                         try {
                           await controller
                               .cancelAutoRenew(); // call your logout/unsubscribe method
-                          Get.snackbar(
-                            "Success".tr,
-                            "You have unsubscribed successfully!".tr,
-                            snackPosition: SnackPosition.BOTTOM,
-                          );
                         } catch (e) {
                           Get.snackbar(
                             "Error".tr,
-                            "Failed to unsubscribe: $e".tr,
+                            "Failed to open subscription manager: $e".tr,
                             snackPosition: SnackPosition.BOTTOM,
                           );
                         }
@@ -535,18 +523,28 @@ class subscription extends StatelessWidget {
                             _FooterLink(
                               text: "Restore Purchases".tr,
                               onTap: () async {
+                                Get.dialog(
+                                  const Center(child: CircularProgressIndicator(color: Colors.white)),
+                                  barrierDismissible: false,
+                                );
                                 try {
                                   await controller.restorePurchases();
+                                  Get.back(); // close loader
                                   Get.snackbar(
                                     "Success".tr,
                                     "Purchases restored successfully!".tr,
-                                    snackPosition: SnackPosition.BOTTOM,
+                                    snackPosition: SnackPosition.TOP,
+                                    backgroundColor: Colors.green,
+                                    colorText: Colors.white,
                                   );
                                 } catch (e) {
+                                  Get.back(); // close loader
                                   Get.snackbar(
                                     "Error".tr,
                                     "Failed to restore purchases: $e".tr,
-                                    snackPosition: SnackPosition.BOTTOM,
+                                    snackPosition: SnackPosition.TOP,
+                                    backgroundColor: Colors.red,
+                                    colorText: Colors.white,
                                   );
                                 }
                               },
