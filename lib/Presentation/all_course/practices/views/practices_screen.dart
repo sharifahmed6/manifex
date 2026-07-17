@@ -36,41 +36,62 @@ class PracticesScreen extends StatelessWidget {
                 fontSize: 24,
                 fontWeight: FontWeight.w500,
               ),
-              SizedBox(height: 16.h),
-              _practicesCard(
-                imagePath: 'assets/images/book.png',
-                title: 'Interactive Reading'.tr,
-                subTitle:
-                    'Phoneme recognition and word games with visual cues designed for dyslexic learners'
-                        .tr,
-                onTap: () {
-                  Get.toNamed(routes.interactive_reading_screen);
-                },
-              ),
-              SizedBox(height: 16.h),
-              _practicesCard(
-                imagePath: 'assets/icons/smart_writing_icon.png',
-                title: 'Smart Writing'.tr,
-                subTitle:
-                    'Write. Learn. Improve. AI checks your grammar, structure, and style instantly.'
-                        .tr,
-                buttonText: 'Start Writing'.tr,
-                onTap: () {
-                  Get.toNamed(routes.smart_writing_screen);
-                },
-              ),
-              SizedBox(height: 16.h),
-              _practicesCard(
-                imagePath: 'assets/icons/person.png',
-                title: 'Handwriting Practice'.tr,
-                subTitle: 'Learn to write letters the fun way'.tr,
-                buttonText: 'Start Handwriting Practice'.tr,
-                onTap: () {
-                  Get.toNamed(routes.HandwritingPractice_screen);
-                },
+              Visibility(
+                visible: Get.find<HomeController>().apiAge <= 16,
+                child: Column(
+                  children: [
+                    SizedBox(height: 16.h),
+                    _practicesCard(
+                      imagePath: 'assets/images/book.png',
+                      title: 'Interactive Reading'.tr,
+                      subTitle:
+                          'Phoneme recognition and word games with visual cues designed for dyslexic learners'
+                              .tr,
+                      onTap: () {
+                        Get.toNamed(routes.interactive_reading_screen);
+                      },
+                    ),
+                  ],
+                ),
               ),
               Visibility(
-                visible: Get.find<HomeController>().apiAge < 16,
+                visible: Get.find<HomeController>().apiAge > 16,
+                child: Column(
+                  children: [
+                    SizedBox(height: 16.h),
+                    _practicesCard(
+                      imagePath: 'assets/icons/smart_writing_icon.png',
+                      title: 'Smart Writing'.tr,
+                      subTitle:
+                          'Write. Learn. Improve. AI checks your grammar, structure, and style instantly.'
+                              .tr,
+                      buttonText: 'Start Writing'.tr,
+                      onTap: () {
+                        Get.toNamed(routes.smart_writing_screen);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              Visibility(
+                visible: Get.find<HomeController>().apiAge <= 16,
+                child: Column(
+                  children: [
+                    SizedBox(height: 16.h),
+                    _practicesCard(
+                      imagePath: 'assets/icons/person.png',
+                      title: 'Handwriting Practice'.tr,
+                      subTitle: 'Learn to write letters the fun way'.tr,
+                      buttonText: 'Start Handwriting Practice'.tr,
+                      onTap: () {
+                        Get.toNamed(routes.HandwritingPractice_screen);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              Visibility(
+                visible: Get.find<HomeController>().apiAge <= 16,
                 child: Column(
                   children: [
                     SizedBox(height: 16.h),
@@ -86,18 +107,25 @@ class PracticesScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 16.h),
-              _practicesCard(
-                imagePath: 'assets/icons/native_speaking_icon.png',
-                title: 'Native Speaking'.tr,
-                subTitle: 'Advanced AI pronunciation coaching with real-time feedback and accent training'.tr,
-                buttonText: 'Start Speaking'.tr,
-                onTap: () {
-                  Get.toNamed(routes.native_speaking_skill_screen);
-                },
+              Visibility(
+                visible: Get.find<HomeController>().apiAge <= 16,
+                child: Column(
+                  children: [
+                    SizedBox(height: 16.h),
+                    _practicesCard(
+                      imagePath: 'assets/icons/native_speaking_icon.png',
+                      title: 'Native Speaking'.tr,
+                      subTitle: 'Advanced AI pronunciation coaching with real-time feedback and accent training'.tr,
+                      buttonText: 'Start Speaking'.tr,
+                      onTap: () {
+                        Get.toNamed(routes.native_speaking_skill_screen);
+                      },
+                    ),
+                  ],
+                ),
               ),
               Visibility(
-                visible: Get.find<HomeController>().apiAge < 16,
+                visible: Get.find<HomeController>().apiAge > 16,
                 child: Column(
                   children: [
                     SizedBox(height: 16.h),
@@ -115,17 +143,24 @@ class PracticesScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 16.h),
-              _practicesCard(
-                imagePath: 'assets/icons/person.png',
-                title: 'English for Adult Practice'.tr,
-                subTitle:
-                    'Improve your English with real-life practice made especially for adults. Build confidence in speaking, listening, and vocabulary.'
-                        .tr,
-                buttonText: 'Start Adult Practice'.tr,
-                onTap: () {
-                  Get.toNamed(routes.EnglishAdultPractice_screen);
-                },
+              Visibility(
+                visible: Get.find<HomeController>().apiAge > 16,
+                child: Column(
+                  children: [
+                    SizedBox(height: 16.h),
+                    _practicesCard(
+                      imagePath: 'assets/icons/person.png',
+                      title: 'English for Adult Practice'.tr,
+                      subTitle:
+                          'Improve your English with real-life practice made especially for adults. Build confidence in speaking, listening, and vocabulary.'
+                              .tr,
+                      buttonText: 'Start Adult Practice'.tr,
+                      onTap: () {
+                        Get.toNamed(routes.EnglishAdultPractice_screen);
+                      },
+                    ),
+                  ],
+                ),
               ),
               SizedBox(height: 16.h),
               _practicesCard(

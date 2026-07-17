@@ -53,6 +53,7 @@ class subscriptionController extends GetxController with WidgetsBindingObserver 
     super.onInit();
     WidgetsBinding.instance.addObserver(this);
     initRevenueCat();
+    restorePurchasesSilently();
   }
 
   @override
@@ -228,6 +229,17 @@ class subscriptionController extends GetxController with WidgetsBindingObserver 
     } catch (e) {
       print("Restore failed: $e");
       rethrow;
+    }
+  }
+
+  /// Silently restore purchases
+  Future<void> restorePurchasesSilently() async {
+    try {
+      CustomerInfo restoredInfo = await Purchases.restorePurchases();
+      _updatePremiumStatus(restoredInfo);
+      _syncProfileInfo();
+    } catch (e) {
+      print("Silent restore failed: $e");
     }
   }
 

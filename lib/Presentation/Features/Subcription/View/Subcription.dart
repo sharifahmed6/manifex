@@ -273,10 +273,15 @@ class subscription extends StatelessWidget {
                                   isFamily || isPremium;
 
                               void handlePurchase() async {
+                                Get.dialog(
+                                  const Center(child: CircularProgressIndicator(color: Colors.white)),
+                                  barrierDismissible: false,
+                                );
                                 try {
                                   // Initiate purchase
                                   CustomerInfo customerInfo =
                                   await controller.purchasePackage(package);
+                                  Get.back(); // close loader
 
                                   // Check if entitlement is active
                                   final activeEntitlement = customerInfo
@@ -301,6 +306,7 @@ class subscription extends StatelessWidget {
                                     );
                                   }
                                 } on PlatformException catch (e) {
+                                  Get.back(); // close loader
                                   var strErr = e.toString().toLowerCase();
                                   if (e.code == '1' ||
                                       strErr.contains('cancelled') ||
@@ -318,6 +324,7 @@ class subscription extends StatelessWidget {
                                     backgroundColor: Colors.redAccent,
                                   );
                                 } catch (e) {
+                                  Get.back(); // close loader
                                   // Handle purchase error
                                   if (e is PlatformException &&
                                       PurchasesErrorHelper.getErrorCode(e) ==
@@ -468,20 +475,15 @@ class subscription extends StatelessWidget {
                 children: [
                   SizedBox(height: 10),
                   GradientButton(
-                      text: "Unsubscribe".tr,
+                      text: "Manage Subscription".tr,
                       onPressed: () async {
                         try {
                           await controller
                               .cancelAutoRenew(); // call your logout/unsubscribe method
-                          Get.snackbar(
-                            "Success".tr,
-                            "You have unsubscribed successfully!".tr,
-                            snackPosition: SnackPosition.BOTTOM,
-                          );
                         } catch (e) {
                           Get.snackbar(
                             "Error".tr,
-                            "Failed to unsubscribe: $e".tr,
+                            "Failed to open subscription manager: $e".tr,
                             snackPosition: SnackPosition.BOTTOM,
                           );
                         }
@@ -521,18 +523,28 @@ class subscription extends StatelessWidget {
                             _FooterLink(
                               text: "Restore Purchases".tr,
                               onTap: () async {
+                                Get.dialog(
+                                  const Center(child: CircularProgressIndicator(color: Colors.white)),
+                                  barrierDismissible: false,
+                                );
                                 try {
                                   await controller.restorePurchases();
+                                  Get.back(); // close loader
                                   Get.snackbar(
                                     "Success".tr,
                                     "Purchases restored successfully!".tr,
-                                    snackPosition: SnackPosition.BOTTOM,
+                                    snackPosition: SnackPosition.TOP,
+                                    backgroundColor: Colors.green,
+                                    colorText: Colors.white,
                                   );
                                 } catch (e) {
+                                  Get.back(); // close loader
                                   Get.snackbar(
                                     "Error".tr,
                                     "Failed to restore purchases: $e".tr,
-                                    snackPosition: SnackPosition.BOTTOM,
+                                    snackPosition: SnackPosition.TOP,
+                                    backgroundColor: Colors.red,
+                                    colorText: Colors.white,
                                   );
                                 }
                               },

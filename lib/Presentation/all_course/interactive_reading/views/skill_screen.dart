@@ -95,6 +95,7 @@ class SkillScreen extends StatelessWidget {
             controller.allAnswerSubmit.value
                 ? GestureDetector(
                     onTap: () async {
+                      if (controller.isLoading.value) return;
                       await controller.interactiveReadingAnsSubmit();
                       homeController.fetchProfileInfo();
                     },
@@ -117,13 +118,24 @@ class SkillScreen extends StatelessWidget {
                               Rect.fromLTWH(0, 0, bounds.width, bounds.height),
                             );
                           },
-                          child: CustomText(
-                            text: 'Submit All Answers'.tr,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
-                            textAlign: TextAlign.center,
-                          ),
+                          child: controller.isLoading.value
+                              ? const Center(
+                                  child: SizedBox(
+                                    width: 24,
+                                    height: 24,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                      strokeWidth: 2.5,
+                                    ),
+                                  ),
+                                )
+                              : CustomText(
+                                  text: 'Submit All Answers'.tr,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                  textAlign: TextAlign.center,
+                                ),
                         ),
                       ),
                     ),
