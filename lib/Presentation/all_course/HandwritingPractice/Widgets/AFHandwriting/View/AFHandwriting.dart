@@ -62,10 +62,9 @@ class AFHandwriting extends GetView<AFHandwritingController> {
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
               const SizedBox(height: 15),
               GestureDetector(
                 onTap: () => Get.back(),
@@ -95,9 +94,10 @@ class AFHandwriting extends GetView<AFHandwritingController> {
                 ],
               ),
               const SizedBox(height: 10),
-              Container(
-                padding: EdgeInsets.all(15),
-                decoration: BoxDecoration(
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(
                   color: Colors.white.withAlpha(15),
                   borderRadius: BorderRadius.circular(15),
                   border: Border.all(color: Colors.grey, width: 0.7),
@@ -143,10 +143,9 @@ class AFHandwriting extends GetView<AFHandwritingController> {
 
                     const SizedBox(height: 20),
 
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: SizedBox(
-                        height: 500,
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
                         child: Obx(
                           () => TracingScreen(word: latter[currentIndex.value]),
                         ),
@@ -253,8 +252,9 @@ class AFHandwriting extends GetView<AFHandwritingController> {
                   ],
                 ),
               ),
-            ],
-          ),
+            ),
+            const SizedBox(height: 15),
+          ],
         ),
       ),
     );
