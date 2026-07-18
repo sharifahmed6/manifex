@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../../../App/Urls.dart';
 import '../../../App/network_caller.dart';
 import '../../../Core/snakbar.dart';
+import '../../Features/home/controller/home_controller.dart';
 
 class ProfileEditController extends GetxController {
   final isProfileLoading = false.obs;
@@ -12,6 +13,7 @@ class ProfileEditController extends GetxController {
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
   final hobbyController = TextEditingController();
+  final ageController = TextEditingController();
 
   // Security Controllers
   final oldPasswordController = TextEditingController();
@@ -37,6 +39,7 @@ class ProfileEditController extends GetxController {
           firstNameController.text = data['firstName'] ?? '';
           lastNameController.text = data['lastName'] ?? '';
           hobbyController.text = data['hobbies'] ?? '';
+          ageController.text = data['age']?.toString() ?? '';
         }
       }
     } catch (e) {
@@ -62,6 +65,7 @@ class ProfileEditController extends GetxController {
         "firstName": firstNameController.text,
         "lastName": lastNameController.text,
         "hobbies": hobbyController.text,
+        "age": ageController.text,
       };
 
       final response = await NetworkCaller().patchRequest(
@@ -70,6 +74,9 @@ class ProfileEditController extends GetxController {
       );
 
       if (response.isSuccess) {
+        if (Get.isRegistered<HomeController>()) {
+          Get.find<HomeController>().fetchProfileInfo();
+        }
         Get.back();
         AppSnackbar.show(
           "Profile updated successfully",

@@ -106,168 +106,169 @@ class SmartWritingSkillScreen extends StatelessWidget {
             );
           }),
 
-          SizedBox(height: screenHeight * 0.02),
-
-          CustomText(
-            text: 'Your Writing Space',
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-          ),
-          SizedBox(height: screenHeight * 0.01),
-          CustomText(
-            text:
-            'Express your thoughts clearly and creatively. Aim for at least 3-4 sentence',
-            fontSize: 16,
-            color: const Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
-          ),
-          SizedBox(height: screenHeight * 0.02),
-
-          /// ✅ Writing OR Result (same GradientScoreRing design)
+          /// ✅ Writing Space & Button (Show only if topic is selected)
           Obx(() {
-            if (controller.inProgress.value) {
-              return Center(
-                child: Column(
-                  children: [
-                    CustomText(
-                      text: 'Great Job Sharif',
-                      fontSize: 32,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    SizedBox(height: screenHeight * 0.03),
-
-                    /// ✅ keep your original ring design
-                    GradientScoreRing(
-                      score: controller.score.value,
-                      total: 10,
-                      stroke: 14,
-                    ),
-
-                    SizedBox(height: screenHeight * 0.03),
-
-                    /// ✅ motivation replace previous text
-                    ShaderMask(
-                      shaderCallback: (bounds) {
-                        return const LinearGradient(
-                          colors: [
-                            Color(0xFFFFBC6F),
-                            Color(0xFFF176B7),
-                            Color(0xFF3797CD),
-                          ],
-                        ).createShader(
-                          Rect.fromLTWH(0, 0, bounds.width, bounds.height),
-                        );
-                      },
-                      child: CustomText(
-                        text: controller.motivation.value.isEmpty
-                            ? 'Your writing progress is amazing! Keep it up...'
-                            : controller.motivation.value,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 22,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-
-                    SizedBox(height: screenHeight * 0.02),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 16.w,
-                        vertical: 30,
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16.r),
-                        border: Border.all(color: const Color(0xff00C06D)),
-                      ),
-                      child: Column(
-                        children: [
-                          const CircleAvatar(
-                            backgroundColor: Color(0xff00C06D),
-                            child: Icon(Icons.check, color: Colors.white),
-                          ),
-                          SizedBox(height: 16.h),
-                          CustomText(
-                            text:
-                            '“Great job Sharif! You finished today’s writing session.',
-                            color: const Color(0xff00C06D),
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              );
+            if (controller.selectedValue.value.isEmpty) {
+              return const SizedBox.shrink();
             }
 
-            final hintTopic = controller.selectedValue.value.isEmpty
-                ? "Sports"
-                : controller.selectedValue.value;
+            final inProgress = controller.inProgress.value;
+            final loading = controller.isSubmitting.value;
+            final hintTopic = controller.selectedValue.value;
 
-            return TextFormField(
-              controller: controller.writingController,
-              maxLines: 8,
-              decoration: InputDecoration(
-                hintText:
-                'Write about "$hintTopic" here. Try to describe your thoughts clearly in at least 3-4 sentences...',
-                hintStyle: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w300,
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: screenHeight * 0.02),
+
+                CustomText(
+                  text: 'Your Writing Space',
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
+                SizedBox(height: screenHeight * 0.01),
+                CustomText(
+                  text:
+                  'Express your thoughts clearly and creatively. Aim for at least 3-4 sentence',
+                  fontSize: 16,
                   color: const Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
                 ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(14.r),
-                  borderSide: BorderSide(color: Colors.white.withAlpha(40)),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(14.r),
-                  borderSide: BorderSide(color: Colors.white.withAlpha(40)),
-                ),
-              ),
-            );
-          }),
+                SizedBox(height: screenHeight * 0.02),
 
-          SizedBox(height: screenHeight * 0.02),
-
-          Obx(() {
-            if (controller.inProgress.value) return const SizedBox.shrink();
-
-            final loading = controller.isSubmitting.value;
-
-            return GestureDetector(
-              onTap: loading ? null : controller.submitFinalWriting,
-              child: Opacity(
-                opacity: loading ? 0.7 : 1,
-                child: ButtonGradient(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      CustomText(
-                        text: loading
-                            ? 'Checking...'
-                            : 'Check My Writing with AI',
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      SizedBox(width: 8.w),
-                      if (!loading)
-                        Image.asset(
-                          'assets/icons/ai_icon.png',
-                          width: 24.w,
-                          height: 24.h,
-                        )
-                      else
-                        SizedBox(
-                          width: 20.w,
-                          height: 20.w,
-                          child:
-                          const CircularProgressIndicator(strokeWidth: 2),
+                if (inProgress)
+                  Center(
+                    child: Column(
+                      children: [
+                        CustomText(
+                          text: 'Great Job Sharif',
+                          fontSize: 32,
+                          fontWeight: FontWeight.w600,
                         ),
-                    ],
+                        SizedBox(height: screenHeight * 0.03),
+
+                        GradientScoreRing(
+                          score: controller.score.value,
+                          total: 10,
+                          stroke: 14,
+                        ),
+
+                        SizedBox(height: screenHeight * 0.03),
+
+                        ShaderMask(
+                          shaderCallback: (bounds) {
+                            return const LinearGradient(
+                              colors: [
+                                Color(0xFFFFBC6F),
+                                Color(0xFFF176B7),
+                                Color(0xFF3797CD),
+                              ],
+                            ).createShader(
+                              Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+                            );
+                          },
+                          child: CustomText(
+                            text: controller.motivation.value.isEmpty
+                                ? 'Your writing progress is amazing! Keep it up...'
+                                : controller.motivation.value,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 22,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+
+                        SizedBox(height: screenHeight * 0.02),
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 16.w,
+                            vertical: 30,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16.r),
+                            border: Border.all(color: const Color(0xff00C06D)),
+                          ),
+                          child: Column(
+                            children: [
+                              const CircleAvatar(
+                                backgroundColor: Color(0xff00C06D),
+                                child: Icon(Icons.check, color: Colors.white),
+                              ),
+                              SizedBox(height: 16.h),
+                              CustomText(
+                                text:
+                                '“Great job Sharif! You finished today’s writing session.',
+                                color: const Color(0xff00C06D),
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700,
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                else
+                  TextFormField(
+                    controller: controller.writingController,
+                    maxLines: 8,
+                    decoration: InputDecoration(
+                      hintText:
+                      'Write about "$hintTopic" here. Try to describe your thoughts clearly in at least 3-4 sentences...',
+                      hintStyle: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w300,
+                        color: const Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(14.r),
+                        borderSide: BorderSide(color: Colors.white.withAlpha(40)),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(14.r),
+                        borderSide: BorderSide(color: Colors.white.withAlpha(40)),
+                      ),
+                    ),
                   ),
-                ),
-              ),
+
+                SizedBox(height: screenHeight * 0.02),
+
+                if (!inProgress)
+                  GestureDetector(
+                    onTap: loading ? null : controller.submitFinalWriting,
+                    child: Opacity(
+                      opacity: loading ? 0.7 : 1,
+                      child: ButtonGradient(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            CustomText(
+                              text: loading
+                                  ? 'Checking...'
+                                  : 'Check My Writing with AI',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            SizedBox(width: 8.w),
+                            if (!loading)
+                              Image.asset(
+                                'assets/icons/ai_icon.png',
+                                width: 24.w,
+                                height: 24.h,
+                              )
+                            else
+                              SizedBox(
+                                width: 20.w,
+                                height: 20.w,
+                                child:
+                                const CircularProgressIndicator(strokeWidth: 2),
+                              ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
             );
           }),
 
