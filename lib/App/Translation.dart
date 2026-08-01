@@ -5,7 +5,7 @@ class AppTranslation extends Translations {
   Map<String, Map<String, String>> get keys => {
     'en_US': {
       "Welcome to MANIFEX! Let’s start your language learning journey today":
-          "Welcome to MANIFEX! Let’s start your language learning journey today",
+          "Welcome to Manifex!\n Let’s Start your learning journey today!",
       "Set your intention": "Set your intention",
       "Define what truly matters to you every single day.":
           "Define what truly matters to you every single day.",
@@ -401,7 +401,7 @@ class AppTranslation extends Translations {
     },
     'pl_PL': {
       "Welcome to MANIFEX! Let’s start your language learning journey today":
-          "Witamy w MANIFEX! Rozpocznij swoją podróż w nauce języka już dziś",
+          "Witamy w Manifex!\n Rozpocznij swoją przygodę z nauką już dziś!",
       "Set your intention": "Ustal swoje cele",
       "Define what truly matters to you every single day.":
           "Określ, co naprawdę jest dla Ciebie ważne każdego dnia.",
