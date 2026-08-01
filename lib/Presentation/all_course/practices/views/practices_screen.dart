@@ -37,7 +37,7 @@ class PracticesScreen extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
               Visibility(
-                visible: Get.find<HomeController>().apiAge <= 16,
+                visible: Get.find<HomeController>().apiAge <= 17,
                 child: Column(
                   children: [
                     SizedBox(height: 16.h),
@@ -55,7 +55,7 @@ class PracticesScreen extends StatelessWidget {
                 ),
               ),
               Visibility(
-                visible: Get.find<HomeController>().apiAge > 16,
+                visible: Get.find<HomeController>().apiAge >= 10,
                 child: Column(
                   children: [
                     SizedBox(height: 16.h),
@@ -74,7 +74,7 @@ class PracticesScreen extends StatelessWidget {
                 ),
               ),
               Visibility(
-                visible: Get.find<HomeController>().apiAge <= 16,
+                visible: Get.find<HomeController>().apiAge <= 9,
                 child: Column(
                   children: [
                     SizedBox(height: 16.h),
@@ -91,7 +91,7 @@ class PracticesScreen extends StatelessWidget {
                 ),
               ),
               Visibility(
-                visible: Get.find<HomeController>().apiAge <= 16,
+                visible: Get.find<HomeController>().apiAge <= 9,
                 child: Column(
                   children: [
                     SizedBox(height: 16.h),
@@ -108,7 +108,7 @@ class PracticesScreen extends StatelessWidget {
                 ),
               ),
               Visibility(
-                visible: Get.find<HomeController>().apiAge <= 16,
+                visible: Get.find<HomeController>().apiAge <= 17,
                 child: Column(
                   children: [
                     SizedBox(height: 16.h),
@@ -125,7 +125,7 @@ class PracticesScreen extends StatelessWidget {
                 ),
               ),
               Visibility(
-                visible: Get.find<HomeController>().apiAge > 16,
+                visible: Get.find<HomeController>().apiAge >= 18,
                 child: Column(
                   children: [
                     SizedBox(height: 16.h),
@@ -144,7 +144,7 @@ class PracticesScreen extends StatelessWidget {
                 ),
               ),
               Visibility(
-                visible: Get.find<HomeController>().apiAge > 16,
+                visible: Get.find<HomeController>().apiAge >= 18,
                 child: Column(
                   children: [
                     SizedBox(height: 16.h),
@@ -170,6 +170,7 @@ class PracticesScreen extends StatelessWidget {
                 'Phoneme recognition and word games with visual cues designed for dyslexic learners'
                     .tr,
                 buttonText: 'Start Reward'.tr,
+                skipValidation: true,
                 onTap: () {
                   if (Get.isRegistered<UnlockRewardsController>()) {
                     Get.delete<UnlockRewardsController>();
@@ -191,6 +192,7 @@ class PracticesScreen extends StatelessWidget {
     String? subTitle,
     VoidCallback? onTap,
     String? buttonText,
+    bool skipValidation = false,
   }) {
     final isFree =
         homeController.profileInfo.value?.data?.isSubscriptionFree ?? true;
@@ -238,14 +240,15 @@ class PracticesScreen extends StatelessWidget {
               textAlign: TextAlign.start,
             ),
             SizedBox(height: 16.h),
-            Obx((){
+            Obx(() {
+              final profileInfo = homeController.profileInfo.value;
+              
               return ButtonGradient(
                 text: buttonText ?? 'Start Reading'.tr,
                 onTap:
-                homeController.profileInfo.value?.data?.isSubscriptionFree ==
-                    false &&
-                    homeController.profileInfo.value?.data?.isSubscribed ==
-                        false
+                (!skipValidation &&
+                    profileInfo?.data?.isSubscriptionFree == false &&
+                    profileInfo?.data?.isSubscribed == false)
                     ? () {
                   Get.dialog(
                     Dialog(

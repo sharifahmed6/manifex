@@ -215,7 +215,7 @@ class powerWordsPluseController extends GetxController {
       if (recordPath != null) {
         if(type == "define"){
           defineAudioFile.value = recordPath ?? '';
-        }else{
+        }else if(type == "sentence"){
           sentenceAudioFile.value = recordPath ?? '';
         }
       }

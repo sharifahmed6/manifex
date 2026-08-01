@@ -126,10 +126,10 @@ class TracingController extends GetxController {
       if (response.statusCode == 200) {
         if(finalResponse['correct']){
           correctWord++;
-          AppSnackbar.show("Correct! Great job.");
+          AppSnackbar.show("Correct! Great job.", backgroundColor: Colors.green);
         }else{
           incorrectWord++;
-          AppSnackbar.show("Please try again to perfect your stroke.");
+          AppSnackbar.show("Please try again to perfect your stroke.", backgroundColor: Colors.red);
         }
 
 

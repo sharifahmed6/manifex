@@ -283,15 +283,93 @@ class ProfileEditScreen extends StatelessWidget {
             ),
           ),
           SizedBox(height: 8.h),
-          TextFormField(
-            controller: controller.hobbyController,
-            style: TextStyle(color: Colors.white),
-            decoration: InputDecoration(
-              hintText: 'Enter your Hobby'.tr,
-              hintStyle: TextStyle(
-                color: Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
-              ),
+          Builder(
+            builder: (context) {
+              final items = ["Sports", "Dance", "Gaming"];
+              String? currentValue = items.contains(controller.hobbyController.text)
+                  ? controller.hobbyController.text
+                  : null;
+
+              return DropdownButtonFormField<String>(
+                value: currentValue,
+                dropdownColor: const Color(0xff111217),
+                style: const TextStyle(color: Colors.white),
+                iconEnabledColor: Colors.white,
+                iconDisabledColor: Colors.white70,
+                hint: Text(
+                  'Select your Hobby'.tr,
+                  style: TextStyle(
+                    color: const Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
+                  ),
+                ),
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                ),
+                items: items.map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(
+                      value,
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  );
+                }).toList(),
+                onChanged: (newValue) {
+                  if (newValue != null) {
+                    controller.hobbyController.text = newValue;
+                  }
+                },
+              );
+            },
+          ),
+          SizedBox(height: 16.h),
+          Text(
+            "Age".tr,
+            style: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w500,
+              color: Colors.white,
             ),
+          ),
+          SizedBox(height: 8.h),
+          Builder(
+            builder: (context) {
+              final items = ["6-9", "10-13", "14-17", "18-40"];
+              String? currentValue = items.contains(controller.ageController.text)
+                  ? controller.ageController.text
+                  : null;
+
+              return DropdownButtonFormField<String>(
+                value: currentValue,
+                dropdownColor: const Color(0xff111217),
+                style: const TextStyle(color: Colors.white),
+                iconEnabledColor: Colors.white,
+                iconDisabledColor: Colors.white70,
+                hint: Text(
+                  'Select an age'.tr,
+                  style: TextStyle(
+                    color: const Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
+                  ),
+                ),
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                ),
+                items: items.map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(
+                      value,
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  );
+                }).toList(),
+                onChanged: (newValue) {
+                  if (newValue != null) {
+                    controller.ageController.text = newValue;
+                  }
+                },
+              );
+            },
           ),
         ],
       ),
