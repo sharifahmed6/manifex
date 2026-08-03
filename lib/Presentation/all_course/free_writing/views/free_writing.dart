@@ -111,16 +111,16 @@ class _skillScreen extends StatelessWidget {
             const SizedBox(height: 15),
 
             SingleSkillCard(
-              title: 'Cursive Writing'.tr,
-              subTitle: 'Practice writing words in cursive style.'.tr,
+              title: 'Print Writing'.tr,
+              subTitle: 'Practice writing words in print style.'.tr,
               buttonText: 'Task 1',
               onTap: () {
                 Get.to(
                   () => WritingTask(
-                    title: 'Cursive Writing',
-                    description: 'Practice writing words in cursive style.',
+                    title: 'Print Writing',
+                    description: 'Practice writing words in print style.',
                     taskNumber: 1,
-                    isCursive: true,
+                    isCursive: false,
                   ),
                 );
               },
@@ -130,16 +130,16 @@ class _skillScreen extends StatelessWidget {
             const SizedBox(height: 15),
 
             SingleSkillCard(
-              title: 'Print Writing'.tr,
-              subTitle: 'Practice writing words in print style.'.tr,
+              title: 'Cursive Writing'.tr,
+              subTitle: 'Practice writing words in cursive style.'.tr,
               buttonText: 'Task 2',
               onTap: () {
                 Get.to(
                   () => WritingTask(
-                    title: 'Print Writing',
-                    description: 'Practice writing words in print style.',
+                    title: 'Cursive Writing',
+                    description: 'Practice writing words in cursive style.',
                     taskNumber: 2,
-                    isCursive: false,
+                    isCursive: true,
                   ),
                 );
               },

@@ -3,6 +3,7 @@ import 'package:manifex/Core/MusicService.dart';
 import 'package:manifex/Presentation/Share/scafold_background.dart';
 import 'package:get/get.dart';
 import '../../../../../../App/AppColors.dart';
+import '../../../../../../Core/TTSService.dart';
 import '../../../../../../Core/responsive.dart';
 import '../../../../../../Core/snakbar.dart';
 import '../../../../../Share/GradientMask.dart';
@@ -149,17 +150,27 @@ class _WritingTaskState extends State<WritingTask> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          GradientMask(
-                            child: Text(
-                              "Word ${controller.currentIndex.value + 1} of ${controller.words.length}",
-                              style: TextStyle(
-                                fontSize: ScreenResponsive.responsiveFont(
-                                  context,
-                                  18,
+                          Row(
+                            children: [
+                              GradientMask(
+                                child: Text(
+                                  "Word ${controller.currentIndex.value + 1} of ${controller.words.length}",
+                                  style: TextStyle(
+                                    fontSize: ScreenResponsive.responsiveFont(
+                                      context,
+                                      18,
+                                    ),
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
-                                fontWeight: FontWeight.w600,
                               ),
-                            ),
+                              IconButton(
+                                constraints: const BoxConstraints(),
+                                padding: const EdgeInsets.symmetric(horizontal: 8),
+                                icon: const Icon(Icons.volume_up, color: Colors.blue),
+                                onPressed: () => TTSService.speak(currentWord),
+                              ),
+                            ],
                           ),
                           Container(
                             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -179,14 +190,33 @@ class _WritingTaskState extends State<WritingTask> {
                         ],
                       ),
                       const SizedBox(height: 10),
-                      Text(
-                        controller.isStepTwo.value 
-                          ? "Now try writing it again without the watermark!".tr 
-                          : "Trace the word to practice its shape.".tr,
-                        style: TextStyle(
-                          fontSize: ScreenResponsive.responsiveFont(context, 17),
-                          fontWeight: FontWeight.w600,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              controller.isStepTwo.value 
+                                ? "Now try writing it again without the watermark!".tr 
+                                : "Trace the word to practice its shape.".tr,
+                              style: TextStyle(
+                                fontSize: ScreenResponsive.responsiveFont(context, 17),
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                          if (controller.isStepTwo.value)
+                            TextButton.icon(
+                              onPressed: () {
+                                controller.isStepTwo.value = false;
+                                areaController.clearCanvas();
+                              },
+                              icon: const Icon(Icons.undo, size: 16, color: Colors.orange),
+                              label: Text(
+                                "Back to Tracing".tr,
+                                style: const TextStyle(color: Colors.orange, fontSize: 12, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                        ],
                       ),
                       const SizedBox(height: 20),
 
