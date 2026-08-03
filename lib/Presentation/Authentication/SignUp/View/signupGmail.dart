@@ -3,6 +3,7 @@ import 'package:manifex/Presentation/Authentication/SignUp/View/signupVerificati
 import 'package:manifex/Presentation/Share/scafold_background.dart';
 import 'package:get/get.dart';
 import '../../../../App/assets_path.dart';
+import '../../../../App/routes.dart';
 import '../../../../Core/responsive.dart';
 import '../../../../Core/snakbar.dart';
 import '../../../Share/button_gradient.dart';
@@ -18,11 +19,12 @@ class signupGmail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return scaffold_background(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
             children: [
               Image.asset(AssetsPath.logo, width: 62, height: 62),
               logo_manifex(),
@@ -65,8 +67,8 @@ class signupGmail extends StatelessWidget {
               ButtonGradient(
                 onTap: () {
                   if (_formKey.currentState!.validate()) {
-                    controller.sent_otp(emailController.text.trim());
-                    // AppSnackbar.show(emailController.text.trim());
+                    controller.emailAddress.value = emailController.text.trim();
+                    Get.toNamed(routes.signup_screen);
                   }
                 },
                 text: "Continue".tr,
@@ -75,6 +77,6 @@ class signupGmail extends StatelessWidget {
           ),
         ),
       ),
-    );
+    ));
   }
 }

@@ -85,15 +85,7 @@ class ProgressScreen extends StatelessWidget {
                   color: Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
                 ),
                 SizedBox(height: 8.h),
-                MyStreakProgress(),
-                SizedBox(height: 16.h),
-                CustomText(
-                  text: 'My Achievements'.tr,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w500,
-                ),
-                SizedBox(height: 16.h),
-                AchivementScreen(),
+                MyStreakProgress()
               ],
             ),
           ),

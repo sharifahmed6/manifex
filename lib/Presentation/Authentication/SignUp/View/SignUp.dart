@@ -12,6 +12,60 @@ import '../../../Share/manifex_logo.dart';
 import '../Controller/Controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+void _showMultiSelectDialog(BuildContext context, signup_controller controller) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        backgroundColor: AppColors.primary,
+        title: Text("Select Hobbies".tr, style: TextStyle(color: Colors.white)),
+        content: SizedBox(
+          width: double.maxFinite,
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: controller.hobbies.length,
+            itemBuilder: (context, index) {
+              final hobby = controller.hobbies[index];
+              return Obx(() {
+                final isSelected = controller.selectedHobbies.contains(hobby);
+                return CheckboxListTile(
+                  title: Text(hobby, style: TextStyle(color: Colors.white)),
+                  value: isSelected,
+                  activeColor: Colors.white,
+                  checkColor: AppColors.primary,
+                  side: BorderSide(color: Colors.white),
+                  onChanged: (bool? checked) {
+                    if (checked == true) {
+                      if (!controller.selectedHobbies.contains(hobby)) {
+                        if (controller.selectedHobbies.length >= 2) {
+                          AppSnackbar.show(
+                            "You can select maximum 2 hobbies".tr,
+                            backgroundColor: Colors.red,
+                          );
+                        } else {
+                          controller.selectedHobbies.add(hobby);
+                        }
+                      }
+                    } else {
+                      controller.selectedHobbies.remove(hobby);
+                    }
+                  },
+                );
+              });
+            },
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Get.back(),
+            child: Text("Done".tr, style: TextStyle(color: Colors.white)),
+          ),
+        ],
+      );
+    },
+  );
+}
+
 class signup extends StatelessWidget {
   signup({super.key});
   final controller = Get.find<signup_controller>();
@@ -128,8 +182,8 @@ class signup extends StatelessWidget {
                   ),
                 ),
 
-                DropdownButtonFormField<String>(
-                  value: controller.selectedAgeGroup,
+                Obx(() => DropdownButtonFormField<String>(
+                  value: controller.selectedAgeGroup.value,
                   hint: Text(
                     "Select your age group".tr,
                     style: TextStyle(color: Colors.grey),
@@ -138,7 +192,7 @@ class signup extends StatelessWidget {
                   dropdownColor: AppColors.primary,
                   icon: Icon(
                     Icons.arrow_drop_down,
-                    color: AppColors.primary,
+                    color: Colors.white,
                   ), // dropdown icon color
                   isExpanded: true,
 
@@ -155,9 +209,9 @@ class signup extends StatelessWidget {
                   }).toList(),
 
                   onChanged: (value) {
-                    controller.selectedAgeGroup = value!;
+                    controller.updateAgeGroup(value!);
                   },
-                ),
+                )),
 
                 Align(
                   alignment: Alignment.centerLeft,
@@ -170,36 +224,44 @@ class signup extends StatelessWidget {
                   ),
                 ),
 
-                DropdownButtonFormField<String>(
-                  value: controller.selectedHobbies,
-                  hint: Text(
-                    "Select hobbies and Interests".tr,
-                    style: TextStyle(color: Colors.grey),
-                  ),
-
-                  dropdownColor: AppColors.primary,
-                  icon: Icon(
-                    Icons.arrow_drop_down,
-                    color: AppColors.primary,
-                  ), // dropdown icon color
-                  isExpanded: true,
-
-                  items: controller.hobbies.map((age) {
-                    return DropdownMenuItem<String>(
-                      value: age,
-                      child: Text(
-                        age,
-                        style: TextStyle(
-                          color: Colors.white,
-                        ), // item text color
-                      ),
-                    );
-                  }).toList(),
-
-                  onChanged: (value) {
-                    controller.selectedHobbies = value!;
+                Obx(() => GestureDetector(
+                  onTap: () {
+                    if (controller.selectedAgeGroup.value == null) {
+                      AppSnackbar.show(
+                        "Please select your age group first".tr,
+                        backgroundColor: Colors.red,
+                      );
+                    } else {
+                      _showMultiSelectDialog(context, controller);
+                    }
                   },
-                ),
+                  child: InputDecorator(
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 15),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            controller.selectedHobbies.isEmpty
+                                ? "Select hobbies and Interests".tr
+                                : controller.selectedHobbies.join(", "),
+                            style: TextStyle(
+                              color: controller.selectedHobbies.isEmpty ? Colors.grey : Colors.white,
+                              fontSize: ScreenResponsive.responsiveFont(context, 14),
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        Icon(
+                          Icons.arrow_drop_down,
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
+                  ),
+                )),
 
                 Align(
                   alignment: Alignment.centerLeft,
@@ -212,8 +274,8 @@ class signup extends StatelessWidget {
                   ),
                 ),
 
-                DropdownButtonFormField<String>(
-                  value: controller.selectedUserType,
+                Obx(() => DropdownButtonFormField<String>(
+                  value: controller.selectedUserType.value,
                   hint: Text(
                     "Select User Type".tr,
                     style: TextStyle(color: Colors.grey),
@@ -222,15 +284,15 @@ class signup extends StatelessWidget {
                   dropdownColor: AppColors.primary,
                   icon: Icon(
                     Icons.arrow_drop_down,
-                    color: AppColors.primary,
+                    color: Colors.white,
                   ), // dropdown icon color
                   isExpanded: true,
 
-                  items: controller.userTypes.map((age) {
+                  items: controller.userTypes.map((type) {
                     return DropdownMenuItem<String>(
-                      value: age,
+                      value: type,
                       child: Text(
-                        age,
+                        type,
                         style: TextStyle(
                           color: Colors.white,
                         ), // item text color
@@ -239,9 +301,9 @@ class signup extends StatelessWidget {
                   }).toList(),
 
                   onChanged: (value) {
-                    controller.selectedHobbies = value!;
+                    controller.selectedUserType.value = value;
                   },
-                ),
+                )),
 
                 // Align(
                 //   alignment: Alignment.centerLeft,
@@ -349,27 +411,33 @@ class signup extends StatelessWidget {
                 ButtonGradient(
                   onTap: () {
                     if (_formKey.currentState!.validate()) {
-                      if (controller.selectedAgeGroup == "") {
+                      if (controller.selectedAgeGroup.value == null) {
                         AppSnackbar.show("Please select your age group".tr);
                         return;
-                      } else if (controller.selectedHobbies == "") {
+                      } else if (controller.selectedHobbies.isEmpty) {
                         AppSnackbar.show("Please select your hobbies".tr);
                         return;
-                      } else if (controller.selectedUserType == "") {
+                      } else if (controller.selectedUserType.value == null) {
                         AppSnackbar.show("Please select your user type".tr);
                         return;
                       } else {
+                        String joinedHobbies = controller.selectedHobbies.join(", ").toLowerCase();
+                        String formattedHobbies = joinedHobbies.isEmpty 
+                            ? "" 
+                            : joinedHobbies[0].toUpperCase() + joinedHobbies.substring(1);
+
                         signupModel model = signupModel(
                           firstName: firstName.text,
                           lastName: lastName.text,
-                          ageGroup: controller.selectedAgeGroup,
-                          hobbies: controller.selectedHobbies,
-                          userType: controller.selectedUserType,
+                          ageGroup: controller.selectedAgeGroup.value!,
+                          hobbies: formattedHobbies,
+                          userType: controller.selectedUserType.value!,
                           email: controller.emailAddress.value,
                           password: password.text,
                           confirmPassword: confirmPassword.text,
                         );
-                        controller.createAccount(model);
+                        controller.tempSignupModel = model;
+                        controller.sent_otp(controller.emailAddress.value);
                       }
                     }
                   },

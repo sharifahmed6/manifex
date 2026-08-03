@@ -24,6 +24,10 @@ class RewardVideoLockedCard extends StatelessWidget {
   final ChewieController? chewieController;
   final VoidCallback? onSeeAll;
   final bool isMoreRewardsVisible;
+  final String videoId;
+  final bool isFavorite;
+  final VoidCallback onFavoriteToggle;
+  final bool showFavoriteIcon;
 
   const RewardVideoLockedCard({
     super.key,
@@ -43,6 +47,10 @@ class RewardVideoLockedCard extends StatelessWidget {
     this.chewieController,
     this.onSeeAll,
     this.isMoreRewardsVisible = false,
+    required this.videoId,
+    required this.isFavorite,
+    required this.onFavoriteToggle,
+    this.showFavoriteIcon = true,
   });
 
   @override
@@ -188,6 +196,7 @@ class RewardVideoLockedCard extends StatelessWidget {
                       ),
                     ),
                   ),
+
                   Positioned(
                     bottom: 10.h,
                     right: 12.w,
@@ -211,6 +220,26 @@ class RewardVideoLockedCard extends StatelessWidget {
                     ),
                   ),
                 ],
+              ),
+            if (showFavoriteIcon)
+              Positioned(
+                top: 10.h,
+                left: 12.w,
+                child: GestureDetector(
+                  onTap: onFavoriteToggle,
+                  child: Container(
+                    padding: EdgeInsets.all(8.w),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.6),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      isFavorite ? Icons.favorite_rounded : Icons.favorite_outline_rounded,
+                      color: isFavorite ? Colors.red : Colors.white,
+                      size: 20.sp,
+                    ),
+                  ),
+                ),
               ),
           ],
         ),

@@ -39,80 +39,11 @@ class MyStreakProgress extends StatelessWidget {
           ),
           SizedBox(height: 16.h),
           _singleCard(
-            progressCount: '${p.dayStreak}',
-            title: 'Day Streak'.tr,
-            progress: 0.8, // Static indicator style or based on goal
-            color1: const Color(0xffFFA6C8),
-            color2: const Color(0xffB920ED),
-          ),
-          SizedBox(height: 16.h),
-          _singleCard(
             progressCount: '${p.overallAccuracy}%',
             title: 'Accuracy'.tr,
             progress: (p.overallAccuracy / 100).clamp(0.0, 1.0),
             color1: const Color(0xffB2DEFF),
             color2: const Color(0xff3BA3F2),
-          ),
-          SizedBox(height: 16.h),
-          TransparentGradientBorder(
-            strokeWidth: 0.5,
-            radius: 16.r,
-            child: Container(
-              width: double.infinity,
-              padding: EdgeInsets.all(16.w),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16.r),
-                gradient: LinearGradient(
-                  colors: [
-                    const Color(0xff111217).withAlpha(50),
-                    const Color(0xffCFDBFF).withAlpha(30),
-                  ],
-                  begin: Alignment.bottomRight,
-                  end: Alignment.topLeft,
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomText(
-                    text: '${p.totalBadges}',
-                    fontSize: 32,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  SizedBox(height: 8.h),
-                  CustomText(
-                    text: 'Badge Earned'.tr,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16,
-                    color: const Color(
-                      0xffFFFFFF,
-                    ).withAlpha((2.56 * 90).toInt()),
-                  ),
-                  SizedBox(height: 8.h),
-                  Row(
-                    spacing: 8.w,
-                    children: [
-                      if (p.badges.isNotEmpty)
-                        Image.asset(
-                          'assets/icons/total badge.png',
-                          width: 70.w,
-                          height: 16.h,
-                        ),
-                      if (p.badges.length > 1)
-                        CustomText(
-                          text: '+${p.badges.length - 1}' + ' More'.tr,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      if (p.badges.isEmpty)
-                        CustomText(
-                          text: 'No badges yet'.tr,
-                          fontWeight: FontWeight.w500,
-                        ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
           ),
         ],
       );

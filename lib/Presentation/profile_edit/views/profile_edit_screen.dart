@@ -8,6 +8,61 @@ import 'package:manifex/Presentation/Share/text_title_small.dart';
 import 'package:manifex/Presentation/Share/custom_circle_progress_indicator.dart';
 import 'package:manifex/Presentation/profile_edit/controller/profile_edit_controller.dart';
 import 'package:manifex/Presentation/app_bar/views/custom_app_bar.dart';
+import 'package:manifex/Core/snakbar.dart';
+
+void _showMultiSelectDialog(BuildContext context, ProfileEditController controller) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        backgroundColor: const Color(0xff111217),
+        title: Text("Select Hobbies".tr, style: TextStyle(color: Colors.white)),
+        content: SizedBox(
+          width: double.maxFinite,
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: controller.hobbies.length,
+            itemBuilder: (context, index) {
+              final hobby = controller.hobbies[index];
+              return Obx(() {
+                final isSelected = controller.selectedHobbies.contains(hobby);
+                return CheckboxListTile(
+                  title: Text(hobby, style: TextStyle(color: Colors.white)),
+                  value: isSelected,
+                  activeColor: Colors.white,
+                  checkColor: const Color(0xff111217),
+                  side: BorderSide(color: Colors.white),
+                  onChanged: (bool? checked) {
+                    if (checked == true) {
+                      if (!controller.selectedHobbies.contains(hobby)) {
+                        if (controller.selectedHobbies.length >= 2) {
+                          AppSnackbar.show(
+                            "You can select maximum 2 hobbies".tr,
+                            backgroundColor: Colors.red,
+                          );
+                        } else {
+                          controller.selectedHobbies.add(hobby);
+                        }
+                      }
+                    } else {
+                      controller.selectedHobbies.remove(hobby);
+                    }
+                  },
+                );
+              });
+            },
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Get.back(),
+            child: Text("Done".tr, style: TextStyle(color: Colors.white)),
+          ),
+        ],
+      );
+    },
+  );
+}
 
 class ProfileEditScreen extends StatelessWidget {
   ProfileEditScreen({super.key});
@@ -56,7 +111,7 @@ class ProfileEditScreen extends StatelessWidget {
                 SizedBox(height: 8.h),
                 controller.isProfileLoading.value
                     ? CustomCircleProgressIndicator(size: 24.sp)
-                    : _personalInfo(),
+                    : _personalInfo(context),
                 SizedBox(height: 16.h),
                 ButtonGradient(
                   onTap: controller.isProfileLoading.value
@@ -213,7 +268,7 @@ class ProfileEditScreen extends StatelessWidget {
     );
   }
 
-  Widget _personalInfo() {
+  Widget _personalInfo(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
       decoration: BoxDecoration(
@@ -275,55 +330,6 @@ class ProfileEditScreen extends StatelessWidget {
           ),
           SizedBox(height: 16.h),
           Text(
-            "Hobby".tr,
-            style: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w500,
-              color: Colors.white,
-            ),
-          ),
-          SizedBox(height: 8.h),
-          Builder(
-            builder: (context) {
-              final items = ["Sports", "Dance", "Gaming"];
-              String? currentValue = items.contains(controller.hobbyController.text)
-                  ? controller.hobbyController.text
-                  : null;
-
-              return DropdownButtonFormField<String>(
-                value: currentValue,
-                dropdownColor: const Color(0xff111217),
-                style: const TextStyle(color: Colors.white),
-                iconEnabledColor: Colors.white,
-                iconDisabledColor: Colors.white70,
-                hint: Text(
-                  'Select your Hobby'.tr,
-                  style: TextStyle(
-                    color: const Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt()),
-                  ),
-                ),
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                ),
-                items: items.map((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(
-                      value,
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                  );
-                }).toList(),
-                onChanged: (newValue) {
-                  if (newValue != null) {
-                    controller.hobbyController.text = newValue;
-                  }
-                },
-              );
-            },
-          ),
-          SizedBox(height: 16.h),
-          Text(
             "Age".tr,
             style: TextStyle(
               fontSize: 16.sp,
@@ -332,15 +338,8 @@ class ProfileEditScreen extends StatelessWidget {
             ),
           ),
           SizedBox(height: 8.h),
-          Builder(
-            builder: (context) {
-              final items = ["6-9", "10-13", "14-17", "18-40"];
-              String? currentValue = items.contains(controller.ageController.text)
-                  ? controller.ageController.text
-                  : null;
-
-              return DropdownButtonFormField<String>(
-                value: currentValue,
+          Obx(() => DropdownButtonFormField<String>(
+                value: controller.selectedAgeGroup.value,
                 dropdownColor: const Color(0xff111217),
                 style: const TextStyle(color: Colors.white),
                 iconEnabledColor: Colors.white,
@@ -354,7 +353,7 @@ class ProfileEditScreen extends StatelessWidget {
                 decoration: InputDecoration(
                   border: InputBorder.none,
                 ),
-                items: items.map((String value) {
+                items: controller.ageToHobbies.keys.map((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(
@@ -365,12 +364,61 @@ class ProfileEditScreen extends StatelessWidget {
                 }).toList(),
                 onChanged: (newValue) {
                   if (newValue != null) {
-                    controller.ageController.text = newValue;
+                    controller.updateAgeGroup(newValue);
                   }
                 },
-              );
-            },
+              )),
+          SizedBox(height: 16.h),
+          Text(
+            "Hobby".tr,
+            style: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w500,
+              color: Colors.white,
+            ),
           ),
+          SizedBox(height: 8.h),
+          Obx(() => GestureDetector(
+                onTap: () {
+                  if (controller.selectedAgeGroup.value == null) {
+                    AppSnackbar.show(
+                      "Please select your age group first".tr,
+                      backgroundColor: Colors.red,
+                    );
+                  } else {
+                    _showMultiSelectDialog(context, controller);
+                  }
+                },
+                child: InputDecorator(
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          controller.selectedHobbies.isEmpty
+                              ? "Select your Hobby".tr
+                              : controller.selectedHobbies.join(", "),
+                          style: TextStyle(
+                            color: controller.selectedHobbies.isEmpty
+                                ? const Color(0xffFFFFFF).withAlpha((2.56 * 90).toInt())
+                                : Colors.white,
+                            fontSize: 16.sp,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Icon(
+                        Icons.arrow_drop_down,
+                        color: Colors.white,
+                      ),
+                    ],
+                  ),
+                ),
+              )),
         ],
       ),
     );

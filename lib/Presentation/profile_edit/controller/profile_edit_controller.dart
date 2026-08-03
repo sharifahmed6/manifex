@@ -12,8 +12,29 @@ class ProfileEditController extends GetxController {
   // Profile Controllers
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
-  final hobbyController = TextEditingController();
-  final ageController = TextEditingController();
+
+  // Dynamic Age and Hobbies
+  var selectedAgeGroup = Rx<String?>(null);
+  var selectedHobbies = <String>[].obs;
+  var hobbies = <String>[].obs;
+
+  final Map<String, List<String>> ageToHobbies = {
+    "6 - 9": ["Animals", "Sports", "Dance"],
+    "10 - 13": ["Animals", "Sports", "Dance", "Music", "Gaming", "Art"],
+    "14 - 17": ["Animals", "Sports", "Dance", "Music", "Gaming", "Science", "Art", "Cooking"],
+    "Adult": ["Animals", "Sports", "Dance", "Music", "Gaming", "Science", "Art", "Cooking", "Meditation"],
+  };
+
+  void updateAgeGroup(String age) {
+    selectedAgeGroup.value = age;
+    hobbies.assignAll(ageToHobbies[age] ?? []);
+    selectedHobbies.clear();
+  }
+
+  String _capitalize(String s) {
+    if (s.isEmpty) return s;
+    return s[0].toUpperCase() + s.substring(1).toLowerCase();
+  }
 
   // Security Controllers
   final oldPasswordController = TextEditingController();
@@ -38,8 +59,25 @@ class ProfileEditController extends GetxController {
         if (data != null) {
           firstNameController.text = data['firstName'] ?? '';
           lastNameController.text = data['lastName'] ?? '';
-          hobbyController.text = data['hobbies'] ?? '';
-          ageController.text = data['age']?.toString() ?? '';
+          
+          if (data['age'] != null) {
+            String ageStr = data['age'].toString();
+            if (ageStr == "6-9") ageStr = "6 - 9";
+            if (ageStr == "10-13") ageStr = "10 - 13";
+            if (ageStr == "14-17") ageStr = "14 - 17";
+            if (ageStr == "18-40") ageStr = "Adult";
+            
+            if (ageToHobbies.containsKey(ageStr)) {
+              selectedAgeGroup.value = ageStr;
+              hobbies.assignAll(ageToHobbies[ageStr] ?? []);
+            }
+          }
+
+          if (data['hobbies'] != null) {
+            String hobbiesStr = data['hobbies'].toString();
+            selectedHobbies.assignAll(
+                hobbiesStr.split(',').map((e) => _capitalize(e.trim())).where((e) => e.isNotEmpty).toList());
+          }
         }
       }
     } catch (e) {
@@ -61,11 +99,17 @@ class ProfileEditController extends GetxController {
 
     try {
       isProfileLoading.value = true;
+      
+      String joinedHobbies = selectedHobbies.join(", ").toLowerCase();
+      String formattedHobbies = joinedHobbies.isEmpty 
+          ? "" 
+          : joinedHobbies[0].toUpperCase() + joinedHobbies.substring(1);
+
       final profileBody = {
         "firstName": firstNameController.text,
         "lastName": lastNameController.text,
-        "hobbies": hobbyController.text,
-        "age": ageController.text,
+        "hobbies": formattedHobbies,
+        "age": selectedAgeGroup.value == "Adult" ? "18-40" : (selectedAgeGroup.value ?? "").replaceAll(" - ", "-"),
       };
 
       final response = await NetworkCaller().patchRequest(
@@ -167,7 +211,6 @@ class ProfileEditController extends GetxController {
   void onClose() {
     firstNameController.dispose();
     lastNameController.dispose();
-    hobbyController.dispose();
     oldPasswordController.dispose();
     newPasswordController.dispose();
     confirmPasswordController.dispose();

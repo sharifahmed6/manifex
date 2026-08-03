@@ -15,6 +15,7 @@ class UnlockRewardsController extends GetxController {
   final isMoreRewardsVisible = false.obs;
   final isMoreRewardsLoading = false.obs;
   final selectedVideo = Rxn<dynamic>(); // Can be RewardVideo or VideoModel
+  final favoriteVideoIds = <String>{}.obs;
 
   // Video states
   late VideoPlayerController videoPlayerController;
@@ -160,6 +161,41 @@ class UnlockRewardsController extends GetxController {
     } else {
       videoPlayerController.play();
     }
+  }
+
+  Future<void> toggleFavorite(String videoId) async {
+    final bool isFavoriting = !favoriteVideoIds.contains(videoId);
+    
+    if (isFavoriting && favoriteVideoIds.length >= 2) {
+      return; // Max 2 favorites allowed
+    }
+    
+    try {
+      final response = await NetworkCaller().patchRequest(
+        url: urls.favoriteVideoReact(videoId),
+        body: {},
+      );
+      
+      if (response.isSuccess) {
+        if (isFavoriting) {
+          favoriteVideoIds.add(videoId);
+        } else {
+          favoriteVideoIds.remove(videoId);
+        }
+      }
+    } catch (e) {
+      debugPrint("Error favoriting video: $e");
+    }
+  }
+
+  List<RewardItem> get sortedRewards {
+    final list = moreVideoRewards.value?.data.rewards.toList() ?? [];
+    list.sort((a, b) {
+      final aFav = favoriteVideoIds.contains(a.video.id) ? 1 : 0;
+      final bFav = favoriteVideoIds.contains(b.video.id) ? 1 : 0;
+      return bFav.compareTo(aFav);
+    });
+    return list;
   }
 
   @override

@@ -124,30 +124,40 @@ class UnlockRewardsScreen extends StatelessWidget {
                                       ? currentVideo.views
                                       : (data.unlockedVideo?.views ?? 0));
 
-                            return RewardVideoLockedCard(
-                              thumbnailUrl: "https://picsum.photos/900/500",
-                              title: title,
-                              subtitle: subtitle,
-                              category: category,
-                              views: views,
-                              unlocked: data.alreadyUnlocked,
-                              remaining: data.progress.remainingCount,
-                              tasks: data.progress.tasks,
-                              onPlayToggle: () => c.togglePlayPause(),
-                              isPlaying: c.isPlaying.value,
-                              isVideoInitialized: c.isVideoInitialized.value,
-                              currentTime: c.formatDuration(
-                                c.videoPosition.value,
-                              ),
-                              totalTime: c.formatDuration(
-                                c.videoDuration.value,
-                              ),
-                              chewieController: c.chewieController,
-                              onSeeAll: () {
-                                c.toggleMoreRewards();
-                              },
-                              isMoreRewardsVisible: c.isMoreRewardsVisible.value,
-                            );
+                              final String videoId = currentVideo is RewardVideo
+                                  ? currentVideo.id
+                                  : (currentVideo is VideoModel
+                                      ? currentVideo.id
+                                      : (data.unlockedVideo?.id ?? ""));
+
+                              return RewardVideoLockedCard(
+                                thumbnailUrl: "https://picsum.photos/900/500",
+                                title: title,
+                                subtitle: subtitle,
+                                category: category,
+                                views: views,
+                                unlocked: data.alreadyUnlocked,
+                                remaining: data.progress.remainingCount,
+                                tasks: data.progress.tasks,
+                                onPlayToggle: () => c.togglePlayPause(),
+                                isPlaying: c.isPlaying.value,
+                                isVideoInitialized: c.isVideoInitialized.value,
+                                currentTime: c.formatDuration(
+                                  c.videoPosition.value,
+                                ),
+                                totalTime: c.formatDuration(
+                                  c.videoDuration.value,
+                                ),
+                                chewieController: c.chewieController,
+                                onSeeAll: () {
+                                  c.toggleMoreRewards();
+                                },
+                                isMoreRewardsVisible: c.isMoreRewardsVisible.value,
+                                videoId: videoId,
+                                isFavorite: c.favoriteVideoIds.contains(videoId),
+                                onFavoriteToggle: () => c.toggleFavorite(videoId),
+                                showFavoriteIcon: c.favoriteVideoIds.contains(videoId) || c.favoriteVideoIds.length < 2,
+                              );
                           });
                         }),
 
@@ -187,12 +197,11 @@ class UnlockRewardsScreen extends StatelessWidget {
                               ListView.separated(
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
-                                itemCount: moreRewards.data.rewards.length,
+                                itemCount: c.sortedRewards.length,
                                 separatorBuilder: (context, index) =>
                                     SizedBox(height: 12.h),
                                 itemBuilder: (context, index) {
-                                  final rewardItem =
-                                      moreRewards.data.rewards[index];
+                                  final rewardItem = c.sortedRewards[index];
                                   final video = rewardItem.video;
                                   return InkWell(
                                     onTap: () {
@@ -255,6 +264,27 @@ class UnlockRewardsScreen extends StatelessWidget {
                                               ],
                                             ),
                                           ),
+                                          Obx(() {
+                                            final isFav = c.favoriteVideoIds.contains(video.id);
+                                            final showIcon = isFav || c.favoriteVideoIds.length < 2;
+                                            
+                                            if (!showIcon) return const SizedBox.shrink();
+
+                                            return GestureDetector(
+                                              onTap: () {
+                                                // Prevent triggering the parent InkWell's onTap
+                                                c.toggleFavorite(video.id);
+                                              },
+                                              child: Padding(
+                                                padding: EdgeInsets.symmetric(horizontal: 12.w),
+                                                child: Icon(
+                                                  isFav ? Icons.favorite_rounded : Icons.favorite_outline_rounded,
+                                                  color: isFav ? Colors.red : Colors.white,
+                                                  size: 24.sp,
+                                                ),
+                                              ),
+                                            );
+                                          }),
                                           Icon(
                                             Icons.play_circle_fill_rounded,
                                             color: Colors.white,

@@ -17,12 +17,30 @@ class signup_controller extends GetxController {
   var isResendCode = false.obs;
   var emailAddress = "".obs;
   var otp = "".obs;
-  var selectedAgeGroup = "";
+  var selectedAgeGroup = Rx<String?>(null);
   final List<String> ageGroups = ["6 - 9", "10 - 13", "14 - 17", "Adult"];
-  var selectedHobbies = "";
-  final List<String> hobbies = ["Dancing", "Gaming", "Sports"];
-  var selectedUserType = "";
-  final List<String> userTypes = ["Student", "Teacher", "Parent"];
+  
+  var selectedHobbies = <String>[].obs;
+  var hobbies = <String>[].obs;
+  
+  var selectedUserType = Rx<String?>(null);
+  final List<String> userTypes = ["Adult", "Student"];
+
+  signupModel? tempSignupModel;
+
+  final Map<String, List<String>> ageToHobbies = {
+    "6 - 9": ["Animals", "Sports", "Dance"],
+    "10 - 13": ["Animals", "Sports", "Dance", "Music", "Gaming", "Art"],
+    "14 - 17": ["Animals", "Sports", "Dance", "Music", "Gaming", "Science", "Art", "Cooking"],
+    "Adult": ["Animals", "Sports", "Dance", "Music", "Gaming", "Science", "Art", "Cooking", "Meditation"],
+  };
+
+  void updateAgeGroup(String age) {
+    selectedAgeGroup.value = age;
+    hobbies.assignAll(ageToHobbies[age] ?? []);
+    // Clear all previously selected hobbies when the age group changes
+    selectedHobbies.clear();
+  }
 
   Future<void> resent_code(String email) async {
     AppLoader.show();
@@ -50,7 +68,7 @@ class signup_controller extends GetxController {
   Future<void> verify_otp(String OTP_CODE, String email) async {
     emailAddress.value = email;
     otp.value = OTP_CODE;
-    Get.toNamed(routes.signup_screen);
+    Get.offNamed(routes.signup_screen);
   }
 
   Future<void> sent_otp(String email) async {
@@ -62,7 +80,8 @@ class signup_controller extends GetxController {
     AppLoader.hide();
 
     if (response.statusCode == 200) {
-      Get.to(signupVerification(email: email));
+      otp.value = ""; // Clear old OTP value just in case
+      Get.to(() => signupVerification(email: email));
     } else {
       AppSnackbar.show(
         response.errorMessage,
@@ -83,7 +102,7 @@ class signup_controller extends GetxController {
           "lastName": model.lastName,
           "email": model.email,
           "password": model.password,
-          "age": model.ageGroup == "Adult" ? "18 - 40" : model.ageGroup,
+          "age": model.ageGroup == "Adult" ? "18-40" : model.ageGroup?.replaceAll(" - ", "-"),
           "hobbies": model.hobbies,
           "profilePic":
               "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png",
@@ -144,10 +163,7 @@ class signup_controller extends GetxController {
 
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
-    selectedHobbies = hobbies.first;
-    selectedUserType = userTypes.first;
-    selectedAgeGroup = ageGroups.first;
+    // Intentionally leaving these null to show the hint text in the UI
   }
 }
