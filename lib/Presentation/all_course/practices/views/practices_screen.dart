@@ -114,7 +114,7 @@ class PracticesScreen extends StatelessWidget {
                     SizedBox(height: 16.h),
                     _practicesCard(
                       imagePath: 'assets/icons/native_speaking_icon.png',
-                      title: 'Native Speaking'.tr,
+                      title: 'Speaking'.tr,
                       subTitle: 'Advanced AI pronunciation coaching with real-time feedback and accent training'.tr,
                       buttonText: 'Start Speaking'.tr,
                       onTap: () {
@@ -131,7 +131,7 @@ class PracticesScreen extends StatelessWidget {
                     SizedBox(height: 16.h),
                     _practicesCard(
                       imagePath: 'assets/icons/presentation_icon.png',
-                      title: 'Presentation Practice'.tr,
+                      title: 'Presentation'.tr,
                       subTitle:
                           'Practice English made for adults. Improve speaking, listening, and vocabulary with easy, real-life lessons you can use every day.'
                               .tr,
@@ -165,7 +165,7 @@ class PracticesScreen extends StatelessWidget {
               SizedBox(height: 16.h),
               _practicesCard(
                 imagePath: 'assets/icons/reward_icon.png',
-                title: 'Reward System'.tr,
+                title: 'Reward'.tr,
                 subTitle:
                 'Phoneme recognition and word games with visual cues designed for dyslexic learners'
                     .tr,

@@ -209,7 +209,7 @@ class AppTranslation extends Translations {
       "Email Address": "Email Address",
       "Please enter email address": "Please enter email address",
       "We’ve sent a verification code to your email. Please enter it below.":
-          "We’ve sent a verification code to your email. Please enter it below.",
+          "Please check SPAM folder for verification email.",
       "Didn't get a code?": "Didn't get a code?",
       "Resend": "Resend",
       "Learning Feels Better When": "Learning Feels Better When",
@@ -606,7 +606,7 @@ class AppTranslation extends Translations {
       "Email Address": "Adres e-mail",
       "Please enter email address": "Proszę podać adres e-mail",
       "We’ve sent a verification code to your email. Please enter it below.":
-          "Wysłaliśmy kod weryfikacyjny na Twój e-mail. Wpisz go poniżej.",
+          "Proszę sprawdzić folder SPAM w poszukiwaniu wiadomości e-mail weryfikacyjnej.",
       "Didn't get a code?": "Nie otrzymałeś kodu?",
       "Resend": "Wyślij ponownie",
       "Learning Feels Better When": "Nauka jest lepsza, gdy",
@@ -1001,7 +1001,7 @@ class AppTranslation extends Translations {
       "Email Address": "ইমেল ঠিকানা",
       "Please enter email address": "অনুগ্রহ করে ইমেল ঠিকানা লিখুন",
       "We’ve sent a verification code to your email. Please enter it below.":
-          "আমরা আপনার ইমেলে একটি যাচাইকরণ কোড পাঠিয়েছি। অনুগ্রহ করে এটি নিচে লিখুন।",
+          "যাচাইকরণ ইমেইলটির জন্য অনুগ্রহ করে আপনার স্প্যাম (SPAM) ফোল্ডারটি পরীক্ষা করুন।",
       "Didn't get a code?": "কোড পাননি?",
       "Resend": "আবার পাঠান",
       "Learning Feels Better When": "শেখা আরও ভালো লাগে যখন",
@@ -1383,7 +1383,7 @@ class AppTranslation extends Translations {
       "Email Address": "电子邮件地址",
       "Please enter email address": "请输入电子邮件地址",
       "We’ve sent a verification code to your email. Please enter it below.":
-          "我们已向您的电子邮箱发送了验证码。请在下方输入。",
+          "请检查您的垃圾邮件文件夹，查看验证电子邮件",
       "Didn't get a code?": "没收到验证码？",
       "Resend": "重新发送",
       "Learning Feels Better When": "当您获得奖励时",
@@ -1773,7 +1773,7 @@ class AppTranslation extends Translations {
       "Email Address": "Adresse e-mail",
       "Please enter email address": "Veuillez saisir l'adresse e-mail",
       "We’ve sent a verification code to your email. Please enter it below.":
-          "Nous avons envoyé un code de vérification à votre e-mail. Veuillez le saisir ci-dessous.",
+          "Veuillez vérifier votre dossier SPAM pour trouver l’e-mail de vérification.",
       "Didn't get a code?": "Pas reçu de code ?",
       "Resend": "Renvoyer",
       "Learning Feels Better When": "L'apprentissage est meilleur quand",
@@ -2171,7 +2171,7 @@ class AppTranslation extends Translations {
       "Email Address": "ईमेल पता",
       "Please enter email address": "कृपया ईमेल पता दर्ज करें",
       "We’ve sent a verification code to your email. Please enter it below.":
-          "हमने आपके ईमेल पर एक सत्यापन कोड भेजा है। कृपया इसे नीचे दर्ज करें।",
+          "कृपया सत्यापन ईमेल के लिए अपना स्पैम फ़ोल्डर जांचें।",
       "Didn't get a code?": "कोड नहीं मिला?",
       "Resend": "पुनः भेजें",
       "Learning Feels Better When": "सीखना और भी अच्छा लगता है जब",
@@ -2566,7 +2566,7 @@ class AppTranslation extends Translations {
       "Email Address": "E-Mail-Adresse",
       "Please enter email address": "Please enter email address",
       "We’ve sent a verification code to your email. Please enter it below.":
-          "We’ve sent a verification code to your email. Please enter it below.",
+          "Bitte überprüfen Sie Ihren SPAM-Ordner auf die Bestätigungs-E-Mail.",
       "Didn't get a code?": "Didn't get a code?",
       "Resend": "Erneut senden",
       "Learning Feels Better When": "Learning Feels Better When",
@@ -2962,7 +2962,7 @@ class AppTranslation extends Translations {
       "Email Address": "Indirizzo email",
       "Please enter email address": "Please enter email address",
       "We’ve sent a verification code to your email. Please enter it below.":
-          "We’ve sent a verification code to your email. Please enter it below.",
+          "Controlla la cartella SPAM per trovare l'e-mail di verifica.",
       "Didn't get a code?": "Didn't get a code?",
       "Resend": "Reinvia",
       "Learning Feels Better When": "Learning Feels Better When",

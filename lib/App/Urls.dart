@@ -62,4 +62,6 @@ class urls {
       "$baseUrl/subscriptions/remove-member/$id";
   static String chatbot = "http://72.244.153.17:8061/api/v1/chatbot/app";
   static String sendSupportEmail = "$baseUrl/contacts/send-email";
+  static String favoriteVideoReact(String id) => "$baseUrl/reward-video/favorite/$id";
+  static String favoriteVideo = "$baseUrl/reward-video/my/favorites";
 }

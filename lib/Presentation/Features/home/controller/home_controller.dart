@@ -206,7 +206,7 @@ class HomeController extends GetxController with WidgetsBindingObserver {
     if (s == '6-9') return 8;
     if (s == '10-13') return 12;
     if (s == '14-17') return 16;
-    if (s == '18-40') return 39;
+    if (s == '18-40' || s.toLowerCase() == 'adult') return 39;
 
     final parts = s.split('-').map((e) => e.trim()).toList();
     if (parts.length == 2) {

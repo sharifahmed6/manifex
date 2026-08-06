@@ -30,8 +30,7 @@ class signupVerification extends StatelessWidget {
             Image.asset(AssetsPath.logo, width: 62, height: 62),
             logo_manifex(),
             Text(
-              "We’ve sent a verification code to your email. Please enter it below."
-                  .tr,
+              "We’ve sent a verification code to your email. Please enter it below.".tr,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: ScreenResponsive.responsiveFont(context, 12),
@@ -117,7 +116,7 @@ class signupVerification extends StatelessWidget {
                             ),
                             color: Colors.white,
                           ),
-                          duration: Duration(seconds: 90),
+                          duration: Duration(seconds: 120),
                           onDone: () {
                             controller.isResendCode.value = true;
                           },
@@ -127,7 +126,10 @@ class signupVerification extends StatelessWidget {
             ),
             ButtonGradient(
               onTap: () {
-                controller.verify_otp(otp.text.trim(), email);
+                controller.otp.value = otp.text.trim();
+                if (controller.tempSignupModel != null) {
+                  controller.createAccount(controller.tempSignupModel!);
+                }
               },
               text: "Continue".tr,
             ),

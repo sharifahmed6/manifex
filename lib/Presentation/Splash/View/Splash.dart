@@ -25,8 +25,7 @@ class splash extends StatelessWidget {
               Image.asset(AssetsPath.logo, width: 62, height: 62),
               logo_manifex(),
               Text(
-                "Welcome to MANIFEX!\n Let’s start your language learning journey today"
-                    .tr,
+                "Welcome to MANIFEX! Let’s start your language learning journey today".tr,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: ScreenResponsive.responsiveFont(context,12),

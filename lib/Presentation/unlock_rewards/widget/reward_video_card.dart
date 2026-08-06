@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:manifex/Presentation/Share/button_gradient.dart';
 import 'package:manifex/Presentation/Share/text_title_small.dart';
+import 'package:manifex/Presentation/Share/custom_circle_progress_indicator.dart';
 import '../model/rewards_model.dart';
 
 class RewardVideoLockedCard extends StatelessWidget {
@@ -24,6 +25,11 @@ class RewardVideoLockedCard extends StatelessWidget {
   final ChewieController? chewieController;
   final VoidCallback? onSeeAll;
   final bool isMoreRewardsVisible;
+  final String videoId;
+  final bool isFavorite;
+  final bool isFavoriteLoading;
+  final VoidCallback onFavoriteToggle;
+  final bool showFavoriteIcon;
 
   const RewardVideoLockedCard({
     super.key,
@@ -43,6 +49,11 @@ class RewardVideoLockedCard extends StatelessWidget {
     this.chewieController,
     this.onSeeAll,
     this.isMoreRewardsVisible = false,
+    required this.videoId,
+    required this.isFavorite,
+    this.isFavoriteLoading = false,
+    required this.onFavoriteToggle,
+    this.showFavoriteIcon = true,
   });
 
   @override
@@ -188,6 +199,7 @@ class RewardVideoLockedCard extends StatelessWidget {
                       ),
                     ),
                   ),
+
                   Positioned(
                     bottom: 10.h,
                     right: 12.w,
@@ -211,6 +223,35 @@ class RewardVideoLockedCard extends StatelessWidget {
                     ),
                   ),
                 ],
+              ),
+            if (showFavoriteIcon)
+              Positioned(
+                top: 10.h,
+                left: 12.w,
+                child: GestureDetector(
+                  onTap: isFavoriteLoading ? null : onFavoriteToggle,
+                  child: Container(
+                    padding: EdgeInsets.all(8.w),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.6),
+                      shape: BoxShape.circle,
+                    ),
+                    child: isFavoriteLoading
+                        ? SizedBox(
+                            width: 20.sp,
+                            height: 20.sp,
+                            child: CustomCircleProgressIndicator(
+                              size: 20.sp,
+                              color: Colors.white,
+                            ),
+                          )
+                        : Icon(
+                            isFavorite ? Icons.favorite_rounded : Icons.favorite_outline_rounded,
+                            color: isFavorite ? Colors.red : Colors.white,
+                            size: 20.sp,
+                          ),
+                  ),
+                ),
               ),
           ],
         ),

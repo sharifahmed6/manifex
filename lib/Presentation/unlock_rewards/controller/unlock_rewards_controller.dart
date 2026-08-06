@@ -15,6 +15,12 @@ class UnlockRewardsController extends GetxController {
   final isMoreRewardsVisible = false.obs;
   final isMoreRewardsLoading = false.obs;
   final selectedVideo = Rxn<dynamic>(); // Can be RewardVideo or VideoModel
+  final favoriteVideoIds = <String>{}.obs;
+
+  // Tab State
+  final selectedTab = 0.obs;
+  final isFavoriteVideosLoading = false.obs;
+  final favoriteVideosList = <dynamic>[].obs;
 
   // Video states
   late VideoPlayerController videoPlayerController;
@@ -28,6 +34,7 @@ class UnlockRewardsController extends GetxController {
   void onInit() {
     super.onInit();
     getRewardStatus();
+    getFavoriteVideos();
   }
 
   Future<void> getRewardStatus() async {
@@ -85,6 +92,62 @@ class UnlockRewardsController extends GetxController {
     } finally {
       isMoreRewardsLoading.value = false;
     }
+  }
+
+  Future<void> getFavoriteVideos({bool showLoader = true}) async {
+    try {
+      if (showLoader) isFavoriteVideosLoading.value = true;
+      NetworkResponse response = await NetworkCaller().getRequest(
+        url: urls.favoriteVideo,
+      );
+
+      if (response.isSuccess && response.responseData != null) {
+        dynamic data;
+        if (response.responseData is Map) {
+          data = (response.responseData as Map)['data'] ?? response.responseData;
+        } else {
+          data = response.responseData;
+        }
+        
+        favoriteVideosList.clear();
+        
+        if (data is List) {
+          for (var item in data) {
+            if (item is Map) {
+              if (item.containsKey('video')) {
+                favoriteVideosList.add(RewardItem.fromJson(item as Map<String, dynamic>));
+              } else {
+                favoriteVideosList.add(VideoModel.fromJson(item as Map<String, dynamic>));
+              }
+            }
+          }
+        } else if (data is Map) {
+           if (data.containsKey('favorites')) {
+             final favs = data['favorites'] as List;
+             for (var item in favs) {
+                if (item is Map) {
+                   if (item.containsKey('video')) {
+                     favoriteVideosList.add(RewardItem.fromJson(item as Map<String, dynamic>));
+                   } else {
+                     favoriteVideosList.add(VideoModel.fromJson(item as Map<String, dynamic>));
+                   }
+                }
+             }
+           } else if (data.containsKey('rewards')) {
+              final model = MoreVideoRewards.fromJson(response.responseData as Map<String, dynamic>);
+              favoriteVideosList.assignAll(model.data.rewards);
+           }
+        }
+      }
+    } catch (e) {
+      debugPrint("Error fetching favorite videos: $e");
+    } finally {
+      isFavoriteVideosLoading.value = false;
+    }
+  }
+
+  void changeTab(int index) {
+    selectedTab.value = index;
   }
 
   void _initializeVideo(String url) {
@@ -149,6 +212,7 @@ class UnlockRewardsController extends GetxController {
       if (moreVideoRewards.value == null || moreVideoRewards.value!.data.rewards.isEmpty) {
         getMoreRewards();
       }
+      getFavoriteVideos();
     }
   }
 
@@ -160,6 +224,54 @@ class UnlockRewardsController extends GetxController {
     } else {
       videoPlayerController.play();
     }
+  }
+
+  final favoriteLoadingIds = <String>{}.obs;
+
+  Future<void> toggleFavorite(String videoId) async {
+    final bool isFavoriting = !favoriteVideoIds.contains(videoId);
+    
+    if (isFavoriting && favoriteVideoIds.length >= 2) {
+      return; // Max 2 favorites allowed
+    }
+    
+    try {
+      favoriteLoadingIds.add(videoId);
+      final response = await NetworkCaller().patchRequest(
+        url: urls.favoriteVideoReact(videoId),
+        body: {},
+      );
+      
+      if (response.isSuccess) {
+        if (isFavoriting) {
+          favoriteVideoIds.add(videoId);
+        } else {
+          favoriteVideoIds.remove(videoId);
+          favoriteVideosList.removeWhere((item) {
+             if (item is RewardItem) return item.video.id == videoId;
+             if (item is VideoModel) return item.id == videoId;
+             return false;
+          });
+        }
+        
+        // Fetch new data silently
+        getFavoriteVideos(showLoader: false);
+      }
+    } catch (e) {
+      debugPrint("Error favoriting video: $e");
+    } finally {
+      favoriteLoadingIds.remove(videoId);
+    }
+  }
+
+  List<RewardItem> get sortedRewards {
+    final list = moreVideoRewards.value?.data.rewards.toList() ?? [];
+    list.sort((a, b) {
+      final aFav = favoriteVideoIds.contains(a.video.id) ? 1 : 0;
+      final bFav = favoriteVideoIds.contains(b.video.id) ? 1 : 0;
+      return bFav.compareTo(aFav);
+    });
+    return list;
   }
 
   @override

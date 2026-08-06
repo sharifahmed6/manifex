@@ -7,6 +7,7 @@ import '../../all_course/practices/widget/transperent_gradient_border.dart';
 import '../controllers/progress_controller.dart';
 import '../../Share/custom_circle_progress_indicator.dart';
 import 'gradient_linear_progress.dart';
+import '../../Features/home/controller/home_controller.dart';
 
 class LearningProgressCard extends StatelessWidget {
   LearningProgressCard({super.key});
@@ -110,31 +111,38 @@ class LearningProgressCard extends StatelessWidget {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CustomText(text: 'Reading Comprehension'.tr),
-                      CustomText(text: '${p.readingProgress}%'),
-                    ],
-                  ),
-                  SizedBox(height: 8.h),
-                  GradientLinearProgress(
-                    value: (p.readingProgress / 100).clamp(0.0, 1.0),
-                    height: 7.h,
-                    backgroundColor: const Color(
-                      0xffFFFFFF,
-                    ).withAlpha((2.56 * 15).toInt()),
-                    gradient: const LinearGradient(
-                      colors: [
-                        Color(0xffFBAA81),
-                        Color(0xffF27CB1),
-                        Color(0xff001925),
+                  Visibility(
+                    visible: Get.find<HomeController>().apiAge <= 17,
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomText(text: 'Reading Comprehension'.tr),
+                            CustomText(text: '${p.readingProgress}%'),
+                          ],
+                        ),
+                        SizedBox(height: 8.h),
+                        GradientLinearProgress(
+                          value: (p.readingProgress / 100).clamp(0.0, 1.0),
+                          height: 7.h,
+                          backgroundColor: const Color(
+                            0xffFFFFFF,
+                          ).withAlpha((2.56 * 15).toInt()),
+                          gradient: const LinearGradient(
+                            colors: [
+                              Color(0xffFBAA81),
+                              Color(0xffF27CB1),
+                              Color(0xff001925),
+                            ],
+                            begin: Alignment.centerRight,
+                            end: Alignment.centerLeft,
+                          ),
+                        ),
+                        SizedBox(height: 16.h),
                       ],
-                      begin: Alignment.centerRight,
-                      end: Alignment.centerLeft,
                     ),
                   ),
-                  SizedBox(height: 16.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -210,22 +218,22 @@ class LearningProgressCard extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 16.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CustomText(
-                        text: 'Today\'s Goal'.tr,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      CustomText(
-                        text: p.dailyGoal > 0
-                            ? '${((p.dailyGoalCompleted / p.dailyGoal) * 100).toInt()}%'
-                            : '0%',
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 8.h),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: [
+                  //     CustomText(
+                  //       text: 'Today\'s Goal'.tr,
+                  //       fontWeight: FontWeight.w500,
+                  //     ),
+                  //     CustomText(
+                  //       text: p.dailyGoal > 0
+                  //           ? '${((p.dailyGoalCompleted / p.dailyGoal) * 100).toInt()}%'
+                  //           : '0%',
+                  //       fontWeight: FontWeight.w500,
+                  //     ),
+                  //   ],
+                  // ),
+               /*   SizedBox(height: 8.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -241,8 +249,8 @@ class LearningProgressCard extends StatelessWidget {
                         fontSize: 18,
                       ),
                     ],
-                  ),
-                  SizedBox(height: 8.h),
+                  ),*/
+/*                  SizedBox(height: 8.h),
                   GradientLinearProgress(
                     value: p.dailyGoal > 0
                         ? (p.dailyGoalCompleted / p.dailyGoal).clamp(0.0, 1.0)
@@ -260,7 +268,7 @@ class LearningProgressCard extends StatelessWidget {
                       begin: Alignment.centerRight,
                       end: Alignment.centerLeft,
                     ),
-                  ),
+                  ),*/
                 ],
               );
             }),
