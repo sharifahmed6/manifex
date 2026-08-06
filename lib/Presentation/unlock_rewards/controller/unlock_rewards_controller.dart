@@ -110,14 +110,19 @@ class UnlockRewardsController extends GetxController {
         }
         
         favoriteVideosList.clear();
+        favoriteVideoIds.clear(); // Clear existing ids
         
         if (data is List) {
           for (var item in data) {
             if (item is Map) {
               if (item.containsKey('video')) {
-                favoriteVideosList.add(RewardItem.fromJson(item as Map<String, dynamic>));
+                final rItem = RewardItem.fromJson(item as Map<String, dynamic>);
+                favoriteVideosList.add(rItem);
+                favoriteVideoIds.add(rItem.video.id);
               } else {
-                favoriteVideosList.add(VideoModel.fromJson(item as Map<String, dynamic>));
+                final vItem = VideoModel.fromJson(item as Map<String, dynamic>);
+                favoriteVideosList.add(vItem);
+                favoriteVideoIds.add(vItem.id);
               }
             }
           }
@@ -127,15 +132,22 @@ class UnlockRewardsController extends GetxController {
              for (var item in favs) {
                 if (item is Map) {
                    if (item.containsKey('video')) {
-                     favoriteVideosList.add(RewardItem.fromJson(item as Map<String, dynamic>));
+                     final rItem = RewardItem.fromJson(item as Map<String, dynamic>);
+                     favoriteVideosList.add(rItem);
+                     favoriteVideoIds.add(rItem.video.id);
                    } else {
-                     favoriteVideosList.add(VideoModel.fromJson(item as Map<String, dynamic>));
+                     final vItem = VideoModel.fromJson(item as Map<String, dynamic>);
+                     favoriteVideosList.add(vItem);
+                     favoriteVideoIds.add(vItem.id);
                    }
                 }
              }
            } else if (data.containsKey('rewards')) {
               final model = MoreVideoRewards.fromJson(response.responseData as Map<String, dynamic>);
               favoriteVideosList.assignAll(model.data.rewards);
+              for (var r in model.data.rewards) {
+                favoriteVideoIds.add(r.video.id);
+              }
            }
         }
       }

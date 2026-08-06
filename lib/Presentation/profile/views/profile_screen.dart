@@ -23,10 +23,24 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isValid =
-        homeController.profileInfo.value?.data?.isSubscribed == true &&
-        homeController.profileInfo.value?.data?.subscription?.plan?.planType ==
-            'FAMILY';
+    // Get subscription data from the new API call
+    final mySubData = homeController.mySubscriptionData.value?['data'];
+    final planType = mySubData?['plan']?['PlanType'];
+    final subUserId = mySubData?['userId'];
+    
+    // Current user's ID
+    final currentUserId = homeController.profileInfo.value?.data?.id;
+
+    // Check if it's a family plan based on the new API
+    final isFamilyPlan = planType == 'FAMILY';
+    
+    // Owner is true if the userId inside subscription data matches the current user's ID
+    final isOwner = isFamilyPlan && subUserId != null && subUserId == currentUserId;
+
+    // If it's a family plan, only show Account & Security to the owner. Otherwise, show it.
+    final showAccountSecurity = isFamilyPlan ? isOwner : true;
+    final showFamilySettings = isFamilyPlan; // keeping original logic for family settings, but could also restrict to owner
+
     return scaffold_background(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
@@ -58,31 +72,32 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    _customItem(
-                      imagePath: 'assets/icons/account_icon.png',
-                      title: 'Account & Security'.tr,
-                      onTap: () {
-                        Get.toNamed(routes.profile_edit_screen);
-                      },
-                    ),
-                    isValid
-                        ? Divider(
-                            color: Color(
-                              0xffFFFFFF,
-                            ).withAlpha((2.56 * 22).toInt()),
-                          )
-                        : SizedBox.shrink(),
-                    isValid ? SizedBox(height: 8.h) : SizedBox.shrink(),
-                    isValid
-                        ? _customItem(
-                            imagePath: 'assets/icons/settings_icon.png',
-                            title: 'Family Members Settings'.tr,
-                            onTap: () {
-                              Get.toNamed(routes.family_member_add);
-                            },
-                          )
-                        : SizedBox.shrink(),
-                    SizedBox(height: 8.h),
+                    if (showAccountSecurity) ...[
+                      _customItem(
+                        imagePath: 'assets/icons/account_icon.png',
+                        title: 'Account & Security'.tr,
+                        onTap: () {
+                          Get.toNamed(routes.profile_edit_screen);
+                        },
+                      ),
+                      if (showFamilySettings)
+                        Divider(
+                          color: Color(
+                            0xffFFFFFF,
+                          ).withAlpha((2.56 * 22).toInt()),
+                        ),
+                      if (showFamilySettings) SizedBox(height: 8.h),
+                    ],
+                    if (showFamilySettings) ...[
+                      _customItem(
+                        imagePath: 'assets/icons/settings_icon.png',
+                        title: 'Family Members Settings'.tr,
+                        onTap: () {
+                          Get.toNamed(routes.family_member_add);
+                        },
+                      ),
+                      SizedBox(height: 8.h),
+                    ],
                     Divider(
                       color: Color(0xffFFFFFF).withAlpha((2.56 * 22).toInt()),
                     ),

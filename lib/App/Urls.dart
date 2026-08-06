@@ -64,4 +64,5 @@ class urls {
   static String sendSupportEmail = "$baseUrl/contacts/send-email";
   static String favoriteVideoReact(String id) => "$baseUrl/reward-video/favorite/$id";
   static String favoriteVideo = "$baseUrl/reward-video/my/favorites";
+  static String mySubscription = "$baseUrl/subscriptions/my-subscription";
 }

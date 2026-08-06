@@ -17,6 +17,7 @@ class HomeController extends GetxController with WidgetsBindingObserver {
   final isLoading = false.obs;
   final errorMessage = ''.obs;
   final music = MusicService();
+  final mySubscriptionData = Rxn<Map<String, dynamic>>(); // Store subscription API data
 
   @override
   Future<void> onInit() async {
@@ -30,6 +31,7 @@ class HomeController extends GetxController with WidgetsBindingObserver {
 
     await Purchases.logIn(userId);
     fetchProfileInfo();
+    fetchMySubscription(); // Fetch subscription data
 
     // Monitor GetX routing changes globally
     ever(Get.routing.current.obs, (String route) {
@@ -186,6 +188,17 @@ class HomeController extends GetxController with WidgetsBindingObserver {
       errorMessage.value = 'Something went wrong';
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  Future<void> fetchMySubscription() async {
+    try {
+      final response = await NetworkCaller().getRequest(url: urls.mySubscription);
+      if (response.isSuccess && response.responseData != null) {
+        mySubscriptionData.value = response.responseData as Map<String, dynamic>?;
+      }
+    } catch (e) {
+      print("Error fetching mySubscription: $e");
     }
   }
 

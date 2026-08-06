@@ -224,7 +224,7 @@ class RewardVideoLockedCard extends StatelessWidget {
                   ),
                 ],
               ),
-            if (showFavoriteIcon)
+            if (unlocked && showFavoriteIcon)
               Positioned(
                 top: 10.h,
                 left: 12.w,
