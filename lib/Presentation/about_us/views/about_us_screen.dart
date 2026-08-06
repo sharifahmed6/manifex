@@ -47,7 +47,7 @@ class AboutUsScreen extends StatelessWidget {
               SizedBox(height: screenHeight * 0.02),
               _gradientTitle(
                 normalText: 'We Created MANIFEX with \n'.tr,
-                gradientText: 'your language'.tr,
+                gradientText: 'One Mission'.tr,
               ),
               SizedBox(height: screenHeight * 0.02),
               CustomText(
@@ -96,8 +96,7 @@ class AboutUsScreen extends StatelessWidget {
               ),
               SizedBox(height: screenHeight * 0.08),
               _gradientTitle(
-                normalText: 'At the Core of Our Approach are'.tr,
-                gradientText: '4 Key Foundations'.tr,
+                normalText: 'At the Core of Our Approach are 4 Key Foundations'.tr,
               ),
               SizedBox(height: screenHeight * 0.03),
               _foundationCard(
@@ -115,17 +114,16 @@ class AboutUsScreen extends StatelessWidget {
               ),
               SizedBox(height: screenHeight * 0.03),
               _foundationCard(
-                title: '3. Dysgraphia Support'.tr,
+                title: '3. Dyslexia/Dysgraphia Support'.tr,
                 subTitle:
-                    'Dysgraphia is a neurological condition that affects writing. Our tools offer structured practice to strengthen handwriting, written expression, and the motor skills that support the writing process.'
+                    'Dyslexia, a neurobiological learning difference, can make reading, writing, and spelling difficult. We provide engaging activities that build fluency, comprehension, and language skills—helping learners overcome barriers with confidence. Dysgraphia is a neurological condition that affects writing. Our Handwriting and Free writing activities offer structured practice to strengthen writing, written expression, and the motor skills that support the writing process.'
                         .tr,
               ),
               SizedBox(height: screenHeight * 0.03),
               _foundationCard(
-                title: '4. Dyslexia Support'.tr,
+                title: '4. Intrinsic Value'.tr,
                 subTitle:
-                    'Dyslexia, a neurobiological learning difference, can make reading, writing, and spelling difficult. We provide engaging activities that build fluency, comprehension, and language skills—helping learners overcome barriers with confidence.'
-                        .tr,
+                    'At MANIFEX, we believe learning is most effective when it ends with a positive emotional experience. That\'s why every completed practice session is followed by a hand selected social media reward video designed to reinforce motivation and make learners look forward to returning. Our rewards consist of brief, non-explicit social media videos that are free of profanity, nudity, and violence. Instead, they feature warm, funny, inspiring, and exciting moments that leave learners with a positive emotional connection to their effort!'
               ),
             ],
           ),
@@ -221,7 +219,7 @@ class AboutUsScreen extends StatelessWidget {
           TextSpan(
             text: normalText ?? '',
             style: GoogleFonts.inter(
-              fontSize: 24.sp,
+              fontSize: 14.sp,
               fontWeight: FontWeight.w500,
               color: Color(0xffFFFFFF),
             ),

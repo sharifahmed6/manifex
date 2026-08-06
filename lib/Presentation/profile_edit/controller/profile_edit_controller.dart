@@ -97,6 +97,15 @@ class ProfileEditController extends GetxController {
       return;
     }
 
+    if (selectedHobbies.isEmpty) {
+      AppSnackbar.show(
+        "Please select at least one hobby",
+        title: "Validation Error",
+        backgroundColor: Colors.red,
+      );
+      return;
+    }
+
     try {
       isProfileLoading.value = true;
       

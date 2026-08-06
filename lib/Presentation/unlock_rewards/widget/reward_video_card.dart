@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:manifex/Presentation/Share/button_gradient.dart';
 import 'package:manifex/Presentation/Share/text_title_small.dart';
+import 'package:manifex/Presentation/Share/custom_circle_progress_indicator.dart';
 import '../model/rewards_model.dart';
 
 class RewardVideoLockedCard extends StatelessWidget {
@@ -26,6 +27,7 @@ class RewardVideoLockedCard extends StatelessWidget {
   final bool isMoreRewardsVisible;
   final String videoId;
   final bool isFavorite;
+  final bool isFavoriteLoading;
   final VoidCallback onFavoriteToggle;
   final bool showFavoriteIcon;
 
@@ -49,6 +51,7 @@ class RewardVideoLockedCard extends StatelessWidget {
     this.isMoreRewardsVisible = false,
     required this.videoId,
     required this.isFavorite,
+    this.isFavoriteLoading = false,
     required this.onFavoriteToggle,
     this.showFavoriteIcon = true,
   });
@@ -226,18 +229,27 @@ class RewardVideoLockedCard extends StatelessWidget {
                 top: 10.h,
                 left: 12.w,
                 child: GestureDetector(
-                  onTap: onFavoriteToggle,
+                  onTap: isFavoriteLoading ? null : onFavoriteToggle,
                   child: Container(
                     padding: EdgeInsets.all(8.w),
                     decoration: BoxDecoration(
                       color: Colors.black.withOpacity(0.6),
                       shape: BoxShape.circle,
                     ),
-                    child: Icon(
-                      isFavorite ? Icons.favorite_rounded : Icons.favorite_outline_rounded,
-                      color: isFavorite ? Colors.red : Colors.white,
-                      size: 20.sp,
-                    ),
+                    child: isFavoriteLoading
+                        ? SizedBox(
+                            width: 20.sp,
+                            height: 20.sp,
+                            child: CustomCircleProgressIndicator(
+                              size: 20.sp,
+                              color: Colors.white,
+                            ),
+                          )
+                        : Icon(
+                            isFavorite ? Icons.favorite_rounded : Icons.favorite_outline_rounded,
+                            color: isFavorite ? Colors.red : Colors.white,
+                            size: 20.sp,
+                          ),
                   ),
                 ),
               ),

@@ -155,6 +155,7 @@ class UnlockRewardsScreen extends StatelessWidget {
                                 isMoreRewardsVisible: c.isMoreRewardsVisible.value,
                                 videoId: videoId,
                                 isFavorite: c.favoriteVideoIds.contains(videoId),
+                                isFavoriteLoading: c.favoriteLoadingIds.contains(videoId),
                                 onFavoriteToggle: () => c.toggleFavorite(videoId),
                                 showFavoriteIcon: c.favoriteVideoIds.contains(videoId) || c.favoriteVideoIds.length < 2,
                               );
@@ -188,21 +189,90 @@ class UnlockRewardsScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               SizedBox(height: 24.h),
-                              CustomText(
-                                text: 'Other Rewards'.tr,
-                                fontSize: 20.sp,
-                                fontWeight: FontWeight.w600,
+                              Row(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () => c.changeTab(0),
+                                    child: Column(
+                                      children: [
+                                        CustomText(
+                                          text: 'Other Rewards'.tr,
+                                          fontSize: 18.sp,
+                                          fontWeight: FontWeight.w600,
+                                          color: c.selectedTab.value == 0 ? Colors.white : Colors.white54,
+                                        ),
+                                        SizedBox(height: 4.h),
+                                        Container(
+                                          height: 2.h,
+                                          width: 40.w,
+                                          color: c.selectedTab.value == 0 ? Colors.blue : Colors.transparent,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(width: 20.w),
+                                  GestureDetector(
+                                    onTap: () => c.changeTab(1),
+                                    child: Column(
+                                      children: [
+                                        CustomText(
+                                          text: 'Favorite Video'.tr,
+                                          fontSize: 18.sp,
+                                          fontWeight: FontWeight.w600,
+                                          color: c.selectedTab.value == 1 ? Colors.white : Colors.white54,
+                                        ),
+                                        SizedBox(height: 4.h),
+                                        Container(
+                                          height: 2.h,
+                                          width: 40.w,
+                                          color: c.selectedTab.value == 1 ? Colors.blue : Colors.transparent,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
                               SizedBox(height: 12.h),
-                              ListView.separated(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: c.sortedRewards.length,
-                                separatorBuilder: (context, index) =>
-                                    SizedBox(height: 12.h),
-                                itemBuilder: (context, index) {
-                                  final rewardItem = c.sortedRewards[index];
-                                  final video = rewardItem.video;
+                              Builder(
+                                builder: (context) {
+                                  if (c.selectedTab.value == 1 && c.isFavoriteVideosLoading.value) {
+                                    return Padding(
+                                      padding: EdgeInsets.only(top: 24.h),
+                                      child: const Center(
+                                        child: CustomCircleProgressIndicator(
+                                          size: 30,
+                                          color: Colors.blue,
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                  
+                                  final List<dynamic> listData = c.selectedTab.value == 0 
+                                      ? c.sortedRewards 
+                                      : c.favoriteVideosList;
+                                      
+                                  if (listData.isEmpty) {
+                                     return Padding(
+                                       padding: EdgeInsets.symmetric(vertical: 40.h),
+                                       child: Center(
+                                         child: CustomText(
+                                           text: c.selectedTab.value == 0 ? "No rewards available".tr : "No favorite video found".tr,
+                                           fontSize: 16,
+                                           color: Colors.white70,
+                                         ),
+                                       ),
+                                     );
+                                  }
+
+                                  return ListView.separated(
+                                    shrinkWrap: true,
+                                    physics: const NeverScrollableScrollPhysics(),
+                                    itemCount: listData.length,
+                                    separatorBuilder: (context, index) =>
+                                        SizedBox(height: 12.h),
+                                    itemBuilder: (context, index) {
+                                      final item = listData[index];
+                                      final video = (item is RewardItem) ? item.video : (item as VideoModel);
                                   return InkWell(
                                     onTap: () {
                                       Get.dialog(
@@ -267,21 +337,31 @@ class UnlockRewardsScreen extends StatelessWidget {
                                           Obx(() {
                                             final isFav = c.favoriteVideoIds.contains(video.id);
                                             final showIcon = isFav || c.favoriteVideoIds.length < 2;
+                                            final isFavLoading = c.favoriteLoadingIds.contains(video.id);
                                             
                                             if (!showIcon) return const SizedBox.shrink();
 
                                             return GestureDetector(
-                                              onTap: () {
+                                              onTap: isFavLoading ? null : () {
                                                 // Prevent triggering the parent InkWell's onTap
                                                 c.toggleFavorite(video.id);
                                               },
                                               child: Padding(
                                                 padding: EdgeInsets.symmetric(horizontal: 12.w),
-                                                child: Icon(
-                                                  isFav ? Icons.favorite_rounded : Icons.favorite_outline_rounded,
-                                                  color: isFav ? Colors.red : Colors.white,
-                                                  size: 24.sp,
-                                                ),
+                                                child: isFavLoading
+                                                    ? SizedBox(
+                                                        width: 24.sp,
+                                                        height: 24.sp,
+                                                        child: CustomCircleProgressIndicator(
+                                                          size: 24.sp,
+                                                          color: Colors.white,
+                                                        ),
+                                                      )
+                                                    : Icon(
+                                                        isFav ? Icons.favorite_rounded : Icons.favorite_outline_rounded,
+                                                        color: isFav ? Colors.red : Colors.white,
+                                                        size: 24.sp,
+                                                      ),
                                               ),
                                             );
                                           }),
@@ -295,10 +375,12 @@ class UnlockRewardsScreen extends StatelessWidget {
                                     ),
                                   );
                                 },
-                              ),
-                            ],
-                          );
-                        }),
+                              );
+                            },
+                          ),
+                        ],
+                      );
+                    }),
                         SizedBox(height: 20.h),
 
                         /*                  const SizedBox(height: 18),
